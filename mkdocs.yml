@@ -1,0 +1,7 @@
+site_name: UA Policy Working Group
+nav:
+  - Home: index.md
+  - working-drafts/index.md
+  - nomenclature.md
+  - bibliography.md
+theme: pulse
