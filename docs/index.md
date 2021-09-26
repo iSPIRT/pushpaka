@@ -29,7 +29,7 @@ See [all](./published/index.md).
 See [all](./working-drafts/index.md).
 
 1. [UTM Policy](./working-drafts/utm-policy.md)
-1. [UTM Technical Specification](./utm-tech-spec.md)
+1. [UTM Technical Specification](./working-drafts/utm-tech-spec.md)
 
 ## Membership
 

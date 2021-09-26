@@ -1,53 +1,128 @@
 # UTM Policy
 
+Status: `WORKING DRAFT`
+
 **Outline**  
 
 [TOC]
 
 ## Actors
 
-1. UAS Manufacturer
+1. Manufacturer
 1. Pilot
 1. Operator
 1. Insurer
-1. Civil Aviation Authority, i.e. DGCA
-1. Third party
+1. Civil Aviation Authority
 1. Service Consumer
 1. UAS Owner
 1. Law Enforcement
 1. Security Agencies
-1. Air Navigation Service Provider, i.e. AAI
-1. Military, i.e. IAF, Navy, Coast Guard, HAL
+1. Air Navigation Service Provider
+1. Disaster Management Agencies
+1. Military
 1. BCAS
 1. General Public
 
 ## Use cases
 
-### UAS Manufacturer
+### Manufacturer
+
+1. Manage Registration with CAA
+
 ### Pilot
+
+1. Manage Registration with CAA
+1. Plan a Flight
+1. Apply for Flight Permit
+
 ### Operator
+
+1. Manage Registration with CAA
+1. Manage Pilots
+1. Manage UASs
+
 ### Insurer
+
+1. Accident Investigations
+
 ### Civil Aviation Authority
 
 i.e. DGCA
 
-### Third party
+1. Audit
+	1. Pilot
+	1. Operator
+1. Manage registration
+	1. Manufacturer
+	1. Pilot
+	1. Operator
+
 ### Service Consumer
+
+1. Data access
+
 ### UAS Owner
+
+1. Lease
+1. Rent
+1. Transfer
+1. Buy
+1. Scrap
+
 ### Law Enforcement
+
+1. Find Pilot/Operator against FIR
+1. Track UAS
+1. Find rogue UAS
+1. Counter UAS action
+
 ### Security Agencies
+
+1. Find Pilot/Operator against FIR
+1. Track UAS
+1. Find rogue UAS
+1. Counter UAS action
+
 ### Air Navigation Service Provider
 
 i.e. AAI
+
+1. Flight permission in controlled airspace
+1. Traffic Management
+	1. Deconfliction
 
 ### Military
 
 i.e. IAF, Navy, Coast Guard, HAL
 
+1. Permission in applicable military controlled airspace
+
 ### BCAS
+
+1. Counter UAS action
+
 ### General Public
 
+1. Legal action against Drone Pilot/Operator
+1. Raise claim against accident
+
 ## Foreword to Architecture
+
+### State of the art
+
+#### European Union Aviation Safety Agency
+
+##### U-Space Specifications
+
+#### Federal Aviation Authority 
+
+##### UTM Specification v1
+
+##### UTM Specification v2
+
+##### Unmanned Aerial Mobility Specification v1
+
+## Considerations for designing an architecture
 
 ## UTM Architecture
 
