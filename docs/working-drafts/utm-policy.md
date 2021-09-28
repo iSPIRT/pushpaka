@@ -22,6 +22,7 @@ Status: `WORKING DRAFT`
 1. Military
 1. BCAS
 1. General Public
+1. Other UTM-SP or instances thereof
 
 ## Use cases
 
@@ -110,6 +111,8 @@ i.e. IAF, Navy, Coast Guard, HAL
 
 ### State of the art
 
+#### GUTMA
+
 #### European Union Aviation Safety Agency
 
 ##### U-Space Specifications
@@ -122,9 +125,9 @@ i.e. IAF, Navy, Coast Guard, HAL
 
 ##### Unmanned Aerial Mobility Specification v1
 
-## Considerations for designing an architecture
-
 ## UTM Architecture
+
+### Considerations for design
 
 ### Services
 
