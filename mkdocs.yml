@@ -1,7 +1,7 @@
 site_name: Pushpaka
 nav:
   - Home: index.md
-  - working-drafts/index.md
+  - work-items/index.md
   - nomenclature.md
   - bibliography.md
 theme: pulse
