@@ -22,7 +22,7 @@ Civil Aviation Authorities worldwide have started rule making for unmanned aviat
 | ----------------     | ---------------------------------------------------------------          | ----------------- | -----------       | --       |
 | Siddharth Shetty     | [<i class="fa fa-envelope-o"></i>](mailto:siddharth.shetty@ispirt.in)    |                   | iSpirt            | 🇮🇳     |
 | Siddharth Ravikumar  | [<i class="fa fa-envelope-o"></i>](mailto:ravikumar.siddharth@gmail.com) |                   | iSpirt            | 🇨🇦     |
-| Amit Garg            | [<i class="fa fa-envelope-o"></i>](mailto:studies.amit@gmail.com)        |                   | DGCA              | 🇮🇳     |
+| Amit Garg            | [<i class="fa fa-envelope-o"></i>](mailto:studies.amit@gmail.com)        |                   |                   | 🇮🇳     |
 | George Thomas        | [<i class="fa fa-envelope-o"></i>](mailto:georj13@gmail.com)             |                   |                   | 🇮🇳     |
 | Hrishikesh Ballal    | [<i class="fa fa-envelope-o"></i>](mailto:hballal@gmail.com)             |                   | OpenSkies         | 🇮🇪     |
 | Sayandeep Purkayasth | [<i class="fa fa-envelope-o"></i>](mailto:sayandeep@deepcyan.ai)         |                   | Deepcyan Software | 🇮🇳     |
