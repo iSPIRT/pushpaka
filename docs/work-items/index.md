@@ -8,6 +8,7 @@
 | `I04` | Comments on Drone Rules 2021    |                                   | Aborted               |                                                                                                                                 |
 | `I05` | UTM Policy                      |                                   | In progress           | [<i class="fa fa-link"></i>](./i05.md)                                                                                          |
 | `I06` | UTM Technical Standards         |                                   |                       | [<i class="fa fa-link"></i>](./i06.md)                                                                                          |
+| `I07` | Concept of Operations version 1 Video |                                   |                       | [<i class="fa fa-link"></i>](./i07.md)                                                                                          |
 
 ## Plan
 
@@ -16,7 +17,7 @@
 | Month      | Jun   | J     | A     | S     | O     | N     | D     |
 | --         | ---   | --    | --    | --    | --    | --    | --    |
 | Work Items | `I01` | `I02` | `I02` | `I04` | `I05` | `I05` | `I05` |
-|            |       |       | `I03` | `I05` |       | `I06` | `I06` |
+|            |       |       | `I03` | `I05` | `I07` | `I06` | `I06` |
 
 ### 2022
 
