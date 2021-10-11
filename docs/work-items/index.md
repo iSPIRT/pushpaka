@@ -2,7 +2,7 @@
 
 | ID    | Name                            | Description                       | Status                | URL                                                                                                                             |
 | --    | --                              | --                                | --                    | --                                                                                                                              |
-| `I01` | Draft Concept of Operations     |                                   | Published Aug 7, 2021 | <a href="https://drive.google.com/file/d/1Zrya_vejcsEr1uukkUQC2H03gTFQDq7w/view" target="_blank"><i class="fa fa-link"></i></a> |
+| `I01` | Draft Concept of Operations     |                                   | Published Aug 7, 2021 | <a href="https://drive.google.com/file/d/1Zrya_vejcsEr1uukkUQC2H03gTFQDq7w/view" target="_blank"><i class="fa fa-link"></i></a> [<i class="fa fa-link"></i>](./i01.md) |
 | `I02` | The Draft Rules Commentary      | Feedback to MoCA Draft Rules 2021 | Published Aug 7, 2021 | <a href="https://pn.ispirt.in/ispirt-response-drone-rules-2021/" target="_blank"><i class="fa fa-link"></i></i></a>             |
 | `I03` | The Draft Rules Change Requests |                                   | Aborted               |                                                                                                                                 |
 | `I04` | Comments on Drone Rules 2021    |                                   | Aborted               |                                                                                                                                 |
