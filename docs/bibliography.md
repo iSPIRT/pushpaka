@@ -4,10 +4,19 @@
 
 <a name="UTM-BAUM">`UTM-BAUM`</a> <a href="https://doi.org/10.1201/9781003124689" target="_blank">*Unmanned Aircraft Systems Traffic Management*</a>, Michael Scott Baum, 2021
 
+## Standards
+
+<a name="ICAO-Annex19">`ICAO-Annex19`</a> [*Annex 19 to the Convention on International Civil Aviation Safety Management*](https://caainternational.com/wp-content/uploads/2018/05/AN19_2ed-publication.pdf), Second Edition, July 2016
+
+<a name="JARUS-SORA">`JARUS-SORA`</a> [*JARUS guidelines on Specific Operations Risk Assessment (SORA)*](http://jarus-rpas.org/sites/jarus-rpas.org/files/jar_doc_06_jarus_sora_v2.0.pdf), JARUS WG 6, Jan 2019 
+
+<a name="JARUS-SORA-STS01">`JARUS-SORA-STS01`</a> [*SORA STS-01 for Aerial Work Operations*](http://jarus-rpas.org/sites/jarus-rpas.org/files/jar_doc_6_sora_sts_01_edition1.1.pdf), JARUS WG 6, Nov 2019 
+
+<a name="JARUS-SORA-STS02">`JARUS-SORA-STS02`</a> [*SORA STS-02 for Aerial Work Operations*](http://jarus-rpas.org/sites/jarus-rpas.org/files/jar_doc_6_sora_sts_02_edition1.0.pdf), JARUS WG 6, Sept 2019
+
 ## Technical Specifications
 
 <a name="ASTM-F3411-19">`ASTM-F3411-19`</a> [*ASTM F3411-19, Standard Specification for Remote ID and Tracking*](https://www.astm.org/Standards/F3411.htm), [ASTM International](https://www.astm.org), West Conshohocken, PA, 2019
-
 
 ## Technical Reports
 
