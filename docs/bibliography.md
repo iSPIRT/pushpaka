@@ -4,6 +4,12 @@
 
 <a name="UTM-BAUM">`UTM-BAUM`</a> <a href="https://doi.org/10.1201/9781003124689" target="_blank">*Unmanned Aircraft Systems Traffic Management*</a>, Michael Scott Baum, 2021
 
+## Papers
+
+<a name="USPACE-CONOPS-V1">`USPACE-CONOPS-V1`</a> [*U-space Concept of Operations Volume 1*](https://www.sesarju.eu/sites/default/files/documents/u-space/CORUS%20ConOps%20vol1.pdf)
+
+<a name="USPACE-CONOPS-V2">`USPACE-CONOPS-V2`</a> [*U-space Concept of Operations Volume 2*](https://www.sesarju.eu/sites/default/files/documents/u-space/CORUS%20ConOps%20vol2.pdf)
+
 ## Standards
 
 <a name="ICAO-Annex19">`ICAO-Annex19`</a> [*Annex 19 to the Convention on International Civil Aviation Safety Management*](https://caainternational.com/wp-content/uploads/2018/05/AN19_2ed-publication.pdf), Second Edition, July 2016
