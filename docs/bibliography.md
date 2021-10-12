@@ -6,6 +6,9 @@
 
 ## Technical Specifications
 
+<a name="ASTM-F3411-19">`ASTM-F3411-19`</a> [*ASTM F3411-19, Standard Specification for Remote ID and Tracking*](https://www.astm.org/Standards/F3411.htm), [ASTM International](https://www.astm.org), West Conshohocken, PA, 2019
+
+
 ## Technical Reports
 
 ## Research Papers
@@ -18,3 +21,6 @@
 
 ## News/Media
 
+## Presentations
+
+<a name="NASA-UTM-1">`NASA-UTM-1`</a> [*Unmanned Aircraft System Traffic Management (UTM) Project*](https://ntrs.nasa.gov/api/citations/20180002542/downloads/20180002542.pdf), R.D. Johnson, UTM Project Manager, NASA, April 2018
