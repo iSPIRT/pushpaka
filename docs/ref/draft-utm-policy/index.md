@@ -315,7 +315,10 @@ each other to highlight their interdependence and show the information flow betw
 different blocks and stakeholders. This figure represents the proposed architecture of the
 Indian UTM Ecosystem, which may be updated in subsequent versions of this document.
 
-Figure 5.1: UTM Ecosystem
+<figure>
+	<img src="ecosystem.svg" alt="UTM Ecosystem">
+	<figcaption>Figure 5.1: UTM Ecosystem<figcaption>
+</figure>
 
 The UTM Architecture creates an interface to the DigitalSky Platform via various UTM
 Service Providers and is primarily divided into the following components: DigitalSky Platform,
@@ -537,7 +540,10 @@ and data exchange between multiple stakeholders in a modular approach. Such serv
 also used to connect UTMSPs with each other to support various functionalities necessary
 for safe UA operations. UTM Services are grouped into various categories as follows:
 
-Figure 5.3: UTM Service Categories
+<figure>
+	<img src="services.svg" alt="UTM Service Categories">
+	<figcaption>Figure 5.3: UTM Service Categories<figcaption>
+</figure>
 
 #### DigitalSky Engine Services
 
@@ -883,7 +889,10 @@ recommended practices on safety management.
 
 ### ICAO SMS Framework
 
-Figure 7.1: ICAO SMS Framework
+<figure>
+	<img src="icao-sms.svg" alt="ICAO SMS Framework">
+	<figcaption>Figure 7.1: ICAO SMS Framework<figcaption>
+</figure>
 
 ICAO Annex 19 contains the recommended SMS framework for aviation organisations. The
 framework contains four components and 12 elements to be followed for establishing and
@@ -1196,7 +1205,10 @@ additional need for establishing a Flight Bubble for providing safe separation s
 between aircraft and communicating about the same to other aircraft flying nearby.
 The Flight Bubble can be explained using the infographic below:
 
-Figure 10.1: Concept of Flight Bubble
+<figure>
+	<img src="flight-bubble.svg" alt="Concept of Flight Bubble">
+	<figcaption>Figure 10.1: Concept of Flight Bubble<figcaption>
+</figure>
 
 The UAS shall only be able to sense each other as flight bubbles, ensuring that all flights
 happen with the adequate safety margins, and variances due to equipment and/or type of
