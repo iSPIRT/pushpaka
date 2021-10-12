@@ -852,7 +852,7 @@ Operators would be required to archive certain data as per the DGCA rules and gu
 support post-flight requests by authorized entities on a need to know basis.
 In future, the ICAO IATF and GRAIN standards may be evaluated for adoption.
 
-### Authentication and Network Security:
+### Authentication and Network Security
 
 As there are multiple entities providing different services in the UTM ecosystem, there is a
 need for a framework for identification, authentication and authorization of the entities. In this
