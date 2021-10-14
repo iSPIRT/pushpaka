@@ -24,6 +24,6 @@ Civil Aviation Authorities worldwide have started rule making for unmanned aviat
 | Siddharth Ravikumar  | [<i class="fa fa-envelope-o"></i>](mailto:ravikumar.siddharth@gmail.com) |                   | iSpirt                           | 🇨🇦     |
 | Amit Garg            | [<i class="fa fa-envelope-o"></i>](mailto:studies.amit@gmail.com)        |                   | iSpirt                           | 🇮🇳     |
 | George Thomas        | [<i class="fa fa-envelope-o"></i>](mailto:georj13@gmail.com)             |                   |                                  | 🇮🇳     |
-| Hrishikesh Ballal    | [<i class="fa fa-envelope-o"></i>](mailto:hballal@gmail.com)             |                   | OpenSkies Aerial Technology Ltd. | 🇮🇪     |
+| Hrishikesh Ballal    | [<i class="fa fa-link"></i>](https://about.openskies.sh/#contact)        |                   | Openskies Aerial Technology Ltd. | 🇮🇪     |
 | Sayandeep Purkayasth | [<i class="fa fa-envelope-o"></i>](mailto:sayandeep@deepcyan.ai)         |                   | Deepcyan Software                | 🇮🇳     |
 | Manish Shukla        | [<i class="fa fa-envelope-o"></i>](mailto:manish.shukla393@gmail.com)    |                   | iSpirt                           | 🇮🇳     |
