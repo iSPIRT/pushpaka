@@ -4,11 +4,11 @@ Go to: [All minutes](../index.md) [Previous](template.md) [Next](template.md)
 
 ## Agenda
 
-**Development Track**
+**Technology Track**
 
 1. ...
 
-**Feedback Track**
+**Policy Track**
 
 1. ...
 
