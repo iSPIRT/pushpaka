@@ -1,6 +1,6 @@
 # Session #: DD MMMM YYYY
 
-Go to: [All minutes](../index.md) [Previous](template.md) [Next](template.md)
+Go to: [All minutes](../../index.md) [Previous](template.md) [Next](template.md)
 
 ## Agenda
 
