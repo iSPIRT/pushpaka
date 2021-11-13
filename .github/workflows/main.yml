@@ -28,5 +28,5 @@ jobs:
         # uses: mhausenblas/mkdocs-deploy-gh-pages@786c1c8c1c5ab4ceda14f1579cf417cbd6288825
         uses: mhausenblas/mkdocs-deploy-gh-pages@1.24
         env:
-          EXTRA_PACKAGES: mkdocs-bootswatch
-          # REQUIREMENTS: folder/requirements.txt
+          # EXTRA_PACKAGES: mkdocs-bootswatch
+          REQUIREMENTS: requirements.txt
