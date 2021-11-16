@@ -29,4 +29,5 @@ jobs:
         uses: mhausenblas/mkdocs-deploy-gh-pages@1.24
         env:
           # EXTRA_PACKAGES: mkdocs-bootswatch
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REQUIREMENTS: requirements.txt
