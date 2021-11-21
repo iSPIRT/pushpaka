@@ -4,8 +4,9 @@
 
 1. GT: Invite Gp Capt Narang
 2. MS: UAM v1.0
+1. SP: FAA UTM Conops V2
+1: SP/HB: Chinese ANSP perpsective paper review
 3. Other Literature (see [Bibliography](../bibliography.md))
-4. MS+AG: Indian UTM Policy review
 5. I05
     1. Detailed review
     2. What to beg/borrow/invent for Indian UTM Arch
