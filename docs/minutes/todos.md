@@ -2,11 +2,11 @@
 
 ## Technology Track
 
-1. GT: Invite Gp Capt Narang
-2. MS: UAM v1.0
-1. SP: FAA UTM Conops V2
-1: SP/HB: Chinese ANSP perpsective paper review
-3. Other Literature (see [Bibliography](../bibliography.md))
+1. MS: UAM v1.0
+2. SP/NM: Next round of Literature Review: esp. more technical material see [Bibliography](../bibliography.md)
+3. SP: FAA UTM Conops V2
+     1: SP/HB: Chinese ANSP perpsective paper review
+4. Other Literature (see [Bibliography](../bibliography.md))
 5. I05
     1. Detailed review
     2. What to beg/borrow/invent for Indian UTM Arch
