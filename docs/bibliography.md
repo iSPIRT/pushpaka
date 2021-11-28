@@ -1,16 +1,14 @@
-# Bibliography
+# Knowledge Base
 
 ## Books
 
 <a name="UTM-BAUM">`UTM-BAUM`</a> <a href="https://doi.org/10.1201/9781003124689" target="_blank">*Unmanned Aircraft Systems Traffic Management*</a>, Michael Scott Baum, 2021
 
-## Papers
+## Policy Papers
 
 <a name="USPACE-CONOPS-V1">`USPACE-CONOPS-V1`</a> [*U-space Concept of Operations Volume 1*](https://www.sesarju.eu/sites/default/files/documents/u-space/CORUS%20ConOps%20vol1.pdf)
 
 <a name="USPACE-CONOPS-V2">`USPACE-CONOPS-V2`</a> [*U-space Concept of Operations Volume 2*](https://www.sesarju.eu/sites/default/files/documents/u-space/CORUS%20ConOps%20vol2.pdf)
-
-<a name="LIU-CHN-ANSP">`LIU-CHN-ANSP`</a> [*Civil unmanned aircraft system operation in national airspace: A survey from Air Navigation Service Provider perspective*](https://doi.org/10.1016/j.cja.2020.08.033), Zhaoxuan LIU et al., [Chinese Journal of Aeronautics](https://www.sciencedirect.com/science/journal/10009361), 2021
 
 ## Standards
 
@@ -46,6 +44,8 @@
 ## Technical Reports
 
 ## Research Papers
+
+<a name="LIU-CHN-ANSP">`LIU-CHN-ANSP`</a> [*Civil unmanned aircraft system operation in national airspace: A survey from Air Navigation Service Provider perspective*](https://doi.org/10.1016/j.cja.2020.08.033), Zhaoxuan LIU et al., [Chinese Journal of Aeronautics](https://www.sciencedirect.com/science/journal/10009361), 2021
 
 ## Policy
 
