@@ -10,6 +10,10 @@
 
 <a name="USPACE-CONOPS-V2">`USPACE-CONOPS-V2`</a> [*U-space Concept of Operations Volume 2*](https://www.sesarju.eu/sites/default/files/documents/u-space/CORUS%20ConOps%20vol2.pdf)
 
+## Deep Dive Recordings
+
+- [23 Nov - India's UTM Policy Framework - Manish Bhatnagar](https://us02web.zoom.us/rec/share/deyS85YCVjeSdUN1YjlwaaQHtFWv-bQhcPvMsIhY6u1urci4GFaunZZ-aRlO3HdH.sB9qFwBPRdEj1qsQ) Passcode `FJn&1*un`
+
 ## Standards
 
 <a name="ICAO-Annex19">`ICAO-Annex19`</a> [*Annex 19 to the Convention on International Civil Aviation Safety Management*](https://caainternational.com/wp-content/uploads/2018/05/AN19_2ed-publication.pdf), Second Edition, July 2016
