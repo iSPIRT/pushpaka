@@ -6,6 +6,8 @@
 
 ## Policy Papers
 
+<a name="ICAO-UTM-Framework-V1">`ICAO UTM Guidance Framework V1`</a> [*ICAO UTM Guidance Document After DroneEnable Symposium Sep 17*](https://www.icao.int/safety/UA/Documents/UTM-Framework.en.alltext.pdf)
+
 <a name="USPACE-CONOPS-V1">`USPACE-CONOPS-V1`</a> [*U-space Concept of Operations Volume 1*](https://www.sesarju.eu/sites/default/files/documents/u-space/CORUS%20ConOps%20vol1.pdf)
 
 <a name="USPACE-CONOPS-V2">`USPACE-CONOPS-V2`</a> [*U-space Concept of Operations Volume 2*](https://www.sesarju.eu/sites/default/files/documents/u-space/CORUS%20ConOps%20vol2.pdf)
