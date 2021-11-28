@@ -13,6 +13,11 @@
 ## Deep Dive Recordings
 
 - [23 Nov - India's UTM Policy Framework - Manish Bhatnagar](https://us02web.zoom.us/rec/share/deyS85YCVjeSdUN1YjlwaaQHtFWv-bQhcPvMsIhY6u1urci4GFaunZZ-aRlO3HdH.sB9qFwBPRdEj1qsQ) Passcode `FJn&1*un`
+- [19 Nov - Survey from ANSPs providing UTM - Paper from Science Direct - George Thomas](https://us02web.zoom.us/rec/share/wnIYxM6mCW9EApmn9Sz5Qv2QwNU1LBQ9YGXX8aWQsG_D0lefB6i1P6JTUKksGUf_.i4oa5LGGVt3nRMS6) Passcode `%^nZ5%?J`
+- [16 Nov - ICAO Guidance on Human Performance - Amit Garg](https://us02web.zoom.us/rec/share/X1qeI4DihVMiCZn8LDnfoEWSoSBdQFS1wC1jQ4Bh7I4WGnaAUjwxAsQGjRHDeVFJ.ySQzCFkq8BbH_zEE) Passcode `R.l&d1e1`
+- [09 Nov - JARUS Guidance on UTM Session 1 - Sayandeep Pukyastha](https://us02web.zoom.us/rec/share/OxMUexQUIYh7Qz3aidT3_lqQWVftzysuLWl3uBPRJ-uMhumxSWu-j4frwxumHYKL.aqV4IpjpVsbu9tY1?startTime=1636470295000) Passcode `J1X?Q47@`
+- [14 Nov - JARUS Guidance on UTM Session 2-1 - Sayandeep Pukyastha](https://us02web.zoom.us/rec/share/E1iSoA1dbjamzxwck8Z3GIucUJyz1v_L7JumwlFN77st-a05kE4vqN5RJaV4ggQ.-qcARqrAIVP9BP7q?startTime=1636902528000) Passcode `8k&gZS1$`
+- [14 Nov - JARUS Guidance on UTM Session 2-2 - Sayandeep Pukyastha](https://us02web.zoom.us/rec/share/E1iSoA1dbjamzxwck8Z3GIucUJyz1v_L7JumwlFN77st-a05kE4vqN5RJaV4ggQ.-qcARqrAIVP9BP7q?startTime=1636905779000) Passcode `8k&gZS1$`
 
 ## Standards
 
