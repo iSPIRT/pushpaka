@@ -1,16 +1,33 @@
-# Bibliography
+# Knowledge Base
 
 ## Books
 
 <a name="UTM-BAUM">`UTM-BAUM`</a> <a href="https://doi.org/10.1201/9781003124689" target="_blank">*Unmanned Aircraft Systems Traffic Management*</a>, Michael Scott Baum, 2021
 
-## Papers
+## Policy Papers
 
-<a name="USPACE-CONOPS-V1">`USPACE-CONOPS-V1`</a> [*U-space Concept of Operations Volume 1*](https://www.sesarju.eu/sites/default/files/documents/u-space/CORUS%20ConOps%20vol1.pdf)
+<a name="ICAO-UTM-Framework-V1">`ICAO UTM Guidance Framework V1`</a> [*ICAO UTM Guidance Document After DroneEnable Symposium Sep 17*](https://www.icao.int/safety/UA/Documents/UTM-Framework.en.alltext.pdf)
 
-<a name="USPACE-CONOPS-V2">`USPACE-CONOPS-V2`</a> [*U-space Concept of Operations Volume 2*](https://www.sesarju.eu/sites/default/files/documents/u-space/CORUS%20ConOps%20vol2.pdf)
+<a name="ICAO-UTM-Framework-V2">`ICAO UTM Guidance Framework V2`</a> [*ICAO UTM Guidance Document After DroneEnable Symposium Jul 18*](https://www.icao.int/safety/UA/Documents/UTM-Framework%20Edition%202.pdf)
 
-<a name="LIU-CHN-ANSP">`LIU-CHN-ANSP`</a> [*Civil unmanned aircraft system operation in national airspace: A survey from Air Navigation Service Provider perspective*](https://doi.org/10.1016/j.cja.2020.08.033), Zhaoxuan LIU et al., [Chinese Journal of Aeronautics](https://www.sciencedirect.com/science/journal/10009361), 2021
+<a name="ICAO-UTM-Framework-V3">`ICAO UTM Guidance Framework V3`</a> [*ICAO UTM Guidance Document After DroneEnable Symposium Nov 19*](https://www.icao.int/safety/UA/Documents/UTM%20Framework%20Edition%203.pdf)
+
+<a name="USPACE-CONOPS-V1">`USPACE-CONOPS-V1`</a> [*U-space Concept of Operations Enhanced Overview March 2019*](https://www.sesarju.eu/sites/default/files/documents/u-space/CORUS%20ConOps%20vol1.pdf)
+
+<a name="USPACE-CONOPS-V2">`USPACE-CONOPS-V2`</a> [*U-space Concept of Operations Final Version October 2019*](https://www.sesarju.eu/sites/default/files/documents/u-space/CORUS%20ConOps%20vol2.pdf)
+
+<a name="FAA-CONOPS-V2">`FAA-CONOPS-V2`</a> [*FAA NextGen UTM Concept of Operations 2nd Edition March 2020*](https://www.faa.gov/uas/research_development/traffic_management/media/UTM_ConOps_v2.pdf)
+
+<a name="FAA-UAM-CONOPS-V1">`FAA-UAM-CONOPS-V1`</a> [*FAA NextGen UAM Concept of Operations 1st Edition June 2020*](https://nari.arc.nasa.gov/sites/default/files/attachments/UAM_ConOps_v1.0.pdf)
+
+## Deep Dive Recordings
+
+- [23 Nov - India's UTM Policy Framework - Manish Bhatnagar](https://us02web.zoom.us/rec/share/deyS85YCVjeSdUN1YjlwaaQHtFWv-bQhcPvMsIhY6u1urci4GFaunZZ-aRlO3HdH.sB9qFwBPRdEj1qsQ) Passcode `FJn&1*un`
+- [19 Nov - Survey from ANSPs providing UTM - Paper from Science Direct - George Thomas](https://us02web.zoom.us/rec/share/wnIYxM6mCW9EApmn9Sz5Qv2QwNU1LBQ9YGXX8aWQsG_D0lefB6i1P6JTUKksGUf_.i4oa5LGGVt3nRMS6) Passcode `%^nZ5%?J`
+- [16 Nov - ICAO Guidance on Human Performance - Amit Garg](https://us02web.zoom.us/rec/share/X1qeI4DihVMiCZn8LDnfoEWSoSBdQFS1wC1jQ4Bh7I4WGnaAUjwxAsQGjRHDeVFJ.ySQzCFkq8BbH_zEE) Passcode `R.l&d1e1`
+- [09 Nov - JARUS Guidance on UTM Session 1 - Sayandeep Pukyastha](https://us02web.zoom.us/rec/share/OxMUexQUIYh7Qz3aidT3_lqQWVftzysuLWl3uBPRJ-uMhumxSWu-j4frwxumHYKL.aqV4IpjpVsbu9tY1?startTime=1636470295000) Passcode `J1X?Q47@`
+- [14 Nov - JARUS Guidance on UTM Session 2-1 - Sayandeep Pukyastha](https://us02web.zoom.us/rec/share/E1iSoA1dbjamzxwck8Z3GIucUJyz1v_L7JumwlFN77st-a05kE4vqN5RJaV4ggQ.-qcARqrAIVP9BP7q?startTime=1636902528000) Passcode `8k&gZS1$`
+- [14 Nov - JARUS Guidance on UTM Session 2-2 - Sayandeep Pukyastha](https://us02web.zoom.us/rec/share/E1iSoA1dbjamzxwck8Z3GIucUJyz1v_L7JumwlFN77st-a05kE4vqN5RJaV4ggQ.-qcARqrAIVP9BP7q?startTime=1636905779000) Passcode `8k&gZS1$`
 
 ## Standards
 
@@ -46,6 +63,8 @@
 ## Technical Reports
 
 ## Research Papers
+
+<a name="LIU-CHN-ANSP">`LIU-CHN-ANSP`</a> [*Civil unmanned aircraft system operation in national airspace: A survey from Air Navigation Service Provider perspective*](https://doi.org/10.1016/j.cja.2020.08.033), Zhaoxuan LIU et al., [Chinese Journal of Aeronautics](https://www.sciencedirect.com/science/journal/10009361), 2021
 
 ## Policy
 
