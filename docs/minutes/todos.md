@@ -4,7 +4,7 @@
 
 1. MS: UAM v1.0
 2. SP/NM: Next round of Literature Review: esp. more technical material see [Bibliography](../bibliography.md)
-3. SP: FAA UTM Conops V2
+3. NM: FAA UTM Conops V2
      1: SP/HB: Chinese ANSP perpsective paper review
 4. Other Literature (see [Bibliography](../bibliography.md))
 5. I05
