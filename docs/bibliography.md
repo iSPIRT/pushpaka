@@ -16,6 +16,8 @@
 
 <a name="USPACE-CONOPS-V2">`USPACE-CONOPS-V2`</a> [*U-space Concept of Operations Final Version October 2019*](https://www.sesarju.eu/sites/default/files/documents/u-space/CORUS%20ConOps%20vol2.pdf)
 
+<a name="FAA-CONOPS-V1">`FAA-CONOPS-V1`</a> [*FAA NextGen UTM Concept of Operations 1st Edition May 2018*](https://www.nasa.gov/sites/default/files/atoms/files/2018-utm-conops-v1.0-508.pdf)
+
 <a name="FAA-CONOPS-V2">`FAA-CONOPS-V2`</a> [*FAA NextGen UTM Concept of Operations 2nd Edition March 2020*](https://www.faa.gov/uas/research_development/traffic_management/media/UTM_ConOps_v2.pdf)
 
 <a name="FAA-UAM-CONOPS-V1">`FAA-UAM-CONOPS-V1`</a> [*FAA NextGen UAM Concept of Operations 1st Edition June 2020*](https://nari.arc.nasa.gov/sites/default/files/attachments/UAM_ConOps_v1.0.pdf)
