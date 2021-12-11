@@ -20,7 +20,10 @@
 | 09 Nov 2021 | JARUS Guidance on UTM Session 1                           | Sayandeep Purkayasth | [<i class="fa fa-link"></i>](https://us02web.zoom.us/rec/share/OxMUexQUIYh7Qz3aidT3_lqQWVftzysuLWl3uBPRJ-uMhumxSWu-j4frwxumHYKL.aqV4IpjpVsbu9tY1?startTime=1636470295000) | `J1X?Q47@`        |
 | 14 Nov 2021 | JARUS Guidance on UTM Session 2-1                         | Sayandeep Purkayasth | [<i class="fa fa-link"></i>](https://us02web.zoom.us/rec/share/E1iSoA1dbjamzxwck8Z3GIucUJyz1v_L7JumwlFN77st-a05kE4vqN5RJaV4ggQ.-qcARqrAIVP9BP7q?startTime=1636902528000)  | `8k&gZS1$`        |
 | 14 Nov 2021 | JARUS Guidance on UTM Session 2-2                         | Sayandeep Purkayasth | [<i class="fa fa-link"></i>](https://us02web.zoom.us/rec/share/E1iSoA1dbjamzxwck8Z3GIucUJyz1v_L7JumwlFN77st-a05kE4vqN5RJaV4ggQ.-qcARqrAIVP9BP7q?startTime=1636905779000)  | `8k&gZS1$`        |
-| 03 Dec 2021 | FAA UTM Concept of Operations V1                          | Siddharth Ravikumar  | [<i class="fa fa-link"></i>](https://us02web.zoom.us/rec/share/vYpwSlumauGaxOdsdzP6fgn8C7a8de9VyuXK2BCt10rb6YBUMgzvflqfAM2U6L4T.KpKWM9QciGmYhSXX)                         | `qJ&nH@88`        |
+| 03 Dec 2021 | FAA UTM Concept of Operations V1  Session 1               | Siddharth Ravikumar  | [<i class="fa fa-link"></i>](https://us02web.zoom.us/rec/share/vYpwSlumauGaxOdsdzP6fgn8C7a8de9VyuXK2BCt10rb6YBUMgzvflqfAM2U6L4T.KpKWM9QciGmYhSXX)                         | `qJ&nH@88`        |
+| 05 Dec 2021 | FAA UTM Concept of Operations V1  Session 2               | Siddharth Ravikumar  | [<i class="fa fa-link"></i>](https://us02web.zoom.us/rec/share/6FpWd9KU0Lfn84GI5ean13oJzM8-HvnTGZKVJDdVcOJQLSstHIUf58eGF_pp27IC.YliKnZz_myUltZlc?startTime=1638718199000) | `t=3+*GWx`        |
+| 10 Dec 2021 | Digital SkyBackground                                     | Tarun Bhojwani       | [<i class="fa fa-link"></i>](https://us02web.zoom.us/rec/share/mRYlBmzWoEqx4nCH-sLToyI1jPheZvWlM43rrDHIEJ5M-nyHcfDOn0t_i9xSeKWU.DPttsrVuS4vJDWTA?startTime=1639148856000)                       | `Y6zu33I&`        |
+
 
 ## TODOs
 
