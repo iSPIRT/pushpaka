@@ -60,6 +60,12 @@
 
 <a name="LIU-CHN-ANSP">`LIU-CHN-ANSP`</a> [*Civil unmanned aircraft system operation in national airspace: A survey from Air Navigation Service Provider perspective*](https://doi.org/10.1016/j.cja.2020.08.033), Zhaoxuan LIU et al., [Chinese Journal of Aeronautics](https://www.sciencedirect.com/science/journal/10009361), 2021
 
+<a href="https://arxiv.org/abs/2110.13784" target="_blank" name="SEUKEN-2021">`SEUKEN-2021`</a> Market Design for Drone Traffic Management, *Sven Seuken, Paul Friedrich, Ludwig Dierks*, forthcoming at the 36th AAAI Conference on Artificial Intelligence, Vancouver, Canada, 2022
+
+## Videos
+
+<a href="https://www.icao.tv/global-symposium-on-the-implementation-of-innovation-in-aviation/season:1/videos/economics-aspects-of-innovation-in-aviation-bangkok" target="_blank" name="NAKADAI-2020">`NAKADAI-2020`</a> Automated Negotiation in Aviation, *Shinji Nakadai*, ICAO Global Innovation Symposium, 10 Dec 2020; Video: Starts 50min, duration 10 mins
+
 ## Policy
 
 ### Discussion Papers
@@ -71,3 +77,4 @@
 ## Presentations
 
 <a name="NASA-UTM-1">`NASA-UTM-1`</a> [*Unmanned Aircraft System Traffic Management (UTM) Project*](https://ntrs.nasa.gov/api/citations/20180002542/downloads/20180002542.pdf), R.D. Johnson, UTM Project Manager, NASA, April 2018
+
