@@ -9,7 +9,7 @@ Maintains details about the [Pushpaka Working Group](http://sayandeep-ai.github.
 
 ## Deployment
 
-To GitHub pages:
+Currently GitHub Actions deploys the `dev` branch automagickally, but you can always manually run
 
 ```
 mkdocs gh-deploy
