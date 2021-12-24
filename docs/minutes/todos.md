@@ -2,6 +2,8 @@
 
 ## Technology Track
 
+1. SR: FAA ConOps v1: Part 3
+2. NM: FAA ConOps v2
 1. MS: UAM v1.0
 2. SP/NM: Next round of Literature Review: esp. more technical material see [Bibliography](../bibliography.md)
 3. NM: FAA UTM Conops V2
