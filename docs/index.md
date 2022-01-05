@@ -6,13 +6,13 @@ We are a group of aviation enthusiasts interested in effective policy formulatio
 
 ### Charter
 
-Civil Aviation Authorities worldwide have started rule making for unmanned aviation. There being several aspects to the field, we hope to take a holistic and informed approach to making recommendations to policy makers on such efforts in India. See also our [work items](./work-items/), [reference documents](./ref/index.md) and [plan](./work-items/#plan).
+Civil Aviation Authorities worldwide have started rule making for unmanned aviation. There being several aspects to the field, we hope to take a holistic and informed approach to making recommendations to policy makers on such efforts in India. 
 
-####	Mission
-
-####	Vision
-
-####	Scope
+### Quick Access
+ - [Work Items](./work-items/) 
+ - [Reference Documents](./ref/index.md)
+ - [Bibliography](./bibliography)
+ - [Plan](./work-items/#plan)
 
 ## Membership
 
