@@ -9,7 +9,7 @@
 | `I05` | UTM Concept of Operations                       |                                   | In progress           | [<i class="fa fa-link"></i>](./i05.md)                                                                                                                                 |
 | `I06` | UTM Technical Standards                         |                                   |                       | [<i class="fa fa-link"></i>](./i06.md)                                                                                                                                 |
 | `I07` | Feedback Sessions 1-2: Concept of Operations V1 |                                   | In progress           | [<i class="fa fa-link"></i>](./i07.md)                                                                                                                                 |
-| `I08` | Pushpaka : Empowering the Drone Ecosystem |                               | Presented in the 49th iSpirt Volunteers' Meet | [<i class="fa fa-link"></i>](./i07.md) <a href="https://docs.google.com/presentation/d/10lNIf8cIzqOyzQ_SudyEt_l6spWMasMTxX5wOb3Cb30/edit?usp=sharing" target="_blank"><i class="fa fa-link"></i></a>
+| `I08` | Pushpaka : Empowering the Drone Ecosystem |                               | Presented in the 49th iSpirt Volunteers' Meet | <a href="https://docs.google.com/presentation/d/10lNIf8cIzqOyzQ_SudyEt_l6spWMasMTxX5wOb3Cb30/edit?usp=sharing" target="_blank"><i class="fa fa-link"></i></a>
 
 ## Plan
 
