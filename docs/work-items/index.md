@@ -9,7 +9,9 @@
 | `I05` | UTM Policy                            |                                   | In progress           | [<i class="fa fa-link"></i>](./i05.md)                                                                                                                                 |
 | `I06` | UTM Technical Standards               |                                   |                       | [<i class="fa fa-link"></i>](./i06.md)                                                                                                                                 |
 | `I07` | Concept of Operations Version 1 Video |                                   | In progress           | [<i class="fa fa-link"></i>](./i07.md)                                                                                                                                 |
+| `I08` | Pushpaka : Empowering the Drone Ecosystem |                               | Presented in the 49th iSpirt Volunteers' Meet | [<i class="fa fa-link"></i>](./i07.md) <a href="https://docs.google.com/presentation/d/10lNIf8cIzqOyzQ_SudyEt_l6spWMasMTxX5wOb3Cb30/edit?usp=sharing" target="_blank"><i class="fa fa-link"></i></a>
 
+|
 ## Plan
 
 ### 2021 
