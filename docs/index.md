@@ -2,7 +2,7 @@
 
 ## About
 
-We are a group of aviation enthusiasts interested in effective policy formulation for the drone ecosystem in India.
+We are a group of aviation enthusiasts interested in effective drone regulation and standards in India. We're working towards a deeper synchronisation between industry and regulator, while setting up conversations with more types of stakeholders.  Our approach uses *Concept of Operations* *(ConOps)* as a consensus-building tool to enhance market capacity over time. This approach would boost operations and clear the road for Unmanned Traffic Management standards, a crucial building block for the drone ecosystem.
 
 ### Charter
 
@@ -18,13 +18,13 @@ Civil Aviation Authorities worldwide have started rule making for unmanned aviat
 
 ### Core
 
-| Name                 | Email                                                                                        | Role | Affiliation                      | Location |
-| -------------------- | ------------------------------------------------------------                                 | ---- | -------------------------------- | -------- |
-| Siddharth Shetty     | [<i class="fa fa-envelope-o"></i>](mailto:siddharth.shetty@ispirt.in)                        |      | iSpirt                           | 🇮🇳     |
-| Siddharth Ravikumar  | [<i class="fa fa-envelope-o"></i>](mailto:ravikumar.siddharth@gmail.com)                     |      | iSpirt                           | 🇨🇦     |
-| Amit Garg            | [<i class="fa fa-envelope-o"></i>](mailto:studies.amit@gmail.com)                            |      | iSpirt                           | 🇮🇳     |
-| George Thomas        | [<i class="fa fa-envelope-o"></i>](mailto:georj13@gmail.com)                                 |      | iSpirt                           | 🇮🇳     |
-| Hrishikesh Ballal    | <a href="https://about.openskies.sh/#contact" target="_blank"><i class="fa fa-link"></i></a> |      | Openskies Aerial Technology Ltd. | 🇮🇪     |
-| Sayandeep Purkayasth | [<i class="fa fa-envelope-o"></i>](mailto:sayandeep@deepcyan.ai)                             |      | Deepcyan Software                | 🇮🇳     |
-| Manish Shukla        | [<i class="fa fa-envelope-o"></i>](mailto:manish.shukla393@gmail.com)                        |      | iSpirt                           | 🇮🇳     |
-| Nihal Mohan          | [<i class="fa fa-envelope-o"></i>](mailto:nihalm@skylarkdrones.com)                          |      | Skylark Drones                   | 🇮🇳     |
+| Name                 | Email                                                                                        | Location |
+| -------------------- | ------------------------------------------------------------                                 | -------- |
+| Siddharth Shetty     | [<i class="fa fa-envelope-o"></i>](mailto:siddharth.shetty@ispirt.in)                        | 🇮🇳     |
+| Siddharth Ravikumar  | [<i class="fa fa-envelope-o"></i>](mailto:ravikumar.siddharth@gmail.com)                     | 🇨🇦     |
+| Amit Garg            | [<i class="fa fa-envelope-o"></i>](mailto:studies.amit@gmail.com)                            | 🇮🇳     |
+| George Thomas        | [<i class="fa fa-envelope-o"></i>](mailto:georj13@gmail.com)                                 | 🇮🇳     |
+| Hrishikesh Ballal    | <a href="https://about.openskies.sh/#contact" target="_blank"><i class="fa fa-link"></i></a> | 🇮🇪     |
+| Sayandeep Purkayasth | [<i class="fa fa-envelope-o"></i>](mailto:sayandeep@deepcyan.ai)                             | 🇮🇳     |
+| Manish Shukla        | [<i class="fa fa-envelope-o"></i>](mailto:manish.shukla393@gmail.com)                        | 🇮🇳     |
+| Nihal Mohan          | [<i class="fa fa-envelope-o"></i>](mailto:nihalm@skylarkdrones.com)                          | 🇮🇳     |
