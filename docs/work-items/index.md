@@ -6,9 +6,10 @@
 | `I02` | Commentary on The Draft Rules                   | Feedback to MoCA Draft Rules 2021 | Published Aug 7, 2021 | <a href="https://pn.ispirt.in/ispirt-response-drone-rules-2021/" target="_blank"><i class="fa fa-link"></i></i></a>                                                    |
 | `I03` | The Draft Rules Change Requests                 |                                   | Aborted               |                                                                                                                                                                        |
 | `I04` | Commentary on the Drone Rules 2021              |                                   | Aborted               |                                                                                                                                                                        |
-| `I05` | UTM Concept of Operations                       |                                   | In progress           | [<i class="fa fa-link"></i>](./i05.md)                                                                                                                                 |
+| `I05` | UTM Concept of Operations                       |                                   | In progress           | [<i class="fa fa-link"></i>](./i05.md)<a href="https://docs.google.com/document/d/1SNMHE6yRIIcIYDxjYteCwgF30vEnTFvF/edit?usp=sharing&ouid=114258318608163623850&rtpof=true&sd=true"_blank"><i class="fa fa-link"></i></a> |                                                                                                                                 |
 | `I06` | UTM Technical Standards                         |                                   |                       | [<i class="fa fa-link"></i>](./i06.md)                                                                                                                                 |
 | `I07` | Feedback Sessions 1-2: Concept of Operations V1 |                                   | In progress           | [<i class="fa fa-link"></i>](./i07.md)                                                                                                                                 |
+| `I08` | Pushpaka : Empowering the Drone Ecosystem |                               | Presented in the 49th iSpirt Volunteers' Meet | <a href="https://docs.google.com/presentation/d/10lNIf8cIzqOyzQ_SudyEt_l6spWMasMTxX5wOb3Cb30/edit?usp=sharing" target="_blank"><i class="fa fa-link"></i></a>
 
 ## Plan
 
@@ -24,6 +25,6 @@
 
 | Month      | Jan   | F     | M  | A  | M  | J  | Jul | A  | S  | O  | N  | D  |
 | --         | ---   | --    | -- | -- | -- | -- | --  | -- | -- | -- | -- | -- |
-| Work Items | `I06` | `I06` |    |    |    |    |     |    |    |    |    |    |
+| Work Items | `I05` | `I06` |    |    |    |    |     |    |    |    |    |    |
+|            | `I08` |       |    |    |    |    |     |    |    |    |    |    |
 |            |       |       |    |    |    |    |     |    |    |    |    |    |
-
