@@ -1,0 +1,36 @@
+@startuml
+!include ../common.puml
+
+actor "Law Enforcement User" as leuser
+actor "FlightAuthorisation Administrator" as admin
+entity FlightAuthorisation
+actor "UAS Owner" as owner
+
+alt Law Enforcement TRZ
+leuser -> FlightAuthorisation : Create TRZ Request
+FlightAuthorisation -> leuser : Create TRZ Response
+else
+admin -> FlightAuthorisation : Create TRZ Request
+FlightAuthorisation -> admin : Create TRZ Response
+end
+
+
+
+entity "applicable UTMSPs"
+FlightAuthorisation -> owner : UAS Kill Notification (via SMS)
+FlightAuthorisation -> "UTMSP" : UAS Kill Notification
+actor Pilot
+FlightAuthorisation -> "Pilot" : UAS Kill Notification
+
+entity GCS
+alt owner relays
+owner --> Pilot : UAS Kill Instruction
+Pilot --> UAS : UAS Kill Instruction
+else UTMSP relays
+"UTMSP" -> UAS : UAS Kill Instruction (for internet-enabled drones)
+else UTMSP relays via GCS
+"UTMSP" --> GCS : UAS GCS Kill Instruction (for internet enabled GCS)
+GCS --> UAS : UAS Kill Instruction (via RF)
+end
+
+@enduml

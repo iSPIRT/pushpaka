@@ -1,0 +1,27 @@
+@startuml
+!include ../common.puml
+
+Manufacturer -> Registry : UasType Create Registration Request
+Registry -> Manufacturer : UasType Create Registration Response
+
+actor Administrator
+
+loop till application approved
+
+loop while application needs changes
+
+Manufacturer -> Registry : UasType Update Registration Request
+Registry -> Manufacturer : UasType Update Registration Response
+
+end
+
+Manufacturer -> Registry : UasType Submit Registration Request
+Registry -> Manufacturer : UasType Submit Registration Response
+
+Registry -> Administrator : Application Approval Request
+Administrator -> Registry : Application Approval Response
+Registry -> Manufacturer : Application Approval Status Notification
+
+end
+
+@enduml

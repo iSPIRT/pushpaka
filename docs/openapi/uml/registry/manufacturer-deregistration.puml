@@ -1,0 +1,11 @@
+@startuml
+!include ../common.puml
+
+Manufacturer -> Registry : Deregistration Request
+Registry -> Manufacturer : Deregistration Response
+actor Administrator
+Registry -> Administrator : Application Approval Request
+Administrator -> Registry : Application Approval Response
+Registry -> Manufacturer : Application Approval Status Notification
+
+@enduml
