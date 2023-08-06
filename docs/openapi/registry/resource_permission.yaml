@@ -1,0 +1,66 @@
+schema: |-
+  definition user {}
+
+  definition caa {
+    relation caa_administrator: user
+
+    permission approve_uastype_registraton = caa_administrator
+    permission discontinue_uastype = caa_administrator
+    permission decommision_uas = caa_administrator
+    permission read_all_uas = caa_administrator
+    permission read_all_uastype = caa_administrator
+
+  }
+
+  definition manufacturer {
+    relation administrator : user
+
+    permission read_all_uas = administrator
+    permission read_all_uastype = administrator
+    permission commission_uas = administrator
+    permission decommision_uas = administrator
+    permission register_uastype = administrator
+    permission discontinue_uastype = administrator
+
+  }
+
+
+  definition resourceuas {
+    relation uasmanufacturer: manufacturer
+    relation authority : caa
+
+    permission read = uasmanufacturer->read_all_uas + authority->read_all_uas
+    permission commission = uasmanufacturer->commission_uas
+    permission decommision = uasmanufacturer->decommision_uas + authority->decommision_uas
+
+  }
+
+  definition resourceuastype {
+    relation uastypemanufacturer: manufacturer
+    relation authority : caa
+
+    permission read = uastypemanufacturer->read_all_uastype + authority->read_all_uastype
+    permission register = uastypemanufacturer->register_uastype
+    permission discontinue = authority->discontinue_uastype +  uastypemanufacturer->discontinue_uastype
+    permission approve_registration = authority->approve_uastype_registraton
+
+  }
+relationships: |-
+  caa:dgca#caa_administrator@user:1
+  manufacturer:man1#administrator@user:2
+  manufacturer:man2#administrator@user:3
+  resourceuas:uas1#authority@caa:dgca
+  resourceuas:uas2#authority@caa:dgca
+  resourceuas:uas1#uasmanufacturer@manufacturer:man1
+  resourceuas:uas2#uasmanufacturer@manufacturer:man2
+assertions:
+  assertTrue:
+    - resourceuas:uas1#read@user:1
+    - resourceuas:uas1#read@user:2
+    - resourceuas:uas2#read@user:3
+  assertFalse:
+    - resourceuas:uas1#read@user:3
+    - resourceuas:uas2#read@user:2
+    - resourceuas:uas1#decommision@user:3
+    - resourceuas:uas2#decommision@user:2
+validation: {}
