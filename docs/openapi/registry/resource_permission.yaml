@@ -7,9 +7,11 @@ schema: |-
     permission approve_uastype_registraton = caa_administrator
     permission discontinue_uastype = caa_administrator
     permission decommision_uas = caa_administrator
+    permission approve_operator = caa_administrator
     permission read_all_uas = caa_administrator
     permission read_all_uastype = caa_administrator
-
+    permission read_all_operator = caa_administrator
+    
   }
 
   definition manufacturer {
@@ -21,18 +23,31 @@ schema: |-
     permission decommision_uas = administrator
     permission register_uastype = administrator
     permission discontinue_uastype = administrator
+    
 
   }
 
+  definition operator {
+    relation authority : caa
+    relation administrator : user
+    relation pilot : user
+
+    permission read = authority->read_all_operator
+    permission approve = authority->approve_operator
+    permission own_uas = administrator
+    permission decommision_uas = administrator
+
+  }
 
   definition resourceuas {
     relation uasmanufacturer: manufacturer
     relation authority : caa
+    relation operator : operator
 
     permission read = uasmanufacturer->read_all_uas + authority->read_all_uas
     permission commission = uasmanufacturer->commission_uas
-    permission decommision = uasmanufacturer->decommision_uas + authority->decommision_uas
-
+    permission decommision = uasmanufacturer->decommision_uas + authority->decommision_uas + operator->decommision_uas
+    permission owned_by = operator->own_uas
   }
 
   definition resourceuastype {
@@ -44,6 +59,30 @@ schema: |-
     permission discontinue = authority->discontinue_uastype +  uastypemanufacturer->discontinue_uastype
     permission approve_registration = authority->approve_uastype_registraton
 
+  }
+
+  definition resourceflightplan {
+    relation pilot: pilot
+
+    permission create_flightplan = pilot
+    permission update_flightplan = pilot
+    permission delete_flightplan = pilot
+    permission file_flightplan = pilot
+    permission execute_flightplan = pilot
+
+  }
+
+  definition resourceflightlog {
+    relation pilot: pilot
+
+    permission submit_flightlog = pilot
+
+  }
+
+  definition resourceincidentreport {
+    relation pilot: pilot
+
+    permission submit_incidentreport = pilot
   }
 relationships: |-
   caa:dgca#caa_administrator@user:1
