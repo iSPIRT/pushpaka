@@ -6,11 +6,13 @@ schema: |-
 
     permission approve_uastype_registraton = caa_administrator
     permission discontinue_uastype = caa_administrator
-    permission decommision_uas = caa_administrator
-    permission approve_operator = caa_administrator
-    permission read_all_uas = caa_administrator
     permission read_all_uastype = caa_administrator
+    
+    permission decommision_uas = caa_administrator
+    permission read_all_uas = caa_administrator
+    
     permission read_all_operator = caa_administrator
+    permission approve_operator = caa_administrator
     
   }
 
@@ -34,9 +36,19 @@ schema: |-
 
     permission read = authority->read_all_operator
     permission approve = authority->approve_operator
+
     permission own_uas = administrator
     permission decommision_uas = administrator
+    
+    permission create_flightplan = pilot
+    permission update_flightplan = pilot
+    permission delete_flightplan = pilot
+    permission file_flightplan = pilot
+    permission execute_flightplan = pilot
+    
+    permission submit_flightlog = pilot
 
+    permission submit_incidentreport = pilot
   }
 
   definition resourceuas {
@@ -62,27 +74,27 @@ schema: |-
   }
 
   definition resourceflightplan {
-    relation pilot: pilot
+    relation operator: operator
 
-    permission create_flightplan = pilot
-    permission update_flightplan = pilot
-    permission delete_flightplan = pilot
-    permission file_flightplan = pilot
-    permission execute_flightplan = pilot
+    permission create_flightplan = operator->create_flightplan
+    permission update_flightplan = operator->update_flightplan
+    permission delete_flightplan = operator->delete_flightplan
+    permission file_flightplan = operator->file_flightplan
+    permission execute_flightplan = operator->execute_flightplan
 
   }
 
   definition resourceflightlog {
-    relation pilot: pilot
+    relation operator: operator
 
-    permission submit_flightlog = pilot
+    permission submit_flightlog = operator->submit_flightlog
 
   }
 
   definition resourceincidentreport {
-    relation pilot: pilot
+   relation operator: operator
 
-    permission submit_incidentreport = pilot
+    permission submit_incidentreport = operator->submit_incidentreport
   }
 relationships: |-
   caa:dgca#caa_administrator@user:1
