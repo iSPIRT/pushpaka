@@ -1,6 +1,8 @@
 schema: |-
+  /** user represents a user */
   definition user {}
 
+  /** pilot group that can operate flight operations */
   definition pilot {
   	relation member: user
   	permission flight_operations_admin =member
@@ -9,11 +11,13 @@ schema: |-
   	permission submit_flightlog = flight_operations_admin
   }
 
+  /** a regulator in permission architecture . This can only be one */
   definition caa {
   	relation administrator: user
   	permission super_admin = administrator
   }
 
+  /** producer of uas and uas types */
   definition manufacturer {
   	relation administrator: user
   	permission super_admin = administrator
@@ -21,6 +25,7 @@ schema: |-
   	permission register_uastype = super_admin
   }
 
+  /** operator who can operate multiple uas */
   definition operator {
   	relation administrator: user
   	relation regulator: caa
@@ -31,6 +36,7 @@ schema: |-
   	permission approve_operator = regulator->super_admin
   }
 
+  /** defines relationships of uas with regulator , manufacturer and who can own it */
   definition uas {
   	relation manufacturer: manufacturer
   	relation regulator: caa
@@ -39,6 +45,7 @@ schema: |-
   	permission decommision_uas = manufacturer->super_admin + regulator->super_admin + owner->super_admin
   }
 
+  /** defines relationships of uastype with regulator and manufacturer  */
   definition uastype {
   	relation manufacturer: manufacturer
   	relation regulator: caa
@@ -47,6 +54,7 @@ schema: |-
   	permission approve_uastype = regulator->super_admin
   }
 
+  /** flightplan resource */
   definition flightplan {
   	relation owner: pilot#member | operator#pilot
   	permission update_flightplan = owner->flight_operations_admin
@@ -54,11 +62,13 @@ schema: |-
   	permission execute_flightplan = owner->flight_operations_admin
   }
 
+  /** flightlog resource */
   definition flightlog {
   	relation owner: pilot#member | operator#pilot
   	permission submit_flightlog = owner->flight_operations_admin
   }
 
+  /** incidentreport resource */
   definition incidentreport {
   	relation owner: pilot#member | operator#pilot
   	permission submit_incidentreport = owner->flight_operations_admin
