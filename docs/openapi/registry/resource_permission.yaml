@@ -1,26 +1,33 @@
 schema: |-
-  definition employee {}
+  definition user {}
 
-  definition pilot {}
+  definition pilot {
+  	relation member: user
+  	permission flight_operations_admin =member
+  	permission file_flightplan = flight_operations_admin
+  	permission submit_incidentreport = flight_operations_admin
+  	permission submit_flightlog = flight_operations_admin
+  }
 
   definition caa {
-  	relation administrator: employee
+  	relation administrator: user
   	permission super_admin = administrator
   }
 
   definition manufacturer {
-  	relation administrator: employee
+  	relation administrator: user
   	permission super_admin = administrator
-  	permission create_uas = super_admin
-  	permission create_uastype = super_admin
+  	permission commission_uas = super_admin
+  	permission register_uastype = super_admin
   }
 
   definition operator {
-  	relation administrator: employee
+  	relation administrator: user
   	relation regulator: caa
-  	relation pilot: pilot
+  	relation pilot: pilot#member
+
+  	permission flight_operations_admin =pilot->flight_operations_admin
   	permission super_admin = administrator
-  	permission read_operator = regulator->super_admin
   	permission approve_operator = regulator->super_admin
   }
 
@@ -29,7 +36,6 @@ schema: |-
   	relation regulator: caa
   	relation owner: operator
   	permission read_uas = manufacturer->super_admin + regulator->super_admin + owner->super_admin
-  	permission commission_uas = manufacturer->super_admin
   	permission decommision_uas = manufacturer->super_admin + regulator->super_admin + owner->super_admin
   }
 
@@ -37,28 +43,25 @@ schema: |-
   	relation manufacturer: manufacturer
   	relation regulator: caa
   	permission read_uastype = manufacturer->super_admin + regulator->super_admin
-  	permission register_uastype = manufacturer->super_admin
   	permission discontinue_uastype = manufacturer->super_admin + regulator->super_admin
   	permission approve_uastype = regulator->super_admin
   }
 
   definition flightplan {
-  	relation owner: pilot | operator
-  	permission create_flightplan = owner + owner->super_admin
-  	permission update_flightplan = owner + owner->super_admin
-  	permission delete_flightplan = owner + owner->super_admin
-  	permission file_flightplan = owner + owner->super_admin
-  	permission execute_flightplan = owner + owner->super_admin
+  	relation owner: pilot#member | operator#pilot
+  	permission update_flightplan = owner->flight_operations_admin
+  	permission delete_flightplan = owner->flight_operations_admin
+  	permission execute_flightplan = owner->flight_operations_admin
   }
 
   definition flightlog {
-  	relation owner: pilot | operator
-  	permission submit_flightlog = owner + owner->super_admin
+  	relation owner: pilot#member | operator#pilot
+  	permission submit_flightlog = owner->flight_operations_admin
   }
 
   definition incidentreport {
-  	relation owner: pilot | operator
-  	permission submit_incidentreport = owner + owner->super_admin
+  	relation owner: pilot#member | operator#pilot
+  	permission submit_incidentreport = owner->flight_operations_admin
   }
 relationships: ""
 assertions: null
