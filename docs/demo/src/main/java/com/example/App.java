@@ -14,280 +14,197 @@ import com.authzed.grpcutil.BearerToken;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
+
 public class App 
 {
-    public static void main( String[] args )
-    {
-        ManagedChannel channel = ManagedChannelBuilder
-                .forTarget("localhost:50051")
-                .usePlaintext()
+        public static String manageObjectRelations(PermissionsServiceGrpc.PermissionsServiceBlockingStub paramPermissionService , 
+        String paramRelationType ,  
+        String paramOperationType , 
+        String paramObjectType , 
+        String paramObjectId ,String paramSubjectType,String paramSubjectId){
+                 // Write relationship
+                WriteRelationshipsRequest relRequest = PermissionService.WriteRelationshipsRequest
+                .newBuilder()
+                .addUpdates(
+                        RelationshipUpdate.newBuilder()
+                        .setOperation(RelationshipUpdate.Operation.OPERATION_TOUCH)
+                        .setRelationship(
+                                Relationship.newBuilder()
+                                .setResource(
+                                        ObjectReference.newBuilder()
+                                        .setObjectType(paramObjectType)
+                                        .setObjectId(paramObjectId)
+                                .build())
+                                .setRelation(paramRelationType)
+                                .setSubject(
+                                        SubjectReference.newBuilder()
+                                        .setObject(
+                                        ObjectReference.newBuilder()
+                                        .setObjectType(paramSubjectType)
+                                        .setObjectId(paramSubjectId)
+                                        .build())
+                                .build())
+                        .build())
+                .build())
                 .build();
 
-        BearerToken bearerToken = new BearerToken("somerandomkeyhere");
+                WriteRelationshipsResponse relResponse = paramPermissionService.writeRelationships(relRequest);
+                String tokenVal = relResponse.getWrittenAt().getToken();
+        
+                return tokenVal;
+        }    
+        
+        public static boolean checkObjectPermission(PermissionsServiceGrpc.PermissionsServiceBlockingStub paramPermissionService,
+        String paramPermissionType ,  
+        String paramEntityType , 
+        String paramEntityId , String paramObjectType, String paramSubjectId){
 
-        PermissionsServiceGrpc.PermissionsServiceBlockingStub permissionsService = PermissionsServiceGrpc
-        .newBlockingStub(channel)
-        .withCallCredentials(bearerToken);
+                boolean result = false;
 
-        // Write relationship
-        WriteRelationshipsRequest relRequest = PermissionService.WriteRelationshipsRequest
-        .newBuilder()
-        .addUpdates(
-                RelationshipUpdate.newBuilder()
-                .setOperation(RelationshipUpdate.Operation.OPERATION_TOUCH)
-                .setRelationship(
-                        Relationship.newBuilder()
-                        .setResource(
-                                ObjectReference.newBuilder()
-                                .setObjectType("caa")
-                                .setObjectId("DGCA")
-                        .build())
-                        .setRelation("administrator")
-                        .setSubject(
-                                SubjectReference.newBuilder()
-                                .setObject(
-                                ObjectReference.newBuilder()
-                                .setObjectType("user")
-                                .setObjectId("dgca_user")
+                PermissionService.CheckPermissionRequest request = PermissionService.CheckPermissionRequest.newBuilder()
+                .setConsistency(
+                        PermissionService.Consistency.newBuilder()
+                                .setMinimizeLatency(true)
                                 .build())
-                        .build())
-                .build())
-        .build())
-        .build();
-
-        WriteRelationshipsResponse relResponse = permissionsService.writeRelationships(relRequest);
-        String tokenVal = relResponse.getWrittenAt().getToken();
-        System.out.println(tokenVal);
-
-        // Write relationship
-        relRequest = PermissionService.WriteRelationshipsRequest
-        .newBuilder()
-        .addUpdates(
-                RelationshipUpdate.newBuilder()
-                .setOperation(RelationshipUpdate.Operation.OPERATION_TOUCH)
-                .setRelationship(
-                        Relationship.newBuilder()
-                        .setResource(
-                                ObjectReference.newBuilder()
-                                .setObjectType("manufacturer")
-                                .setObjectId("man_1")
-                        .build())
-                        .setRelation("administrator")
-                        .setSubject(
-                                SubjectReference.newBuilder()
-                                .setObject(
-                                ObjectReference.newBuilder()
-                                .setObjectType("user")
-                                .setObjectId("man_1_user")
+                .setResource(
+                        Core.ObjectReference.newBuilder()
+                                .setObjectType(paramEntityType)
+                                .setObjectId(paramEntityId)
                                 .build())
-                        .build())
-                .build())
-        .build())
-        .build();
-
-        relResponse = permissionsService.writeRelationships(relRequest);
-        tokenVal = relResponse.getWrittenAt().getToken();
-        System.out.println(tokenVal);
-
-        // Write relationship
-        relRequest = PermissionService.WriteRelationshipsRequest
-        .newBuilder()
-        .addUpdates(
-                RelationshipUpdate.newBuilder()
-                .setOperation(RelationshipUpdate.Operation.OPERATION_TOUCH)
-                .setRelationship(
-                        Relationship.newBuilder()
-                        .setResource(
-                                ObjectReference.newBuilder()
-                                .setObjectType("uas")
-                                .setObjectId("uas_1")
-                        .build())
-                        .setRelation("regulator")
-                        .setSubject(
-                                SubjectReference.newBuilder()
+                .setSubject(
+                        Core.SubjectReference.newBuilder()
                                 .setObject(
-                                ObjectReference.newBuilder()
-                                .setObjectType("caa")
-                                .setObjectId("DGCA")
+                                        Core.ObjectReference.newBuilder()
+                                                .setObjectType(paramObjectType)
+                                                .setObjectId(paramSubjectId)
+                                                .build())
                                 .build())
-                        .build())
-                .build())
-        .build())
-        .build();
+                .setPermission(paramPermissionType)
+                .build();
 
-        relResponse = permissionsService.writeRelationships(relRequest);
-        tokenVal = relResponse.getWrittenAt().getToken();
-        System.out.println(tokenVal);
+                try {
+                        PermissionService.CheckPermissionResponse response = paramPermissionService.checkPermission(request);
+                        System.out.println("result: " + response.getPermissionship().getValueDescriptor().getName());
+                        return true;
+                } catch (Exception e) {
+                       System.out.println("Failed to check permission: " + e.getMessage());
+                }
 
+                return false;
+               
+        }    
+        
+        public static void main( String[] args ) 
+        {
+                
+                ManagedChannel channel = ManagedChannelBuilder
+                        .forTarget("localhost:50051")
+                        .usePlaintext()
+                        .build();
 
-        // Write relationship
-        relRequest = PermissionService.WriteRelationshipsRequest
-        .newBuilder()
-        .addUpdates(
-                RelationshipUpdate.newBuilder()
-                .setOperation(RelationshipUpdate.Operation.OPERATION_TOUCH)
-                .setRelationship(
-                        Relationship.newBuilder()
-                        .setResource(
-                                ObjectReference.newBuilder()
-                                .setObjectType("uas")
-                                .setObjectId("uas_1")
-                        .build())
-                        .setRelation("manufacturer")
-                        .setSubject(
-                                SubjectReference.newBuilder()
-                                .setObject(
-                                ObjectReference.newBuilder()
-                                .setObjectType("manufacturer")
-                                .setObjectId("man_1")
-                                .build())
-                        .build())
-                .build())
-        .build())
-        .build();
+                BearerToken bearerToken = new BearerToken("somerandomkeyhere");
 
-        relResponse = permissionsService.writeRelationships(relRequest);
-        tokenVal = relResponse.getWrittenAt().getToken();
-        System.out.println(tokenVal);
+                PermissionsServiceGrpc.PermissionsServiceBlockingStub permissionsService = PermissionsServiceGrpc
+                .newBlockingStub(channel)
+                .withCallCredentials(bearerToken);
 
-        PermissionService.CheckPermissionRequest request = PermissionService.CheckPermissionRequest.newBuilder()
-        .setConsistency(
-                PermissionService.Consistency.newBuilder()
-                        .setMinimizeLatency(true)
-                        .build())
-        .setResource(
-                Core.ObjectReference.newBuilder()
-                        .setObjectType("manufacturer")
-                        .setObjectId("man_1")
-                        .build())
-        .setSubject(
-                Core.SubjectReference.newBuilder()
-                        .setObject(
-                                Core.ObjectReference.newBuilder()
-                                        .setObjectType("user")
-                                        .setObjectId("man_1_user")
-                                        .build())
-                        .build())
-        .setPermission("commission_uas")
-        .build();
+                // Write relationships
+                String result = manageObjectRelations(permissionsService,
+                Relation.ADMINISTRATOR.getRelation(),
+                RelationOperation.CREATE.getRelationOperation(),
+                ObjectType.CAA.getObjectType(),
+                "DGCA",
+                ObjectType.USER.getObjectType(),
+                "dgca_user");
 
-         try {
-            PermissionService.CheckPermissionResponse response = permissionsService.checkPermission(request);
-            System.out.println("man_1_user_commission_uas_result: " + response.getPermissionship().getValueDescriptor().getName());
-        } catch (Exception e) {
-            System.out.println("Failed to check permission: " + e.getMessage());
-        }
+                System.out.println(result);
 
-        request = PermissionService.CheckPermissionRequest.newBuilder()
-        .setConsistency(
-                PermissionService.Consistency.newBuilder()
-                        .setMinimizeLatency(true)
-                        .build())
-        .setResource(
-                Core.ObjectReference.newBuilder()
-                        .setObjectType("caa")
-                        .setObjectId("DGCA")
-                        .build())
-        .setSubject(
-                Core.SubjectReference.newBuilder()
-                        .setObject(
-                                Core.ObjectReference.newBuilder()
-                                        .setObjectType("user")
-                                        .setObjectId("dgca_user")
-                                        .build())
-                        .build())
-        .setPermission("commission_uas")
-        .build();
+                result = manageObjectRelations(permissionsService,
+                Relation.ADMINISTRATOR.getRelation(),
+                RelationOperation.CREATE.getRelationOperation(),
+                ObjectType.MANUFACTURER.getObjectType(),
+                "man_1",
+                 ObjectType.USER.getObjectType(),
+                "man_1_user");
 
-         try {
-            PermissionService.CheckPermissionResponse response = permissionsService.checkPermission(request);
-            System.out.println("dgca_user_commission_uas_result: " + response.getPermissionship().getValueDescriptor().getName());
-        } catch (Exception e) {
-            System.out.println("Failed to check permission: " + e.getMessage());
-        }
-        request = PermissionService.CheckPermissionRequest.newBuilder()
-        .setConsistency(
-                PermissionService.Consistency.newBuilder()
-                        .setMinimizeLatency(true)
-                        .build())
-        .setResource(
-                Core.ObjectReference.newBuilder()
-                        .setObjectType("uas")
-                        .setObjectId("uas_1")
-                        .build())
-        .setSubject(
-                Core.SubjectReference.newBuilder()
-                        .setObject(
-                                Core.ObjectReference.newBuilder()
-                                        .setObjectType("user")
-                                        .setObjectId("dgca_user")
-                                        .build())
-                        .build())
-        .setPermission("decommision_uas")
-        .build();
+                System.out.println(result);
 
-        try {
-            PermissionService.CheckPermissionResponse response = permissionsService.checkPermission(request);
-            System.out.println("dgca_user_decommision_uas_result: " + response.getPermissionship().getValueDescriptor().getName());
-        } catch (Exception e) {
-            System.out.println("Failed to check permission: " + e.getMessage());
-        }
+                result = manageObjectRelations(permissionsService,
+                Relation.ADMINISTRATOR.getRelation(),
+                RelationOperation.CREATE.getRelationOperation(),
+                ObjectType.MANUFACTURER.getObjectType(),
+                "man_1",
+                 ObjectType.USER.getObjectType(),
+                "man_1_user");
 
-        request = PermissionService.CheckPermissionRequest.newBuilder()
-        .setConsistency(
-                PermissionService.Consistency.newBuilder()
-                        .setMinimizeLatency(true)
-                        .build())
-        .setResource(
-                Core.ObjectReference.newBuilder()
-                        .setObjectType("uas")
-                        .setObjectId("uas_1")
-                        .build())
-        .setSubject(
-                Core.SubjectReference.newBuilder()
-                        .setObject(
-                                Core.ObjectReference.newBuilder()
-                                        .setObjectType("user")
-                                        .setObjectId("man_user_1")
-                                        .build())
-                        .build())
-        .setPermission("decommision_uas")
-        .build();
+                System.out.println(result);
 
-         try {
-            PermissionService.CheckPermissionResponse response = permissionsService.checkPermission(request);
-            System.out.println("man_user_1_decommision_uas_result: " + response.getPermissionship().getValueDescriptor().getName());
-        } catch (Exception e) {
-            System.out.println("Failed to check permission: " + e.getMessage());
-        }
+                result = manageObjectRelations(permissionsService,
+                Relation.REGULATOR.getRelation(),
+                RelationOperation.CREATE.getRelationOperation(),
+                ObjectType.UAS.getObjectType(),
+                "uas_1",
+                 ObjectType.CAA.getObjectType(),
+                "dgca");
 
-        request = PermissionService.CheckPermissionRequest.newBuilder()
-        .setConsistency(
-                PermissionService.Consistency.newBuilder()
-                        .setMinimizeLatency(true)
-                        .build())
-        .setResource(
-                Core.ObjectReference.newBuilder()
-                        .setObjectType("uas")
-                        .setObjectId("uas_1")
-                        .build())
-        .setSubject(
-                Core.SubjectReference.newBuilder()
-                        .setObject(
-                                Core.ObjectReference.newBuilder()
-                                        .setObjectType("user")
-                                        .setObjectId("man_1_user")
-                                        .build())
-                        .build())
-        .setPermission("decommision_uas")
-        .build();
+                System.out.println(result);
 
+                result = manageObjectRelations(permissionsService,
+                Relation.MANUFACTURER.getRelation(),
+                RelationOperation.CREATE.getRelationOperation(),
+                ObjectType.UAS.getObjectType(),
+                "uas_1",
+                 ObjectType.MANUFACTURER.getObjectType(),
+                "man_1");
 
-        try {
-            PermissionService.CheckPermissionResponse response = permissionsService.checkPermission(request);
-            System.out.println("man_1_user_decommision_uas_result: " + response.getPermissionship().getValueDescriptor().getName());
-        } catch (Exception e) {
-            System.out.println("Failed to check permission: " + e.getMessage());
-        }
-    } 
+                System.out.println(result);
+
+                boolean permissionResult  = checkObjectPermission(permissionsService, 
+                Permission.COMMISION_UAS.getPermission(), 
+                ObjectType.MANUFACTURER.getObjectType(), 
+                "man_1", 
+                ObjectType.USER.getObjectType(), 
+                "man_1_user");
+
+                System.out.println(permissionResult);
+                
+                permissionResult  = checkObjectPermission(permissionsService, 
+                Permission.DECOMMISION_UAS.getPermission(), 
+                ObjectType.UAS.getObjectType(), 
+                "uas_1", 
+                ObjectType.USER.getObjectType(), 
+                "man_1_user");
+
+                System.out.println(permissionResult);
+
+                permissionResult  = checkObjectPermission(permissionsService, 
+                Permission.COMMISION_UAS.getPermission(), 
+                ObjectType.CAA.getObjectType(), 
+                "DGCA", 
+                ObjectType.USER.getObjectType(), 
+                "dgca_user");
+
+                System.out.println(permissionResult);
+
+                permissionResult  = checkObjectPermission(permissionsService, 
+                Permission.DECOMMISION_UAS.getPermission(), 
+                ObjectType.UAS.getObjectType(), 
+                "uas_1", 
+                ObjectType.USER.getObjectType(), 
+                "dgca_user");
+
+                System.out.println(permissionResult);
+                
+                permissionResult  = checkObjectPermission(permissionsService, 
+                Permission.DECOMMISION_UAS.getPermission(), 
+                ObjectType.UAS.getObjectType(), 
+                "uas_1", 
+                ObjectType.USER.getObjectType(), 
+                "man_user_1");
+
+                System.out.println(permissionResult);
+               
+           
+               
+        } 
 }
