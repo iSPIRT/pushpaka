@@ -23,9 +23,15 @@ mvn prettier:write
 mvn test
 ```
 
-## OpenAPI generated server
+## OpenAPI server
 
 Spring Boot Server
+
+### Running
+
+```
+mvn compile exec:java -Dexec.mainClass="org.openapitools.OpenApiGeneratorApplication"
+```
 
 ### Overview
 
