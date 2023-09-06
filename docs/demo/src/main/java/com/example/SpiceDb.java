@@ -155,6 +155,7 @@ public class SpiceDb {
     try {
       Path p = Path.of(filename);
       String schema = Files.readString(p);
+      logger.info("SCHEMA::\n" + schema);
       WriteSchemaRequest wsr = WriteSchemaRequest.newBuilder().setSchema(schema).build();
       schemaService.writeSchema(wsr);
     } catch (Exception e) {
