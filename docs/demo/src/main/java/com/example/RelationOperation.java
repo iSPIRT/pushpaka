@@ -1,20 +1,19 @@
 package com.example;
 
-public enum  RelationOperation{
-    CREATE,
-    TOUCH;
+import com.authzed.api.v1.Core.RelationshipUpdate;
 
-    public String getRelationOperation() {
+public enum RelationOperation {
+  CREATE,
+  TOUCH;
 
-        switch(this) {
-            case CREATE:
-            return "Create";
-    
-            case TOUCH:
-            return "Touch";
-    
-            default:
-            return null;
-        }
+  public RelationshipUpdate.Operation getRelationOperation() {
+    switch (this) {
+      case CREATE:
+        return RelationshipUpdate.Operation.OPERATION_CREATE;
+      case TOUCH:
+        return RelationshipUpdate.Operation.OPERATION_TOUCH;
+      default:
+        return null;
     }
+  }
 }
