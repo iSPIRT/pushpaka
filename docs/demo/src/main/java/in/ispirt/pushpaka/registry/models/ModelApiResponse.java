@@ -1,28 +1,28 @@
 package in.ispirt.pushpaka.registry.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.net.URI;
-import java.time.OffsetDateTime;
-import java.util.*;
 import java.util.Objects;
-import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.time.OffsetDateTime;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import org.openapitools.jackson.nullable.JsonNullable;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
+import java.util.*;
+import javax.annotation.Generated;
 
 /**
  * ModelApiResponse
  */
 
 @JsonTypeName("ApiResponse")
-@Generated(
-  value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-07T14:06:09.953561+05:30[Asia/Kolkata]"
-)
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]")
 public class ModelApiResponse {
+
   private Integer code;
 
   private String type;
@@ -37,8 +37,8 @@ public class ModelApiResponse {
   /**
    * Get code
    * @return code
-   */
-
+  */
+  
   @Schema(name = "code", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("code")
   public Integer getCode() {
@@ -57,8 +57,8 @@ public class ModelApiResponse {
   /**
    * Get type
    * @return type
-   */
-
+  */
+  
   @Schema(name = "type", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("type")
   public String getType() {
@@ -77,8 +77,8 @@ public class ModelApiResponse {
   /**
    * Get message
    * @return message
-   */
-
+  */
+  
   @Schema(name = "message", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("message")
   public String getMessage() {
@@ -98,11 +98,9 @@ public class ModelApiResponse {
       return false;
     }
     ModelApiResponse _apiResponse = (ModelApiResponse) o;
-    return (
-      Objects.equals(this.code, _apiResponse.code) &&
-      Objects.equals(this.type, _apiResponse.type) &&
-      Objects.equals(this.message, _apiResponse.message)
-    );
+    return Objects.equals(this.code, _apiResponse.code) &&
+        Objects.equals(this.type, _apiResponse.type) &&
+        Objects.equals(this.message, _apiResponse.message);
   }
 
   @Override
@@ -132,3 +130,4 @@ public class ModelApiResponse {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

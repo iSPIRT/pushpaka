@@ -1,26 +1,26 @@
 package in.ispirt.pushpaka.registry.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.net.URI;
-import java.time.OffsetDateTime;
-import java.util.*;
 import java.util.Objects;
-import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.time.OffsetDateTime;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import org.openapitools.jackson.nullable.JsonNullable;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
+import java.util.*;
+import javax.annotation.Generated;
 
 /**
  * Tag
  */
 
-@Generated(
-  value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-07T14:06:09.953561+05:30[Asia/Kolkata]"
-)
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]")
 public class Tag {
+
   private Long id;
 
   private String name;
@@ -33,8 +33,8 @@ public class Tag {
   /**
    * Get id
    * @return id
-   */
-
+  */
+  
   @Schema(name = "id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("id")
   public Long getId() {
@@ -53,8 +53,8 @@ public class Tag {
   /**
    * Get name
    * @return name
-   */
-
+  */
+  
   @Schema(name = "name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("name")
   public String getName() {
@@ -74,7 +74,8 @@ public class Tag {
       return false;
     }
     Tag tag = (Tag) o;
-    return Objects.equals(this.id, tag.id) && Objects.equals(this.name, tag.name);
+    return Objects.equals(this.id, tag.id) &&
+        Objects.equals(this.name, tag.name);
   }
 
   @Override
@@ -103,3 +104,4 @@ public class Tag {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

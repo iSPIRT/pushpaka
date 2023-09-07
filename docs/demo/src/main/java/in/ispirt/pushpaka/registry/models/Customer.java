@@ -1,29 +1,29 @@
 package in.ispirt.pushpaka.registry.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import in.ispirt.pushpaka.registry.models.Address;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.net.URI;
-import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import in.ispirt.pushpaka.registry.models.Address;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import javax.annotation.Generated;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.time.OffsetDateTime;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import org.openapitools.jackson.nullable.JsonNullable;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
+import java.util.*;
+import javax.annotation.Generated;
 
 /**
  * Customer
  */
 
-@Generated(
-  value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-07T14:06:09.953561+05:30[Asia/Kolkata]"
-)
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]")
 public class Customer {
+
   private Long id;
 
   private String username;
@@ -39,13 +39,9 @@ public class Customer {
   /**
    * Get id
    * @return id
-   */
-
-  @Schema(
-    name = "id",
-    example = "100000",
-    requiredMode = Schema.RequiredMode.NOT_REQUIRED
-  )
+  */
+  
+  @Schema(name = "id", example = "100000", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("id")
   public Long getId() {
     return id;
@@ -63,13 +59,9 @@ public class Customer {
   /**
    * Get username
    * @return username
-   */
-
-  @Schema(
-    name = "username",
-    example = "fehguy",
-    requiredMode = Schema.RequiredMode.NOT_REQUIRED
-  )
+  */
+  
+  @Schema(name = "username", example = "fehguy", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("username")
   public String getUsername() {
     return username;
@@ -95,8 +87,8 @@ public class Customer {
   /**
    * Get address
    * @return address
-   */
-  @Valid
+  */
+  @Valid 
   @Schema(name = "address", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("address")
   public List<@Valid Address> getAddress() {
@@ -116,11 +108,9 @@ public class Customer {
       return false;
     }
     Customer customer = (Customer) o;
-    return (
-      Objects.equals(this.id, customer.id) &&
-      Objects.equals(this.username, customer.username) &&
-      Objects.equals(this.address, customer.address)
-    );
+    return Objects.equals(this.id, customer.id) &&
+        Objects.equals(this.username, customer.username) &&
+        Objects.equals(this.address, customer.address);
   }
 
   @Override
@@ -150,3 +140,4 @@ public class Customer {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

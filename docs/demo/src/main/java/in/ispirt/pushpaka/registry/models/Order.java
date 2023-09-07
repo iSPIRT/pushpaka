@@ -1,32 +1,32 @@
 package in.ispirt.pushpaka.registry.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.net.URI;
-import java.time.OffsetDateTime;
-import java.time.OffsetDateTime;
-import java.util.*;
 import java.util.Objects;
-import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import java.time.OffsetDateTime;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.time.OffsetDateTime;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import org.openapitools.jackson.nullable.JsonNullable;
-import org.springframework.format.annotation.DateTimeFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
+import java.util.*;
+import javax.annotation.Generated;
 
 /**
  * Order
  */
 
-@Generated(
-  value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-07T14:06:09.953561+05:30[Asia/Kolkata]"
-)
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]")
 public class Order {
+
   private Long id;
 
-  private Long petId;
+  private Long uasTypeId;
 
   private Integer quantity;
 
@@ -38,9 +38,9 @@ public class Order {
    */
   public enum StatusEnum {
     PLACED("placed"),
-
+    
     APPROVED("approved"),
-
+    
     DELIVERED("delivered");
 
     private String value;
@@ -82,8 +82,8 @@ public class Order {
   /**
    * Get id
    * @return id
-   */
-
+  */
+  
   @Schema(name = "id", example = "10", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("id")
   public Long getId() {
@@ -94,28 +94,24 @@ public class Order {
     this.id = id;
   }
 
-  public Order petId(Long petId) {
-    this.petId = petId;
+  public Order uasTypeId(Long uasTypeId) {
+    this.uasTypeId = uasTypeId;
     return this;
   }
 
   /**
-   * Get petId
-   * @return petId
-   */
-
-  @Schema(
-    name = "petId",
-    example = "198772",
-    requiredMode = Schema.RequiredMode.NOT_REQUIRED
-  )
-  @JsonProperty("petId")
-  public Long getPetId() {
-    return petId;
+   * Get uasTypeId
+   * @return uasTypeId
+  */
+  
+  @Schema(name = "uasTypeId", example = "198772", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("uasTypeId")
+  public Long getUasTypeId() {
+    return uasTypeId;
   }
 
-  public void setPetId(Long petId) {
-    this.petId = petId;
+  public void setUasTypeId(Long uasTypeId) {
+    this.uasTypeId = uasTypeId;
   }
 
   public Order quantity(Integer quantity) {
@@ -126,13 +122,9 @@ public class Order {
   /**
    * Get quantity
    * @return quantity
-   */
-
-  @Schema(
-    name = "quantity",
-    example = "7",
-    requiredMode = Schema.RequiredMode.NOT_REQUIRED
-  )
+  */
+  
+  @Schema(name = "quantity", example = "7", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("quantity")
   public Integer getQuantity() {
     return quantity;
@@ -150,8 +142,8 @@ public class Order {
   /**
    * Get shipDate
    * @return shipDate
-   */
-  @Valid
+  */
+  @Valid 
   @Schema(name = "shipDate", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("shipDate")
   public OffsetDateTime getShipDate() {
@@ -170,14 +162,9 @@ public class Order {
   /**
    * Order Status
    * @return status
-   */
-
-  @Schema(
-    name = "status",
-    example = "approved",
-    description = "Order Status",
-    requiredMode = Schema.RequiredMode.NOT_REQUIRED
-  )
+  */
+  
+  @Schema(name = "status", example = "approved", description = "Order Status", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("status")
   public StatusEnum getStatus() {
     return status;
@@ -195,8 +182,8 @@ public class Order {
   /**
    * Get complete
    * @return complete
-   */
-
+  */
+  
   @Schema(name = "complete", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("complete")
   public Boolean getComplete() {
@@ -216,19 +203,17 @@ public class Order {
       return false;
     }
     Order order = (Order) o;
-    return (
-      Objects.equals(this.id, order.id) &&
-      Objects.equals(this.petId, order.petId) &&
-      Objects.equals(this.quantity, order.quantity) &&
-      Objects.equals(this.shipDate, order.shipDate) &&
-      Objects.equals(this.status, order.status) &&
-      Objects.equals(this.complete, order.complete)
-    );
+    return Objects.equals(this.id, order.id) &&
+        Objects.equals(this.uasTypeId, order.uasTypeId) &&
+        Objects.equals(this.quantity, order.quantity) &&
+        Objects.equals(this.shipDate, order.shipDate) &&
+        Objects.equals(this.status, order.status) &&
+        Objects.equals(this.complete, order.complete);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, petId, quantity, shipDate, status, complete);
+    return Objects.hash(id, uasTypeId, quantity, shipDate, status, complete);
   }
 
   @Override
@@ -236,7 +221,7 @@ public class Order {
     StringBuilder sb = new StringBuilder();
     sb.append("class Order {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    petId: ").append(toIndentedString(petId)).append("\n");
+    sb.append("    uasTypeId: ").append(toIndentedString(uasTypeId)).append("\n");
     sb.append("    quantity: ").append(toIndentedString(quantity)).append("\n");
     sb.append("    shipDate: ").append(toIndentedString(shipDate)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
@@ -256,3 +241,4 @@ public class Order {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

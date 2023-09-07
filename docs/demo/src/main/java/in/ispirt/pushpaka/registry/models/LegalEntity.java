@@ -1,28 +1,28 @@
 package in.ispirt.pushpaka.registry.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import in.ispirt.pushpaka.registry.models.Address;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.net.URI;
-import java.time.OffsetDateTime;
-import java.util.*;
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import in.ispirt.pushpaka.registry.models.Address;
 import java.util.UUID;
-import javax.annotation.Generated;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.time.OffsetDateTime;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import org.openapitools.jackson.nullable.JsonNullable;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
+import java.util.*;
+import javax.annotation.Generated;
 
 /**
  * LegalEntity
  */
 
-@Generated(
-  value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-07T14:06:09.953561+05:30[Asia/Kolkata]"
-)
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]")
 public class LegalEntity {
+
   private UUID id;
 
   private String cin;
@@ -31,9 +31,11 @@ public class LegalEntity {
 
   private Address regdAddress;
 
+  private String gstin;
+
   /**
    * Default constructor
-   * @deprecated Use {@link LegalEntity#LegalEntity(UUID, String, Address)}
+   * @deprecated Use {@link LegalEntity#LegalEntity(UUID, String, String, Address)}
    */
   @Deprecated
   public LegalEntity() {
@@ -43,8 +45,9 @@ public class LegalEntity {
   /**
    * Constructor with only required parameters
    */
-  public LegalEntity(UUID id, String name, Address regdAddress) {
+  public LegalEntity(UUID id, String cin, String name, Address regdAddress) {
     this.id = id;
+    this.cin = cin;
     this.name = name;
     this.regdAddress = regdAddress;
   }
@@ -57,9 +60,8 @@ public class LegalEntity {
   /**
    * Get id
    * @return id
-   */
-  @NotNull
-  @Valid
+  */
+  @NotNull @Valid 
   @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("id")
   public UUID getId() {
@@ -78,9 +80,9 @@ public class LegalEntity {
   /**
    * Get cin
    * @return cin
-   */
-
-  @Schema(name = "cin", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  */
+  @NotNull 
+  @Schema(name = "cin", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("cin")
   public String getCin() {
     return cin;
@@ -98,8 +100,8 @@ public class LegalEntity {
   /**
    * Get name
    * @return name
-   */
-  @NotNull
+  */
+  @NotNull 
   @Schema(name = "name", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("name")
   public String getName() {
@@ -118,9 +120,8 @@ public class LegalEntity {
   /**
    * Get regdAddress
    * @return regdAddress
-   */
-  @NotNull
-  @Valid
+  */
+  @NotNull @Valid 
   @Schema(name = "regdAddress", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("regdAddress")
   public Address getRegdAddress() {
@@ -129,6 +130,26 @@ public class LegalEntity {
 
   public void setRegdAddress(Address regdAddress) {
     this.regdAddress = regdAddress;
+  }
+
+  public LegalEntity gstin(String gstin) {
+    this.gstin = gstin;
+    return this;
+  }
+
+  /**
+   * Get gstin
+   * @return gstin
+  */
+  
+  @Schema(name = "gstin", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("gstin")
+  public String getGstin() {
+    return gstin;
+  }
+
+  public void setGstin(String gstin) {
+    this.gstin = gstin;
   }
 
   @Override
@@ -140,17 +161,16 @@ public class LegalEntity {
       return false;
     }
     LegalEntity legalEntity = (LegalEntity) o;
-    return (
-      Objects.equals(this.id, legalEntity.id) &&
-      Objects.equals(this.cin, legalEntity.cin) &&
-      Objects.equals(this.name, legalEntity.name) &&
-      Objects.equals(this.regdAddress, legalEntity.regdAddress)
-    );
+    return Objects.equals(this.id, legalEntity.id) &&
+        Objects.equals(this.cin, legalEntity.cin) &&
+        Objects.equals(this.name, legalEntity.name) &&
+        Objects.equals(this.regdAddress, legalEntity.regdAddress) &&
+        Objects.equals(this.gstin, legalEntity.gstin);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, cin, name, regdAddress);
+    return Objects.hash(id, cin, name, regdAddress, gstin);
   }
 
   @Override
@@ -161,6 +181,7 @@ public class LegalEntity {
     sb.append("    cin: ").append(toIndentedString(cin)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    regdAddress: ").append(toIndentedString(regdAddress)).append("\n");
+    sb.append("    gstin: ").append(toIndentedString(gstin)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -176,3 +197,4 @@ public class LegalEntity {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

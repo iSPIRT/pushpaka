@@ -1,6 +1,7 @@
 package in.ispirt.pushpaka.registry;
 
 import com.fasterxml.jackson.databind.util.StdDateFormat;
+
 import java.text.DateFormat;
 import java.text.FieldPosition;
 import java.text.ParsePosition;
@@ -13,8 +14,8 @@ public class RFC3339DateFormat extends DateFormat {
   private static final TimeZone TIMEZONE_Z = TimeZone.getTimeZone("UTC");
 
   private final StdDateFormat fmt = new StdDateFormat()
-    .withTimeZone(TIMEZONE_Z)
-    .withColonInTimeZone(true);
+          .withTimeZone(TIMEZONE_Z)
+          .withColonInTimeZone(true);
 
   public RFC3339DateFormat() {
     this.calendar = new GregorianCalendar();
@@ -26,11 +27,7 @@ public class RFC3339DateFormat extends DateFormat {
   }
 
   @Override
-  public StringBuffer format(
-    Date date,
-    StringBuffer toAppendTo,
-    FieldPosition fieldPosition
-  ) {
+  public StringBuffer format(Date date, StringBuffer toAppendTo, FieldPosition fieldPosition) {
     return fmt.format(date, toAppendTo, fieldPosition);
   }
 

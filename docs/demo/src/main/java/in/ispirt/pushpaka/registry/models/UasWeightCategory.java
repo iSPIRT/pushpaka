@@ -1,35 +1,36 @@
 package in.ispirt.pushpaka.registry.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.net.URI;
-import java.time.OffsetDateTime;
-import java.util.*;
 import java.util.Objects;
-import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonValue;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.time.OffsetDateTime;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import org.openapitools.jackson.nullable.JsonNullable;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
+import java.util.*;
+import javax.annotation.Generated;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Gets or Sets UasWeightCategory
  */
 
-@Generated(
-  value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-07T14:06:09.953561+05:30[Asia/Kolkata]"
-)
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]")
 public enum UasWeightCategory {
+  
   NANO("NANO"),
-
+  
   SMALL("SMALL"),
-
+  
   MICRO("MICRO"),
-
+  
   MEDIUM("MEDIUM"),
-
+  
   LARGE("LARGE");
 
   private String value;
@@ -58,3 +59,4 @@ public enum UasWeightCategory {
     throw new IllegalArgumentException("Unexpected value '" + value + "'");
   }
 }
+

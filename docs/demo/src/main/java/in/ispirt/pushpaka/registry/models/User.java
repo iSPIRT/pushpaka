@@ -1,27 +1,27 @@
 package in.ispirt.pushpaka.registry.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.net.URI;
-import java.time.OffsetDateTime;
-import java.util.*;
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.UUID;
-import javax.annotation.Generated;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.time.OffsetDateTime;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import org.openapitools.jackson.nullable.JsonNullable;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
+import java.util.*;
+import javax.annotation.Generated;
 
 /**
  * User
  */
 
-@Generated(
-  value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-07T14:06:09.953561+05:30[Asia/Kolkata]"
-)
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]")
 public class User {
+
   private UUID id;
 
   private String username;
@@ -32,11 +32,29 @@ public class User {
 
   private String email;
 
-  private String password;
-
   private String phone;
 
   private Integer userStatus;
+
+  /**
+   * Default constructor
+   * @deprecated Use {@link User#User(UUID, String, String, String, String)}
+   */
+  @Deprecated
+  public User() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public User(UUID id, String username, String firstName, String lastName, String email) {
+    this.id = id;
+    this.username = username;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.email = email;
+  }
 
   public User id(UUID id) {
     this.id = id;
@@ -46,9 +64,9 @@ public class User {
   /**
    * Get id
    * @return id
-   */
-  @Valid
-  @Schema(name = "id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  */
+  @NotNull @Valid 
+  @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("id")
   public UUID getId() {
     return id;
@@ -66,13 +84,9 @@ public class User {
   /**
    * Get username
    * @return username
-   */
-
-  @Schema(
-    name = "username",
-    example = "theUser",
-    requiredMode = Schema.RequiredMode.NOT_REQUIRED
-  )
+  */
+  @NotNull 
+  @Schema(name = "username", example = "theUser", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("username")
   public String getUsername() {
     return username;
@@ -90,13 +104,9 @@ public class User {
   /**
    * Get firstName
    * @return firstName
-   */
-
-  @Schema(
-    name = "firstName",
-    example = "John",
-    requiredMode = Schema.RequiredMode.NOT_REQUIRED
-  )
+  */
+  @NotNull 
+  @Schema(name = "firstName", example = "John", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("firstName")
   public String getFirstName() {
     return firstName;
@@ -114,13 +124,9 @@ public class User {
   /**
    * Get lastName
    * @return lastName
-   */
-
-  @Schema(
-    name = "lastName",
-    example = "James",
-    requiredMode = Schema.RequiredMode.NOT_REQUIRED
-  )
+  */
+  @NotNull 
+  @Schema(name = "lastName", example = "James", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("lastName")
   public String getLastName() {
     return lastName;
@@ -138,13 +144,9 @@ public class User {
   /**
    * Get email
    * @return email
-   */
-
-  @Schema(
-    name = "email",
-    example = "john@email.com",
-    requiredMode = Schema.RequiredMode.NOT_REQUIRED
-  )
+  */
+  @NotNull 
+  @Schema(name = "email", example = "john@email.com", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("email")
   public String getEmail() {
     return email;
@@ -152,30 +154,6 @@ public class User {
 
   public void setEmail(String email) {
     this.email = email;
-  }
-
-  public User password(String password) {
-    this.password = password;
-    return this;
-  }
-
-  /**
-   * Get password
-   * @return password
-   */
-
-  @Schema(
-    name = "password",
-    example = "12345",
-    requiredMode = Schema.RequiredMode.NOT_REQUIRED
-  )
-  @JsonProperty("password")
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
   }
 
   public User phone(String phone) {
@@ -186,13 +164,9 @@ public class User {
   /**
    * Get phone
    * @return phone
-   */
-
-  @Schema(
-    name = "phone",
-    example = "12345",
-    requiredMode = Schema.RequiredMode.NOT_REQUIRED
-  )
+  */
+  
+  @Schema(name = "phone", example = "12345", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("phone")
   public String getPhone() {
     return phone;
@@ -210,14 +184,9 @@ public class User {
   /**
    * User Status
    * @return userStatus
-   */
-
-  @Schema(
-    name = "userStatus",
-    example = "1",
-    description = "User Status",
-    requiredMode = Schema.RequiredMode.NOT_REQUIRED
-  )
+  */
+  
+  @Schema(name = "userStatus", example = "1", description = "User Status", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("userStatus")
   public Integer getUserStatus() {
     return userStatus;
@@ -236,30 +205,18 @@ public class User {
       return false;
     }
     User user = (User) o;
-    return (
-      Objects.equals(this.id, user.id) &&
-      Objects.equals(this.username, user.username) &&
-      Objects.equals(this.firstName, user.firstName) &&
-      Objects.equals(this.lastName, user.lastName) &&
-      Objects.equals(this.email, user.email) &&
-      Objects.equals(this.password, user.password) &&
-      Objects.equals(this.phone, user.phone) &&
-      Objects.equals(this.userStatus, user.userStatus)
-    );
+    return Objects.equals(this.id, user.id) &&
+        Objects.equals(this.username, user.username) &&
+        Objects.equals(this.firstName, user.firstName) &&
+        Objects.equals(this.lastName, user.lastName) &&
+        Objects.equals(this.email, user.email) &&
+        Objects.equals(this.phone, user.phone) &&
+        Objects.equals(this.userStatus, user.userStatus);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(
-      id,
-      username,
-      firstName,
-      lastName,
-      email,
-      password,
-      phone,
-      userStatus
-    );
+    return Objects.hash(id, username, firstName, lastName, email, phone, userStatus);
   }
 
   @Override
@@ -271,7 +228,6 @@ public class User {
     sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
     sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
-    sb.append("    password: ").append(toIndentedString(password)).append("\n");
     sb.append("    phone: ").append(toIndentedString(phone)).append("\n");
     sb.append("    userStatus: ").append(toIndentedString(userStatus)).append("\n");
     sb.append("}");
@@ -289,3 +245,4 @@ public class User {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

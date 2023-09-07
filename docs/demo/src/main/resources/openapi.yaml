@@ -3,14 +3,14 @@ info:
   contact:
     email: sayandeep@ispirt.in
   description: |-
-    This is a sample Pet Store Server based on the OpenAPI 3.0 specification.  You can find out more about
-    Swagger at [http://swagger.io](http://swagger.io). In the third iteration of the pet store, we've switched to the design first approach!
+    This is a sample UasType Store Server based on the OpenAPI 3.0 specification.  You can find out more about
+    Swagger at [http://swagger.io](http://swagger.io). In the third iteration of the uasType store, we've switched to the design first approach!
     You can now help us improve the API whether it's by making changes to the definition itself or to the code.
     That way, with time, we can improve the API in general, and expose some of the new features in OAS3.
 
     Some useful links:
-    - [The Pet Store repository](https://github.com/swagger-api/swagger-petstore)
-    - [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
+    - [The UasType Store repository](https://github.com/swagger-api/swagger-petstore)
+    - [The source API definition for the UasType Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
@@ -23,106 +23,98 @@ externalDocs:
 servers:
 - url: /api/v1
 tags:
-- description: Everything about your Pets
-  externalDocs:
-    description: Find out more
-    url: http://swagger.io
-  name: pet
-- description: Access to Petstore orders
-  externalDocs:
-    description: Find out more about our store
-    url: http://swagger.io
-  name: store
+- description: UAS Types
+  name: uas_type
 - description: Operations about user
   name: user
 paths:
-  /pet:
+  /uasType:
     post:
-      description: Add a new pet to the store
-      operationId: addPet
+      description: Add a new uasType to the store
+      operationId: addUasType
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pet'
+              $ref: '#/components/schemas/UasType'
           application/xml:
             schema:
-              $ref: '#/components/schemas/Pet'
+              $ref: '#/components/schemas/UasType'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Pet'
-        description: Create a new pet in the store
+              $ref: '#/components/schemas/UasType'
+        description: Create a new uasType in the store
         required: true
       responses:
         "200":
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/Pet'
+                $ref: '#/components/schemas/UasType'
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'
+                $ref: '#/components/schemas/UasType'
           description: Successful operation
         "405":
           description: Invalid input
       security:
-      - petstore_auth:
-        - write:pets
-        - read:pets
-      summary: Add a new pet to the store
+      - registry_auth:
+        - write:uasTypes
+        - read:uasTypes
+      summary: Add a new uasType to the store
       tags:
-      - pet
+      - uas_types
       x-content-type: application/json
       x-accepts: application/json
       x-tags:
-      - tag: pet
+      - tag: uas_types
     put:
-      description: Update an existing pet by Id
-      operationId: updatePet
+      description: Update an existing uasType by Id
+      operationId: updateUasType
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pet'
+              $ref: '#/components/schemas/UasType'
           application/xml:
             schema:
-              $ref: '#/components/schemas/Pet'
+              $ref: '#/components/schemas/UasType'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Pet'
-        description: Update an existent pet in the store
+              $ref: '#/components/schemas/UasType'
+        description: Update an existent uasType in the store
         required: true
       responses:
         "200":
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/Pet'
+                $ref: '#/components/schemas/UasType'
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'
+                $ref: '#/components/schemas/UasType'
           description: Successful operation
         "400":
           description: Invalid ID supplied
         "404":
-          description: Pet not found
+          description: UasType not found
         "405":
           description: Validation exception
       security:
-      - petstore_auth:
-        - write:pets
-        - read:pets
-      summary: Update an existing pet
+      - registry_auth:
+        - write:uasTypes
+        - read:uasTypes
+      summary: Update an existing uasType
       tags:
-      - pet
+      - uas_types
       x-content-type: application/json
       x-accepts: application/json
       x-tags:
-      - tag: pet
-  /pet/findByStatus:
+      - tag: uas_types
+  /uasType/findByStatus:
     get:
       description: Multiple status values can be provided with comma separated strings
-      operationId: findPetsByStatus
+      operationId: findUasTypesByStatus
       parameters:
       - description: Status values that need to be considered for filter
         explode: true
@@ -143,31 +135,31 @@ paths:
             application/xml:
               schema:
                 items:
-                  $ref: '#/components/schemas/Pet'
+                  $ref: '#/components/schemas/UasType'
                 type: array
             application/json:
               schema:
                 items:
-                  $ref: '#/components/schemas/Pet'
+                  $ref: '#/components/schemas/UasType'
                 type: array
           description: successful operation
         "400":
           description: Invalid status value
       security:
-      - petstore_auth:
-        - write:pets
-        - read:pets
-      summary: Finds Pets by status
+      - registry_auth:
+        - write:uasTypes
+        - read:uasTypes
+      summary: Finds UasTypes by status
       tags:
-      - pet
+      - uas_types
       x-accepts: application/json
       x-tags:
-      - tag: pet
-  /pet/findByTags:
+      - tag: uas_types
+  /uasType/findByTags:
     get:
       description: "Multiple tags can be provided with comma separated strings. Use\
         \ tag1, tag2, tag3 for testing."
-      operationId: findPetsByTags
+      operationId: findUasTypesByTags
       parameters:
       - description: Tags to filter by
         explode: true
@@ -185,30 +177,30 @@ paths:
             application/xml:
               schema:
                 items:
-                  $ref: '#/components/schemas/Pet'
+                  $ref: '#/components/schemas/UasType'
                 type: array
             application/json:
               schema:
                 items:
-                  $ref: '#/components/schemas/Pet'
+                  $ref: '#/components/schemas/UasType'
                 type: array
           description: successful operation
         "400":
           description: Invalid tag value
       security:
-      - petstore_auth:
-        - write:pets
-        - read:pets
-      summary: Finds Pets by tags
+      - registry_auth:
+        - write:uasTypes
+        - read:uasTypes
+      summary: Finds UasTypes by tags
       tags:
-      - pet
+      - uas_types
       x-accepts: application/json
       x-tags:
-      - tag: pet
-  /pet/{petId}:
+      - tag: uas_types
+  /uasType/{uasTypeId}:
     delete:
       description: ""
-      operationId: deletePet
+      operationId: deleteUasType
       parameters:
       - description: ""
         explode: false
@@ -218,10 +210,10 @@ paths:
         schema:
           type: string
         style: simple
-      - description: Pet id to delete
+      - description: UasType id to delete
         explode: false
         in: path
-        name: petId
+        name: uasTypeId
         required: true
         schema:
           format: int64
@@ -229,25 +221,25 @@ paths:
         style: simple
       responses:
         "400":
-          description: Invalid pet value
+          description: Invalid uasType value
       security:
-      - petstore_auth:
-        - write:pets
-        - read:pets
-      summary: Deletes a pet
+      - registry_auth:
+        - write:uasTypes
+        - read:uasTypes
+      summary: Deletes a uasType
       tags:
-      - pet
+      - uas_types
       x-accepts: application/json
       x-tags:
-      - tag: pet
+      - tag: uas_types
     get:
-      description: Returns a single pet
-      operationId: getPetById
+      description: Returns a single uasType
+      operationId: getUasTypeById
       parameters:
-      - description: ID of pet to return
+      - description: ID of uasType to return
         explode: false
         in: path
-        name: petId
+        name: uasTypeId
         required: true
         schema:
           format: int64
@@ -258,40 +250,40 @@ paths:
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/Pet'
+                $ref: '#/components/schemas/UasType'
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'
+                $ref: '#/components/schemas/UasType'
           description: successful operation
         "400":
           description: Invalid ID supplied
         "404":
-          description: Pet not found
+          description: UasType not found
       security:
       - api_key: []
-      - petstore_auth:
-        - write:pets
-        - read:pets
-      summary: Find pet by ID
+      - registry_auth:
+        - write:uasTypes
+        - read:uasTypes
+      summary: Find uasType by ID
       tags:
-      - pet
+      - uas_types
       x-accepts: application/json
       x-tags:
-      - tag: pet
+      - tag: uas_types
     post:
       description: ""
-      operationId: updatePetWithForm
+      operationId: updateUasTypeWithForm
       parameters:
-      - description: ID of pet that needs to be updated
+      - description: ID of uasType that needs to be updated
         explode: false
         in: path
-        name: petId
+        name: uasTypeId
         required: true
         schema:
           format: int64
           type: integer
         style: simple
-      - description: Name of pet that needs to be updated
+      - description: Name of uasType that needs to be updated
         explode: true
         in: query
         name: name
@@ -299,7 +291,7 @@ paths:
         schema:
           type: string
         style: form
-      - description: Status of pet that needs to be updated
+      - description: Status of uasType that needs to be updated
         explode: true
         in: query
         name: status
@@ -311,24 +303,24 @@ paths:
         "405":
           description: Invalid input
       security:
-      - petstore_auth:
-        - write:pets
-        - read:pets
-      summary: Updates a pet in the store with form data
+      - registry_auth:
+        - write:uasTypes
+        - read:uasTypes
+      summary: Updates a uasType in the store with form data
       tags:
-      - pet
+      - uas_types
       x-accepts: application/json
       x-tags:
-      - tag: pet
-  /pet/{petId}/uploadImage:
+      - tag: uas_types
+  /uasType/{uasTypeId}/uploadImage:
     post:
       description: ""
       operationId: uploadFile
       parameters:
-      - description: ID of pet to update
+      - description: ID of uasType to update
         explode: false
         in: path
-        name: petId
+        name: uasTypeId
         required: true
         schema:
           format: int64
@@ -356,16 +348,16 @@ paths:
                 $ref: '#/components/schemas/ApiResponse'
           description: successful operation
       security:
-      - petstore_auth:
-        - write:pets
-        - read:pets
+      - registry_auth:
+        - write:uasTypes
+        - read:uasTypes
       summary: uploads an image
       tags:
-      - pet
+      - uas_types
       x-content-type: application/octet-stream
       x-accepts: application/json
       x-tags:
-      - tag: pet
+      - tag: uas_types
   /store/inventory:
     get:
       description: Returns a map of status codes to quantities
@@ -382,7 +374,7 @@ paths:
           description: successful operation
       security:
       - api_key: []
-      summary: Returns pet inventories by status
+      summary: Returns uasType inventories by status
       tags:
       - store
       x-accepts: application/json
@@ -412,7 +404,7 @@ paths:
           description: successful operation
         "405":
           description: Invalid input
-      summary: Place an order for a pet
+      summary: Place an order for a uasType
       tags:
       - store
       x-content-type: application/json
@@ -702,15 +694,6 @@ paths:
       - tag: user
 components:
   requestBodies:
-    Pet:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Pet'
-        application/xml:
-          schema:
-            $ref: '#/components/schemas/Pet'
-      description: Pet object that needs to be added to the store
     UserArray:
       content:
         application/json:
@@ -722,8 +705,8 @@ components:
   schemas:
     Order:
       example:
-        petId: 198772
         quantity: 7
+        uasTypeId: 198772
         id: 10
         shipDate: 2000-01-23T04:56:07.000+00:00
         complete: true
@@ -733,7 +716,7 @@ components:
           example: 10
           format: int64
           type: integer
-        petId:
+        uasTypeId:
           example: 198772
           format: int64
           type: integer
@@ -777,9 +760,6 @@ components:
       xml:
         name: customer
     Category:
-      example:
-        name: Dogs
-        id: 1
       properties:
         id:
           example: 1
@@ -795,7 +775,6 @@ components:
       example:
         firstName: John
         lastName: James
-        password: "12345"
         userStatus: 1
         phone: "12345"
         id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
@@ -817,9 +796,6 @@ components:
         email:
           example: john@email.com
           type: string
-        password:
-          example: "12345"
-          type: string
         phone:
           example: "12345"
           type: string
@@ -828,13 +804,14 @@ components:
           example: 1
           format: int32
           type: integer
+      required:
+      - email
+      - firstName
+      - id
+      - lastName
+      - username
       type: object
-      xml:
-        name: user
     Tag:
-      example:
-        name: name
-        id: 0
       properties:
         id:
           format: int64
@@ -844,59 +821,49 @@ components:
       type: object
       xml:
         name: tag
-    Pet:
+    UasType:
       example:
-        photoUrls:
-        - photoUrls
-        - photoUrls
-        name: doggie
-        id: 10
-        category:
-          name: Dogs
-          id: 1
-        tags:
-        - name: name
-          id: 0
-        - name: name
-          id: 0
-        status: available
+        mass: 6.027456183070403
+        modelNumber: modelNumber
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        propulsionCategory: null
+        manufacturer:
+          validTill: 2000-01-23T04:56:07.000+00:00
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          validFrom: 2000-01-23T04:56:07.000+00:00
+          legalEntity:
+            name: name
+            cin: cin
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            regdAddress:
+              city: Mumbai
+              pinCode: 172074.45705867198
+              state: null
+              line3: Bandra West
+              line2: Landmark
+              line1: 123 ABC Housing Society
+            gstin: gstin
       properties:
         id:
-          example: 10
-          format: int64
-          type: integer
-        name:
-          example: doggie
+          format: uuid
           type: string
-        category:
-          $ref: '#/components/schemas/Category'
-        photoUrls:
-          items:
-            type: string
-            xml:
-              name: photoUrl
-          type: array
-          xml:
-            wrapped: true
-        tags:
-          items:
-            $ref: '#/components/schemas/Tag'
-          type: array
-          xml:
-            wrapped: true
-        status:
-          description: pet status in the store
-          enum:
-          - available
-          - pending
-          - sold
+        modelNumber:
           type: string
+        manufacturer:
+          $ref: '#/components/schemas/Manufacturer'
+        propulsionCategory:
+          $ref: '#/components/schemas/UasPropulsionCategory'
+        mass:
+          description: maximum take off mass in grams
+          format: integer
+          type: number
       required:
-      - name
-      - photoUrls
+      - id
+      - manufacturer
+      - mass
+      - modelNumber
+      - propulsionCategory
       type: object
-      xml:
-        name: pet
     ApiResponse:
       example:
         code: 0
@@ -967,6 +934,13 @@ components:
       - PUDUCHERRY
       type: string
     Address:
+      example:
+        city: Mumbai
+        pinCode: 172074.45705867198
+        state: null
+        line3: Bandra West
+        line2: Landmark
+        line1: 123 ABC Housing Society
       properties:
         line1:
           example: 123 ABC Housing Society
@@ -986,8 +960,27 @@ components:
           maximum: 999999
           minimum: 100000
           type: number
+      required:
+      - city
+      - line1
+      - line2
+      - line3
+      - pinCode
+      - state
       type: object
     LegalEntity:
+      example:
+        name: name
+        cin: cin
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        regdAddress:
+          city: Mumbai
+          pinCode: 172074.45705867198
+          state: null
+          line3: Bandra West
+          line2: Landmark
+          line1: 123 ABC Housing Society
+        gstin: gstin
       properties:
         id:
           format: uuid
@@ -998,12 +991,31 @@ components:
           type: string
         regdAddress:
           $ref: '#/components/schemas/Address'
+        gstin:
+          type: string
       required:
+      - cin
       - id
       - name
       - regdAddress
       type: object
     Manufacturer:
+      example:
+        validTill: 2000-01-23T04:56:07.000+00:00
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        validFrom: 2000-01-23T04:56:07.000+00:00
+        legalEntity:
+          name: name
+          cin: cin
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          regdAddress:
+            city: Mumbai
+            pinCode: 172074.45705867198
+            state: null
+            line3: Bandra West
+            line2: Landmark
+            line1: 123 ABC Housing Society
+          gstin: gstin
       properties:
         id:
           format: uuid
@@ -1038,13 +1050,13 @@ components:
       - legalEntity
       type: object
   securitySchemes:
-    petstore_auth:
+    registry_auth:
       flows:
         implicit:
           authorizationUrl: https://petstore3.swagger.io/oauth/authorize
           scopes:
-            write:pets: modify pets in your account
-            read:pets: read your pets
+            write:uasTypes: modify uasTypes in your account
+            read:uasTypes: read your uasTypes
       type: oauth2
     api_key:
       in: header

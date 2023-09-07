@@ -1,29 +1,29 @@
 package in.ispirt.pushpaka.registry.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
+import java.net.URI;
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import in.ispirt.pushpaka.registry.models.State;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
-import java.net.URI;
+import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
-import java.util.*;
-import java.util.Objects;
-import javax.annotation.Generated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import org.openapitools.jackson.nullable.JsonNullable;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
+import java.util.*;
+import javax.annotation.Generated;
 
 /**
  * Address
  */
 
-@Generated(
-  value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-07T14:06:09.953561+05:30[Asia/Kolkata]"
-)
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]")
 public class Address {
+
   private String line1;
 
   private String line2;
@@ -36,6 +36,27 @@ public class Address {
 
   private BigDecimal pinCode;
 
+  /**
+   * Default constructor
+   * @deprecated Use {@link Address#Address(String, String, String, String, State, BigDecimal)}
+   */
+  @Deprecated
+  public Address() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public Address(String line1, String line2, String line3, String city, State state, BigDecimal pinCode) {
+    this.line1 = line1;
+    this.line2 = line2;
+    this.line3 = line3;
+    this.city = city;
+    this.state = state;
+    this.pinCode = pinCode;
+  }
+
   public Address line1(String line1) {
     this.line1 = line1;
     return this;
@@ -44,13 +65,9 @@ public class Address {
   /**
    * Get line1
    * @return line1
-   */
-
-  @Schema(
-    name = "line1",
-    example = "123 ABC Housing Society",
-    requiredMode = Schema.RequiredMode.NOT_REQUIRED
-  )
+  */
+  @NotNull 
+  @Schema(name = "line1", example = "123 ABC Housing Society", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("line1")
   public String getLine1() {
     return line1;
@@ -68,13 +85,9 @@ public class Address {
   /**
    * Get line2
    * @return line2
-   */
-
-  @Schema(
-    name = "line2",
-    example = "Landmark",
-    requiredMode = Schema.RequiredMode.NOT_REQUIRED
-  )
+  */
+  @NotNull 
+  @Schema(name = "line2", example = "Landmark", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("line2")
   public String getLine2() {
     return line2;
@@ -92,13 +105,9 @@ public class Address {
   /**
    * Get line3
    * @return line3
-   */
-
-  @Schema(
-    name = "line3",
-    example = "Bandra West",
-    requiredMode = Schema.RequiredMode.NOT_REQUIRED
-  )
+  */
+  @NotNull 
+  @Schema(name = "line3", example = "Bandra West", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("line3")
   public String getLine3() {
     return line3;
@@ -116,13 +125,9 @@ public class Address {
   /**
    * Get city
    * @return city
-   */
-
-  @Schema(
-    name = "city",
-    example = "Mumbai",
-    requiredMode = Schema.RequiredMode.NOT_REQUIRED
-  )
+  */
+  @NotNull 
+  @Schema(name = "city", example = "Mumbai", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("city")
   public String getCity() {
     return city;
@@ -140,9 +145,9 @@ public class Address {
   /**
    * Get state
    * @return state
-   */
-  @Valid
-  @Schema(name = "state", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  */
+  @NotNull @Valid 
+  @Schema(name = "state", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("state")
   public State getState() {
     return state;
@@ -162,11 +167,9 @@ public class Address {
    * minimum: 100000
    * maximum: 999999
    * @return pinCode
-   */
-  @Valid
-  @DecimalMin("100000")
-  @DecimalMax("999999")
-  @Schema(name = "pinCode", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  */
+  @NotNull @Valid @DecimalMin("100000") @DecimalMax("999999") 
+  @Schema(name = "pinCode", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("pinCode")
   public BigDecimal getPinCode() {
     return pinCode;
@@ -185,14 +188,12 @@ public class Address {
       return false;
     }
     Address address = (Address) o;
-    return (
-      Objects.equals(this.line1, address.line1) &&
-      Objects.equals(this.line2, address.line2) &&
-      Objects.equals(this.line3, address.line3) &&
-      Objects.equals(this.city, address.city) &&
-      Objects.equals(this.state, address.state) &&
-      Objects.equals(this.pinCode, address.pinCode)
-    );
+    return Objects.equals(this.line1, address.line1) &&
+        Objects.equals(this.line2, address.line2) &&
+        Objects.equals(this.line3, address.line3) &&
+        Objects.equals(this.city, address.city) &&
+        Objects.equals(this.state, address.state) &&
+        Objects.equals(this.pinCode, address.pinCode);
   }
 
   @Override
@@ -225,3 +226,4 @@ public class Address {
     return o.toString().replace("\n", "\n    ");
   }
 }
+
