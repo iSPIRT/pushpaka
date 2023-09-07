@@ -24,6 +24,8 @@ servers:
 tags:
 - name: uas_type
   description: UAS Types
+- name: uas
+  description: UAS
 - name: user
   description: Operations about user
 paths:
@@ -267,6 +269,208 @@ paths:
       - registry_auth:
         - write:uasTypes
         - read:uasTypes
+  /uas:
+    put:
+      tags:
+      - uas
+      summary: Update an existing uas
+      description: Update an existing uas by Id
+      operationId: updateUas
+      requestBody:
+        description: Update an existent uas in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Uas'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Uas'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Uas not found
+        "405":
+          description: Validation exception
+      security:
+      - registry_auth:
+        - write:uass
+        - read:uass
+    post:
+      tags:
+      - uas
+      summary: Add a new uas to the store
+      description: Add a new uas to the store
+      operationId: addUas
+      requestBody:
+        description: Create a new uas in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Uas'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Uas'
+        "405":
+          description: Invalid input
+      security:
+      - registry_auth:
+        - write:uass
+        - read:uass
+  /uas/findByStatus:
+    get:
+      tags:
+      - uas
+      summary: Finds Uass by status
+      description: Multiple status values can be provided with comma separated strings
+      operationId: findUassByStatus
+      parameters:
+      - name: status
+        in: query
+        description: Status values that need to be considered for filter
+        required: false
+        explode: true
+        schema:
+          type: string
+          default: available
+          enum:
+          - available
+          - pending
+          - sold
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Uas'
+        "400":
+          description: Invalid status value
+      security:
+      - registry_auth:
+        - write:uass
+        - read:uass
+  /uas/find:
+    get:
+      tags:
+      - uas
+      summary: Finds Uass
+      operationId: findUass
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Uas'
+        "400":
+          description: Invalid value
+      security:
+      - registry_auth:
+        - write:uass
+        - read:uass
+  /uas/{uasId}:
+    get:
+      tags:
+      - uas
+      summary: Find uas by ID
+      description: Returns a single uas
+      operationId: getUasById
+      parameters:
+      - name: uasId
+        in: path
+        description: ID of uas to return
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Uas'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Uas not found
+      security:
+      - api_key: []
+      - registry_auth:
+        - write:uass
+        - read:uass
+    post:
+      tags:
+      - uas
+      summary: Updates a uas in the store with form data
+      description: ""
+      operationId: updateUasWithForm
+      parameters:
+      - name: uasId
+        in: path
+        description: ID of uas that needs to be updated
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: name
+        in: query
+        description: Name of uas that needs to be updated
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: Status of uas that needs to be updated
+        schema:
+          type: string
+      responses:
+        "405":
+          description: Invalid input
+      security:
+      - registry_auth:
+        - write:uass
+        - read:uass
+    delete:
+      tags:
+      - uas
+      summary: Deletes a uas
+      description: ""
+      operationId: deleteUas
+      parameters:
+      - name: api_key
+        in: header
+        description: ""
+        required: false
+        schema:
+          type: string
+      - name: uasId
+        in: path
+        description: Uas id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "400":
+          description: Invalid uas value
+      security:
+      - registry_auth:
+        - write:uass
+        - read:uass
   /user:
     post:
       tags:
@@ -435,6 +639,7 @@ components:
           type: string
           format: uuid
           example: "e66b7c9e-79f5-44b0-9642-59ca20b7af63"
+          readOnly: true
         username:
           type: string
           example: theUser
@@ -455,18 +660,22 @@ components:
           description: User Status
           format: int32
           example: 1
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
       required:
         - id
         - username
         - email
         - firstName
         - lastName
+        - timestamps
     UasType:
       type: object
       properties:
         id:
           type: string
           format: uuid
+          readOnly: true
         modelNumber:
           type: string
         manufacturer:
@@ -487,6 +696,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OperationCategory'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
       required:
         - id
         - manufacturer
@@ -495,6 +706,35 @@ components:
         - weightCategory
         - mtow
         - supportedOperationCategories
+        - timestamps
+    UasStatus:
+      type: string
+      enum:
+        - ACTIVE
+        - GROUNDED
+    Uas:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        'type':
+          $ref: '#/components/schemas/UasType'
+        oemSerialNumber:
+          type: string
+          maxLength: 12
+          minLength: 6
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+        status:
+          $ref: '#/components/schemas/UasStatus'
+      required:
+      - id
+      - 'type'
+      - oemSerialNumber
+      - timestamps
+      - status
     ApiResponse:
       type: object
       properties:
@@ -511,6 +751,11 @@ components:
         - C1
         - C2
         - C3
+    PilotStatus:
+      type: string
+      enum:
+        - ACTIVE
+        - REVOKED
     UasWeightCategory:
       type: string
       enum:
@@ -598,6 +843,7 @@ components:
         id:
           type: string
           format: uuid
+          readOnly: true
         cin:
           type: string
         name:
@@ -606,68 +852,112 @@ components:
           $ref: '#/components/schemas/Address'
         gstin:
           type: string
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
       required:
         - id
         - name
         - regdAddress
         - cin
+        - timestamps
+        - validity
     Manufacturer:
       type: object
       properties:
         id:
           type: string
           format: uuid
+          readOnly: true
         legalEntity:
           $ref: '#/components/schemas/LegalEntity'
-        validFrom:
-          type: string
-          format: date-time
-        validTill:
-          type: string
-          format: date-time
+        validity:
+          $ref: '#/components/schemas/Validity'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
       required:
         - id
         - legalEntity
-        - validFrom
-        - validTill
+        - validity
+        - timestamps
     CivilAviationAuthority:
       type: object
       properties:
         id:
           type: string
           format: uuid
+          readOnly: true
         legalEntity:
           $ref: '#/components/schemas/LegalEntity'
-        validFrom:
-          type: string
-          format: date-time
-        validTill:
-          type: string
-          format: date-time
+        validity:
+          $ref: '#/components/schemas/Validity'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
       required:
         - id
         - legalEntity
-        - validFrom
-        - validTill
+        - validity
+        - timestamps
+    Validity:
+      type: object
+      properties:
+        from:
+          type: string
+          format: date-time
+        till:
+          type: string
+          format: date-time
+      required:
+        - from
+    ObjectTimestamps:
+      type: object
+      properties:
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        updated:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+        - created
+        - updated
     Operator:
       type: object
       properties:
         id:
           type: string
           format: uuid
+          readOnly: true
         legalEntity:
           $ref: '#/components/schemas/LegalEntity'
-        validFrom:
-          type: string
-          format: date-time
-        validTill:
-          type: string
-          format: date-time
+        validity:
+          $ref: '#/components/schemas/Validity'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
       required:
         - id
         - legalEntity
-        - validFrom
-        - validTill
+        - timestamps
+        - validity
+    Pilot:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          $ref: '#/components/schemas/User'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+        validity:
+          $ref: '#/components/schemas/Validity'
+      required:
+        - id
+        - user
+        - timestamps
+        - validity
   requestBodies:
     UserArray:
       description: List of user object
@@ -686,6 +976,8 @@ components:
           scopes:
             write:uasTypes: modify uasTypes in your account
             read:uasTypes: read your uasTypes
+            write:uass: modify uass in your account
+            read:uass: read your uass
     api_key:
       type: apiKey
       name: api_key

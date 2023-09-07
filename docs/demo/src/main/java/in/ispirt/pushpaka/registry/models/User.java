@@ -2,6 +2,7 @@ package in.ispirt.pushpaka.registry.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import in.ispirt.pushpaka.registry.models.ObjectTimestamps;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.net.URI;
 import java.time.OffsetDateTime;
@@ -19,7 +20,7 @@ import org.openapitools.jackson.nullable.JsonNullable;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-07T18:36:04.490622+05:30[Asia/Kolkata]"
+  date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]"
 )
 public class User {
   private UUID id;
@@ -36,9 +37,11 @@ public class User {
 
   private Integer userStatus;
 
+  private ObjectTimestamps timestamps;
+
   /**
    * Default constructor
-   * @deprecated Use {@link User#User(UUID, String, String, String, String)}
+   * @deprecated Use {@link User#User(UUID, String, String, String, String, ObjectTimestamps)}
    */
   @Deprecated
   public User() {
@@ -48,12 +51,20 @@ public class User {
   /**
    * Constructor with only required parameters
    */
-  public User(UUID id, String username, String firstName, String lastName, String email) {
+  public User(
+    UUID id,
+    String username,
+    String firstName,
+    String lastName,
+    String email,
+    ObjectTimestamps timestamps
+  ) {
     this.id = id;
     this.username = username;
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
+    this.timestamps = timestamps;
   }
 
   public User id(UUID id) {
@@ -65,10 +76,10 @@ public class User {
    * Get id
    * @return id
    */
-  @NotNull
   @Valid
   @Schema(
     name = "id",
+    accessMode = Schema.AccessMode.READ_ONLY,
     example = "e66b7c9e-79f5-44b0-9642-59ca20b7af63",
     requiredMode = Schema.RequiredMode.REQUIRED
   )
@@ -226,6 +237,27 @@ public class User {
     this.userStatus = userStatus;
   }
 
+  public User timestamps(ObjectTimestamps timestamps) {
+    this.timestamps = timestamps;
+    return this;
+  }
+
+  /**
+   * Get timestamps
+   * @return timestamps
+   */
+  @NotNull
+  @Valid
+  @Schema(name = "timestamps", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("timestamps")
+  public ObjectTimestamps getTimestamps() {
+    return timestamps;
+  }
+
+  public void setTimestamps(ObjectTimestamps timestamps) {
+    this.timestamps = timestamps;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -242,13 +274,23 @@ public class User {
       Objects.equals(this.lastName, user.lastName) &&
       Objects.equals(this.email, user.email) &&
       Objects.equals(this.phone, user.phone) &&
-      Objects.equals(this.userStatus, user.userStatus)
+      Objects.equals(this.userStatus, user.userStatus) &&
+      Objects.equals(this.timestamps, user.timestamps)
     );
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, username, firstName, lastName, email, phone, userStatus);
+    return Objects.hash(
+      id,
+      username,
+      firstName,
+      lastName,
+      email,
+      phone,
+      userStatus,
+      timestamps
+    );
   }
 
   @Override
@@ -262,6 +304,7 @@ public class User {
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    phone: ").append(toIndentedString(phone)).append("\n");
     sb.append("    userStatus: ").append(toIndentedString(userStatus)).append("\n");
+    sb.append("    timestamps: ").append(toIndentedString(timestamps)).append("\n");
     sb.append("}");
     return sb.toString();
   }

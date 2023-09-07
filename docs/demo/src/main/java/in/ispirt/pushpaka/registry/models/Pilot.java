@@ -2,8 +2,8 @@ package in.ispirt.pushpaka.registry.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import in.ispirt.pushpaka.registry.models.LegalEntity;
 import in.ispirt.pushpaka.registry.models.ObjectTimestamps;
+import in.ispirt.pushpaka.registry.models.User;
 import in.ispirt.pushpaka.registry.models.Validity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.net.URI;
@@ -17,47 +17,42 @@ import javax.validation.constraints.*;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 /**
- * Manufacturer
+ * Pilot
  */
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
   date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]"
 )
-public class Manufacturer {
+public class Pilot {
   private UUID id;
 
-  private LegalEntity legalEntity;
-
-  private Validity validity;
+  private User user;
 
   private ObjectTimestamps timestamps;
 
+  private Validity validity;
+
   /**
    * Default constructor
-   * @deprecated Use {@link Manufacturer#Manufacturer(UUID, LegalEntity, Validity, ObjectTimestamps)}
+   * @deprecated Use {@link Pilot#Pilot(UUID, User, ObjectTimestamps, Validity)}
    */
   @Deprecated
-  public Manufacturer() {
+  public Pilot() {
     super();
   }
 
   /**
    * Constructor with only required parameters
    */
-  public Manufacturer(
-    UUID id,
-    LegalEntity legalEntity,
-    Validity validity,
-    ObjectTimestamps timestamps
-  ) {
+  public Pilot(UUID id, User user, ObjectTimestamps timestamps, Validity validity) {
     this.id = id;
-    this.legalEntity = legalEntity;
-    this.validity = validity;
+    this.user = user;
     this.timestamps = timestamps;
+    this.validity = validity;
   }
 
-  public Manufacturer id(UUID id) {
+  public Pilot id(UUID id) {
     this.id = id;
     return this;
   }
@@ -81,49 +76,28 @@ public class Manufacturer {
     this.id = id;
   }
 
-  public Manufacturer legalEntity(LegalEntity legalEntity) {
-    this.legalEntity = legalEntity;
+  public Pilot user(User user) {
+    this.user = user;
     return this;
   }
 
   /**
-   * Get legalEntity
-   * @return legalEntity
+   * Get user
+   * @return user
    */
   @NotNull
   @Valid
-  @Schema(name = "legalEntity", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("legalEntity")
-  public LegalEntity getLegalEntity() {
-    return legalEntity;
+  @Schema(name = "user", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("user")
+  public User getUser() {
+    return user;
   }
 
-  public void setLegalEntity(LegalEntity legalEntity) {
-    this.legalEntity = legalEntity;
+  public void setUser(User user) {
+    this.user = user;
   }
 
-  public Manufacturer validity(Validity validity) {
-    this.validity = validity;
-    return this;
-  }
-
-  /**
-   * Get validity
-   * @return validity
-   */
-  @NotNull
-  @Valid
-  @Schema(name = "validity", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("validity")
-  public Validity getValidity() {
-    return validity;
-  }
-
-  public void setValidity(Validity validity) {
-    this.validity = validity;
-  }
-
-  public Manufacturer timestamps(ObjectTimestamps timestamps) {
+  public Pilot timestamps(ObjectTimestamps timestamps) {
     this.timestamps = timestamps;
     return this;
   }
@@ -144,6 +118,27 @@ public class Manufacturer {
     this.timestamps = timestamps;
   }
 
+  public Pilot validity(Validity validity) {
+    this.validity = validity;
+    return this;
+  }
+
+  /**
+   * Get validity
+   * @return validity
+   */
+  @NotNull
+  @Valid
+  @Schema(name = "validity", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("validity")
+  public Validity getValidity() {
+    return validity;
+  }
+
+  public void setValidity(Validity validity) {
+    this.validity = validity;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -152,28 +147,28 @@ public class Manufacturer {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Manufacturer manufacturer = (Manufacturer) o;
+    Pilot pilot = (Pilot) o;
     return (
-      Objects.equals(this.id, manufacturer.id) &&
-      Objects.equals(this.legalEntity, manufacturer.legalEntity) &&
-      Objects.equals(this.validity, manufacturer.validity) &&
-      Objects.equals(this.timestamps, manufacturer.timestamps)
+      Objects.equals(this.id, pilot.id) &&
+      Objects.equals(this.user, pilot.user) &&
+      Objects.equals(this.timestamps, pilot.timestamps) &&
+      Objects.equals(this.validity, pilot.validity)
     );
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, legalEntity, validity, timestamps);
+    return Objects.hash(id, user, timestamps, validity);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Manufacturer {\n");
+    sb.append("class Pilot {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    legalEntity: ").append(toIndentedString(legalEntity)).append("\n");
-    sb.append("    validity: ").append(toIndentedString(validity)).append("\n");
+    sb.append("    user: ").append(toIndentedString(user)).append("\n");
     sb.append("    timestamps: ").append(toIndentedString(timestamps)).append("\n");
+    sb.append("    validity: ").append(toIndentedString(validity)).append("\n");
     sb.append("}");
     return sb.toString();
   }

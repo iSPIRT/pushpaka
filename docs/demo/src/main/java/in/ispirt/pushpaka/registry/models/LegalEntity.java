@@ -3,6 +3,7 @@ package in.ispirt.pushpaka.registry.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import in.ispirt.pushpaka.registry.models.Address;
+import in.ispirt.pushpaka.registry.models.ObjectTimestamps;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.net.URI;
 import java.time.OffsetDateTime;
@@ -20,7 +21,7 @@ import org.openapitools.jackson.nullable.JsonNullable;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-07T18:36:04.490622+05:30[Asia/Kolkata]"
+  date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]"
 )
 public class LegalEntity {
   private UUID id;
@@ -33,9 +34,11 @@ public class LegalEntity {
 
   private String gstin;
 
+  private ObjectTimestamps timestamps;
+
   /**
    * Default constructor
-   * @deprecated Use {@link LegalEntity#LegalEntity(UUID, String, String, Address)}
+   * @deprecated Use {@link LegalEntity#LegalEntity(UUID, String, String, Address, ObjectTimestamps)}
    */
   @Deprecated
   public LegalEntity() {
@@ -45,11 +48,18 @@ public class LegalEntity {
   /**
    * Constructor with only required parameters
    */
-  public LegalEntity(UUID id, String cin, String name, Address regdAddress) {
+  public LegalEntity(
+    UUID id,
+    String cin,
+    String name,
+    Address regdAddress,
+    ObjectTimestamps timestamps
+  ) {
     this.id = id;
     this.cin = cin;
     this.name = name;
     this.regdAddress = regdAddress;
+    this.timestamps = timestamps;
   }
 
   public LegalEntity id(UUID id) {
@@ -61,9 +71,12 @@ public class LegalEntity {
    * Get id
    * @return id
    */
-  @NotNull
   @Valid
-  @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(
+    name = "id",
+    accessMode = Schema.AccessMode.READ_ONLY,
+    requiredMode = Schema.RequiredMode.REQUIRED
+  )
   @JsonProperty("id")
   public UUID getId() {
     return id;
@@ -154,6 +167,27 @@ public class LegalEntity {
     this.gstin = gstin;
   }
 
+  public LegalEntity timestamps(ObjectTimestamps timestamps) {
+    this.timestamps = timestamps;
+    return this;
+  }
+
+  /**
+   * Get timestamps
+   * @return timestamps
+   */
+  @NotNull
+  @Valid
+  @Schema(name = "timestamps", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("timestamps")
+  public ObjectTimestamps getTimestamps() {
+    return timestamps;
+  }
+
+  public void setTimestamps(ObjectTimestamps timestamps) {
+    this.timestamps = timestamps;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -168,13 +202,14 @@ public class LegalEntity {
       Objects.equals(this.cin, legalEntity.cin) &&
       Objects.equals(this.name, legalEntity.name) &&
       Objects.equals(this.regdAddress, legalEntity.regdAddress) &&
-      Objects.equals(this.gstin, legalEntity.gstin)
+      Objects.equals(this.gstin, legalEntity.gstin) &&
+      Objects.equals(this.timestamps, legalEntity.timestamps)
     );
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, cin, name, regdAddress, gstin);
+    return Objects.hash(id, cin, name, regdAddress, gstin, timestamps);
   }
 
   @Override
@@ -186,6 +221,7 @@ public class LegalEntity {
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    regdAddress: ").append(toIndentedString(regdAddress)).append("\n");
     sb.append("    gstin: ").append(toIndentedString(gstin)).append("\n");
+    sb.append("    timestamps: ").append(toIndentedString(timestamps)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import in.ispirt.pushpaka.registry.models.Manufacturer;
+import in.ispirt.pushpaka.registry.models.ObjectTimestamps;
 import in.ispirt.pushpaka.registry.models.OperationCategory;
 import in.ispirt.pushpaka.registry.models.UasPropulsionCategory;
 import in.ispirt.pushpaka.registry.models.UasWeightCategory;
@@ -27,7 +28,7 @@ import org.openapitools.jackson.nullable.JsonNullable;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-07T18:36:04.490622+05:30[Asia/Kolkata]"
+  date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]"
 )
 public class UasType {
   private UUID id;
@@ -47,9 +48,11 @@ public class UasType {
   @Valid
   private List<OperationCategory> supportedOperationCategories = new ArrayList<>();
 
+  private ObjectTimestamps timestamps;
+
   /**
    * Default constructor
-   * @deprecated Use {@link UasType#UasType(UUID, String, Manufacturer, UasPropulsionCategory, UasWeightCategory, Float, List<OperationCategory>)}
+   * @deprecated Use {@link UasType#UasType(UUID, String, Manufacturer, UasPropulsionCategory, UasWeightCategory, Float, List<OperationCategory>, ObjectTimestamps)}
    */
   @Deprecated
   public UasType() {
@@ -66,7 +69,8 @@ public class UasType {
     UasPropulsionCategory propulsionCategory,
     UasWeightCategory weightCategory,
     Float mtow,
-    List<OperationCategory> supportedOperationCategories
+    List<OperationCategory> supportedOperationCategories,
+    ObjectTimestamps timestamps
   ) {
     this.id = id;
     this.modelNumber = modelNumber;
@@ -75,6 +79,7 @@ public class UasType {
     this.weightCategory = weightCategory;
     this.mtow = mtow;
     this.supportedOperationCategories = supportedOperationCategories;
+    this.timestamps = timestamps;
   }
 
   public UasType id(UUID id) {
@@ -86,9 +91,12 @@ public class UasType {
    * Get id
    * @return id
    */
-  @NotNull
   @Valid
-  @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(
+    name = "id",
+    accessMode = Schema.AccessMode.READ_ONLY,
+    requiredMode = Schema.RequiredMode.REQUIRED
+  )
   @JsonProperty("id")
   public UUID getId() {
     return id;
@@ -264,6 +272,27 @@ public class UasType {
     this.supportedOperationCategories = supportedOperationCategories;
   }
 
+  public UasType timestamps(ObjectTimestamps timestamps) {
+    this.timestamps = timestamps;
+    return this;
+  }
+
+  /**
+   * Get timestamps
+   * @return timestamps
+   */
+  @NotNull
+  @Valid
+  @Schema(name = "timestamps", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("timestamps")
+  public ObjectTimestamps getTimestamps() {
+    return timestamps;
+  }
+
+  public void setTimestamps(ObjectTimestamps timestamps) {
+    this.timestamps = timestamps;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -284,7 +313,8 @@ public class UasType {
       Objects.equals(
         this.supportedOperationCategories,
         uasType.supportedOperationCategories
-      )
+      ) &&
+      Objects.equals(this.timestamps, uasType.timestamps)
     );
   }
 
@@ -298,7 +328,8 @@ public class UasType {
       weightCategory,
       mtow,
       photoUrl,
-      supportedOperationCategories
+      supportedOperationCategories,
+      timestamps
     );
   }
 
@@ -323,6 +354,7 @@ public class UasType {
       .append("    supportedOperationCategories: ")
       .append(toIndentedString(supportedOperationCategories))
       .append("\n");
+    sb.append("    timestamps: ").append(toIndentedString(timestamps)).append("\n");
     sb.append("}");
     return sb.toString();
   }

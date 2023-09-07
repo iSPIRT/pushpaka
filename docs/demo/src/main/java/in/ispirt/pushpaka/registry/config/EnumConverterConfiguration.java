@@ -1,8 +1,10 @@
 package in.ispirt.pushpaka.registry.config;
 
 import in.ispirt.pushpaka.registry.models.OperationCategory;
+import in.ispirt.pushpaka.registry.models.PilotStatus;
 import in.ispirt.pushpaka.registry.models.State;
 import in.ispirt.pushpaka.registry.models.UasPropulsionCategory;
+import in.ispirt.pushpaka.registry.models.UasStatus;
 import in.ispirt.pushpaka.registry.models.UasWeightCategory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +22,19 @@ public class EnumConverterConfiguration {
       @Override
       public OperationCategory convert(String source) {
         return OperationCategory.fromValue(source);
+      }
+    };
+  }
+
+  @Bean(
+    name = "in.ispirt.pushpaka.registry.config.EnumConverterConfiguration.pilotStatusConverter"
+  )
+  Converter<String, PilotStatus> pilotStatusConverter() {
+    return new Converter<String, PilotStatus>() {
+
+      @Override
+      public PilotStatus convert(String source) {
+        return PilotStatus.fromValue(source);
       }
     };
   }
@@ -46,6 +61,19 @@ public class EnumConverterConfiguration {
       @Override
       public UasPropulsionCategory convert(String source) {
         return UasPropulsionCategory.fromValue(source);
+      }
+    };
+  }
+
+  @Bean(
+    name = "in.ispirt.pushpaka.registry.config.EnumConverterConfiguration.uasStatusConverter"
+  )
+  Converter<String, UasStatus> uasStatusConverter() {
+    return new Converter<String, UasStatus>() {
+
+      @Override
+      public UasStatus convert(String source) {
+        return UasStatus.fromValue(source);
       }
     };
   }

@@ -1,7 +1,6 @@
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.registry.models.ModelApiResponse;
-import in.ispirt.pushpaka.registry.models.UasType;
+import in.ispirt.pushpaka.registry.models.Uas;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -30,11 +29,11 @@ import org.springframework.web.multipart.MultipartFile;
 )
 @Controller
 @RequestMapping("${openapi.pushpakaRegistry.base-path:/api/v1}")
-public class UasTypeApiController implements UasTypeApi {
+public class UasApiController implements UasApi {
   private final NativeWebRequest request;
 
   @Autowired
-  public UasTypeApiController(NativeWebRequest request) {
+  public UasApiController(NativeWebRequest request) {
     this.request = request;
   }
 

@@ -2,9 +2,10 @@ package in.ispirt.pushpaka.registry.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import in.ispirt.pushpaka.registry.models.LegalEntity;
+import com.fasterxml.jackson.annotation.JsonValue;
 import in.ispirt.pushpaka.registry.models.ObjectTimestamps;
-import in.ispirt.pushpaka.registry.models.Validity;
+import in.ispirt.pushpaka.registry.models.UasStatus;
+import in.ispirt.pushpaka.registry.models.UasType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.net.URI;
 import java.time.OffsetDateTime;
@@ -17,47 +18,51 @@ import javax.validation.constraints.*;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 /**
- * Manufacturer
+ * Uas
  */
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
   date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]"
 )
-public class Manufacturer {
+public class Uas {
   private UUID id;
 
-  private LegalEntity legalEntity;
+  private UasType type;
 
-  private Validity validity;
+  private String oemSerialNumber;
 
   private ObjectTimestamps timestamps;
 
+  private UasStatus status;
+
   /**
    * Default constructor
-   * @deprecated Use {@link Manufacturer#Manufacturer(UUID, LegalEntity, Validity, ObjectTimestamps)}
+   * @deprecated Use {@link Uas#Uas(UUID, UasType, String, ObjectTimestamps, UasStatus)}
    */
   @Deprecated
-  public Manufacturer() {
+  public Uas() {
     super();
   }
 
   /**
    * Constructor with only required parameters
    */
-  public Manufacturer(
+  public Uas(
     UUID id,
-    LegalEntity legalEntity,
-    Validity validity,
-    ObjectTimestamps timestamps
+    UasType type,
+    String oemSerialNumber,
+    ObjectTimestamps timestamps,
+    UasStatus status
   ) {
     this.id = id;
-    this.legalEntity = legalEntity;
-    this.validity = validity;
+    this.type = type;
+    this.oemSerialNumber = oemSerialNumber;
     this.timestamps = timestamps;
+    this.status = status;
   }
 
-  public Manufacturer id(UUID id) {
+  public Uas id(UUID id) {
     this.id = id;
     return this;
   }
@@ -81,49 +86,49 @@ public class Manufacturer {
     this.id = id;
   }
 
-  public Manufacturer legalEntity(LegalEntity legalEntity) {
-    this.legalEntity = legalEntity;
+  public Uas type(UasType type) {
+    this.type = type;
     return this;
   }
 
   /**
-   * Get legalEntity
-   * @return legalEntity
+   * Get type
+   * @return type
    */
   @NotNull
   @Valid
-  @Schema(name = "legalEntity", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("legalEntity")
-  public LegalEntity getLegalEntity() {
-    return legalEntity;
+  @Schema(name = "type", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("type")
+  public UasType getType() {
+    return type;
   }
 
-  public void setLegalEntity(LegalEntity legalEntity) {
-    this.legalEntity = legalEntity;
+  public void setType(UasType type) {
+    this.type = type;
   }
 
-  public Manufacturer validity(Validity validity) {
-    this.validity = validity;
+  public Uas oemSerialNumber(String oemSerialNumber) {
+    this.oemSerialNumber = oemSerialNumber;
     return this;
   }
 
   /**
-   * Get validity
-   * @return validity
+   * Get oemSerialNumber
+   * @return oemSerialNumber
    */
   @NotNull
-  @Valid
-  @Schema(name = "validity", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("validity")
-  public Validity getValidity() {
-    return validity;
+  @Size(min = 6, max = 12)
+  @Schema(name = "oemSerialNumber", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("oemSerialNumber")
+  public String getOemSerialNumber() {
+    return oemSerialNumber;
   }
 
-  public void setValidity(Validity validity) {
-    this.validity = validity;
+  public void setOemSerialNumber(String oemSerialNumber) {
+    this.oemSerialNumber = oemSerialNumber;
   }
 
-  public Manufacturer timestamps(ObjectTimestamps timestamps) {
+  public Uas timestamps(ObjectTimestamps timestamps) {
     this.timestamps = timestamps;
     return this;
   }
@@ -144,6 +149,27 @@ public class Manufacturer {
     this.timestamps = timestamps;
   }
 
+  public Uas status(UasStatus status) {
+    this.status = status;
+    return this;
+  }
+
+  /**
+   * Get status
+   * @return status
+   */
+  @NotNull
+  @Valid
+  @Schema(name = "status", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("status")
+  public UasStatus getStatus() {
+    return status;
+  }
+
+  public void setStatus(UasStatus status) {
+    this.status = status;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -152,28 +178,33 @@ public class Manufacturer {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Manufacturer manufacturer = (Manufacturer) o;
+    Uas uas = (Uas) o;
     return (
-      Objects.equals(this.id, manufacturer.id) &&
-      Objects.equals(this.legalEntity, manufacturer.legalEntity) &&
-      Objects.equals(this.validity, manufacturer.validity) &&
-      Objects.equals(this.timestamps, manufacturer.timestamps)
+      Objects.equals(this.id, uas.id) &&
+      Objects.equals(this.type, uas.type) &&
+      Objects.equals(this.oemSerialNumber, uas.oemSerialNumber) &&
+      Objects.equals(this.timestamps, uas.timestamps) &&
+      Objects.equals(this.status, uas.status)
     );
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, legalEntity, validity, timestamps);
+    return Objects.hash(id, type, oemSerialNumber, timestamps, status);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Manufacturer {\n");
+    sb.append("class Uas {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    legalEntity: ").append(toIndentedString(legalEntity)).append("\n");
-    sb.append("    validity: ").append(toIndentedString(validity)).append("\n");
+    sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb
+      .append("    oemSerialNumber: ")
+      .append(toIndentedString(oemSerialNumber))
+      .append("\n");
     sb.append("    timestamps: ").append(toIndentedString(timestamps)).append("\n");
+    sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("}");
     return sb.toString();
   }

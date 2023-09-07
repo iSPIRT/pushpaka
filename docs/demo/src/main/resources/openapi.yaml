@@ -25,6 +25,8 @@ servers:
 tags:
 - description: UAS Types
   name: uas_type
+- description: UAS
+  name: uas
 - description: Operations about user
   name: user
 paths:
@@ -314,6 +316,246 @@ paths:
       x-accepts: application/json
       x-tags:
       - tag: uas_types
+  /uas:
+    post:
+      description: Add a new uas to the store
+      operationId: addUas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Uas'
+        description: Create a new uas in the store
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Uas'
+          description: Successful operation
+        "405":
+          description: Invalid input
+      security:
+      - registry_auth:
+        - write:uass
+        - read:uass
+      summary: Add a new uas to the store
+      tags:
+      - uas
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: uas
+    put:
+      description: Update an existing uas by Id
+      operationId: updateUas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Uas'
+        description: Update an existent uas in the store
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Uas'
+          description: Successful operation
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Uas not found
+        "405":
+          description: Validation exception
+      security:
+      - registry_auth:
+        - write:uass
+        - read:uass
+      summary: Update an existing uas
+      tags:
+      - uas
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: uas
+  /uas/findByStatus:
+    get:
+      description: Multiple status values can be provided with comma separated strings
+      operationId: findUassByStatus
+      parameters:
+      - description: Status values that need to be considered for filter
+        explode: true
+        in: query
+        name: status
+        required: false
+        schema:
+          default: available
+          enum:
+          - available
+          - pending
+          - sold
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Uas'
+                type: array
+          description: successful operation
+        "400":
+          description: Invalid status value
+      security:
+      - registry_auth:
+        - write:uass
+        - read:uass
+      summary: Finds Uass by status
+      tags:
+      - uas
+      x-accepts: application/json
+      x-tags:
+      - tag: uas
+  /uas/find:
+    get:
+      operationId: findUass
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Uas'
+                type: array
+          description: successful operation
+        "400":
+          description: Invalid value
+      security:
+      - registry_auth:
+        - write:uass
+        - read:uass
+      summary: Finds Uass
+      tags:
+      - uas
+      x-accepts: application/json
+      x-tags:
+      - tag: uas
+  /uas/{uasId}:
+    delete:
+      description: ""
+      operationId: deleteUas
+      parameters:
+      - description: ""
+        explode: false
+        in: header
+        name: api_key
+        required: false
+        schema:
+          type: string
+        style: simple
+      - description: Uas id to delete
+        explode: false
+        in: path
+        name: uasId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "400":
+          description: Invalid uas value
+      security:
+      - registry_auth:
+        - write:uass
+        - read:uass
+      summary: Deletes a uas
+      tags:
+      - uas
+      x-accepts: application/json
+      x-tags:
+      - tag: uas
+    get:
+      description: Returns a single uas
+      operationId: getUasById
+      parameters:
+      - description: ID of uas to return
+        explode: false
+        in: path
+        name: uasId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Uas'
+          description: successful operation
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Uas not found
+      security:
+      - api_key: []
+      - registry_auth:
+        - write:uass
+        - read:uass
+      summary: Find uas by ID
+      tags:
+      - uas
+      x-accepts: application/json
+      x-tags:
+      - tag: uas
+    post:
+      description: ""
+      operationId: updateUasWithForm
+      parameters:
+      - description: ID of uas that needs to be updated
+        explode: false
+        in: path
+        name: uasId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - description: Name of uas that needs to be updated
+        explode: true
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Status of uas that needs to be updated
+        explode: true
+        in: query
+        name: status
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "405":
+          description: Invalid input
+      security:
+      - registry_auth:
+        - write:uass
+        - read:uass
+      summary: Updates a uas in the store with form data
+      tags:
+      - uas
+      x-accepts: application/json
+      x-tags:
+      - tag: uas
   /user:
     post:
       description: This can only be done by the logged in user.
@@ -528,6 +770,9 @@ components:
         lastName: James
         userStatus: 1
         phone: +919999999999
+        timestamps:
+          created: 2000-01-23T04:56:07.000+00:00
+          updated: 2000-01-23T04:56:07.000+00:00
         id: e66b7c9e-79f5-44b0-9642-59ca20b7af63
         email: john@email.com
         username: theUser
@@ -535,6 +780,7 @@ components:
         id:
           example: e66b7c9e-79f5-44b0-9642-59ca20b7af63
           format: uuid
+          readOnly: true
           type: string
         username:
           example: theUser
@@ -556,26 +802,39 @@ components:
           example: 1
           format: int32
           type: integer
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
       required:
       - email
       - firstName
       - id
       - lastName
+      - timestamps
       - username
       type: object
     UasType:
       example:
         photoUrl: https://openapi-generator.tech
         weightCategory: null
+        timestamps:
+          created: 2000-01-23T04:56:07.000+00:00
+          updated: 2000-01-23T04:56:07.000+00:00
         modelNumber: modelNumber
         id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         mtow: 6.0274563
         propulsionCategory: null
         manufacturer:
-          validTill: 2000-01-23T04:56:07.000+00:00
+          timestamps:
+            created: 2000-01-23T04:56:07.000+00:00
+            updated: 2000-01-23T04:56:07.000+00:00
           id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          validFrom: 2000-01-23T04:56:07.000+00:00
+          validity:
+            till: 2000-01-23T04:56:07.000+00:00
+            from: 2000-01-23T04:56:07.000+00:00
           legalEntity:
+            timestamps:
+              created: 2000-01-23T04:56:07.000+00:00
+              updated: 2000-01-23T04:56:07.000+00:00
             name: name
             cin: cin
             id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
@@ -593,6 +852,7 @@ components:
       properties:
         id:
           format: uuid
+          readOnly: true
           type: string
         modelNumber:
           type: string
@@ -614,6 +874,8 @@ components:
           items:
             $ref: '#/components/schemas/OperationCategory'
           type: array
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
       required:
       - id
       - manufacturer
@@ -621,7 +883,79 @@ components:
       - mtow
       - propulsionCategory
       - supportedOperationCategories
+      - timestamps
       - weightCategory
+      type: object
+    UasStatus:
+      enum:
+      - ACTIVE
+      - GROUNDED
+      type: string
+    Uas:
+      example:
+        oemSerialNumber: oemSerialNumber
+        timestamps:
+          created: 2000-01-23T04:56:07.000+00:00
+          updated: 2000-01-23T04:56:07.000+00:00
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        type:
+          photoUrl: https://openapi-generator.tech
+          weightCategory: null
+          timestamps:
+            created: 2000-01-23T04:56:07.000+00:00
+            updated: 2000-01-23T04:56:07.000+00:00
+          modelNumber: modelNumber
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          mtow: 6.0274563
+          propulsionCategory: null
+          manufacturer:
+            timestamps:
+              created: 2000-01-23T04:56:07.000+00:00
+              updated: 2000-01-23T04:56:07.000+00:00
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            validity:
+              till: 2000-01-23T04:56:07.000+00:00
+              from: 2000-01-23T04:56:07.000+00:00
+            legalEntity:
+              timestamps:
+                created: 2000-01-23T04:56:07.000+00:00
+                updated: 2000-01-23T04:56:07.000+00:00
+              name: name
+              cin: cin
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              regdAddress:
+                city: Mumbai
+                pinCode: 172074.45705867198
+                state: null
+                line3: Bandra West
+                line2: Landmark
+                line1: 123 ABC Housing Society
+              gstin: gstin
+          supportedOperationCategories:
+          - null
+          - null
+        status: null
+      properties:
+        id:
+          format: uuid
+          readOnly: true
+          type: string
+        type:
+          $ref: '#/components/schemas/UasType'
+        oemSerialNumber:
+          maxLength: 12
+          minLength: 6
+          type: string
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+        status:
+          $ref: '#/components/schemas/UasStatus'
+      required:
+      - id
+      - oemSerialNumber
+      - status
+      - timestamps
+      - type
       type: object
     ApiResponse:
       example:
@@ -642,6 +976,11 @@ components:
       - C1
       - C2
       - C3
+      type: string
+    PilotStatus:
+      enum:
+      - ACTIVE
+      - REVOKED
       type: string
     UasWeightCategory:
       enum:
@@ -733,6 +1072,9 @@ components:
       type: object
     LegalEntity:
       example:
+        timestamps:
+          created: 2000-01-23T04:56:07.000+00:00
+          updated: 2000-01-23T04:56:07.000+00:00
         name: name
         cin: cin
         id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
@@ -747,6 +1089,7 @@ components:
       properties:
         id:
           format: uuid
+          readOnly: true
           type: string
         cin:
           type: string
@@ -756,18 +1099,29 @@ components:
           $ref: '#/components/schemas/Address'
         gstin:
           type: string
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
       required:
       - cin
       - id
       - name
       - regdAddress
+      - timestamps
+      - validity
       type: object
     Manufacturer:
       example:
-        validTill: 2000-01-23T04:56:07.000+00:00
+        timestamps:
+          created: 2000-01-23T04:56:07.000+00:00
+          updated: 2000-01-23T04:56:07.000+00:00
         id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        validFrom: 2000-01-23T04:56:07.000+00:00
+        validity:
+          till: 2000-01-23T04:56:07.000+00:00
+          from: 2000-01-23T04:56:07.000+00:00
         legalEntity:
+          timestamps:
+            created: 2000-01-23T04:56:07.000+00:00
+            updated: 2000-01-23T04:56:07.000+00:00
           name: name
           cin: cin
           id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
@@ -782,58 +1136,104 @@ components:
       properties:
         id:
           format: uuid
+          readOnly: true
           type: string
         legalEntity:
           $ref: '#/components/schemas/LegalEntity'
-        validFrom:
-          format: date-time
-          type: string
-        validTill:
-          format: date-time
-          type: string
+        validity:
+          $ref: '#/components/schemas/Validity'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
       required:
       - id
       - legalEntity
-      - validFrom
-      - validTill
+      - timestamps
+      - validity
       type: object
     CivilAviationAuthority:
       properties:
         id:
           format: uuid
+          readOnly: true
           type: string
         legalEntity:
           $ref: '#/components/schemas/LegalEntity'
-        validFrom:
-          format: date-time
-          type: string
-        validTill:
-          format: date-time
-          type: string
+        validity:
+          $ref: '#/components/schemas/Validity'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
       required:
       - id
       - legalEntity
-      - validFrom
-      - validTill
+      - timestamps
+      - validity
+      type: object
+    Validity:
+      example:
+        till: 2000-01-23T04:56:07.000+00:00
+        from: 2000-01-23T04:56:07.000+00:00
+      properties:
+        from:
+          format: date-time
+          type: string
+        till:
+          format: date-time
+          type: string
+      required:
+      - from
+      type: object
+    ObjectTimestamps:
+      example:
+        created: 2000-01-23T04:56:07.000+00:00
+        updated: 2000-01-23T04:56:07.000+00:00
+      properties:
+        created:
+          format: date-time
+          readOnly: true
+          type: string
+        updated:
+          format: date-time
+          readOnly: true
+          type: string
+      required:
+      - created
+      - updated
       type: object
     Operator:
       properties:
         id:
           format: uuid
+          readOnly: true
           type: string
         legalEntity:
           $ref: '#/components/schemas/LegalEntity'
-        validFrom:
-          format: date-time
-          type: string
-        validTill:
-          format: date-time
-          type: string
+        validity:
+          $ref: '#/components/schemas/Validity'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
       required:
       - id
       - legalEntity
-      - validFrom
-      - validTill
+      - timestamps
+      - validity
+      type: object
+    Pilot:
+      properties:
+        id:
+          format: uuid
+          readOnly: true
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+        validity:
+          $ref: '#/components/schemas/Validity'
+      required:
+      - id
+      - timestamps
+      - user
+      - validity
       type: object
   securitySchemes:
     registry_auth:
@@ -843,6 +1243,8 @@ components:
           scopes:
             write:uasTypes: modify uasTypes in your account
             read:uasTypes: read your uasTypes
+            write:uass: modify uass in your account
+            read:uass: read your uass
       type: oauth2
     api_key:
       in: header

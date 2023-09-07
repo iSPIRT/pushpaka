@@ -26,7 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-07T18:36:04.490622+05:30[Asia/Kolkata]"
+  date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]"
 )
 @Controller
 @RequestMapping("${openapi.pushpakaRegistry.base-path:/api/v1}")

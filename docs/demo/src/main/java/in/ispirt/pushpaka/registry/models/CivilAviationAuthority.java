@@ -3,9 +3,10 @@ package in.ispirt.pushpaka.registry.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import in.ispirt.pushpaka.registry.models.LegalEntity;
+import in.ispirt.pushpaka.registry.models.ObjectTimestamps;
+import in.ispirt.pushpaka.registry.models.Validity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.net.URI;
-import java.time.OffsetDateTime;
 import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.Objects;
@@ -14,7 +15,6 @@ import javax.annotation.Generated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import org.openapitools.jackson.nullable.JsonNullable;
-import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * CivilAviationAuthority
@@ -22,22 +22,20 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-07T18:36:04.490622+05:30[Asia/Kolkata]"
+  date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]"
 )
 public class CivilAviationAuthority {
   private UUID id;
 
   private LegalEntity legalEntity;
 
-  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  private OffsetDateTime validFrom;
+  private Validity validity;
 
-  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  private OffsetDateTime validTill;
+  private ObjectTimestamps timestamps;
 
   /**
    * Default constructor
-   * @deprecated Use {@link CivilAviationAuthority#CivilAviationAuthority(UUID, LegalEntity, OffsetDateTime, OffsetDateTime)}
+   * @deprecated Use {@link CivilAviationAuthority#CivilAviationAuthority(UUID, LegalEntity, Validity, ObjectTimestamps)}
    */
   @Deprecated
   public CivilAviationAuthority() {
@@ -50,13 +48,13 @@ public class CivilAviationAuthority {
   public CivilAviationAuthority(
     UUID id,
     LegalEntity legalEntity,
-    OffsetDateTime validFrom,
-    OffsetDateTime validTill
+    Validity validity,
+    ObjectTimestamps timestamps
   ) {
     this.id = id;
     this.legalEntity = legalEntity;
-    this.validFrom = validFrom;
-    this.validTill = validTill;
+    this.validity = validity;
+    this.timestamps = timestamps;
   }
 
   public CivilAviationAuthority id(UUID id) {
@@ -68,9 +66,12 @@ public class CivilAviationAuthority {
    * Get id
    * @return id
    */
-  @NotNull
   @Valid
-  @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(
+    name = "id",
+    accessMode = Schema.AccessMode.READ_ONLY,
+    requiredMode = Schema.RequiredMode.REQUIRED
+  )
   @JsonProperty("id")
   public UUID getId() {
     return id;
@@ -101,46 +102,46 @@ public class CivilAviationAuthority {
     this.legalEntity = legalEntity;
   }
 
-  public CivilAviationAuthority validFrom(OffsetDateTime validFrom) {
-    this.validFrom = validFrom;
+  public CivilAviationAuthority validity(Validity validity) {
+    this.validity = validity;
     return this;
   }
 
   /**
-   * Get validFrom
-   * @return validFrom
+   * Get validity
+   * @return validity
    */
   @NotNull
   @Valid
-  @Schema(name = "validFrom", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("validFrom")
-  public OffsetDateTime getValidFrom() {
-    return validFrom;
+  @Schema(name = "validity", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("validity")
+  public Validity getValidity() {
+    return validity;
   }
 
-  public void setValidFrom(OffsetDateTime validFrom) {
-    this.validFrom = validFrom;
+  public void setValidity(Validity validity) {
+    this.validity = validity;
   }
 
-  public CivilAviationAuthority validTill(OffsetDateTime validTill) {
-    this.validTill = validTill;
+  public CivilAviationAuthority timestamps(ObjectTimestamps timestamps) {
+    this.timestamps = timestamps;
     return this;
   }
 
   /**
-   * Get validTill
-   * @return validTill
+   * Get timestamps
+   * @return timestamps
    */
   @NotNull
   @Valid
-  @Schema(name = "validTill", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("validTill")
-  public OffsetDateTime getValidTill() {
-    return validTill;
+  @Schema(name = "timestamps", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("timestamps")
+  public ObjectTimestamps getTimestamps() {
+    return timestamps;
   }
 
-  public void setValidTill(OffsetDateTime validTill) {
-    this.validTill = validTill;
+  public void setTimestamps(ObjectTimestamps timestamps) {
+    this.timestamps = timestamps;
   }
 
   @Override
@@ -155,14 +156,14 @@ public class CivilAviationAuthority {
     return (
       Objects.equals(this.id, civilAviationAuthority.id) &&
       Objects.equals(this.legalEntity, civilAviationAuthority.legalEntity) &&
-      Objects.equals(this.validFrom, civilAviationAuthority.validFrom) &&
-      Objects.equals(this.validTill, civilAviationAuthority.validTill)
+      Objects.equals(this.validity, civilAviationAuthority.validity) &&
+      Objects.equals(this.timestamps, civilAviationAuthority.timestamps)
     );
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, legalEntity, validFrom, validTill);
+    return Objects.hash(id, legalEntity, validity, timestamps);
   }
 
   @Override
@@ -171,8 +172,8 @@ public class CivilAviationAuthority {
     sb.append("class CivilAviationAuthority {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    legalEntity: ").append(toIndentedString(legalEntity)).append("\n");
-    sb.append("    validFrom: ").append(toIndentedString(validFrom)).append("\n");
-    sb.append("    validTill: ").append(toIndentedString(validTill)).append("\n");
+    sb.append("    validity: ").append(toIndentedString(validity)).append("\n");
+    sb.append("    timestamps: ").append(toIndentedString(timestamps)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -35,7 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-07T18:36:04.490622+05:30[Asia/Kolkata]"
+  date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]"
 )
 @Validated
 @Tag(name = "user", description = "Operations about user")
@@ -88,7 +88,7 @@ public interface UserApi {
           )) {
             if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
               String exampleString =
-                "{ \"firstName\" : \"John\", \"lastName\" : \"James\", \"userStatus\" : 1, \"phone\" : \"+919999999999\", \"id\" : \"e66b7c9e-79f5-44b0-9642-59ca20b7af63\", \"email\" : \"john@email.com\", \"username\" : \"theUser\" }";
+                "{ \"firstName\" : \"John\", \"lastName\" : \"James\", \"userStatus\" : 1, \"phone\" : \"+919999999999\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"e66b7c9e-79f5-44b0-9642-59ca20b7af63\", \"email\" : \"john@email.com\", \"username\" : \"theUser\" }";
               ApiUtil.setExampleResponse(request, "application/json", exampleString);
               break;
             }
@@ -144,7 +144,7 @@ public interface UserApi {
           )) {
             if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
               String exampleString =
-                "{ \"firstName\" : \"John\", \"lastName\" : \"James\", \"userStatus\" : 1, \"phone\" : \"+919999999999\", \"id\" : \"e66b7c9e-79f5-44b0-9642-59ca20b7af63\", \"email\" : \"john@email.com\", \"username\" : \"theUser\" }";
+                "{ \"firstName\" : \"John\", \"lastName\" : \"James\", \"userStatus\" : 1, \"phone\" : \"+919999999999\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"e66b7c9e-79f5-44b0-9642-59ca20b7af63\", \"email\" : \"john@email.com\", \"username\" : \"theUser\" }";
               ApiUtil.setExampleResponse(request, "application/json", exampleString);
               break;
             }
@@ -234,7 +234,7 @@ public interface UserApi {
           )) {
             if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
               String exampleString =
-                "{ \"firstName\" : \"John\", \"lastName\" : \"James\", \"userStatus\" : 1, \"phone\" : \"+919999999999\", \"id\" : \"e66b7c9e-79f5-44b0-9642-59ca20b7af63\", \"email\" : \"john@email.com\", \"username\" : \"theUser\" }";
+                "{ \"firstName\" : \"John\", \"lastName\" : \"James\", \"userStatus\" : 1, \"phone\" : \"+919999999999\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"e66b7c9e-79f5-44b0-9642-59ca20b7af63\", \"email\" : \"john@email.com\", \"username\" : \"theUser\" }";
               ApiUtil.setExampleResponse(request, "application/json", exampleString);
               break;
             }
