@@ -1,4 +1,4 @@
-package org.openapitools;
+package in.ispirt.pushpaka.registry;
 
 import com.fasterxml.jackson.databind.util.StdDateFormat;
 import java.text.DateFormat;

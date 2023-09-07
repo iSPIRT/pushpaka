@@ -27,6 +27,12 @@ mvn test
 
 Spring Boot Server
 
+### Regenerate 
+
+```
+java -jar ~/Downloads/openapi-generator-cli-6.6.0.jar generate -g spring -i openapi.yaml --additional-properties=basePackage=in.ispirt.pushpaka.registry,apiPackage=in.ispirt.pushpaka.registry.api,modelPackage=in.ispirt.pushpaka.registry.models,configPackage=in.ispirt.pushpaka.registry.config
+```
+
 ### Running
 
 ```

@@ -1,4 +1,4 @@
-package org.openapitools;
+package in.ispirt.pushpaka.registry;
 
 import com.fasterxml.jackson.databind.Module;
 import org.openapitools.jackson.nullable.JsonNullableModule;
@@ -9,12 +9,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.FullyQualifiedAnnotationBeanNameGenerator;
 
-import com.example.SpiceDb;
-
 @SpringBootApplication(nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class)
 @ComponentScan(
   basePackages = {
-    "org.openapitools", "org.openapitools.api", "org.openapitools.configuration"
+    "in.ispirt.pushpaka.registry",
+    "in.ispirt.pushpaka.registry.api",
+    "in.ispirt.pushpaka.registry.config"
   },
   nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class
 )
@@ -22,10 +22,11 @@ public class OpenApiGeneratorApplication {
 
   public static void main(String[] args) {
     SpringApplication.run(OpenApiGeneratorApplication.class, args);
-    SpiceDb.writeSchema("src/main/resources/resource_permission.yaml");
   }
 
-  @Bean(name = "org.openapitools.OpenApiGeneratorApplication.jsonNullableModule")
+  @Bean(
+    name = "in.ispirt.pushpaka.registry.OpenApiGeneratorApplication.jsonNullableModule"
+  )
   public Module jsonNullableModule() {
     return new JsonNullableModule();
   }

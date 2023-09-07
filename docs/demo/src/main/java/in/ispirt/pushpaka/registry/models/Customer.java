@@ -1,7 +1,8 @@
-package org.openapitools.model;
+package in.ispirt.pushpaka.registry.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import in.ispirt.pushpaka.registry.models.Address;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.net.URI;
 import java.time.OffsetDateTime;
@@ -13,7 +14,6 @@ import javax.annotation.Generated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import org.openapitools.jackson.nullable.JsonNullable;
-import org.openapitools.model.Address;
 
 /**
  * Customer
@@ -21,7 +21,7 @@ import org.openapitools.model.Address;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-06T20:22:43.561950+05:30[Asia/Kolkata]"
+  date = "2023-09-07T14:06:09.953561+05:30[Asia/Kolkata]"
 )
 public class Customer {
   private Long id;

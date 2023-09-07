@@ -1,4 +1,4 @@
-package org.openapitools.api;
+package in.ispirt.pushpaka.registry.api;
 
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;

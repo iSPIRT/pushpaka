@@ -1,4 +1,4 @@
-package org.openapitools.configuration;
+package in.ispirt.pushpaka.registry.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -12,17 +12,17 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SpringDocConfiguration {
 
-  @Bean(name = "org.openapitools.configuration.SpringDocConfiguration.apiInfo")
+  @Bean(name = "in.ispirt.pushpaka.registry.config.SpringDocConfiguration.apiInfo")
   OpenAPI apiInfo() {
     return new OpenAPI()
       .info(
         new Info()
-          .title("Swagger Petstore - OpenAPI 3.0")
+          .title("Pushpaka Registry")
           .description(
             "This is a sample Pet Store Server based on the OpenAPI 3.0 specification.  You can find out more about Swagger at [http://swagger.io](http://swagger.io). In the third iteration of the pet store, we've switched to the design first approach! You can now help us improve the API whether it's by making changes to the definition itself or to the code. That way, with time, we can improve the API in general, and expose some of the new features in OAS3.  Some useful links: - [The Pet Store repository](https://github.com/swagger-api/swagger-petstore) - [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)"
           )
           .termsOfService("http://swagger.io/terms/")
-          .contact(new Contact().email("apiteam@swagger.io"))
+          .contact(new Contact().email("sayandeep@ispirt.in"))
           .license(
             new License()
               .name("Apache 2.0")

@@ -1,13 +1,13 @@
-package org.openapitools.api;
+package in.ispirt.pushpaka.registry.api;
 
+import in.ispirt.pushpaka.registry.models.ModelApiResponse;
+import in.ispirt.pushpaka.registry.models.Pet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import org.openapitools.model.ModelApiResponse;
-import org.openapitools.model.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,10 +25,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-06T20:22:43.561950+05:30[Asia/Kolkata]"
+  date = "2023-09-07T14:06:09.953561+05:30[Asia/Kolkata]"
 )
 @Controller
-@RequestMapping("${openapi.swaggerPetstoreOpenAPI30.base-path:/api/v3}")
+@RequestMapping("${openapi.pushpakaRegistry.base-path:/api/v1}")
 public class PetApiController implements PetApi {
   private final NativeWebRequest request;
 

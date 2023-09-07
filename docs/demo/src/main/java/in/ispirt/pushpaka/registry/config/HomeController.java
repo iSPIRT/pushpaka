@@ -1,4 +1,4 @@
-package org.openapitools.configuration;
+package in.ispirt.pushpaka.registry.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;

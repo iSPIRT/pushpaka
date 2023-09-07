@@ -1,4 +1,4 @@
-package org.openapitools.model;
+package in.ispirt.pushpaka.registry.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,7 +21,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-06T20:22:43.561950+05:30[Asia/Kolkata]"
+  date = "2023-09-07T14:06:09.953561+05:30[Asia/Kolkata]"
 )
 public class Order {
   private Long id;

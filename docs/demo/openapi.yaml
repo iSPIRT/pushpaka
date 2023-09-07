@@ -1,6 +1,6 @@
 openapi: 3.0.2
 info:
-  title: Swagger Petstore - OpenAPI 3.0
+  title: Pushpaka Registry
   description: "This is a sample Pet Store Server based on the OpenAPI 3.0 specification.\
     \  You can find out more about\nSwagger at [http://swagger.io](http://swagger.io).\
     \ In the third iteration of the pet store, we've switched to the design first\
@@ -11,16 +11,16 @@ info:
     - [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)"
   termsOfService: http://swagger.io/terms/
   contact:
-    email: apiteam@swagger.io
+    email: sayandeep@ispirt.in
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.17
 externalDocs:
-  description: Find out more about Swagger
-  url: http://swagger.io
+  description: Find out more about Pushpaka
+  url: https://ispirt.github.io/pushpaka/
 servers:
-- url: /api/v3
+- url: /api/v1
 tags:
 - name: pet
   description: Everything about your Pets
@@ -648,23 +648,6 @@ components:
             $ref: '#/components/schemas/Address'
       xml:
         name: customer
-    Address:
-      type: object
-      properties:
-        street:
-          type: string
-          example: 437 Lytton
-        city:
-          type: string
-          example: Palo Alto
-        state:
-          type: string
-          example: CA
-        zip:
-          type: string
-          example: "94301"
-      xml:
-        name: address
     Category:
       type: object
       properties:
@@ -681,8 +664,8 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           example: 10
         username:
           type: string
@@ -769,6 +752,130 @@ components:
           type: string
       xml:
         name: '##default'
+    UasWeightCategory:
+      type: string
+      enum:
+        - NANO
+        - SMALL
+        - MICRO
+        - MEDIUM
+        - LARGE
+    UasPropulsionCategory:
+      type: string
+      enum:
+        - VTOL
+        - FIXED_WING
+        - HYBRID
+    State:
+      type: string
+      enum:
+        - ANDHRA_PRADESH
+        - ARUNACHAL_PRADESH
+        - ASSAM
+        - BIHAR
+        - CHHATTISGARH
+        - GOA
+        - GUJARAT
+        - HARYANA
+        - HIMACHAL_PRADESH
+        - JHARKHAND
+        - KARNATAKA
+        - KERALA
+        - MADHYA_PRADESH
+        - MAHARASHTRA
+        - MANIPUR
+        - MEGHALAYA
+        - MIZORAM
+        - NAGALAND
+        - ODISHA
+        - PUNJAB
+        - RAJASTHAN
+        - SIKKIM
+        - TAMIL_NADU
+        - TELANGANA
+        - TRIPURA
+        - UTTARAKHAND
+        - UTTAR_PRADESH
+        - WEST_BENGAL
+        - ANDAMAN_AND_NICOBAR_ISLANDS
+        - CHANDIGARH
+        - DADRA_NAGAR_HAVELI_DAMAN_DIU
+        - NCT
+        - JAMMU_KASHMIR
+        - LADAKH
+        - LAKSHADWEEP
+        - PUDUCHERRY
+    Address:
+      type: object
+      properties:
+        line1:
+          type: string
+          example: 123 ABC Housing Society
+        line2:
+          type: string
+          example: Landmark
+        line3:
+          type: string
+          example: Bandra West
+        city:
+          type: string
+          example: Mumbai
+        state:
+          $ref: '#/components/schemas/State'
+        pinCode:
+          type: number
+          minimum: 100000
+          maximum: 999999
+    LegalEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        cin:
+          type: string
+        name:
+          type: string
+        regdAddress:
+          $ref: '#/components/schemas/Address'
+      required:
+        - id
+        - name
+        - regdAddress
+    Manufacturer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        legalEntity:
+          $ref: '#/components/schemas/LegalEntity'
+        validFrom:
+          type: string
+          format: date-time
+        validTill:
+          type: string
+          format: date-time
+      required:
+        - id
+        - legalEntity
+    Operator:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        legalEntity:
+          $ref: '#/components/schemas/LegalEntity'
+        validFrom:
+          type: string
+          format: date-time
+        validTill:
+          type: string
+          format: date-time
+      required:
+        - id
+        - legalEntity
   requestBodies:
     Pet:
       description: Pet object that needs to be added to the store

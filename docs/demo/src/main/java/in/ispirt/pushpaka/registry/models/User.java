@@ -1,4 +1,4 @@
-package org.openapitools.model;
+package in.ispirt.pushpaka.registry.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,6 +7,7 @@ import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.Objects;
+import java.util.UUID;
 import javax.annotation.Generated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -18,10 +19,10 @@ import org.openapitools.jackson.nullable.JsonNullable;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-06T20:22:43.561950+05:30[Asia/Kolkata]"
+  date = "2023-09-07T14:06:09.953561+05:30[Asia/Kolkata]"
 )
 public class User {
-  private Long id;
+  private UUID id;
 
   private String username;
 
@@ -37,7 +38,7 @@ public class User {
 
   private Integer userStatus;
 
-  public User id(Long id) {
+  public User id(UUID id) {
     this.id = id;
     return this;
   }
@@ -46,14 +47,14 @@ public class User {
    * Get id
    * @return id
    */
-
-  @Schema(name = "id", example = "10", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @Valid
+  @Schema(name = "id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("id")
-  public Long getId() {
+  public UUID getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(UUID id) {
     this.id = id;
   }
 

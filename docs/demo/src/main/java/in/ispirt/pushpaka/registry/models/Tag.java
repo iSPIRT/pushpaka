@@ -1,4 +1,4 @@
-package org.openapitools.model;
+package in.ispirt.pushpaka.registry.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,19 +13,19 @@ import javax.validation.constraints.*;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 /**
- * Category
+ * Tag
  */
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-06T20:22:43.561950+05:30[Asia/Kolkata]"
+  date = "2023-09-07T14:06:09.953561+05:30[Asia/Kolkata]"
 )
-public class Category {
+public class Tag {
   private Long id;
 
   private String name;
 
-  public Category id(Long id) {
+  public Tag id(Long id) {
     this.id = id;
     return this;
   }
@@ -35,7 +35,7 @@ public class Category {
    * @return id
    */
 
-  @Schema(name = "id", example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @Schema(name = "id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("id")
   public Long getId() {
     return id;
@@ -45,7 +45,7 @@ public class Category {
     this.id = id;
   }
 
-  public Category name(String name) {
+  public Tag name(String name) {
     this.name = name;
     return this;
   }
@@ -55,11 +55,7 @@ public class Category {
    * @return name
    */
 
-  @Schema(
-    name = "name",
-    example = "Dogs",
-    requiredMode = Schema.RequiredMode.NOT_REQUIRED
-  )
+  @Schema(name = "name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("name")
   public String getName() {
     return name;
@@ -77,10 +73,8 @@ public class Category {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Category category = (Category) o;
-    return (
-      Objects.equals(this.id, category.id) && Objects.equals(this.name, category.name)
-    );
+    Tag tag = (Tag) o;
+    return Objects.equals(this.id, tag.id) && Objects.equals(this.name, tag.name);
   }
 
   @Override
@@ -91,7 +85,7 @@ public class Category {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Category {\n");
+    sb.append("class Tag {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("}");
