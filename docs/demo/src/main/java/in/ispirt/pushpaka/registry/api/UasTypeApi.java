@@ -21,6 +21,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import javax.annotation.Generated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -34,7 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]"
+  date = "2023-09-07T18:36:04.490622+05:30[Asia/Kolkata]"
 )
 @Validated
 @Tag(name = "uas_types", description = "the uas_types API")
@@ -62,10 +63,6 @@ public interface UasTypeApi {
         description = "Successful operation",
         content = {
           @Content(
-            mediaType = "application/xml",
-            schema = @Schema(implementation = UasType.class)
-          ),
-          @Content(
             mediaType = "application/json",
             schema = @Schema(implementation = UasType.class)
           )
@@ -83,10 +80,8 @@ public interface UasTypeApi {
   @RequestMapping(
     method = RequestMethod.POST,
     value = "/uasType",
-    produces = { "application/xml", "application/json" },
-    consumes = {
-      "application/json", "application/xml", "application/x-www-form-urlencoded"
-    }
+    produces = { "application/json" },
+    consumes = { "application/json" }
   )
   default ResponseEntity<UasType> addUasType(
     @Parameter(
@@ -103,14 +98,8 @@ public interface UasTypeApi {
           )) {
             if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
               String exampleString =
-                "{ \"mass\" : 6.027456183070403, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } } }";
+                "{ \"photoUrl\" : \"https://openapi-generator.tech\", \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] }";
               ApiUtil.setExampleResponse(request, "application/json", exampleString);
-              break;
-            }
-            if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-              String exampleString =
-                "<UasType> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <modelNumber>aeiou</modelNumber> <null> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <validFrom>2000-01-23T04:56:07.000Z</validFrom> <validTill>2000-01-23T04:56:07.000Z</validTill> </null> <null> </null> <mass>3.149</mass> </UasType>";
-              ApiUtil.setExampleResponse(request, "application/xml", exampleString);
               break;
             }
           }
@@ -149,13 +138,67 @@ public interface UasTypeApi {
       description = "UasType id to delete",
       required = true,
       in = ParameterIn.PATH
-    ) @PathVariable("uasTypeId") Long uasTypeId,
+    ) @PathVariable("uasTypeId") UUID uasTypeId,
     @Parameter(
       name = "api_key",
       description = "",
       in = ParameterIn.HEADER
     ) @RequestHeader(value = "api_key", required = false) String apiKey
   ) {
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+  }
+
+  /**
+   * GET /uasType/find : Finds UasTypes
+   *
+   * @return successful operation (status code 200)
+   *         or Invalid value (status code 400)
+   */
+  @Operation(
+    operationId = "findUasTypes",
+    summary = "Finds UasTypes",
+    tags = { "uas_types" },
+    responses = {
+      @ApiResponse(
+        responseCode = "200",
+        description = "successful operation",
+        content = {
+          @Content(
+            mediaType = "application/json",
+            array = @ArraySchema(schema = @Schema(implementation = UasType.class))
+          )
+        }
+      ),
+      @ApiResponse(responseCode = "400", description = "Invalid value")
+    },
+    security = {
+      @SecurityRequirement(
+        name = "registry_auth",
+        scopes = { "write:uasTypes", "read:uasTypes" }
+      )
+    }
+  )
+  @RequestMapping(
+    method = RequestMethod.GET,
+    value = "/uasType/find",
+    produces = { "application/json" }
+  )
+  default ResponseEntity<List<UasType>> findUasTypes() {
+    getRequest()
+      .ifPresent(
+        request -> {
+          for (MediaType mediaType : MediaType.parseMediaTypes(
+            request.getHeader("Accept")
+          )) {
+            if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+              String exampleString =
+                "[ { \"photoUrl\" : \"https://openapi-generator.tech\", \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] }, { \"photoUrl\" : \"https://openapi-generator.tech\", \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } ]";
+              ApiUtil.setExampleResponse(request, "application/json", exampleString);
+              break;
+            }
+          }
+        }
+      );
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
@@ -178,10 +221,6 @@ public interface UasTypeApi {
         description = "successful operation",
         content = {
           @Content(
-            mediaType = "application/xml",
-            array = @ArraySchema(schema = @Schema(implementation = UasType.class))
-          ),
-          @Content(
             mediaType = "application/json",
             array = @ArraySchema(schema = @Schema(implementation = UasType.class))
           )
@@ -199,7 +238,7 @@ public interface UasTypeApi {
   @RequestMapping(
     method = RequestMethod.GET,
     value = "/uasType/findByStatus",
-    produces = { "application/xml", "application/json" }
+    produces = { "application/json" }
   )
   default ResponseEntity<List<UasType>> findUasTypesByStatus(
     @Parameter(
@@ -220,87 +259,8 @@ public interface UasTypeApi {
           )) {
             if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
               String exampleString =
-                "[ { \"mass\" : 6.027456183070403, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } } }, { \"mass\" : 6.027456183070403, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } } } ]";
+                "[ { \"photoUrl\" : \"https://openapi-generator.tech\", \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] }, { \"photoUrl\" : \"https://openapi-generator.tech\", \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } ]";
               ApiUtil.setExampleResponse(request, "application/json", exampleString);
-              break;
-            }
-            if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-              String exampleString =
-                "<UasType> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <modelNumber>aeiou</modelNumber> <null> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <validFrom>2000-01-23T04:56:07.000Z</validFrom> <validTill>2000-01-23T04:56:07.000Z</validTill> </null> <null> </null> <mass>3.149</mass> </UasType>";
-              ApiUtil.setExampleResponse(request, "application/xml", exampleString);
-              break;
-            }
-          }
-        }
-      );
-    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-  }
-
-  /**
-   * GET /uasType/findByTags : Finds UasTypes by tags
-   * Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
-   *
-   * @param tags Tags to filter by (optional)
-   * @return successful operation (status code 200)
-   *         or Invalid tag value (status code 400)
-   */
-  @Operation(
-    operationId = "findUasTypesByTags",
-    summary = "Finds UasTypes by tags",
-    description = "Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.",
-    tags = { "uas_types" },
-    responses = {
-      @ApiResponse(
-        responseCode = "200",
-        description = "successful operation",
-        content = {
-          @Content(
-            mediaType = "application/xml",
-            array = @ArraySchema(schema = @Schema(implementation = UasType.class))
-          ),
-          @Content(
-            mediaType = "application/json",
-            array = @ArraySchema(schema = @Schema(implementation = UasType.class))
-          )
-        }
-      ),
-      @ApiResponse(responseCode = "400", description = "Invalid tag value")
-    },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:uasTypes", "read:uasTypes" }
-      )
-    }
-  )
-  @RequestMapping(
-    method = RequestMethod.GET,
-    value = "/uasType/findByTags",
-    produces = { "application/xml", "application/json" }
-  )
-  default ResponseEntity<List<UasType>> findUasTypesByTags(
-    @Parameter(
-      name = "tags",
-      description = "Tags to filter by",
-      in = ParameterIn.QUERY
-    ) @Valid @RequestParam(value = "tags", required = false) List<String> tags
-  ) {
-    getRequest()
-      .ifPresent(
-        request -> {
-          for (MediaType mediaType : MediaType.parseMediaTypes(
-            request.getHeader("Accept")
-          )) {
-            if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-              String exampleString =
-                "[ { \"mass\" : 6.027456183070403, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } } }, { \"mass\" : 6.027456183070403, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } } } ]";
-              ApiUtil.setExampleResponse(request, "application/json", exampleString);
-              break;
-            }
-            if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-              String exampleString =
-                "<UasType> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <modelNumber>aeiou</modelNumber> <null> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <validFrom>2000-01-23T04:56:07.000Z</validFrom> <validTill>2000-01-23T04:56:07.000Z</validTill> </null> <null> </null> <mass>3.149</mass> </UasType>";
-              ApiUtil.setExampleResponse(request, "application/xml", exampleString);
               break;
             }
           }
@@ -329,10 +289,6 @@ public interface UasTypeApi {
         description = "successful operation",
         content = {
           @Content(
-            mediaType = "application/xml",
-            schema = @Schema(implementation = UasType.class)
-          ),
-          @Content(
             mediaType = "application/json",
             schema = @Schema(implementation = UasType.class)
           )
@@ -352,7 +308,7 @@ public interface UasTypeApi {
   @RequestMapping(
     method = RequestMethod.GET,
     value = "/uasType/{uasTypeId}",
-    produces = { "application/xml", "application/json" }
+    produces = { "application/json" }
   )
   default ResponseEntity<UasType> getUasTypeById(
     @Parameter(
@@ -360,7 +316,7 @@ public interface UasTypeApi {
       description = "ID of uasType to return",
       required = true,
       in = ParameterIn.PATH
-    ) @PathVariable("uasTypeId") Long uasTypeId
+    ) @PathVariable("uasTypeId") UUID uasTypeId
   ) {
     getRequest()
       .ifPresent(
@@ -370,14 +326,8 @@ public interface UasTypeApi {
           )) {
             if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
               String exampleString =
-                "{ \"mass\" : 6.027456183070403, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } } }";
+                "{ \"photoUrl\" : \"https://openapi-generator.tech\", \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] }";
               ApiUtil.setExampleResponse(request, "application/json", exampleString);
-              break;
-            }
-            if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-              String exampleString =
-                "<UasType> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <modelNumber>aeiou</modelNumber> <null> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <validFrom>2000-01-23T04:56:07.000Z</validFrom> <validTill>2000-01-23T04:56:07.000Z</validTill> </null> <null> </null> <mass>3.149</mass> </UasType>";
-              ApiUtil.setExampleResponse(request, "application/xml", exampleString);
               break;
             }
           }
@@ -407,10 +357,6 @@ public interface UasTypeApi {
         description = "Successful operation",
         content = {
           @Content(
-            mediaType = "application/xml",
-            schema = @Schema(implementation = UasType.class)
-          ),
-          @Content(
             mediaType = "application/json",
             schema = @Schema(implementation = UasType.class)
           )
@@ -430,10 +376,8 @@ public interface UasTypeApi {
   @RequestMapping(
     method = RequestMethod.PUT,
     value = "/uasType",
-    produces = { "application/xml", "application/json" },
-    consumes = {
-      "application/json", "application/xml", "application/x-www-form-urlencoded"
-    }
+    produces = { "application/json" },
+    consumes = { "application/json" }
   )
   default ResponseEntity<UasType> updateUasType(
     @Parameter(
@@ -450,14 +394,8 @@ public interface UasTypeApi {
           )) {
             if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
               String exampleString =
-                "{ \"mass\" : 6.027456183070403, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } } }";
+                "{ \"photoUrl\" : \"https://openapi-generator.tech\", \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] }";
               ApiUtil.setExampleResponse(request, "application/json", exampleString);
-              break;
-            }
-            if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-              String exampleString =
-                "<null> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <modelNumber>aeiou</modelNumber> <mass>3.149</mass> </null>";
-              ApiUtil.setExampleResponse(request, "application/xml", exampleString);
               break;
             }
           }
@@ -495,7 +433,7 @@ public interface UasTypeApi {
       description = "ID of uasType that needs to be updated",
       required = true,
       in = ParameterIn.PATH
-    ) @PathVariable("uasTypeId") Long uasTypeId,
+    ) @PathVariable("uasTypeId") UUID uasTypeId,
     @Parameter(
       name = "name",
       description = "Name of uasType that needs to be updated",
@@ -555,7 +493,7 @@ public interface UasTypeApi {
       description = "ID of uasType to update",
       required = true,
       in = ParameterIn.PATH
-    ) @PathVariable("uasTypeId") Long uasTypeId,
+    ) @PathVariable("uasTypeId") UUID uasTypeId,
     @Parameter(
       name = "additionalMetadata",
       description = "Additional Metadata",

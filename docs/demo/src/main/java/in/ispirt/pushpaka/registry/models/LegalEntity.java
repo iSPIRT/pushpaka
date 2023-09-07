@@ -20,7 +20,7 @@ import org.openapitools.jackson.nullable.JsonNullable;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]"
+  date = "2023-09-07T18:36:04.490622+05:30[Asia/Kolkata]"
 )
 public class LegalEntity {
   private UUID id;

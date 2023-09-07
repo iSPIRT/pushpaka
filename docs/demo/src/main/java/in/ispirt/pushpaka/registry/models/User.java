@@ -19,7 +19,7 @@ import org.openapitools.jackson.nullable.JsonNullable;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]"
+  date = "2023-09-07T18:36:04.490622+05:30[Asia/Kolkata]"
 )
 public class User {
   private UUID id;
@@ -67,7 +67,11 @@ public class User {
    */
   @NotNull
   @Valid
-  @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(
+    name = "id",
+    example = "e66b7c9e-79f5-44b0-9642-59ca20b7af63",
+    requiredMode = Schema.RequiredMode.REQUIRED
+  )
   @JsonProperty("id")
   public UUID getId() {
     return id;
@@ -185,7 +189,7 @@ public class User {
 
   @Schema(
     name = "phone",
-    example = "12345",
+    example = "+919999999999",
     requiredMode = Schema.RequiredMode.NOT_REQUIRED
   )
   @JsonProperty("phone")

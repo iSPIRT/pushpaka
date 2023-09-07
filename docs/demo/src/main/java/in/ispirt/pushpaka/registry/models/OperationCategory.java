@@ -14,27 +14,23 @@ import javax.validation.constraints.*;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 /**
- * Gets or Sets UasWeightCategory
+ * Gets or Sets OperationCategory
  */
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
   date = "2023-09-07T18:36:04.490622+05:30[Asia/Kolkata]"
 )
-public enum UasWeightCategory {
-  NANO("NANO"),
+public enum OperationCategory {
+  C1("C1"),
 
-  SMALL("SMALL"),
+  C2("C2"),
 
-  MICRO("MICRO"),
-
-  MEDIUM("MEDIUM"),
-
-  LARGE("LARGE");
+  C3("C3");
 
   private String value;
 
-  UasWeightCategory(String value) {
+  OperationCategory(String value) {
     this.value = value;
   }
 
@@ -49,8 +45,8 @@ public enum UasWeightCategory {
   }
 
   @JsonCreator
-  public static UasWeightCategory fromValue(String value) {
-    for (UasWeightCategory b : UasWeightCategory.values()) {
+  public static OperationCategory fromValue(String value) {
+    for (OperationCategory b : OperationCategory.values()) {
       if (b.value.equals(value)) {
         return b;
       }

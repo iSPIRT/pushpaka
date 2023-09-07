@@ -3,8 +3,6 @@ pom.xml
 src/main/java/in/ispirt/pushpaka/registry/OpenApiGeneratorApplication.java
 src/main/java/in/ispirt/pushpaka/registry/RFC3339DateFormat.java
 src/main/java/in/ispirt/pushpaka/registry/api/ApiUtil.java
-src/main/java/in/ispirt/pushpaka/registry/api/StoreApi.java
-src/main/java/in/ispirt/pushpaka/registry/api/StoreApiController.java
 src/main/java/in/ispirt/pushpaka/registry/api/UasTypeApi.java
 src/main/java/in/ispirt/pushpaka/registry/api/UasTypeApiController.java
 src/main/java/in/ispirt/pushpaka/registry/api/UserApi.java
@@ -13,15 +11,13 @@ src/main/java/in/ispirt/pushpaka/registry/config/EnumConverterConfiguration.java
 src/main/java/in/ispirt/pushpaka/registry/config/HomeController.java
 src/main/java/in/ispirt/pushpaka/registry/config/SpringDocConfiguration.java
 src/main/java/in/ispirt/pushpaka/registry/models/Address.java
-src/main/java/in/ispirt/pushpaka/registry/models/Category.java
-src/main/java/in/ispirt/pushpaka/registry/models/Customer.java
+src/main/java/in/ispirt/pushpaka/registry/models/CivilAviationAuthority.java
 src/main/java/in/ispirt/pushpaka/registry/models/LegalEntity.java
 src/main/java/in/ispirt/pushpaka/registry/models/Manufacturer.java
 src/main/java/in/ispirt/pushpaka/registry/models/ModelApiResponse.java
+src/main/java/in/ispirt/pushpaka/registry/models/OperationCategory.java
 src/main/java/in/ispirt/pushpaka/registry/models/Operator.java
-src/main/java/in/ispirt/pushpaka/registry/models/Order.java
 src/main/java/in/ispirt/pushpaka/registry/models/State.java
-src/main/java/in/ispirt/pushpaka/registry/models/Tag.java
 src/main/java/in/ispirt/pushpaka/registry/models/UasPropulsionCategory.java
 src/main/java/in/ispirt/pushpaka/registry/models/UasType.java
 src/main/java/in/ispirt/pushpaka/registry/models/UasWeightCategory.java

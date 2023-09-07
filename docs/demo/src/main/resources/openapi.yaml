@@ -37,20 +37,11 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UasType'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/UasType'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/UasType'
         description: Create a new uasType in the store
         required: true
       responses:
         "200":
           content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/UasType'
             application/json:
               schema:
                 $ref: '#/components/schemas/UasType'
@@ -76,20 +67,11 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UasType'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/UasType'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/UasType'
         description: Update an existent uasType in the store
         required: true
       responses:
         "200":
           content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/UasType'
             application/json:
               schema:
                 $ref: '#/components/schemas/UasType'
@@ -132,11 +114,6 @@ paths:
       responses:
         "200":
           content:
-            application/xml:
-              schema:
-                items:
-                  $ref: '#/components/schemas/UasType'
-                type: array
             application/json:
               schema:
                 items:
@@ -155,30 +132,12 @@ paths:
       x-accepts: application/json
       x-tags:
       - tag: uas_types
-  /uasType/findByTags:
+  /uasType/find:
     get:
-      description: "Multiple tags can be provided with comma separated strings. Use\
-        \ tag1, tag2, tag3 for testing."
-      operationId: findUasTypesByTags
-      parameters:
-      - description: Tags to filter by
-        explode: true
-        in: query
-        name: tags
-        required: false
-        schema:
-          items:
-            type: string
-          type: array
-        style: form
+      operationId: findUasTypes
       responses:
         "200":
           content:
-            application/xml:
-              schema:
-                items:
-                  $ref: '#/components/schemas/UasType'
-                type: array
             application/json:
               schema:
                 items:
@@ -186,12 +145,12 @@ paths:
                 type: array
           description: successful operation
         "400":
-          description: Invalid tag value
+          description: Invalid value
       security:
       - registry_auth:
         - write:uasTypes
         - read:uasTypes
-      summary: Finds UasTypes by tags
+      summary: Finds UasTypes
       tags:
       - uas_types
       x-accepts: application/json
@@ -216,8 +175,8 @@ paths:
         name: uasTypeId
         required: true
         schema:
-          format: int64
-          type: integer
+          format: uuid
+          type: string
         style: simple
       responses:
         "400":
@@ -242,15 +201,12 @@ paths:
         name: uasTypeId
         required: true
         schema:
-          format: int64
-          type: integer
+          format: uuid
+          type: string
         style: simple
       responses:
         "200":
           content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/UasType'
             application/json:
               schema:
                 $ref: '#/components/schemas/UasType'
@@ -280,8 +236,8 @@ paths:
         name: uasTypeId
         required: true
         schema:
-          format: int64
-          type: integer
+          format: uuid
+          type: string
         style: simple
       - description: Name of uasType that needs to be updated
         explode: true
@@ -323,8 +279,8 @@ paths:
         name: uasTypeId
         required: true
         schema:
-          format: int64
-          type: integer
+          format: uuid
+          type: string
         style: simple
       - description: Additional Metadata
         explode: true
@@ -358,119 +314,6 @@ paths:
       x-accepts: application/json
       x-tags:
       - tag: uas_types
-  /store/inventory:
-    get:
-      description: Returns a map of status codes to quantities
-      operationId: getInventory
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                additionalProperties:
-                  format: int32
-                  type: integer
-                type: object
-          description: successful operation
-      security:
-      - api_key: []
-      summary: Returns uasType inventories by status
-      tags:
-      - store
-      x-accepts: application/json
-      x-tags:
-      - tag: store
-  /store/order:
-    post:
-      description: Place a new order in the store
-      operationId: placeOrder
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Order'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Order'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Order'
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Order'
-          description: successful operation
-        "405":
-          description: Invalid input
-      summary: Place an order for a uasType
-      tags:
-      - store
-      x-content-type: application/json
-      x-accepts: application/json
-      x-tags:
-      - tag: store
-  /store/order/{orderId}:
-    delete:
-      description: For valid response try integer IDs with value < 1000. Anything
-        above 1000 or nonintegers will generate API errors
-      operationId: deleteOrder
-      parameters:
-      - description: ID of the order that needs to be deleted
-        explode: false
-        in: path
-        name: orderId
-        required: true
-        schema:
-          format: int64
-          type: integer
-        style: simple
-      responses:
-        "400":
-          description: Invalid ID supplied
-        "404":
-          description: Order not found
-      summary: Delete purchase order by ID
-      tags:
-      - store
-      x-accepts: application/json
-      x-tags:
-      - tag: store
-    get:
-      description: For valid response try integer IDs with value <= 5 or > 10. Other
-        values will generate exceptions.
-      operationId: getOrderById
-      parameters:
-      - description: ID of order that needs to be fetched
-        explode: false
-        in: path
-        name: orderId
-        required: true
-        schema:
-          format: int64
-          type: integer
-        style: simple
-      responses:
-        "200":
-          content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Order'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Order'
-          description: successful operation
-        "400":
-          description: Invalid ID supplied
-        "404":
-          description: Order not found
-      summary: Find purchase order by ID
-      tags:
-      - store
-      x-accepts: application/json
-      x-tags:
-      - tag: store
   /user:
     post:
       description: This can only be done by the logged in user.
@@ -480,20 +323,11 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/User'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/User'
         description: Created user object
       responses:
         default:
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-            application/xml:
               schema:
                 $ref: '#/components/schemas/User'
           description: successful operation
@@ -518,9 +352,6 @@ paths:
       responses:
         "200":
           content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/User'
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
@@ -558,9 +389,6 @@ paths:
       responses:
         "200":
           content:
-            application/xml:
-              schema:
-                type: string
             application/json:
               schema:
                 type: string
@@ -641,9 +469,6 @@ paths:
       responses:
         "200":
           content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/User'
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
@@ -675,12 +500,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/User'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/User'
         description: Update an existent user in the store
       responses:
         default:
@@ -703,85 +522,18 @@ components:
             type: array
       description: List of user object
   schemas:
-    Order:
-      example:
-        quantity: 7
-        uasTypeId: 198772
-        id: 10
-        shipDate: 2000-01-23T04:56:07.000+00:00
-        complete: true
-        status: approved
-      properties:
-        id:
-          example: 10
-          format: int64
-          type: integer
-        uasTypeId:
-          example: 198772
-          format: int64
-          type: integer
-        quantity:
-          example: 7
-          format: int32
-          type: integer
-        shipDate:
-          format: date-time
-          type: string
-        status:
-          description: Order Status
-          enum:
-          - placed
-          - approved
-          - delivered
-          example: approved
-          type: string
-        complete:
-          type: boolean
-      type: object
-      xml:
-        name: order
-    Customer:
-      properties:
-        id:
-          example: 100000
-          format: int64
-          type: integer
-        username:
-          example: fehguy
-          type: string
-        address:
-          items:
-            $ref: '#/components/schemas/Address'
-          type: array
-          xml:
-            name: addresses
-            wrapped: true
-      type: object
-      xml:
-        name: customer
-    Category:
-      properties:
-        id:
-          example: 1
-          format: int64
-          type: integer
-        name:
-          example: Dogs
-          type: string
-      type: object
-      xml:
-        name: category
     User:
       example:
         firstName: John
         lastName: James
         userStatus: 1
-        phone: "12345"
-        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        phone: +919999999999
+        id: e66b7c9e-79f5-44b0-9642-59ca20b7af63
         email: john@email.com
         username: theUser
       properties:
         id:
+          example: e66b7c9e-79f5-44b0-9642-59ca20b7af63
           format: uuid
           type: string
         username:
@@ -797,7 +549,7 @@ components:
           example: john@email.com
           type: string
         phone:
-          example: "12345"
+          example: +919999999999
           type: string
         userStatus:
           description: User Status
@@ -811,21 +563,13 @@ components:
       - lastName
       - username
       type: object
-    Tag:
-      properties:
-        id:
-          format: int64
-          type: integer
-        name:
-          type: string
-      type: object
-      xml:
-        name: tag
     UasType:
       example:
-        mass: 6.027456183070403
+        photoUrl: https://openapi-generator.tech
+        weightCategory: null
         modelNumber: modelNumber
         id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        mtow: 6.0274563
         propulsionCategory: null
         manufacturer:
           validTill: 2000-01-23T04:56:07.000+00:00
@@ -843,6 +587,9 @@ components:
               line2: Landmark
               line1: 123 ABC Housing Society
             gstin: gstin
+        supportedOperationCategories:
+        - null
+        - null
       properties:
         id:
           format: uuid
@@ -853,16 +600,28 @@ components:
           $ref: '#/components/schemas/Manufacturer'
         propulsionCategory:
           $ref: '#/components/schemas/UasPropulsionCategory'
-        mass:
-          description: maximum take off mass in grams
-          format: integer
+        weightCategory:
+          $ref: '#/components/schemas/UasWeightCategory'
+        mtow:
+          description: maximum take off weight in kilograms
+          format: float
           type: number
+        photoUrl:
+          format: uri
+          maxLength: 512
+          type: string
+        supportedOperationCategories:
+          items:
+            $ref: '#/components/schemas/OperationCategory'
+          type: array
       required:
       - id
       - manufacturer
-      - mass
       - modelNumber
+      - mtow
       - propulsionCategory
+      - supportedOperationCategories
+      - weightCategory
       type: object
     ApiResponse:
       example:
@@ -878,8 +637,12 @@ components:
         message:
           type: string
       type: object
-      xml:
-        name: '##default'
+    OperationCategory:
+      enum:
+      - C1
+      - C2
+      - C3
+      type: string
     UasWeightCategory:
       enum:
       - NANO
@@ -924,7 +687,7 @@ components:
       - UTTARAKHAND
       - UTTAR_PRADESH
       - WEST_BENGAL
-      - ANDAMAN_AND_NICOBAR_ISLANDS
+      - ANDAMAN_NICOBAR_ISLANDS
       - CHANDIGARH
       - DADRA_NAGAR_HAVELI_DAMAN_DIU
       - NCT
@@ -1031,6 +794,27 @@ components:
       required:
       - id
       - legalEntity
+      - validFrom
+      - validTill
+      type: object
+    CivilAviationAuthority:
+      properties:
+        id:
+          format: uuid
+          type: string
+        legalEntity:
+          $ref: '#/components/schemas/LegalEntity'
+        validFrom:
+          format: date-time
+          type: string
+        validTill:
+          format: date-time
+          type: string
+      required:
+      - id
+      - legalEntity
+      - validFrom
+      - validTill
       type: object
     Operator:
       properties:
@@ -1048,6 +832,8 @@ components:
       required:
       - id
       - legalEntity
+      - validFrom
+      - validTill
       type: object
   securitySchemes:
     registry_auth:

@@ -1,5 +1,6 @@
 package in.ispirt.pushpaka.registry.config;
 
+import in.ispirt.pushpaka.registry.models.OperationCategory;
 import in.ispirt.pushpaka.registry.models.State;
 import in.ispirt.pushpaka.registry.models.UasPropulsionCategory;
 import in.ispirt.pushpaka.registry.models.UasWeightCategory;
@@ -9,6 +10,19 @@ import org.springframework.core.convert.converter.Converter;
 
 @Configuration
 public class EnumConverterConfiguration {
+
+  @Bean(
+    name = "in.ispirt.pushpaka.registry.config.EnumConverterConfiguration.operationCategoryConverter"
+  )
+  Converter<String, OperationCategory> operationCategoryConverter() {
+    return new Converter<String, OperationCategory>() {
+
+      @Override
+      public OperationCategory convert(String source) {
+        return OperationCategory.fromValue(source);
+      }
+    };
+  }
 
   @Bean(
     name = "in.ispirt.pushpaka.registry.config.EnumConverterConfiguration.stateConverter"

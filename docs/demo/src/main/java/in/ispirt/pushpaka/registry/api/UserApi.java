@@ -35,7 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]"
+  date = "2023-09-07T18:36:04.490622+05:30[Asia/Kolkata]"
 )
 @Validated
 @Tag(name = "user", description = "Operations about user")
@@ -64,10 +64,6 @@ public interface UserApi {
           @Content(
             mediaType = "application/json",
             schema = @Schema(implementation = User.class)
-          ),
-          @Content(
-            mediaType = "application/xml",
-            schema = @Schema(implementation = User.class)
           )
         }
       )
@@ -76,10 +72,8 @@ public interface UserApi {
   @RequestMapping(
     method = RequestMethod.POST,
     value = "/user",
-    produces = { "application/json", "application/xml" },
-    consumes = {
-      "application/json", "application/xml", "application/x-www-form-urlencoded"
-    }
+    produces = { "application/json" },
+    consumes = { "application/json" }
   )
   default ResponseEntity<User> createUser(
     @Parameter(name = "User", description = "Created user object") @Valid @RequestBody(
@@ -94,14 +88,8 @@ public interface UserApi {
           )) {
             if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
               String exampleString =
-                "{ \"firstName\" : \"John\", \"lastName\" : \"James\", \"userStatus\" : 1, \"phone\" : \"12345\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"email\" : \"john@email.com\", \"username\" : \"theUser\" }";
+                "{ \"firstName\" : \"John\", \"lastName\" : \"James\", \"userStatus\" : 1, \"phone\" : \"+919999999999\", \"id\" : \"e66b7c9e-79f5-44b0-9642-59ca20b7af63\", \"email\" : \"john@email.com\", \"username\" : \"theUser\" }";
               ApiUtil.setExampleResponse(request, "application/json", exampleString);
-              break;
-            }
-            if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-              String exampleString =
-                "<null> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <username>theUser</username> <firstName>John</firstName> <lastName>James</lastName> <email>john@email.com</email> <phone>12345</phone> <userStatus>1</userStatus> </null>";
-              ApiUtil.setExampleResponse(request, "application/xml", exampleString);
               break;
             }
           }
@@ -129,10 +117,6 @@ public interface UserApi {
         description = "Successful operation",
         content = {
           @Content(
-            mediaType = "application/xml",
-            schema = @Schema(implementation = User.class)
-          ),
-          @Content(
             mediaType = "application/json",
             schema = @Schema(implementation = User.class)
           )
@@ -144,7 +128,7 @@ public interface UserApi {
   @RequestMapping(
     method = RequestMethod.POST,
     value = "/user/createWithList",
-    produces = { "application/xml", "application/json" },
+    produces = { "application/json" },
     consumes = { "application/json" }
   )
   default ResponseEntity<User> createUsersWithListInput(
@@ -160,14 +144,8 @@ public interface UserApi {
           )) {
             if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
               String exampleString =
-                "{ \"firstName\" : \"John\", \"lastName\" : \"James\", \"userStatus\" : 1, \"phone\" : \"12345\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"email\" : \"john@email.com\", \"username\" : \"theUser\" }";
+                "{ \"firstName\" : \"John\", \"lastName\" : \"James\", \"userStatus\" : 1, \"phone\" : \"+919999999999\", \"id\" : \"e66b7c9e-79f5-44b0-9642-59ca20b7af63\", \"email\" : \"john@email.com\", \"username\" : \"theUser\" }";
               ApiUtil.setExampleResponse(request, "application/json", exampleString);
-              break;
-            }
-            if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-              String exampleString =
-                "<User> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <username>theUser</username> <firstName>John</firstName> <lastName>James</lastName> <email>john@email.com</email> <phone>12345</phone> <userStatus>1</userStatus> </User>";
-              ApiUtil.setExampleResponse(request, "application/xml", exampleString);
               break;
             }
           }
@@ -226,10 +204,6 @@ public interface UserApi {
         description = "successful operation",
         content = {
           @Content(
-            mediaType = "application/xml",
-            schema = @Schema(implementation = User.class)
-          ),
-          @Content(
             mediaType = "application/json",
             schema = @Schema(implementation = User.class)
           )
@@ -242,7 +216,7 @@ public interface UserApi {
   @RequestMapping(
     method = RequestMethod.GET,
     value = "/user/{username}",
-    produces = { "application/xml", "application/json" }
+    produces = { "application/json" }
   )
   default ResponseEntity<User> getUserByName(
     @Parameter(
@@ -260,14 +234,8 @@ public interface UserApi {
           )) {
             if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
               String exampleString =
-                "{ \"firstName\" : \"John\", \"lastName\" : \"James\", \"userStatus\" : 1, \"phone\" : \"12345\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"email\" : \"john@email.com\", \"username\" : \"theUser\" }";
+                "{ \"firstName\" : \"John\", \"lastName\" : \"James\", \"userStatus\" : 1, \"phone\" : \"+919999999999\", \"id\" : \"e66b7c9e-79f5-44b0-9642-59ca20b7af63\", \"email\" : \"john@email.com\", \"username\" : \"theUser\" }";
               ApiUtil.setExampleResponse(request, "application/json", exampleString);
-              break;
-            }
-            if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-              String exampleString =
-                "<User> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <username>theUser</username> <firstName>John</firstName> <lastName>James</lastName> <email>john@email.com</email> <phone>12345</phone> <userStatus>1</userStatus> </User>";
-              ApiUtil.setExampleResponse(request, "application/xml", exampleString);
               break;
             }
           }
@@ -296,10 +264,6 @@ public interface UserApi {
         description = "successful operation",
         content = {
           @Content(
-            mediaType = "application/xml",
-            schema = @Schema(implementation = String.class)
-          ),
-          @Content(
             mediaType = "application/json",
             schema = @Schema(implementation = String.class)
           )
@@ -314,7 +278,7 @@ public interface UserApi {
   @RequestMapping(
     method = RequestMethod.GET,
     value = "/user/login",
-    produces = { "application/xml", "application/json" }
+    produces = { "application/json" }
   )
   default ResponseEntity<String> loginUser(
     @Parameter(
@@ -371,9 +335,7 @@ public interface UserApi {
   @RequestMapping(
     method = RequestMethod.PUT,
     value = "/user/{username}",
-    consumes = {
-      "application/json", "application/xml", "application/x-www-form-urlencoded"
-    }
+    consumes = { "application/json" }
   )
   default ResponseEntity<Void> updateUser(
     @Parameter(

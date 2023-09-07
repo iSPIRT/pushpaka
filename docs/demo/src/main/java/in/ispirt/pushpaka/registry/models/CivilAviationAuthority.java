@@ -17,14 +17,14 @@ import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- * Operator
+ * CivilAviationAuthority
  */
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
   date = "2023-09-07T18:36:04.490622+05:30[Asia/Kolkata]"
 )
-public class Operator {
+public class CivilAviationAuthority {
   private UUID id;
 
   private LegalEntity legalEntity;
@@ -37,17 +37,17 @@ public class Operator {
 
   /**
    * Default constructor
-   * @deprecated Use {@link Operator#Operator(UUID, LegalEntity, OffsetDateTime, OffsetDateTime)}
+   * @deprecated Use {@link CivilAviationAuthority#CivilAviationAuthority(UUID, LegalEntity, OffsetDateTime, OffsetDateTime)}
    */
   @Deprecated
-  public Operator() {
+  public CivilAviationAuthority() {
     super();
   }
 
   /**
    * Constructor with only required parameters
    */
-  public Operator(
+  public CivilAviationAuthority(
     UUID id,
     LegalEntity legalEntity,
     OffsetDateTime validFrom,
@@ -59,7 +59,7 @@ public class Operator {
     this.validTill = validTill;
   }
 
-  public Operator id(UUID id) {
+  public CivilAviationAuthority id(UUID id) {
     this.id = id;
     return this;
   }
@@ -80,7 +80,7 @@ public class Operator {
     this.id = id;
   }
 
-  public Operator legalEntity(LegalEntity legalEntity) {
+  public CivilAviationAuthority legalEntity(LegalEntity legalEntity) {
     this.legalEntity = legalEntity;
     return this;
   }
@@ -101,7 +101,7 @@ public class Operator {
     this.legalEntity = legalEntity;
   }
 
-  public Operator validFrom(OffsetDateTime validFrom) {
+  public CivilAviationAuthority validFrom(OffsetDateTime validFrom) {
     this.validFrom = validFrom;
     return this;
   }
@@ -122,7 +122,7 @@ public class Operator {
     this.validFrom = validFrom;
   }
 
-  public Operator validTill(OffsetDateTime validTill) {
+  public CivilAviationAuthority validTill(OffsetDateTime validTill) {
     this.validTill = validTill;
     return this;
   }
@@ -151,12 +151,12 @@ public class Operator {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Operator operator = (Operator) o;
+    CivilAviationAuthority civilAviationAuthority = (CivilAviationAuthority) o;
     return (
-      Objects.equals(this.id, operator.id) &&
-      Objects.equals(this.legalEntity, operator.legalEntity) &&
-      Objects.equals(this.validFrom, operator.validFrom) &&
-      Objects.equals(this.validTill, operator.validTill)
+      Objects.equals(this.id, civilAviationAuthority.id) &&
+      Objects.equals(this.legalEntity, civilAviationAuthority.legalEntity) &&
+      Objects.equals(this.validFrom, civilAviationAuthority.validFrom) &&
+      Objects.equals(this.validTill, civilAviationAuthority.validTill)
     );
   }
 
@@ -168,7 +168,7 @@ public class Operator {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Operator {\n");
+    sb.append("class CivilAviationAuthority {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    legalEntity: ").append(toIndentedString(legalEntity)).append("\n");
     sb.append("    validFrom: ").append(toIndentedString(validFrom)).append("\n");

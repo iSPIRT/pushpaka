@@ -4,12 +4,16 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import in.ispirt.pushpaka.registry.models.Manufacturer;
+import in.ispirt.pushpaka.registry.models.OperationCategory;
 import in.ispirt.pushpaka.registry.models.UasPropulsionCategory;
+import in.ispirt.pushpaka.registry.models.UasWeightCategory;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.math.BigDecimal;
+import java.net.URI;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import javax.annotation.Generated;
@@ -23,7 +27,7 @@ import org.openapitools.jackson.nullable.JsonNullable;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]"
+  date = "2023-09-07T18:36:04.490622+05:30[Asia/Kolkata]"
 )
 public class UasType {
   private UUID id;
@@ -34,11 +38,18 @@ public class UasType {
 
   private UasPropulsionCategory propulsionCategory;
 
-  private BigDecimal mass;
+  private UasWeightCategory weightCategory;
+
+  private Float mtow;
+
+  private URI photoUrl;
+
+  @Valid
+  private List<OperationCategory> supportedOperationCategories = new ArrayList<>();
 
   /**
    * Default constructor
-   * @deprecated Use {@link UasType#UasType(UUID, String, Manufacturer, UasPropulsionCategory, BigDecimal)}
+   * @deprecated Use {@link UasType#UasType(UUID, String, Manufacturer, UasPropulsionCategory, UasWeightCategory, Float, List<OperationCategory>)}
    */
   @Deprecated
   public UasType() {
@@ -53,13 +64,17 @@ public class UasType {
     String modelNumber,
     Manufacturer manufacturer,
     UasPropulsionCategory propulsionCategory,
-    BigDecimal mass
+    UasWeightCategory weightCategory,
+    Float mtow,
+    List<OperationCategory> supportedOperationCategories
   ) {
     this.id = id;
     this.modelNumber = modelNumber;
     this.manufacturer = manufacturer;
     this.propulsionCategory = propulsionCategory;
-    this.mass = mass;
+    this.weightCategory = weightCategory;
+    this.mtow = mtow;
+    this.supportedOperationCategories = supportedOperationCategories;
   }
 
   public UasType id(UUID id) {
@@ -145,29 +160,108 @@ public class UasType {
     this.propulsionCategory = propulsionCategory;
   }
 
-  public UasType mass(BigDecimal mass) {
-    this.mass = mass;
+  public UasType weightCategory(UasWeightCategory weightCategory) {
+    this.weightCategory = weightCategory;
     return this;
   }
 
   /**
-   * maximum take off mass in grams
-   * @return mass
+   * Get weightCategory
+   * @return weightCategory
+   */
+  @NotNull
+  @Valid
+  @Schema(name = "weightCategory", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("weightCategory")
+  public UasWeightCategory getWeightCategory() {
+    return weightCategory;
+  }
+
+  public void setWeightCategory(UasWeightCategory weightCategory) {
+    this.weightCategory = weightCategory;
+  }
+
+  public UasType mtow(Float mtow) {
+    this.mtow = mtow;
+    return this;
+  }
+
+  /**
+   * maximum take off weight in kilograms
+   * @return mtow
+   */
+  @NotNull
+  @Schema(
+    name = "mtow",
+    description = "maximum take off weight in kilograms",
+    requiredMode = Schema.RequiredMode.REQUIRED
+  )
+  @JsonProperty("mtow")
+  public Float getMtow() {
+    return mtow;
+  }
+
+  public void setMtow(Float mtow) {
+    this.mtow = mtow;
+  }
+
+  public UasType photoUrl(URI photoUrl) {
+    this.photoUrl = photoUrl;
+    return this;
+  }
+
+  /**
+   * Get photoUrl
+   * @return photoUrl
+   */
+  @Valid
+  @Size(max = 512)
+  @Schema(name = "photoUrl", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("photoUrl")
+  public URI getPhotoUrl() {
+    return photoUrl;
+  }
+
+  public void setPhotoUrl(URI photoUrl) {
+    this.photoUrl = photoUrl;
+  }
+
+  public UasType supportedOperationCategories(
+    List<OperationCategory> supportedOperationCategories
+  ) {
+    this.supportedOperationCategories = supportedOperationCategories;
+    return this;
+  }
+
+  public UasType addSupportedOperationCategoriesItem(
+    OperationCategory supportedOperationCategoriesItem
+  ) {
+    if (this.supportedOperationCategories == null) {
+      this.supportedOperationCategories = new ArrayList<>();
+    }
+    this.supportedOperationCategories.add(supportedOperationCategoriesItem);
+    return this;
+  }
+
+  /**
+   * Get supportedOperationCategories
+   * @return supportedOperationCategories
    */
   @NotNull
   @Valid
   @Schema(
-    name = "mass",
-    description = "maximum take off mass in grams",
+    name = "supportedOperationCategories",
     requiredMode = Schema.RequiredMode.REQUIRED
   )
-  @JsonProperty("mass")
-  public BigDecimal getMass() {
-    return mass;
+  @JsonProperty("supportedOperationCategories")
+  public List<OperationCategory> getSupportedOperationCategories() {
+    return supportedOperationCategories;
   }
 
-  public void setMass(BigDecimal mass) {
-    this.mass = mass;
+  public void setSupportedOperationCategories(
+    List<OperationCategory> supportedOperationCategories
+  ) {
+    this.supportedOperationCategories = supportedOperationCategories;
   }
 
   @Override
@@ -184,13 +278,28 @@ public class UasType {
       Objects.equals(this.modelNumber, uasType.modelNumber) &&
       Objects.equals(this.manufacturer, uasType.manufacturer) &&
       Objects.equals(this.propulsionCategory, uasType.propulsionCategory) &&
-      Objects.equals(this.mass, uasType.mass)
+      Objects.equals(this.weightCategory, uasType.weightCategory) &&
+      Objects.equals(this.mtow, uasType.mtow) &&
+      Objects.equals(this.photoUrl, uasType.photoUrl) &&
+      Objects.equals(
+        this.supportedOperationCategories,
+        uasType.supportedOperationCategories
+      )
     );
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, modelNumber, manufacturer, propulsionCategory, mass);
+    return Objects.hash(
+      id,
+      modelNumber,
+      manufacturer,
+      propulsionCategory,
+      weightCategory,
+      mtow,
+      photoUrl,
+      supportedOperationCategories
+    );
   }
 
   @Override
@@ -204,7 +313,16 @@ public class UasType {
       .append("    propulsionCategory: ")
       .append(toIndentedString(propulsionCategory))
       .append("\n");
-    sb.append("    mass: ").append(toIndentedString(mass)).append("\n");
+    sb
+      .append("    weightCategory: ")
+      .append(toIndentedString(weightCategory))
+      .append("\n");
+    sb.append("    mtow: ").append(toIndentedString(mtow)).append("\n");
+    sb.append("    photoUrl: ").append(toIndentedString(photoUrl)).append("\n");
+    sb
+      .append("    supportedOperationCategories: ")
+      .append(toIndentedString(supportedOperationCategories))
+      .append("\n");
     sb.append("}");
     return sb.toString();
   }

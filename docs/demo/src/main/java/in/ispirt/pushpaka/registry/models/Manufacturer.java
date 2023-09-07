@@ -22,7 +22,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]"
+  date = "2023-09-07T18:36:04.490622+05:30[Asia/Kolkata]"
 )
 public class Manufacturer {
   private UUID id;
@@ -37,7 +37,7 @@ public class Manufacturer {
 
   /**
    * Default constructor
-   * @deprecated Use {@link Manufacturer#Manufacturer(UUID, LegalEntity)}
+   * @deprecated Use {@link Manufacturer#Manufacturer(UUID, LegalEntity, OffsetDateTime, OffsetDateTime)}
    */
   @Deprecated
   public Manufacturer() {
@@ -47,9 +47,16 @@ public class Manufacturer {
   /**
    * Constructor with only required parameters
    */
-  public Manufacturer(UUID id, LegalEntity legalEntity) {
+  public Manufacturer(
+    UUID id,
+    LegalEntity legalEntity,
+    OffsetDateTime validFrom,
+    OffsetDateTime validTill
+  ) {
     this.id = id;
     this.legalEntity = legalEntity;
+    this.validFrom = validFrom;
+    this.validTill = validTill;
   }
 
   public Manufacturer id(UUID id) {
@@ -103,8 +110,9 @@ public class Manufacturer {
    * Get validFrom
    * @return validFrom
    */
+  @NotNull
   @Valid
-  @Schema(name = "validFrom", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @Schema(name = "validFrom", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("validFrom")
   public OffsetDateTime getValidFrom() {
     return validFrom;
@@ -123,8 +131,9 @@ public class Manufacturer {
    * Get validTill
    * @return validTill
    */
+  @NotNull
   @Valid
-  @Schema(name = "validTill", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @Schema(name = "validTill", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("validTill")
   public OffsetDateTime getValidTill() {
     return validTill;

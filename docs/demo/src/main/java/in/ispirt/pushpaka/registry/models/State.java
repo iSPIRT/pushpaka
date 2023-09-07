@@ -19,7 +19,7 @@ import org.openapitools.jackson.nullable.JsonNullable;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]"
+  date = "2023-09-07T18:36:04.490622+05:30[Asia/Kolkata]"
 )
 public enum State {
   ANDHRA_PRADESH("ANDHRA_PRADESH"),
@@ -78,7 +78,7 @@ public enum State {
 
   WEST_BENGAL("WEST_BENGAL"),
 
-  ANDAMAN_AND_NICOBAR_ISLANDS("ANDAMAN_AND_NICOBAR_ISLANDS"),
+  ANDAMAN_NICOBAR_ISLANDS("ANDAMAN_NICOBAR_ISLANDS"),
 
   CHANDIGARH("CHANDIGARH"),
 
