@@ -1,27 +1,27 @@
 package in.ispirt.pushpaka.registry.models;
 
-import java.net.URI;
-import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.UUID;
-import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.net.URI;
 import java.time.OffsetDateTime;
+import java.util.*;
+import java.util.Objects;
+import java.util.UUID;
+import javax.annotation.Generated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import io.swagger.v3.oas.annotations.media.Schema;
-
-
-import java.util.*;
-import javax.annotation.Generated;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 /**
  * User
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]")
+@Generated(
+  value = "org.openapitools.codegen.languages.SpringCodegen",
+  date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]"
+)
 public class User {
-
   private UUID id;
 
   private String username;
@@ -64,8 +64,9 @@ public class User {
   /**
    * Get id
    * @return id
-  */
-  @NotNull @Valid 
+   */
+  @NotNull
+  @Valid
   @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("id")
   public UUID getId() {
@@ -84,9 +85,13 @@ public class User {
   /**
    * Get username
    * @return username
-  */
-  @NotNull 
-  @Schema(name = "username", example = "theUser", requiredMode = Schema.RequiredMode.REQUIRED)
+   */
+  @NotNull
+  @Schema(
+    name = "username",
+    example = "theUser",
+    requiredMode = Schema.RequiredMode.REQUIRED
+  )
   @JsonProperty("username")
   public String getUsername() {
     return username;
@@ -104,9 +109,13 @@ public class User {
   /**
    * Get firstName
    * @return firstName
-  */
-  @NotNull 
-  @Schema(name = "firstName", example = "John", requiredMode = Schema.RequiredMode.REQUIRED)
+   */
+  @NotNull
+  @Schema(
+    name = "firstName",
+    example = "John",
+    requiredMode = Schema.RequiredMode.REQUIRED
+  )
   @JsonProperty("firstName")
   public String getFirstName() {
     return firstName;
@@ -124,9 +133,13 @@ public class User {
   /**
    * Get lastName
    * @return lastName
-  */
-  @NotNull 
-  @Schema(name = "lastName", example = "James", requiredMode = Schema.RequiredMode.REQUIRED)
+   */
+  @NotNull
+  @Schema(
+    name = "lastName",
+    example = "James",
+    requiredMode = Schema.RequiredMode.REQUIRED
+  )
   @JsonProperty("lastName")
   public String getLastName() {
     return lastName;
@@ -144,9 +157,13 @@ public class User {
   /**
    * Get email
    * @return email
-  */
-  @NotNull 
-  @Schema(name = "email", example = "john@email.com", requiredMode = Schema.RequiredMode.REQUIRED)
+   */
+  @NotNull
+  @Schema(
+    name = "email",
+    example = "john@email.com",
+    requiredMode = Schema.RequiredMode.REQUIRED
+  )
   @JsonProperty("email")
   public String getEmail() {
     return email;
@@ -164,9 +181,13 @@ public class User {
   /**
    * Get phone
    * @return phone
-  */
-  
-  @Schema(name = "phone", example = "12345", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+   */
+
+  @Schema(
+    name = "phone",
+    example = "12345",
+    requiredMode = Schema.RequiredMode.NOT_REQUIRED
+  )
   @JsonProperty("phone")
   public String getPhone() {
     return phone;
@@ -184,9 +205,14 @@ public class User {
   /**
    * User Status
    * @return userStatus
-  */
-  
-  @Schema(name = "userStatus", example = "1", description = "User Status", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+   */
+
+  @Schema(
+    name = "userStatus",
+    example = "1",
+    description = "User Status",
+    requiredMode = Schema.RequiredMode.NOT_REQUIRED
+  )
   @JsonProperty("userStatus")
   public Integer getUserStatus() {
     return userStatus;
@@ -205,13 +231,15 @@ public class User {
       return false;
     }
     User user = (User) o;
-    return Objects.equals(this.id, user.id) &&
-        Objects.equals(this.username, user.username) &&
-        Objects.equals(this.firstName, user.firstName) &&
-        Objects.equals(this.lastName, user.lastName) &&
-        Objects.equals(this.email, user.email) &&
-        Objects.equals(this.phone, user.phone) &&
-        Objects.equals(this.userStatus, user.userStatus);
+    return (
+      Objects.equals(this.id, user.id) &&
+      Objects.equals(this.username, user.username) &&
+      Objects.equals(this.firstName, user.firstName) &&
+      Objects.equals(this.lastName, user.lastName) &&
+      Objects.equals(this.email, user.email) &&
+      Objects.equals(this.phone, user.phone) &&
+      Objects.equals(this.userStatus, user.userStatus)
+    );
   }
 
   @Override
@@ -245,4 +273,3 @@ public class User {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

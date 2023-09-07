@@ -11,13 +11,19 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import javax.annotation.Generated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,399 +32,557 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
-import javax.validation.constraints.*;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import javax.annotation.Generated;
-
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]")
+@Generated(
+  value = "org.openapitools.codegen.languages.SpringCodegen",
+  date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]"
+)
 @Validated
 @Tag(name = "uas_types", description = "the uas_types API")
 public interface UasTypeApi {
+  default Optional<NativeWebRequest> getRequest() {
+    return Optional.empty();
+  }
 
-    default Optional<NativeWebRequest> getRequest() {
-        return Optional.empty();
-    }
-
-    /**
-     * POST /uasType : Add a new uasType to the store
-     * Add a new uasType to the store
-     *
-     * @param uasType Create a new uasType in the store (required)
-     * @return Successful operation (status code 200)
-     *         or Invalid input (status code 405)
-     */
-    @Operation(
-        operationId = "addUasType",
-        summary = "Add a new uasType to the store",
-        description = "Add a new uasType to the store",
-        tags = { "uas_types" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "Successful operation", content = {
-                @Content(mediaType = "application/xml", schema = @Schema(implementation = UasType.class)),
-                @Content(mediaType = "application/json", schema = @Schema(implementation = UasType.class))
-            }),
-            @ApiResponse(responseCode = "405", description = "Invalid input")
-        },
-        security = {
-            @SecurityRequirement(name = "registry_auth", scopes={ "write:uasTypes", "read:uasTypes" })
+  /**
+   * POST /uasType : Add a new uasType to the store
+   * Add a new uasType to the store
+   *
+   * @param uasType Create a new uasType in the store (required)
+   * @return Successful operation (status code 200)
+   *         or Invalid input (status code 405)
+   */
+  @Operation(
+    operationId = "addUasType",
+    summary = "Add a new uasType to the store",
+    description = "Add a new uasType to the store",
+    tags = { "uas_types" },
+    responses = {
+      @ApiResponse(
+        responseCode = "200",
+        description = "Successful operation",
+        content = {
+          @Content(
+            mediaType = "application/xml",
+            schema = @Schema(implementation = UasType.class)
+          ),
+          @Content(
+            mediaType = "application/json",
+            schema = @Schema(implementation = UasType.class)
+          )
         }
-    )
-    @RequestMapping(
-        method = RequestMethod.POST,
-        value = "/uasType",
-        produces = { "application/xml", "application/json" },
-        consumes = { "application/json", "application/xml", "application/x-www-form-urlencoded" }
-    )
-    default ResponseEntity<UasType> addUasType(
-        @Parameter(name = "UasType", description = "Create a new uasType in the store", required = true) @Valid @RequestBody UasType uasType
-    ) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"mass\" : 6.027456183070403, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } } }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-                    String exampleString = "<UasType> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <modelNumber>aeiou</modelNumber> <null> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <validFrom>2000-01-23T04:56:07.000Z</validFrom> <validTill>2000-01-23T04:56:07.000Z</validTill> </null> <null> </null> <mass>3.149</mass> </UasType>";
-                    ApiUtil.setExampleResponse(request, "application/xml", exampleString);
-                    break;
-                }
+      ),
+      @ApiResponse(responseCode = "405", description = "Invalid input")
+    },
+    security = {
+      @SecurityRequirement(
+        name = "registry_auth",
+        scopes = { "write:uasTypes", "read:uasTypes" }
+      )
+    }
+  )
+  @RequestMapping(
+    method = RequestMethod.POST,
+    value = "/uasType",
+    produces = { "application/xml", "application/json" },
+    consumes = {
+      "application/json", "application/xml", "application/x-www-form-urlencoded"
+    }
+  )
+  default ResponseEntity<UasType> addUasType(
+    @Parameter(
+      name = "UasType",
+      description = "Create a new uasType in the store",
+      required = true
+    ) @Valid @RequestBody UasType uasType
+  ) {
+    getRequest()
+      .ifPresent(
+        request -> {
+          for (MediaType mediaType : MediaType.parseMediaTypes(
+            request.getHeader("Accept")
+          )) {
+            if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+              String exampleString =
+                "{ \"mass\" : 6.027456183070403, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } } }";
+              ApiUtil.setExampleResponse(request, "application/json", exampleString);
+              break;
             }
-        });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-
-    /**
-     * DELETE /uasType/{uasTypeId} : Deletes a uasType
-     * 
-     *
-     * @param uasTypeId UasType id to delete (required)
-     * @param apiKey  (optional)
-     * @return Invalid uasType value (status code 400)
-     */
-    @Operation(
-        operationId = "deleteUasType",
-        summary = "Deletes a uasType",
-        description = "",
-        tags = { "uas_types" },
-        responses = {
-            @ApiResponse(responseCode = "400", description = "Invalid uasType value")
-        },
-        security = {
-            @SecurityRequirement(name = "registry_auth", scopes={ "write:uasTypes", "read:uasTypes" })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.DELETE,
-        value = "/uasType/{uasTypeId}"
-    )
-    default ResponseEntity<Void> deleteUasType(
-        @Parameter(name = "uasTypeId", description = "UasType id to delete", required = true, in = ParameterIn.PATH) @PathVariable("uasTypeId") Long uasTypeId,
-        @Parameter(name = "api_key", description = "", in = ParameterIn.HEADER) @RequestHeader(value = "api_key", required = false) String apiKey
-    ) {
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-
-    /**
-     * GET /uasType/findByStatus : Finds UasTypes by status
-     * Multiple status values can be provided with comma separated strings
-     *
-     * @param status Status values that need to be considered for filter (optional, default to available)
-     * @return successful operation (status code 200)
-     *         or Invalid status value (status code 400)
-     */
-    @Operation(
-        operationId = "findUasTypesByStatus",
-        summary = "Finds UasTypes by status",
-        description = "Multiple status values can be provided with comma separated strings",
-        tags = { "uas_types" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = {
-                @Content(mediaType = "application/xml", array = @ArraySchema(schema = @Schema(implementation = UasType.class))),
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = UasType.class)))
-            }),
-            @ApiResponse(responseCode = "400", description = "Invalid status value")
-        },
-        security = {
-            @SecurityRequirement(name = "registry_auth", scopes={ "write:uasTypes", "read:uasTypes" })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/uasType/findByStatus",
-        produces = { "application/xml", "application/json" }
-    )
-    default ResponseEntity<List<UasType>> findUasTypesByStatus(
-        @Parameter(name = "status", description = "Status values that need to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "status", required = false, defaultValue = "available") String status
-    ) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"mass\" : 6.027456183070403, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } } }, { \"mass\" : 6.027456183070403, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } } } ]";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-                    String exampleString = "<UasType> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <modelNumber>aeiou</modelNumber> <null> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <validFrom>2000-01-23T04:56:07.000Z</validFrom> <validTill>2000-01-23T04:56:07.000Z</validTill> </null> <null> </null> <mass>3.149</mass> </UasType>";
-                    ApiUtil.setExampleResponse(request, "application/xml", exampleString);
-                    break;
-                }
+            if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
+              String exampleString =
+                "<UasType> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <modelNumber>aeiou</modelNumber> <null> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <validFrom>2000-01-23T04:56:07.000Z</validFrom> <validTill>2000-01-23T04:56:07.000Z</validTill> </null> <null> </null> <mass>3.149</mass> </UasType>";
+              ApiUtil.setExampleResponse(request, "application/xml", exampleString);
+              break;
             }
-        });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-
-    /**
-     * GET /uasType/findByTags : Finds UasTypes by tags
-     * Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
-     *
-     * @param tags Tags to filter by (optional)
-     * @return successful operation (status code 200)
-     *         or Invalid tag value (status code 400)
-     */
-    @Operation(
-        operationId = "findUasTypesByTags",
-        summary = "Finds UasTypes by tags",
-        description = "Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.",
-        tags = { "uas_types" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = {
-                @Content(mediaType = "application/xml", array = @ArraySchema(schema = @Schema(implementation = UasType.class))),
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = UasType.class)))
-            }),
-            @ApiResponse(responseCode = "400", description = "Invalid tag value")
-        },
-        security = {
-            @SecurityRequirement(name = "registry_auth", scopes={ "write:uasTypes", "read:uasTypes" })
+          }
         }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/uasType/findByTags",
-        produces = { "application/xml", "application/json" }
-    )
-    default ResponseEntity<List<UasType>> findUasTypesByTags(
-        @Parameter(name = "tags", description = "Tags to filter by", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tags", required = false) List<String> tags
-    ) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"mass\" : 6.027456183070403, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } } }, { \"mass\" : 6.027456183070403, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } } } ]";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-                    String exampleString = "<UasType> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <modelNumber>aeiou</modelNumber> <null> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <validFrom>2000-01-23T04:56:07.000Z</validFrom> <validTill>2000-01-23T04:56:07.000Z</validTill> </null> <null> </null> <mass>3.149</mass> </UasType>";
-                    ApiUtil.setExampleResponse(request, "application/xml", exampleString);
-                    break;
-                }
+      );
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+  }
+
+  /**
+   * DELETE /uasType/{uasTypeId} : Deletes a uasType
+   *
+   *
+   * @param uasTypeId UasType id to delete (required)
+   * @param apiKey  (optional)
+   * @return Invalid uasType value (status code 400)
+   */
+  @Operation(
+    operationId = "deleteUasType",
+    summary = "Deletes a uasType",
+    description = "",
+    tags = { "uas_types" },
+    responses = {
+      @ApiResponse(responseCode = "400", description = "Invalid uasType value")
+    },
+    security = {
+      @SecurityRequirement(
+        name = "registry_auth",
+        scopes = { "write:uasTypes", "read:uasTypes" }
+      )
+    }
+  )
+  @RequestMapping(method = RequestMethod.DELETE, value = "/uasType/{uasTypeId}")
+  default ResponseEntity<Void> deleteUasType(
+    @Parameter(
+      name = "uasTypeId",
+      description = "UasType id to delete",
+      required = true,
+      in = ParameterIn.PATH
+    ) @PathVariable("uasTypeId") Long uasTypeId,
+    @Parameter(
+      name = "api_key",
+      description = "",
+      in = ParameterIn.HEADER
+    ) @RequestHeader(value = "api_key", required = false) String apiKey
+  ) {
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+  }
+
+  /**
+   * GET /uasType/findByStatus : Finds UasTypes by status
+   * Multiple status values can be provided with comma separated strings
+   *
+   * @param status Status values that need to be considered for filter (optional, default to available)
+   * @return successful operation (status code 200)
+   *         or Invalid status value (status code 400)
+   */
+  @Operation(
+    operationId = "findUasTypesByStatus",
+    summary = "Finds UasTypes by status",
+    description = "Multiple status values can be provided with comma separated strings",
+    tags = { "uas_types" },
+    responses = {
+      @ApiResponse(
+        responseCode = "200",
+        description = "successful operation",
+        content = {
+          @Content(
+            mediaType = "application/xml",
+            array = @ArraySchema(schema = @Schema(implementation = UasType.class))
+          ),
+          @Content(
+            mediaType = "application/json",
+            array = @ArraySchema(schema = @Schema(implementation = UasType.class))
+          )
+        }
+      ),
+      @ApiResponse(responseCode = "400", description = "Invalid status value")
+    },
+    security = {
+      @SecurityRequirement(
+        name = "registry_auth",
+        scopes = { "write:uasTypes", "read:uasTypes" }
+      )
+    }
+  )
+  @RequestMapping(
+    method = RequestMethod.GET,
+    value = "/uasType/findByStatus",
+    produces = { "application/xml", "application/json" }
+  )
+  default ResponseEntity<List<UasType>> findUasTypesByStatus(
+    @Parameter(
+      name = "status",
+      description = "Status values that need to be considered for filter",
+      in = ParameterIn.QUERY
+    ) @Valid @RequestParam(
+      value = "status",
+      required = false,
+      defaultValue = "available"
+    ) String status
+  ) {
+    getRequest()
+      .ifPresent(
+        request -> {
+          for (MediaType mediaType : MediaType.parseMediaTypes(
+            request.getHeader("Accept")
+          )) {
+            if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+              String exampleString =
+                "[ { \"mass\" : 6.027456183070403, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } } }, { \"mass\" : 6.027456183070403, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } } } ]";
+              ApiUtil.setExampleResponse(request, "application/json", exampleString);
+              break;
             }
-        });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-
-    /**
-     * GET /uasType/{uasTypeId} : Find uasType by ID
-     * Returns a single uasType
-     *
-     * @param uasTypeId ID of uasType to return (required)
-     * @return successful operation (status code 200)
-     *         or Invalid ID supplied (status code 400)
-     *         or UasType not found (status code 404)
-     */
-    @Operation(
-        operationId = "getUasTypeById",
-        summary = "Find uasType by ID",
-        description = "Returns a single uasType",
-        tags = { "uas_types" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = {
-                @Content(mediaType = "application/xml", schema = @Schema(implementation = UasType.class)),
-                @Content(mediaType = "application/json", schema = @Schema(implementation = UasType.class))
-            }),
-            @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
-            @ApiResponse(responseCode = "404", description = "UasType not found")
-        },
-        security = {
-            @SecurityRequirement(name = "api_key"),
-            @SecurityRequirement(name = "registry_auth", scopes={ "write:uasTypes", "read:uasTypes" })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/uasType/{uasTypeId}",
-        produces = { "application/xml", "application/json" }
-    )
-    default ResponseEntity<UasType> getUasTypeById(
-        @Parameter(name = "uasTypeId", description = "ID of uasType to return", required = true, in = ParameterIn.PATH) @PathVariable("uasTypeId") Long uasTypeId
-    ) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"mass\" : 6.027456183070403, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } } }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-                    String exampleString = "<UasType> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <modelNumber>aeiou</modelNumber> <null> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <validFrom>2000-01-23T04:56:07.000Z</validFrom> <validTill>2000-01-23T04:56:07.000Z</validTill> </null> <null> </null> <mass>3.149</mass> </UasType>";
-                    ApiUtil.setExampleResponse(request, "application/xml", exampleString);
-                    break;
-                }
+            if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
+              String exampleString =
+                "<UasType> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <modelNumber>aeiou</modelNumber> <null> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <validFrom>2000-01-23T04:56:07.000Z</validFrom> <validTill>2000-01-23T04:56:07.000Z</validTill> </null> <null> </null> <mass>3.149</mass> </UasType>";
+              ApiUtil.setExampleResponse(request, "application/xml", exampleString);
+              break;
             }
-        });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-
-    /**
-     * PUT /uasType : Update an existing uasType
-     * Update an existing uasType by Id
-     *
-     * @param uasType Update an existent uasType in the store (required)
-     * @return Successful operation (status code 200)
-     *         or Invalid ID supplied (status code 400)
-     *         or UasType not found (status code 404)
-     *         or Validation exception (status code 405)
-     */
-    @Operation(
-        operationId = "updateUasType",
-        summary = "Update an existing uasType",
-        description = "Update an existing uasType by Id",
-        tags = { "uas_types" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "Successful operation", content = {
-                @Content(mediaType = "application/xml", schema = @Schema(implementation = UasType.class)),
-                @Content(mediaType = "application/json", schema = @Schema(implementation = UasType.class))
-            }),
-            @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
-            @ApiResponse(responseCode = "404", description = "UasType not found"),
-            @ApiResponse(responseCode = "405", description = "Validation exception")
-        },
-        security = {
-            @SecurityRequirement(name = "registry_auth", scopes={ "write:uasTypes", "read:uasTypes" })
+          }
         }
-    )
-    @RequestMapping(
-        method = RequestMethod.PUT,
-        value = "/uasType",
-        produces = { "application/xml", "application/json" },
-        consumes = { "application/json", "application/xml", "application/x-www-form-urlencoded" }
-    )
-    default ResponseEntity<UasType> updateUasType(
-        @Parameter(name = "UasType", description = "Update an existent uasType in the store", required = true) @Valid @RequestBody UasType uasType
-    ) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"mass\" : 6.027456183070403, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } } }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-                    String exampleString = "<null> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <modelNumber>aeiou</modelNumber> <mass>3.149</mass> </null>";
-                    ApiUtil.setExampleResponse(request, "application/xml", exampleString);
-                    break;
-                }
+      );
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+  }
+
+  /**
+   * GET /uasType/findByTags : Finds UasTypes by tags
+   * Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
+   *
+   * @param tags Tags to filter by (optional)
+   * @return successful operation (status code 200)
+   *         or Invalid tag value (status code 400)
+   */
+  @Operation(
+    operationId = "findUasTypesByTags",
+    summary = "Finds UasTypes by tags",
+    description = "Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.",
+    tags = { "uas_types" },
+    responses = {
+      @ApiResponse(
+        responseCode = "200",
+        description = "successful operation",
+        content = {
+          @Content(
+            mediaType = "application/xml",
+            array = @ArraySchema(schema = @Schema(implementation = UasType.class))
+          ),
+          @Content(
+            mediaType = "application/json",
+            array = @ArraySchema(schema = @Schema(implementation = UasType.class))
+          )
+        }
+      ),
+      @ApiResponse(responseCode = "400", description = "Invalid tag value")
+    },
+    security = {
+      @SecurityRequirement(
+        name = "registry_auth",
+        scopes = { "write:uasTypes", "read:uasTypes" }
+      )
+    }
+  )
+  @RequestMapping(
+    method = RequestMethod.GET,
+    value = "/uasType/findByTags",
+    produces = { "application/xml", "application/json" }
+  )
+  default ResponseEntity<List<UasType>> findUasTypesByTags(
+    @Parameter(
+      name = "tags",
+      description = "Tags to filter by",
+      in = ParameterIn.QUERY
+    ) @Valid @RequestParam(value = "tags", required = false) List<String> tags
+  ) {
+    getRequest()
+      .ifPresent(
+        request -> {
+          for (MediaType mediaType : MediaType.parseMediaTypes(
+            request.getHeader("Accept")
+          )) {
+            if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+              String exampleString =
+                "[ { \"mass\" : 6.027456183070403, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } } }, { \"mass\" : 6.027456183070403, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } } } ]";
+              ApiUtil.setExampleResponse(request, "application/json", exampleString);
+              break;
             }
-        });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-
-    /**
-     * POST /uasType/{uasTypeId} : Updates a uasType in the store with form data
-     * 
-     *
-     * @param uasTypeId ID of uasType that needs to be updated (required)
-     * @param name Name of uasType that needs to be updated (optional)
-     * @param status Status of uasType that needs to be updated (optional)
-     * @return Invalid input (status code 405)
-     */
-    @Operation(
-        operationId = "updateUasTypeWithForm",
-        summary = "Updates a uasType in the store with form data",
-        description = "",
-        tags = { "uas_types" },
-        responses = {
-            @ApiResponse(responseCode = "405", description = "Invalid input")
-        },
-        security = {
-            @SecurityRequirement(name = "registry_auth", scopes={ "write:uasTypes", "read:uasTypes" })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.POST,
-        value = "/uasType/{uasTypeId}"
-    )
-    default ResponseEntity<Void> updateUasTypeWithForm(
-        @Parameter(name = "uasTypeId", description = "ID of uasType that needs to be updated", required = true, in = ParameterIn.PATH) @PathVariable("uasTypeId") Long uasTypeId,
-        @Parameter(name = "name", description = "Name of uasType that needs to be updated", in = ParameterIn.QUERY) @Valid @RequestParam(value = "name", required = false) String name,
-        @Parameter(name = "status", description = "Status of uasType that needs to be updated", in = ParameterIn.QUERY) @Valid @RequestParam(value = "status", required = false) String status
-    ) {
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-
-    /**
-     * POST /uasType/{uasTypeId}/uploadImage : uploads an image
-     * 
-     *
-     * @param uasTypeId ID of uasType to update (required)
-     * @param additionalMetadata Additional Metadata (optional)
-     * @param body  (optional)
-     * @return successful operation (status code 200)
-     */
-    @Operation(
-        operationId = "uploadFile",
-        summary = "uploads an image",
-        description = "",
-        tags = { "uas_types" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ModelApiResponse.class))
-            })
-        },
-        security = {
-            @SecurityRequirement(name = "registry_auth", scopes={ "write:uasTypes", "read:uasTypes" })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.POST,
-        value = "/uasType/{uasTypeId}/uploadImage",
-        produces = { "application/json" },
-        consumes = { "application/octet-stream" }
-    )
-    default ResponseEntity<ModelApiResponse> uploadFile(
-        @Parameter(name = "uasTypeId", description = "ID of uasType to update", required = true, in = ParameterIn.PATH) @PathVariable("uasTypeId") Long uasTypeId,
-        @Parameter(name = "additionalMetadata", description = "Additional Metadata", in = ParameterIn.QUERY) @Valid @RequestParam(value = "additionalMetadata", required = false) String additionalMetadata,
-        @Parameter(name = "body", description = "") @Valid @RequestBody(required = false) org.springframework.core.io.Resource body
-    ) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 0, \"type\" : \"type\", \"message\" : \"message\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
+            if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
+              String exampleString =
+                "<UasType> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <modelNumber>aeiou</modelNumber> <null> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <validFrom>2000-01-23T04:56:07.000Z</validFrom> <validTill>2000-01-23T04:56:07.000Z</validTill> </null> <null> </null> <mass>3.149</mass> </UasType>";
+              ApiUtil.setExampleResponse(request, "application/xml", exampleString);
+              break;
             }
-        });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+          }
+        }
+      );
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+  }
 
+  /**
+   * GET /uasType/{uasTypeId} : Find uasType by ID
+   * Returns a single uasType
+   *
+   * @param uasTypeId ID of uasType to return (required)
+   * @return successful operation (status code 200)
+   *         or Invalid ID supplied (status code 400)
+   *         or UasType not found (status code 404)
+   */
+  @Operation(
+    operationId = "getUasTypeById",
+    summary = "Find uasType by ID",
+    description = "Returns a single uasType",
+    tags = { "uas_types" },
+    responses = {
+      @ApiResponse(
+        responseCode = "200",
+        description = "successful operation",
+        content = {
+          @Content(
+            mediaType = "application/xml",
+            schema = @Schema(implementation = UasType.class)
+          ),
+          @Content(
+            mediaType = "application/json",
+            schema = @Schema(implementation = UasType.class)
+          )
+        }
+      ),
+      @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
+      @ApiResponse(responseCode = "404", description = "UasType not found")
+    },
+    security = {
+      @SecurityRequirement(name = "api_key"),
+      @SecurityRequirement(
+        name = "registry_auth",
+        scopes = { "write:uasTypes", "read:uasTypes" }
+      )
     }
+  )
+  @RequestMapping(
+    method = RequestMethod.GET,
+    value = "/uasType/{uasTypeId}",
+    produces = { "application/xml", "application/json" }
+  )
+  default ResponseEntity<UasType> getUasTypeById(
+    @Parameter(
+      name = "uasTypeId",
+      description = "ID of uasType to return",
+      required = true,
+      in = ParameterIn.PATH
+    ) @PathVariable("uasTypeId") Long uasTypeId
+  ) {
+    getRequest()
+      .ifPresent(
+        request -> {
+          for (MediaType mediaType : MediaType.parseMediaTypes(
+            request.getHeader("Accept")
+          )) {
+            if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+              String exampleString =
+                "{ \"mass\" : 6.027456183070403, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } } }";
+              ApiUtil.setExampleResponse(request, "application/json", exampleString);
+              break;
+            }
+            if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
+              String exampleString =
+                "<UasType> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <modelNumber>aeiou</modelNumber> <null> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <validFrom>2000-01-23T04:56:07.000Z</validFrom> <validTill>2000-01-23T04:56:07.000Z</validTill> </null> <null> </null> <mass>3.149</mass> </UasType>";
+              ApiUtil.setExampleResponse(request, "application/xml", exampleString);
+              break;
+            }
+          }
+        }
+      );
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+  }
 
+  /**
+   * PUT /uasType : Update an existing uasType
+   * Update an existing uasType by Id
+   *
+   * @param uasType Update an existent uasType in the store (required)
+   * @return Successful operation (status code 200)
+   *         or Invalid ID supplied (status code 400)
+   *         or UasType not found (status code 404)
+   *         or Validation exception (status code 405)
+   */
+  @Operation(
+    operationId = "updateUasType",
+    summary = "Update an existing uasType",
+    description = "Update an existing uasType by Id",
+    tags = { "uas_types" },
+    responses = {
+      @ApiResponse(
+        responseCode = "200",
+        description = "Successful operation",
+        content = {
+          @Content(
+            mediaType = "application/xml",
+            schema = @Schema(implementation = UasType.class)
+          ),
+          @Content(
+            mediaType = "application/json",
+            schema = @Schema(implementation = UasType.class)
+          )
+        }
+      ),
+      @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
+      @ApiResponse(responseCode = "404", description = "UasType not found"),
+      @ApiResponse(responseCode = "405", description = "Validation exception")
+    },
+    security = {
+      @SecurityRequirement(
+        name = "registry_auth",
+        scopes = { "write:uasTypes", "read:uasTypes" }
+      )
+    }
+  )
+  @RequestMapping(
+    method = RequestMethod.PUT,
+    value = "/uasType",
+    produces = { "application/xml", "application/json" },
+    consumes = {
+      "application/json", "application/xml", "application/x-www-form-urlencoded"
+    }
+  )
+  default ResponseEntity<UasType> updateUasType(
+    @Parameter(
+      name = "UasType",
+      description = "Update an existent uasType in the store",
+      required = true
+    ) @Valid @RequestBody UasType uasType
+  ) {
+    getRequest()
+      .ifPresent(
+        request -> {
+          for (MediaType mediaType : MediaType.parseMediaTypes(
+            request.getHeader("Accept")
+          )) {
+            if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+              String exampleString =
+                "{ \"mass\" : 6.027456183070403, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"manufacturer\" : { \"validTill\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validFrom\" : \"2000-01-23T04:56:07.000+00:00\", \"legalEntity\" : { \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } } }";
+              ApiUtil.setExampleResponse(request, "application/json", exampleString);
+              break;
+            }
+            if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
+              String exampleString =
+                "<null> <id>046b6c7f-0b8a-43b9-b35d-6489e6daee91</id> <modelNumber>aeiou</modelNumber> <mass>3.149</mass> </null>";
+              ApiUtil.setExampleResponse(request, "application/xml", exampleString);
+              break;
+            }
+          }
+        }
+      );
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+  }
+
+  /**
+   * POST /uasType/{uasTypeId} : Updates a uasType in the store with form data
+   *
+   *
+   * @param uasTypeId ID of uasType that needs to be updated (required)
+   * @param name Name of uasType that needs to be updated (optional)
+   * @param status Status of uasType that needs to be updated (optional)
+   * @return Invalid input (status code 405)
+   */
+  @Operation(
+    operationId = "updateUasTypeWithForm",
+    summary = "Updates a uasType in the store with form data",
+    description = "",
+    tags = { "uas_types" },
+    responses = { @ApiResponse(responseCode = "405", description = "Invalid input") },
+    security = {
+      @SecurityRequirement(
+        name = "registry_auth",
+        scopes = { "write:uasTypes", "read:uasTypes" }
+      )
+    }
+  )
+  @RequestMapping(method = RequestMethod.POST, value = "/uasType/{uasTypeId}")
+  default ResponseEntity<Void> updateUasTypeWithForm(
+    @Parameter(
+      name = "uasTypeId",
+      description = "ID of uasType that needs to be updated",
+      required = true,
+      in = ParameterIn.PATH
+    ) @PathVariable("uasTypeId") Long uasTypeId,
+    @Parameter(
+      name = "name",
+      description = "Name of uasType that needs to be updated",
+      in = ParameterIn.QUERY
+    ) @Valid @RequestParam(value = "name", required = false) String name,
+    @Parameter(
+      name = "status",
+      description = "Status of uasType that needs to be updated",
+      in = ParameterIn.QUERY
+    ) @Valid @RequestParam(value = "status", required = false) String status
+  ) {
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+  }
+
+  /**
+   * POST /uasType/{uasTypeId}/uploadImage : uploads an image
+   *
+   *
+   * @param uasTypeId ID of uasType to update (required)
+   * @param additionalMetadata Additional Metadata (optional)
+   * @param body  (optional)
+   * @return successful operation (status code 200)
+   */
+  @Operation(
+    operationId = "uploadFile",
+    summary = "uploads an image",
+    description = "",
+    tags = { "uas_types" },
+    responses = {
+      @ApiResponse(
+        responseCode = "200",
+        description = "successful operation",
+        content = {
+          @Content(
+            mediaType = "application/json",
+            schema = @Schema(implementation = ModelApiResponse.class)
+          )
+        }
+      )
+    },
+    security = {
+      @SecurityRequirement(
+        name = "registry_auth",
+        scopes = { "write:uasTypes", "read:uasTypes" }
+      )
+    }
+  )
+  @RequestMapping(
+    method = RequestMethod.POST,
+    value = "/uasType/{uasTypeId}/uploadImage",
+    produces = { "application/json" },
+    consumes = { "application/octet-stream" }
+  )
+  default ResponseEntity<ModelApiResponse> uploadFile(
+    @Parameter(
+      name = "uasTypeId",
+      description = "ID of uasType to update",
+      required = true,
+      in = ParameterIn.PATH
+    ) @PathVariable("uasTypeId") Long uasTypeId,
+    @Parameter(
+      name = "additionalMetadata",
+      description = "Additional Metadata",
+      in = ParameterIn.QUERY
+    ) @Valid @RequestParam(
+      value = "additionalMetadata",
+      required = false
+    ) String additionalMetadata,
+    @Parameter(name = "body", description = "") @Valid @RequestBody(
+      required = false
+    ) org.springframework.core.io.Resource body
+  ) {
+    getRequest()
+      .ifPresent(
+        request -> {
+          for (MediaType mediaType : MediaType.parseMediaTypes(
+            request.getHeader("Accept")
+          )) {
+            if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+              String exampleString =
+                "{ \"code\" : 0, \"type\" : \"type\", \"message\" : \"message\" }";
+              ApiUtil.setExampleResponse(request, "application/json", exampleString);
+              break;
+            }
+          }
+        }
+      );
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+  }
 }

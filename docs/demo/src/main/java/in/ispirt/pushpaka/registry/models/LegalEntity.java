@@ -1,28 +1,28 @@
 package in.ispirt.pushpaka.registry.models;
 
-import java.net.URI;
-import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import in.ispirt.pushpaka.registry.models.Address;
-import java.util.UUID;
-import org.openapitools.jackson.nullable.JsonNullable;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.net.URI;
 import java.time.OffsetDateTime;
+import java.util.*;
+import java.util.Objects;
+import java.util.UUID;
+import javax.annotation.Generated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import io.swagger.v3.oas.annotations.media.Schema;
-
-
-import java.util.*;
-import javax.annotation.Generated;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 /**
  * LegalEntity
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]")
+@Generated(
+  value = "org.openapitools.codegen.languages.SpringCodegen",
+  date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]"
+)
 public class LegalEntity {
-
   private UUID id;
 
   private String cin;
@@ -60,8 +60,9 @@ public class LegalEntity {
   /**
    * Get id
    * @return id
-  */
-  @NotNull @Valid 
+   */
+  @NotNull
+  @Valid
   @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("id")
   public UUID getId() {
@@ -80,8 +81,8 @@ public class LegalEntity {
   /**
    * Get cin
    * @return cin
-  */
-  @NotNull 
+   */
+  @NotNull
   @Schema(name = "cin", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("cin")
   public String getCin() {
@@ -100,8 +101,8 @@ public class LegalEntity {
   /**
    * Get name
    * @return name
-  */
-  @NotNull 
+   */
+  @NotNull
   @Schema(name = "name", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("name")
   public String getName() {
@@ -120,8 +121,9 @@ public class LegalEntity {
   /**
    * Get regdAddress
    * @return regdAddress
-  */
-  @NotNull @Valid 
+   */
+  @NotNull
+  @Valid
   @Schema(name = "regdAddress", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("regdAddress")
   public Address getRegdAddress() {
@@ -140,8 +142,8 @@ public class LegalEntity {
   /**
    * Get gstin
    * @return gstin
-  */
-  
+   */
+
   @Schema(name = "gstin", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("gstin")
   public String getGstin() {
@@ -161,11 +163,13 @@ public class LegalEntity {
       return false;
     }
     LegalEntity legalEntity = (LegalEntity) o;
-    return Objects.equals(this.id, legalEntity.id) &&
-        Objects.equals(this.cin, legalEntity.cin) &&
-        Objects.equals(this.name, legalEntity.name) &&
-        Objects.equals(this.regdAddress, legalEntity.regdAddress) &&
-        Objects.equals(this.gstin, legalEntity.gstin);
+    return (
+      Objects.equals(this.id, legalEntity.id) &&
+      Objects.equals(this.cin, legalEntity.cin) &&
+      Objects.equals(this.name, legalEntity.name) &&
+      Objects.equals(this.regdAddress, legalEntity.regdAddress) &&
+      Objects.equals(this.gstin, legalEntity.gstin)
+    );
   }
 
   @Override
@@ -197,4 +201,3 @@ public class LegalEntity {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

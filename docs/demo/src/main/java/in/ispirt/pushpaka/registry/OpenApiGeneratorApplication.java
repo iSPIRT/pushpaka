@@ -9,22 +9,25 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.FullyQualifiedAnnotationBeanNameGenerator;
 
-@SpringBootApplication(
-    nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class
-)
+@SpringBootApplication(nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class)
 @ComponentScan(
-    basePackages = {"in.ispirt.pushpaka.registry", "in.ispirt.pushpaka.registry.api" , "in.ispirt.pushpaka.registry.config"},
-    nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class
+  basePackages = {
+    "in.ispirt.pushpaka.registry",
+    "in.ispirt.pushpaka.registry.api",
+    "in.ispirt.pushpaka.registry.config"
+  },
+  nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class
 )
 public class OpenApiGeneratorApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(OpenApiGeneratorApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(OpenApiGeneratorApplication.class, args);
+  }
 
-    @Bean(name = "in.ispirt.pushpaka.registry.OpenApiGeneratorApplication.jsonNullableModule")
-    public Module jsonNullableModule() {
-        return new JsonNullableModule();
-    }
-
+  @Bean(
+    name = "in.ispirt.pushpaka.registry.OpenApiGeneratorApplication.jsonNullableModule"
+  )
+  public Module jsonNullableModule() {
+    return new JsonNullableModule();
+  }
 }

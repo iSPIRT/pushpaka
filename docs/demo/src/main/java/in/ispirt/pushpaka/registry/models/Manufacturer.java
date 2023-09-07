@@ -1,30 +1,30 @@
 package in.ispirt.pushpaka.registry.models;
 
-import java.net.URI;
-import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import in.ispirt.pushpaka.registry.models.LegalEntity;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.net.URI;
 import java.time.OffsetDateTime;
+import java.time.OffsetDateTime;
+import java.util.*;
+import java.util.Objects;
 import java.util.UUID;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.time.OffsetDateTime;
+import javax.annotation.Generated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import io.swagger.v3.oas.annotations.media.Schema;
-
-
-import java.util.*;
-import javax.annotation.Generated;
+import org.openapitools.jackson.nullable.JsonNullable;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * Manufacturer
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]")
+@Generated(
+  value = "org.openapitools.codegen.languages.SpringCodegen",
+  date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]"
+)
 public class Manufacturer {
-
   private UUID id;
 
   private LegalEntity legalEntity;
@@ -60,8 +60,9 @@ public class Manufacturer {
   /**
    * Get id
    * @return id
-  */
-  @NotNull @Valid 
+   */
+  @NotNull
+  @Valid
   @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("id")
   public UUID getId() {
@@ -80,8 +81,9 @@ public class Manufacturer {
   /**
    * Get legalEntity
    * @return legalEntity
-  */
-  @NotNull @Valid 
+   */
+  @NotNull
+  @Valid
   @Schema(name = "legalEntity", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("legalEntity")
   public LegalEntity getLegalEntity() {
@@ -100,8 +102,8 @@ public class Manufacturer {
   /**
    * Get validFrom
    * @return validFrom
-  */
-  @Valid 
+   */
+  @Valid
   @Schema(name = "validFrom", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("validFrom")
   public OffsetDateTime getValidFrom() {
@@ -120,8 +122,8 @@ public class Manufacturer {
   /**
    * Get validTill
    * @return validTill
-  */
-  @Valid 
+   */
+  @Valid
   @Schema(name = "validTill", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("validTill")
   public OffsetDateTime getValidTill() {
@@ -141,10 +143,12 @@ public class Manufacturer {
       return false;
     }
     Manufacturer manufacturer = (Manufacturer) o;
-    return Objects.equals(this.id, manufacturer.id) &&
-        Objects.equals(this.legalEntity, manufacturer.legalEntity) &&
-        Objects.equals(this.validFrom, manufacturer.validFrom) &&
-        Objects.equals(this.validTill, manufacturer.validTill);
+    return (
+      Objects.equals(this.id, manufacturer.id) &&
+      Objects.equals(this.legalEntity, manufacturer.legalEntity) &&
+      Objects.equals(this.validFrom, manufacturer.validFrom) &&
+      Objects.equals(this.validTill, manufacturer.validTill)
+    );
   }
 
   @Override
@@ -175,4 +179,3 @@ public class Manufacturer {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

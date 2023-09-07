@@ -1,26 +1,26 @@
 package in.ispirt.pushpaka.registry.models;
 
-import java.net.URI;
-import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.net.URI;
 import java.time.OffsetDateTime;
+import java.util.*;
+import java.util.Objects;
+import javax.annotation.Generated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import io.swagger.v3.oas.annotations.media.Schema;
-
-
-import java.util.*;
-import javax.annotation.Generated;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 /**
  * Category
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]")
+@Generated(
+  value = "org.openapitools.codegen.languages.SpringCodegen",
+  date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]"
+)
 public class Category {
-
   private Long id;
 
   private String name;
@@ -33,8 +33,8 @@ public class Category {
   /**
    * Get id
    * @return id
-  */
-  
+   */
+
   @Schema(name = "id", example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("id")
   public Long getId() {
@@ -53,9 +53,13 @@ public class Category {
   /**
    * Get name
    * @return name
-  */
-  
-  @Schema(name = "name", example = "Dogs", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+   */
+
+  @Schema(
+    name = "name",
+    example = "Dogs",
+    requiredMode = Schema.RequiredMode.NOT_REQUIRED
+  )
   @JsonProperty("name")
   public String getName() {
     return name;
@@ -74,8 +78,9 @@ public class Category {
       return false;
     }
     Category category = (Category) o;
-    return Objects.equals(this.id, category.id) &&
-        Objects.equals(this.name, category.name);
+    return (
+      Objects.equals(this.id, category.id) && Objects.equals(this.name, category.name)
+    );
   }
 
   @Override
@@ -104,4 +109,3 @@ public class Category {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

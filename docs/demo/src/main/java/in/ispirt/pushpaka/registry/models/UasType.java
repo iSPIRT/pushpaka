@@ -1,31 +1,31 @@
 package in.ispirt.pushpaka.registry.models;
 
-import java.net.URI;
-import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import in.ispirt.pushpaka.registry.models.Manufacturer;
 import in.ispirt.pushpaka.registry.models.UasPropulsionCategory;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
-import java.util.UUID;
-import org.openapitools.jackson.nullable.JsonNullable;
+import java.net.URI;
 import java.time.OffsetDateTime;
+import java.util.*;
+import java.util.Objects;
+import java.util.UUID;
+import javax.annotation.Generated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import io.swagger.v3.oas.annotations.media.Schema;
-
-
-import java.util.*;
-import javax.annotation.Generated;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 /**
  * UasType
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]")
+@Generated(
+  value = "org.openapitools.codegen.languages.SpringCodegen",
+  date = "2023-09-07T16:15:58.556735+05:30[Asia/Kolkata]"
+)
 public class UasType {
-
   private UUID id;
 
   private String modelNumber;
@@ -48,7 +48,13 @@ public class UasType {
   /**
    * Constructor with only required parameters
    */
-  public UasType(UUID id, String modelNumber, Manufacturer manufacturer, UasPropulsionCategory propulsionCategory, BigDecimal mass) {
+  public UasType(
+    UUID id,
+    String modelNumber,
+    Manufacturer manufacturer,
+    UasPropulsionCategory propulsionCategory,
+    BigDecimal mass
+  ) {
     this.id = id;
     this.modelNumber = modelNumber;
     this.manufacturer = manufacturer;
@@ -64,8 +70,9 @@ public class UasType {
   /**
    * Get id
    * @return id
-  */
-  @NotNull @Valid 
+   */
+  @NotNull
+  @Valid
   @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("id")
   public UUID getId() {
@@ -84,8 +91,8 @@ public class UasType {
   /**
    * Get modelNumber
    * @return modelNumber
-  */
-  @NotNull 
+   */
+  @NotNull
   @Schema(name = "modelNumber", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("modelNumber")
   public String getModelNumber() {
@@ -104,8 +111,9 @@ public class UasType {
   /**
    * Get manufacturer
    * @return manufacturer
-  */
-  @NotNull @Valid 
+   */
+  @NotNull
+  @Valid
   @Schema(name = "manufacturer", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("manufacturer")
   public Manufacturer getManufacturer() {
@@ -124,8 +132,9 @@ public class UasType {
   /**
    * Get propulsionCategory
    * @return propulsionCategory
-  */
-  @NotNull @Valid 
+   */
+  @NotNull
+  @Valid
   @Schema(name = "propulsionCategory", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("propulsionCategory")
   public UasPropulsionCategory getPropulsionCategory() {
@@ -144,9 +153,14 @@ public class UasType {
   /**
    * maximum take off mass in grams
    * @return mass
-  */
-  @NotNull @Valid 
-  @Schema(name = "mass", description = "maximum take off mass in grams", requiredMode = Schema.RequiredMode.REQUIRED)
+   */
+  @NotNull
+  @Valid
+  @Schema(
+    name = "mass",
+    description = "maximum take off mass in grams",
+    requiredMode = Schema.RequiredMode.REQUIRED
+  )
   @JsonProperty("mass")
   public BigDecimal getMass() {
     return mass;
@@ -165,11 +179,13 @@ public class UasType {
       return false;
     }
     UasType uasType = (UasType) o;
-    return Objects.equals(this.id, uasType.id) &&
-        Objects.equals(this.modelNumber, uasType.modelNumber) &&
-        Objects.equals(this.manufacturer, uasType.manufacturer) &&
-        Objects.equals(this.propulsionCategory, uasType.propulsionCategory) &&
-        Objects.equals(this.mass, uasType.mass);
+    return (
+      Objects.equals(this.id, uasType.id) &&
+      Objects.equals(this.modelNumber, uasType.modelNumber) &&
+      Objects.equals(this.manufacturer, uasType.manufacturer) &&
+      Objects.equals(this.propulsionCategory, uasType.propulsionCategory) &&
+      Objects.equals(this.mass, uasType.mass)
+    );
   }
 
   @Override
@@ -184,7 +200,10 @@ public class UasType {
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    modelNumber: ").append(toIndentedString(modelNumber)).append("\n");
     sb.append("    manufacturer: ").append(toIndentedString(manufacturer)).append("\n");
-    sb.append("    propulsionCategory: ").append(toIndentedString(propulsionCategory)).append("\n");
+    sb
+      .append("    propulsionCategory: ")
+      .append(toIndentedString(propulsionCategory))
+      .append("\n");
     sb.append("    mass: ").append(toIndentedString(mass)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -201,4 +220,3 @@ public class UasType {
     return o.toString().replace("\n", "\n    ");
   }
 }
-
