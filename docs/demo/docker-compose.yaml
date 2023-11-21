@@ -83,6 +83,13 @@ services:
       - "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
       - "POSTGRES_DB=${POSTGRES_DBNAME}"
 
+  crdb:
+    image: cockroachdb/cockroach:v19.2.2
+    ports:
+      - "26257:26257"
+      - "8082:8080"
+    command: start-single-node --insecure
+
 networks:
   local-keycloak:
 
