@@ -13,6 +13,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import java.util.UUID;
 
 public class Dao implements Serializable {
   private static final Random RAND = new Random();
@@ -26,9 +27,9 @@ public class Dao implements Serializable {
   public static class UasType {
     @Id
     @Column(name = "id")
-    public long id;
+    public UUID id;
 
-    public long getId() {
+    public UUID getId() {
       return id;
     }
 
@@ -44,7 +45,7 @@ public class Dao implements Serializable {
     }
 
     // Convenience constructor.
-    public UasType(int id, int balance) {
+    public UasType(UUID id, int balance) {
       this.id = id;
       this.balance = BigDecimal.valueOf(balance);
     }
@@ -53,13 +54,13 @@ public class Dao implements Serializable {
     public UasType() {}
   }
 
-  private static Function<Session, BigDecimal> addUasTypes() throws JDBCException {
+  public static Function<Session, BigDecimal> addUasTypes() throws JDBCException {
     Function<Session, BigDecimal> f = s -> {
       BigDecimal rv = new BigDecimal(0);
       try {
-        s.save(new UasType(1, 1000));
-        s.save(new UasType(2, 250));
-        s.save(new UasType(3, 314159));
+        s.save(new UasType(UUID.randomUUID(), 1000));
+        s.save(new UasType(UUID.randomUUID(), 250));
+        s.save(new UasType(UUID.randomUUID(), 314159));
         rv = BigDecimal.valueOf(1);
         System.out.printf("APP: addUasTypes() --> %.2f\n", rv);
       } catch (JDBCException e) {
@@ -140,7 +141,7 @@ public class Dao implements Serializable {
   // Run SQL code in a way that automatically handles the
   // transaction retry logic so we don't have to duplicate it in
   // various places.
-  private static BigDecimal runTransaction(
+  public static BigDecimal runTransaction(
     Session session,
     Function<Session, BigDecimal> fn
   ) {

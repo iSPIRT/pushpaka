@@ -6,6 +6,9 @@ import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
+import java.util.Arrays;
+// import io.swagger.v3.oas.models.security.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -30,6 +33,7 @@ public class SpringDocConfiguration {
           )
           .version("1.0.17")
       )
+      .servers(Arrays.asList(new Server().url("http://localhost:8083/")))
       .components(
         new Components()
           .addSecuritySchemes(

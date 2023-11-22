@@ -223,7 +223,7 @@ public class UasType {
    * @return photoUrl
    */
   @Valid
-  @Size(max = 512)
+  // @Size(max = 512)
   @Schema(name = "photoUrl", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("photoUrl")
   public URI getPhotoUrl() {

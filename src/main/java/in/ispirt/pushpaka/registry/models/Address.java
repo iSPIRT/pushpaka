@@ -36,6 +36,8 @@ public class Address {
 
   private BigDecimal pinCode;
 
+  private String country;
+
   /**
    * Default constructor
    * @deprecated Use {@link Address#Address(String, String, String, String, State, BigDecimal)}
@@ -54,7 +56,8 @@ public class Address {
     String line3,
     String city,
     State state,
-    BigDecimal pinCode
+    BigDecimal pinCode,
+    String country
   ) {
     this.line1 = line1;
     this.line2 = line2;
@@ -62,6 +65,7 @@ public class Address {
     this.city = city;
     this.state = state;
     this.pinCode = pinCode;
+    this.country = country;
   }
 
   public Address line1(String line1) {
@@ -134,6 +138,21 @@ public class Address {
 
   public void setLine3(String line3) {
     this.line3 = line3;
+  }
+
+  /**
+   * Get country
+   * @return country
+   */
+  @NotNull
+  @Schema(name = "country", example = "IND", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("country")
+  public String getCountry() {
+    return country;
+  }
+
+  public void setCountry(String country) {
+    this.country = country;
   }
 
   public Address city(String city) {
@@ -217,7 +236,8 @@ public class Address {
       Objects.equals(this.line3, address.line3) &&
       Objects.equals(this.city, address.city) &&
       Objects.equals(this.state, address.state) &&
-      Objects.equals(this.pinCode, address.pinCode)
+      Objects.equals(this.pinCode, address.pinCode) &&
+      Objects.equals(this.country, address.country)
     );
   }
 
@@ -236,6 +256,7 @@ public class Address {
     sb.append("    city: ").append(toIndentedString(city)).append("\n");
     sb.append("    state: ").append(toIndentedString(state)).append("\n");
     sb.append("    pinCode: ").append(toIndentedString(pinCode)).append("\n");
+    sb.append("    country: ").append(toIndentedString(country)).append("\n");
     sb.append("}");
     return sb.toString();
   }

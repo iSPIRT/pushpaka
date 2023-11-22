@@ -5,6 +5,7 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
+import in.ispirt.pushpaka.registry.dao.DaoInstance;
 import in.ispirt.pushpaka.registry.models.Uas;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -86,6 +87,7 @@ public interface UasApi {
       required = true
     ) @Valid @RequestBody Uas uas
   ) {
+    DaoInstance d = DaoInstance.getInstance();
     getRequest()
       .ifPresent(
         request -> {
@@ -96,6 +98,13 @@ public interface UasApi {
               String exampleString =
                 "{ \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"manufacturer\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"legalEntity\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } }";
               ApiUtil.setExampleResponse(request, "application/json", exampleString);
+
+              try {
+                d.addUasTypes();
+                System.out.println("addUasTypes()");
+              } catch (Exception e) {
+                System.err.println("Exception: " + e.toString());
+              }
               break;
             }
           }
@@ -226,6 +235,70 @@ public interface UasApi {
     produces = { "application/json" }
   )
   default ResponseEntity<List<Uas>> findUassByStatus(
+    @Parameter(
+      name = "status",
+      description = "Status values that need to be considered for filter",
+      in = ParameterIn.QUERY
+    ) @Valid @RequestParam(
+      value = "status",
+      required = false,
+      defaultValue = "available"
+    ) String status
+  ) {
+    getRequest()
+      .ifPresent(
+        request -> {
+          for (MediaType mediaType : MediaType.parseMediaTypes(
+            request.getHeader("Accept")
+          )) {
+            if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+              String exampleString =
+                "[ { \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"manufacturer\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"legalEntity\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } }, { \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"manufacturer\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"legalEntity\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } } ]";
+              ApiUtil.setExampleResponse(request, "application/json", exampleString);
+              break;
+            }
+          }
+        }
+      );
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+  }
+
+  /**
+   * GET /uas/findByStatus : Finds Uass by status
+   * Multiple status values can be provided with comma separated strings
+   *
+   * @param status Status values that need to be considered for filter (optional, default to available)
+   * @return successful operation (status code 200)
+   *         or Invalid status value (status code 400)
+   */
+  @Operation(
+    operationId = "findUassByLocation",
+    summary = "Finds Uass by location",
+    description = "Multiple status values can be provided with comma separated strings",
+    tags = { "uas" },
+    responses = {
+      @ApiResponse(
+        responseCode = "200",
+        description = "successful operation",
+        content = {
+          @Content(
+            mediaType = "application/json",
+            array = @ArraySchema(schema = @Schema(implementation = Uas.class))
+          )
+        }
+      ),
+      @ApiResponse(responseCode = "400", description = "Invalid status value")
+    },
+    security = {
+      @SecurityRequirement(name = "registry_auth", scopes = { "write:uass", "read:uass" })
+    }
+  )
+  @RequestMapping(
+    method = RequestMethod.GET,
+    value = "/uas/findByLocation",
+    produces = { "application/json" }
+  )
+  default ResponseEntity<List<Uas>> findUassByLocation(
     @Parameter(
       name = "status",
       description = "Status values that need to be considered for filter",
