@@ -1,0 +1,7 @@
+name: pushpaka
+channels:
+  - defaults
+dependencies:
+  - maven=3.8.1
+  - openjdk=11.0.13
+prefix: /Users/sayandeep/miniconda3/envs/pushpaka
