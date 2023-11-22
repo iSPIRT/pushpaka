@@ -3,23 +3,95 @@ package in.ispirt.pushpaka.registry.dao;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Random;
+import java.util.UUID;
 import java.util.function.Function;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import org.hibernate.JDBCException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-import java.util.UUID;
 
 public class Dao implements Serializable {
   private static final Random RAND = new Random();
   private static final boolean FORCE_RETRY = false;
   private static final String RETRY_SQL_STATE = "40001";
   private static final int MAX_ATTEMPT_COUNT = 6;
+
+  // LegalEntity is our model, which corresponds to the "legal_entities" database table.
+  @Entity
+  @Table(name = "legal_entities")
+  public static class LegalEntity {
+    @Id
+    @Column(name = "id")
+    public UUID id;
+
+    public UUID getId() {
+      return id;
+    }
+
+    @Column(name = "name")
+    public String name;
+
+    public String getName() {
+      return name;
+    }
+
+    public void setName(String newname) {
+      this.name = newname;
+    }
+
+    // Convenience constructor.
+    public LegalEntity(UUID id, String name) {
+      this.id = id;
+      this.name = name;
+    }
+
+    // Hibernate needs a default (no-arg) constructor to create model objects.
+    public LegalEntity() {}
+  }
+
+  // Manufacturer is our model, which corresponds to the "uas_types" database table.
+  @Entity
+  @Table(name = "manufacturers")
+  public static class Manufacturer {
+    @Id
+    @Column(name = "id")
+    public UUID id;
+
+    public UUID getId() {
+      return id;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "FK_legal_entity")
+    // @Column(name = "legal_entity")
+    public LegalEntity legalEntity;
+
+    public LegalEntity getLegalEntity() {
+      return legalEntity;
+    }
+
+    public void setLegalEntity(LegalEntity nlegalEntity) {
+      this.legalEntity = nlegalEntity;
+    }
+
+    // Convenience constructor.
+    public Manufacturer(UUID id, LegalEntity legalEntity) {
+      this.id = id;
+      this.legalEntity = legalEntity;
+    }
+
+    // Hibernate needs a default (no-arg) constructor to create model objects.
+    public Manufacturer() {}
+  }
 
   // UasType is our model, which corresponds to the "uas_types" database table.
   @Entity
@@ -33,69 +105,78 @@ public class Dao implements Serializable {
       return id;
     }
 
-    @Column(name = "balance")
-    public BigDecimal balance;
+    @ManyToOne
+    @JoinColumn(name = "FK_manufacturer")
+    // @Column(name = "balance")
+    public Manufacturer manufacturer;
 
-    public BigDecimal getBalance() {
-      return balance;
+    public Manufacturer getManufacturer() {
+      return manufacturer;
     }
 
-    public void setBalance(BigDecimal newBalance) {
-      this.balance = newBalance;
+    public void setManufacturer(Manufacturer m) {
+      this.manufacturer = m;
     }
 
     // Convenience constructor.
-    public UasType(UUID id, int balance) {
+    public UasType(UUID id, Manufacturer manufacturer) {
       this.id = id;
-      this.balance = BigDecimal.valueOf(balance);
+      this.manufacturer = manufacturer;
     }
 
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public UasType() {}
   }
 
+    // UasType is our model, which corresponds to the "uas_types" database table.
+  @Entity
+  @Table(name = "uass")
+  public static class Uas {
+    @Id
+    @Column(name = "id")
+    public UUID id;
+
+    public UUID getId() {
+      return id;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "FK_uas_type")
+    // @Column(name = "uas_type")
+    public UasType uasType;
+
+    public UasType getUasType() {
+      return uasType;
+    }
+
+    public void setUasType(UasType ut) {
+      this.uasType = ut;
+    }
+
+    // Convenience constructor.
+    public Uas(UUID id, UasType ut) {
+      this.id = id;
+      this.uasType = ut;
+    }
+
+    // Hibernate needs a default (no-arg) constructor to create model objects.
+    public Uas() {}
+  }
+
   public static Function<Session, BigDecimal> addUasTypes() throws JDBCException {
     Function<Session, BigDecimal> f = s -> {
       BigDecimal rv = new BigDecimal(0);
       try {
-        s.save(new UasType(UUID.randomUUID(), 1000));
-        s.save(new UasType(UUID.randomUUID(), 250));
-        s.save(new UasType(UUID.randomUUID(), 314159));
+        LegalEntity l = new LegalEntity(UUID.randomUUID(), "TEST COMPANY PVT LTD");
+        Manufacturer m = new Manufacturer(UUID.randomUUID(), l);
+        UasType ut = new UasType(UUID.randomUUID(), m);
+        Uas u = new Uas(UUID.randomUUID(), ut);
+        s.save(l);
+        s.save(m);
+        s.save(ut);
+        s.save(u);
         rv = BigDecimal.valueOf(1);
         System.out.printf("APP: addUasTypes() --> %.2f\n", rv);
-      } catch (JDBCException e) {
-        throw e;
-      }
-      return rv;
-    };
-    return f;
-  }
-
-  private static Function<Session, BigDecimal> transferFunds(
-    long fromId,
-    long toId,
-    BigDecimal amount
-  )
-    throws JDBCException {
-    Function<Session, BigDecimal> f = s -> {
-      BigDecimal rv = new BigDecimal(0);
-      try {
-        UasType fromUasType = (UasType) s.get(UasType.class, fromId);
-        UasType toUasType = (UasType) s.get(UasType.class, toId);
-        if (!(amount.compareTo(fromUasType.getBalance()) > 0)) {
-          fromUasType.balance = fromUasType.balance.subtract(amount);
-          toUasType.balance = toUasType.balance.add(amount);
-          s.save(fromUasType);
-          s.save(toUasType);
-          rv = amount;
-          System.out.printf(
-            "APP: transferFunds(%d, %d, %.2f) --> %.2f\n",
-            fromId,
-            toId,
-            amount,
-            rv
-          );
-        }
       } catch (JDBCException e) {
         throw e;
       }
@@ -122,21 +203,21 @@ public class Dao implements Serializable {
     return f;
   }
 
-  private static Function<Session, BigDecimal> getUasTypeBalance(long id)
-    throws JDBCException {
-    Function<Session, BigDecimal> f = s -> {
-      BigDecimal balance;
-      try {
-        UasType uasType = s.get(UasType.class, id);
-        balance = uasType.getBalance();
-        System.out.printf("APP: getUasTypeBalance(%d) --> %.2f\n", id, balance);
-      } catch (JDBCException e) {
-        throw e;
-      }
-      return balance;
-    };
-    return f;
-  }
+  // private static Function<Session, BigDecimal> getUasTypeName(long id)
+  //   throws JDBCException {
+  //   Function<Session, BigDecimal> f = s -> {
+  //     BigDecimal balance;
+  //     try {
+  //       UasType uasType = s.get(UasType.class, id);
+  //       balance = uasType.getName();
+  //       System.out.printf("APP: getUasTypeBalance(%d) --> %.2f\n", id, balance);
+  //     } catch (JDBCException e) {
+  //       throw e;
+  //     }
+  //     return balance;
+  //   };
+  //   return f;
+  // }
 
   // Run SQL code in a way that automatically handles the
   // transaction retry logic so we don't have to duplicate it in
@@ -229,62 +310,24 @@ public class Dao implements Serializable {
         runTransaction(session, forceRetryLogic());
       } else {
         runTransaction(session, addUasTypes());
-        BigDecimal fromBalance = runTransaction(
-          session,
-          getUasTypeBalance(fromUasTypeId)
-        );
-        BigDecimal toBalance = runTransaction(session, getUasTypeBalance(toUasTypeId));
-        if (!fromBalance.equals(-1) && !toBalance.equals(-1)) {
-          // Success!
-          System.out.printf(
-            "APP: getUasTypeBalance(%d) --> %.2f\n",
-            fromUasTypeId,
-            fromBalance
-          );
-          System.out.printf(
-            "APP: getUasTypeBalance(%d) --> %.2f\n",
-            toUasTypeId,
-            toBalance
-          );
-        }
-
-        // Transfer $100 from uasType 1 to uasType 2
-        BigDecimal transferResult = runTransaction(
-          session,
-          transferFunds(fromUasTypeId, toUasTypeId, transferAmount)
-        );
-        if (!transferResult.equals(-1)) {
-          // Success!
-          System.out.printf(
-            "APP: transferFunds(%d, %d, %.2f) --> %.2f \n",
-            fromUasTypeId,
-            toUasTypeId,
-            transferAmount,
-            transferResult
-          );
-
-          BigDecimal fromBalanceAfter = runTransaction(
-            session,
-            getUasTypeBalance(fromUasTypeId)
-          );
-          BigDecimal toBalanceAfter = runTransaction(
-            session,
-            getUasTypeBalance(toUasTypeId)
-          );
-          if (!fromBalanceAfter.equals(-1) && !toBalanceAfter.equals(-1)) {
-            // Success!
-            System.out.printf(
-              "APP: getUasTypeBalance(%d) --> %.2f\n",
-              fromUasTypeId,
-              fromBalanceAfter
-            );
-            System.out.printf(
-              "APP: getUasTypeBalance(%d) --> %.2f\n",
-              toUasTypeId,
-              toBalanceAfter
-            );
-          }
-        }
+        // BigDecimal fromBalance = runTransaction(
+        //   session,
+        //   getUasTypeBalance(fromUasTypeId)
+        // );
+        // BigDecimal toBalance = runTransaction(session, getUasTypeBalance(toUasTypeId));
+        // if (!fromBalance.equals(-1) && !toBalance.equals(-1)) {
+        //   // Success!
+        //   System.out.printf(
+        //     "APP: getUasTypeBalance(%d) --> %.2f\n",
+        //     fromUasTypeId,
+        //     fromBalance
+        //   );
+        //   System.out.printf(
+        //     "APP: getUasTypeBalance(%d) --> %.2f\n",
+        //     toUasTypeId,
+        //     toBalance
+        //   );
+        // }
       }
     } finally {
       sessionFactory.close();

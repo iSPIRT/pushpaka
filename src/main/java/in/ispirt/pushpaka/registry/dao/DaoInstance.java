@@ -25,7 +25,10 @@ public class DaoInstance {
     sessionFactory =
       new Configuration()
         .configure("hibernate.cfg.xml")
+        .addAnnotatedClass(Dao.LegalEntity.class)
+        .addAnnotatedClass(Dao.Manufacturer.class)
         .addAnnotatedClass(Dao.UasType.class)
+        .addAnnotatedClass(Dao.Uas.class)
         .buildSessionFactory();
     session = sessionFactory.openSession();
   }
@@ -34,7 +37,6 @@ public class DaoInstance {
   // Static method to create instance of DaoInstance class
   public static synchronized DaoInstance getInstance() {
     if (single_instance == null) single_instance = new DaoInstance();
-
     return single_instance;
   }
 
@@ -44,7 +46,6 @@ public class DaoInstance {
 
   protected void finalize() {
     sessionFactory.close();
-
     System.out.println("Finalise DaoInstance: close SessionFactory");
   }
 }
