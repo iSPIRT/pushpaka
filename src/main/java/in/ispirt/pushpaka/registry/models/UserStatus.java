@@ -14,23 +14,21 @@ import javax.validation.constraints.*;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 /**
- * Gets or Sets UasStatus
+ * Gets or Sets UserStatus
  */
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
   date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]"
 )
-public enum UasStatus {
-  REGISTERED("REGISTERED"),
-
+public enum UserStatus {
   ACTIVE("ACTIVE"),
 
-  GROUNDED("GROUNDED");
+  INACTIVE("INACTIVE");
 
   private String value;
 
-  UasStatus(String value) {
+  UserStatus(String value) {
     this.value = value;
   }
 
@@ -45,8 +43,8 @@ public enum UasStatus {
   }
 
   @JsonCreator
-  public static UasStatus fromValue(String value) {
-    for (UasStatus b : UasStatus.values()) {
+  public static UserStatus fromValue(String value) {
+    for (UserStatus b : UserStatus.values()) {
       if (b.value.equals(value)) {
         return b;
       }

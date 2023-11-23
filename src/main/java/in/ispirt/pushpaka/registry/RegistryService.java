@@ -19,10 +19,10 @@ import org.springframework.context.annotation.FullyQualifiedAnnotationBeanNameGe
   },
   nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class
 )
-public class OpenApiGeneratorApplication {
+public class RegistryService {
 
   public static void main(String[] args) {
-    SpringApplication.run(OpenApiGeneratorApplication.class, args);
+    SpringApplication.run(RegistryService.class, args);
     DaoInstance.getInstance();
   }
 

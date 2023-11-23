@@ -1,5 +1,8 @@
 package in.ispirt.pushpaka.registry.dao;
 
+import in.ispirt.pushpaka.registry.models.UasPropulsionCategory;
+import in.ispirt.pushpaka.registry.models.UasStatus;
+import in.ispirt.pushpaka.registry.models.UserStatus;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -8,6 +11,8 @@ import java.util.UUID;
 import java.util.function.Function;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -275,6 +280,7 @@ public class Dao implements Serializable {
       this.modelNumber = c;
     }
 
+    @Column(name = "photo_url")
     public String photoUrl;
 
     public String getPhotoUrl() {
@@ -295,6 +301,10 @@ public class Dao implements Serializable {
       this.mtow = c;
     }
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 16, name = "propulsion_category")
+    private UasPropulsionCategory propulsionCategory;
+
     // Convenience constructor.
     public UasType(
       UUID id,
@@ -303,7 +313,8 @@ public class Dao implements Serializable {
       String photoUrl,
       Float mtow,
       OffsetDateTime tc,
-      OffsetDateTime tu
+      OffsetDateTime tu,
+      UasPropulsionCategory pc
     ) {
       this.id = id;
       this.manufacturer = manufacturer;
@@ -312,6 +323,7 @@ public class Dao implements Serializable {
       this.mtow = mtow;
       this.timestampCreated = tc;
       this.timestampUpdated = tu;
+      this.propulsionCategory = pc;
     }
 
     // Hibernate needs a default (no-arg) constructor to create model objects.
@@ -354,11 +366,47 @@ public class Dao implements Serializable {
       this.oemSerialNo = c;
     }
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 16, name = "status")
+    private UasStatus status;
+
+    @Column(name = "timestamp_created")
+    public OffsetDateTime timestampCreated;
+
+    public OffsetDateTime getTimestampCreated() {
+      return timestampCreated;
+    }
+
+    public void setTimestampCreated(OffsetDateTime a) {
+      this.timestampCreated = a;
+    }
+
+    @Column(name = "timestamp_updated")
+    public OffsetDateTime timestampUpdated;
+
+    public OffsetDateTime getTimestampUpdated() {
+      return timestampUpdated;
+    }
+
+    public void setTimestampUpdated(OffsetDateTime a) {
+      this.timestampUpdated = a;
+    }
+
     // Convenience constructor.
-    public Uas(UUID id, UasType ut, String oemSerialNo) {
+    public Uas(
+      UUID id,
+      UasType ut,
+      String oemSerialNo,
+      UasStatus s,
+      OffsetDateTime tc,
+      OffsetDateTime tu
+    ) {
       this.id = id;
       this.uasType = ut;
       this.oemSerialNo = oemSerialNo;
+      this.status = s;
+      this.timestampCreated = tc;
+      this.timestampUpdated = tu;
     }
 
     // Hibernate needs a default (no-arg) constructor to create model objects.
@@ -413,12 +461,17 @@ public class Dao implements Serializable {
       this.timestampUpdated = a;
     }
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 16, name = "status")
+    private UserStatus status;
+
     // Convenience constructor.
-    public User(UUID id, String email, OffsetDateTime tc, OffsetDateTime tu) {
+    public User(UUID id, String email, OffsetDateTime tc, OffsetDateTime tu, UserStatus s) {
       this.id = id;
       this.email = email;
       this.timestampCreated = tc;
       this.timestampUpdated = tu;
+      this.status = s;
     }
 
     // Hibernate needs a default (no-arg) constructor to create model objects.
@@ -815,14 +868,15 @@ public class Dao implements Serializable {
           "https://ispirt.github.io/pushpaka",
           2.5f,
           n,
-          n
+          n,
+          UasPropulsionCategory.VTOL
         );
-        Uas u = new Uas(UUID.randomUUID(), ut, "UAS000000");
+        Uas u = new Uas(UUID.randomUUID(), ut, "UAS000000", UasStatus.REGISTERED, n, n);
         s.save(l);
         s.save(m);
         s.save(ut);
         s.save(u);
-        User uu = new User(UUID.randomUUID(), "test@company.com", n, n);
+        User uu = new User(UUID.randomUUID(), "test@company.com", n, n, UserStatus.ACTIVE);
         s.save(uu);
         Pilot p = new Pilot(UUID.randomUUID(), uu, n, n, n, n);
         s.save(p);
@@ -837,11 +891,7 @@ public class Dao implements Serializable {
         );
         s.save(caa);
 
-        Operator o1 = new Operator(
-          UUID.randomUUID(),
-          l,
-          n,n,n,n
-        );
+        Operator o1 = new Operator(UUID.randomUUID(), l, n, n, n, n);
         s.save(o1);
 
         rv = BigDecimal.valueOf(1);

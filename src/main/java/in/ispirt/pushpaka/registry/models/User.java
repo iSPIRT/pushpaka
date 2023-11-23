@@ -39,6 +39,8 @@ public class User {
 
   private ObjectTimestamps timestamps;
 
+  private UserStatus status;
+
   /**
    * Default constructor
    * @deprecated Use {@link User#User(UUID, String, String, String, String, ObjectTimestamps)}
@@ -57,7 +59,8 @@ public class User {
     String firstName,
     String lastName,
     String email,
-    ObjectTimestamps timestamps
+    ObjectTimestamps timestamps,
+    UserStatus status
   ) {
     this.id = id;
     this.username = username;
@@ -65,6 +68,7 @@ public class User {
     this.lastName = lastName;
     this.email = email;
     this.timestamps = timestamps;
+    this.status = status;
   }
 
   public User id(UUID id) {
@@ -212,8 +216,8 @@ public class User {
     this.phone = phone;
   }
 
-  public User userStatus(Integer userStatus) {
-    this.userStatus = userStatus;
+  public User status(UserStatus status) {
+    this.status = status;
     return this;
   }
 
@@ -223,18 +227,18 @@ public class User {
    */
 
   @Schema(
-    name = "userStatus",
-    example = "1",
+    name = "status",
+    example = "ACTIVE",
     description = "User Status",
     requiredMode = Schema.RequiredMode.NOT_REQUIRED
   )
-  @JsonProperty("userStatus")
-  public Integer getUserStatus() {
-    return userStatus;
+  @JsonProperty("status")
+  public UserStatus getStatus() {
+    return status;
   }
 
-  public void setUserStatus(Integer userStatus) {
-    this.userStatus = userStatus;
+  public void setStatus(UserStatus status) {
+    this.status = status;
   }
 
   public User timestamps(ObjectTimestamps timestamps) {
@@ -274,7 +278,7 @@ public class User {
       Objects.equals(this.lastName, user.lastName) &&
       Objects.equals(this.email, user.email) &&
       Objects.equals(this.phone, user.phone) &&
-      Objects.equals(this.userStatus, user.userStatus) &&
+      Objects.equals(this.status, user.status) &&
       Objects.equals(this.timestamps, user.timestamps)
     );
   }
@@ -288,7 +292,7 @@ public class User {
       lastName,
       email,
       phone,
-      userStatus,
+      status,
       timestamps
     );
   }
@@ -303,7 +307,7 @@ public class User {
     sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    phone: ").append(toIndentedString(phone)).append("\n");
-    sb.append("    userStatus: ").append(toIndentedString(userStatus)).append("\n");
+    sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    timestamps: ").append(toIndentedString(timestamps)).append("\n");
     sb.append("}");
     return sb.toString();

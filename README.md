@@ -36,7 +36,7 @@ java -jar ~/Downloads/openapi-generator-cli-6.6.0.jar generate -g spring -i open
 ### Running
 
 ```
-mvn compile exec:java -Dexec.mainClass="org.openapitools.OpenApiGeneratorApplication"
+mvn compile exec:java -Dexec.mainClass="in.ispirt.pushpaka.registry.RegistryService"
 ```
 
 ### Overview
