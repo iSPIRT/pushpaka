@@ -3,13 +3,13 @@ package in.ispirt.pushpaka.registry.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import in.ispirt.pushpaka.registry.dao.Dao;
 import in.ispirt.pushpaka.registry.models.Manufacturer;
 import in.ispirt.pushpaka.registry.models.ObjectTimestamps;
 import in.ispirt.pushpaka.registry.models.OperationCategory;
 import in.ispirt.pushpaka.registry.models.UasPropulsionCategory;
 import in.ispirt.pushpaka.registry.models.UasWeightCategory;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.net.URI;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -21,6 +21,7 @@ import javax.annotation.Generated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import org.openapitools.jackson.nullable.JsonNullable;
+import java.net.MalformedURLException;
 
 /**
  * UasType
@@ -368,5 +369,36 @@ public class UasType {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+
+  public Dao.UasType fromOa() {
+    try {
+    OffsetDateTime n = OffsetDateTime.now();
+    Dao.UasType u = new Dao.UasType(
+      this.id,
+      this.manufacturer.fromOa(),
+      this.modelNumber,
+      this.photoUrl.toURL(),
+      this.mtow,
+      n,
+      n,
+      this.propulsionCategory
+    );
+    return u;
+  } catch (MalformedURLException e) {
+        OffsetDateTime n = OffsetDateTime.now();
+    Dao.UasType u = new Dao.UasType(
+      this.id,
+      this.manufacturer.fromOa(),
+      this.modelNumber,
+      null,
+      this.mtow,
+      n,
+      n,
+      this.propulsionCategory
+    );
+    return u;
+ 
+  }
   }
 }

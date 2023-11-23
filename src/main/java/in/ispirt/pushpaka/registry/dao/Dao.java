@@ -1,10 +1,12 @@
 package in.ispirt.pushpaka.registry.dao;
 
+import in.ispirt.pushpaka.registry.models.State;
 import in.ispirt.pushpaka.registry.models.UasPropulsionCategory;
 import in.ispirt.pushpaka.registry.models.UasStatus;
 import in.ispirt.pushpaka.registry.models.UserStatus;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.Random;
 import java.util.UUID;
@@ -24,6 +26,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import java.net.MalformedURLException;
 
 public class Dao implements Serializable {
   private static final Random RAND = new Random();
@@ -281,13 +284,13 @@ public class Dao implements Serializable {
     }
 
     @Column(name = "photo_url")
-    public String photoUrl;
+    public URL photoUrl;
 
-    public String getPhotoUrl() {
+    public URL getPhotoUrl() {
       return photoUrl;
     }
 
-    public void setPhotoUrl(String c) {
+    public void setPhotoUrl(URL c) {
       this.photoUrl = c;
     }
 
@@ -310,7 +313,7 @@ public class Dao implements Serializable {
       UUID id,
       Manufacturer manufacturer,
       String modelNumber,
-      String photoUrl,
+      URL photoUrl,
       Float mtow,
       OffsetDateTime tc,
       OffsetDateTime tu,
@@ -466,7 +469,13 @@ public class Dao implements Serializable {
     private UserStatus status;
 
     // Convenience constructor.
-    public User(UUID id, String email, OffsetDateTime tc, OffsetDateTime tu, UserStatus s) {
+    public User(
+      UUID id,
+      String email,
+      OffsetDateTime tc,
+      OffsetDateTime tu,
+      UserStatus s
+    ) {
       this.id = id;
       this.email = email;
       this.timestampCreated = tc;
@@ -643,14 +652,27 @@ public class Dao implements Serializable {
       this.pinCode = a;
     }
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 32, name = "state")
+    private State state;
+
     // Convenience constructor.
-    public Address(UUID id, String l1, String l2, String l3, String c, String pinCode) {
+    public Address(
+      UUID id,
+      String l1,
+      String l2,
+      String l3,
+      String c,
+      String pinCode,
+      State s
+    ) {
       this.id = id;
       this.line1 = l1;
       this.line2 = l2;
       this.line3 = l3;
       this.city = city;
       this.pinCode = pinCode;
+      this.state = s;
     }
 
     // Hibernate needs a default (no-arg) constructor to create model objects.
@@ -848,7 +870,8 @@ public class Dao implements Serializable {
           "Address Line 2",
           "Address Line 3",
           "Address City",
-          "400000"
+          "400000",
+          State.MAHARASHTRA
         );
         s.save(a);
         LegalEntity l = new LegalEntity(
@@ -865,7 +888,7 @@ public class Dao implements Serializable {
           UUID.randomUUID(),
           m,
           "UASMN",
-          "https://ispirt.github.io/pushpaka",
+          new URL("https://ispirt.github.io/pushpaka"),
           2.5f,
           n,
           n,
@@ -876,7 +899,13 @@ public class Dao implements Serializable {
         s.save(m);
         s.save(ut);
         s.save(u);
-        User uu = new User(UUID.randomUUID(), "test@company.com", n, n, UserStatus.ACTIVE);
+        User uu = new User(
+          UUID.randomUUID(),
+          "test@company.com",
+          n,
+          n,
+          UserStatus.ACTIVE
+        );
         s.save(uu);
         Pilot p = new Pilot(UUID.randomUUID(), uu, n, n, n, n);
         s.save(p);
@@ -898,6 +927,66 @@ public class Dao implements Serializable {
         System.out.printf("APP: addUasTypes() --> %.2f\n", rv);
       } catch (JDBCException e) {
         throw e;
+      } catch (MalformedURLException e) {
+        // throw e;
+      }
+      return rv;
+    };
+    return f;
+  }
+
+  public static Function<Session, BigDecimal> uassCreate(
+    in.ispirt.pushpaka.registry.models.Uas u
+  )
+    throws JDBCException {
+    Function<Session, BigDecimal> f = s -> {
+      BigDecimal rv = new BigDecimal(0);
+      try {
+        OffsetDateTime n = OffsetDateTime.now();
+        Address a = new Address(
+          UUID.randomUUID(),
+          "Address Line 1",
+          "Address Line 2",
+          "Address Line 3",
+          "Address City",
+          "400000",
+          State.MAHARASHTRA
+        );
+        s.save(a);
+        LegalEntity l = new LegalEntity(
+          UUID.randomUUID(),
+          "TEST COMPANY PVT LTD",
+          a,
+          "CIN0000000",
+          "GSTN000000",
+          n,
+          n
+        );
+        s.save(l);
+        Manufacturer m = new Manufacturer(UUID.randomUUID(), l, n, n, n, n);
+        s.save(m);
+        UasType ut = new UasType(
+          UUID.randomUUID(),
+          m,
+          "UASMN",
+          new URL("https://ispirt.github.io/pushpaka"),
+          2.5f,
+          n,
+          n,
+          UasPropulsionCategory.VTOL
+        );
+        s.save(ut);
+        Uas uu = u.fromOa();
+        uu.id = UUID.randomUUID();
+        uu.setUasType(ut);
+        s.save(uu);
+
+        rv = BigDecimal.valueOf(1);
+        System.out.printf("APP: uassCreate() --> %.2f\n", rv);
+      } catch (JDBCException e) {
+        throw e;
+      } catch (MalformedURLException e) {
+        // throw e;
       }
       return rv;
     };

@@ -1,6 +1,7 @@
 package in.ispirt.pushpaka.registry.dao;
 
 import in.ispirt.pushpaka.registry.dao.Dao;
+import in.ispirt.pushpaka.registry.models.Uas;
 import java.math.BigDecimal;
 import java.util.function.Function;
 import org.hibernate.Session;
@@ -47,6 +48,10 @@ public class DaoInstance {
 
   public static void addUasTypes() {
     _dao.runTransaction(session, _dao.addUasTypes());
+  }
+
+  public static void uassCreate(Uas u) {
+    _dao.runTransaction(session, _dao.uassCreate(u));
   }
 
   protected void finalize() {

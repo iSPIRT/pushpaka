@@ -2,6 +2,7 @@ package in.ispirt.pushpaka.registry.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import in.ispirt.pushpaka.registry.dao.Dao;
 import in.ispirt.pushpaka.registry.models.LegalEntity;
 import in.ispirt.pushpaka.registry.models.ObjectTimestamps;
 import in.ispirt.pushpaka.registry.models.Validity;
@@ -187,5 +188,18 @@ public class Manufacturer {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+
+  public Dao.Manufacturer fromOa() {
+    OffsetDateTime n = OffsetDateTime.now();
+    Dao.Manufacturer u = new Dao.Manufacturer(
+      this.id,
+      this.legalEntity.fromOa(),
+      n,
+      n,
+      n,
+      n
+    );
+    return u;
   }
 }

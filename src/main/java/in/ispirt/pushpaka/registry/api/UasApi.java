@@ -100,8 +100,8 @@ public interface UasApi {
               ApiUtil.setExampleResponse(request, "application/json", exampleString);
 
               try {
-                d.addUasTypes();
-                System.out.println("addUasTypes()");
+                System.out.println("Create UAS " + uas.toString());
+                d.uassCreate(uas);
               } catch (Exception e) {
                 System.err.println("Exception: " + e.toString());
               }

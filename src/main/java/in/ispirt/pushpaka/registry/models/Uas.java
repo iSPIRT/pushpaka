@@ -3,6 +3,7 @@ package in.ispirt.pushpaka.registry.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import in.ispirt.pushpaka.registry.dao.Dao;
 import in.ispirt.pushpaka.registry.models.ObjectTimestamps;
 import in.ispirt.pushpaka.registry.models.UasStatus;
 import in.ispirt.pushpaka.registry.models.UasType;
@@ -218,5 +219,18 @@ public class Uas {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+
+  public Dao.Uas fromOa() {
+    OffsetDateTime n = OffsetDateTime.now();
+    Dao.Uas u = new Dao.Uas(
+      this.id,
+      this.type.fromOa(),
+      this.oemSerialNumber,
+      this.status,
+      n,
+      n
+    );
+    return u;
   }
 }

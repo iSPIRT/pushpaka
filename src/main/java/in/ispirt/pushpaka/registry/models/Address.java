@@ -3,6 +3,7 @@ package in.ispirt.pushpaka.registry.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import in.ispirt.pushpaka.registry.dao.Dao;
 import in.ispirt.pushpaka.registry.models.State;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
@@ -34,7 +35,7 @@ public class Address {
 
   private State state;
 
-  private BigDecimal pinCode;
+  private String pinCode;
 
   private String country;
 
@@ -56,7 +57,7 @@ public class Address {
     String line3,
     String city,
     State state,
-    BigDecimal pinCode,
+    String pinCode,
     String country
   ) {
     this.line1 = line1;
@@ -196,7 +197,7 @@ public class Address {
     this.state = state;
   }
 
-  public Address pinCode(BigDecimal pinCode) {
+  public Address pinCode(String pinCode) {
     this.pinCode = pinCode;
     return this;
   }
@@ -209,15 +210,13 @@ public class Address {
    */
   @NotNull
   @Valid
-  @DecimalMin("100000")
-  @DecimalMax("999999")
   @Schema(name = "pinCode", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("pinCode")
-  public BigDecimal getPinCode() {
+  public String getPinCode() {
     return pinCode;
   }
 
-  public void setPinCode(BigDecimal pinCode) {
+  public void setPinCode(String pinCode) {
     this.pinCode = pinCode;
   }
 
@@ -270,5 +269,19 @@ public class Address {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+
+  public Dao.Address fromOa() {
+    OffsetDateTime n = OffsetDateTime.now();
+    Dao.Address u = new Dao.Address(
+      UUID.randomUUID(),
+      this.line1,
+      this.line2,
+      this.line3,
+      this.city,
+      this.pinCode,
+      this.state
+    );
+    return u;
   }
 }
