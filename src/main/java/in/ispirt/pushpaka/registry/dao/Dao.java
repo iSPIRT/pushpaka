@@ -2,6 +2,7 @@ package in.ispirt.pushpaka.registry.dao;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.Random;
 import java.util.UUID;
 import java.util.function.Function;
@@ -37,6 +38,16 @@ public class Dao implements Serializable {
       return id;
     }
 
+    public String cin;
+
+    public String getCin() {
+      return cin;
+    }
+
+    public void setCin(String c) {
+      this.cin = c;
+    }
+
     @Column(name = "name")
     public String name;
 
@@ -48,10 +59,69 @@ public class Dao implements Serializable {
       this.name = newname;
     }
 
+    @Column(name = "gstin")
+    public String gstin;
+
+    public String getGstin() {
+      return gstin;
+    }
+
+    public void setGstin(String a) {
+      this.gstin = a;
+    }
+
+    @Column(name = "timestamp_created")
+    public OffsetDateTime timestampCreated;
+
+    public OffsetDateTime getTimestampCreated() {
+      return timestampCreated;
+    }
+
+    public void setTimestampCreated(OffsetDateTime a) {
+      this.timestampCreated = a;
+    }
+
+    @Column(name = "timestamp_updated")
+    public OffsetDateTime timestampUpdated;
+
+    public OffsetDateTime getTimestampUpdated() {
+      return timestampUpdated;
+    }
+
+    public void setTimestampUpdated(OffsetDateTime a) {
+      this.timestampUpdated = a;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "FK_address")
+    // @Column(name = "name")
+    public Address address;
+
+    public Address getAddress() {
+      return address;
+    }
+
+    public void setAddress(Address a) {
+      this.address = a;
+    }
+
     // Convenience constructor.
-    public LegalEntity(UUID id, String name) {
+    public LegalEntity(
+      UUID id,
+      String name,
+      Address a,
+      String cin,
+      String gstin,
+      OffsetDateTime tc,
+      OffsetDateTime tu
+    ) {
       this.id = id;
       this.name = name;
+      this.address = a;
+      this.cin = cin;
+      this.gstin = gstin;
+      this.timestampCreated = tc;
+      this.timestampUpdated = tu;
     }
 
     // Hibernate needs a default (no-arg) constructor to create model objects.
@@ -83,10 +153,65 @@ public class Dao implements Serializable {
       this.legalEntity = nlegalEntity;
     }
 
+    @Column(name = "timestamp_created")
+    public OffsetDateTime timestampCreated;
+
+    public OffsetDateTime getTimestampCreated() {
+      return timestampCreated;
+    }
+
+    public void setTimestampCreated(OffsetDateTime a) {
+      this.timestampCreated = a;
+    }
+
+    @Column(name = "timestamp_updated")
+    public OffsetDateTime timestampUpdated;
+
+    public OffsetDateTime getTimestampUpdated() {
+      return timestampUpdated;
+    }
+
+    public void setTimestampUpdated(OffsetDateTime a) {
+      this.timestampUpdated = a;
+    }
+
+    @Column(name = "validity_start")
+    public OffsetDateTime validityStart;
+
+    public OffsetDateTime getValidityStart() {
+      return validityStart;
+    }
+
+    public void setValidityStart(OffsetDateTime a) {
+      this.validityStart = a;
+    }
+
+    @Column(name = "validity_end")
+    public OffsetDateTime validityEnd;
+
+    public OffsetDateTime getValidityEnd() {
+      return validityEnd;
+    }
+
+    public void setValidityEnd(OffsetDateTime a) {
+      this.validityEnd = a;
+    }
+
     // Convenience constructor.
-    public Manufacturer(UUID id, LegalEntity legalEntity) {
+    public Manufacturer(
+      UUID id,
+      LegalEntity legalEntity,
+      OffsetDateTime tc,
+      OffsetDateTime tu,
+      OffsetDateTime vs,
+      OffsetDateTime ve
+    ) {
       this.id = id;
       this.legalEntity = legalEntity;
+      this.timestampCreated = tc;
+      this.timestampUpdated = tu;
+      this.validityStart = vs;
+      this.validityEnd = ve;
     }
 
     // Hibernate needs a default (no-arg) constructor to create model objects.
@@ -118,17 +243,82 @@ public class Dao implements Serializable {
       this.manufacturer = m;
     }
 
+    @Column(name = "timestamp_created")
+    public OffsetDateTime timestampCreated;
+
+    public OffsetDateTime getTimestampCreated() {
+      return timestampCreated;
+    }
+
+    public void setTimestampCreated(OffsetDateTime a) {
+      this.timestampCreated = a;
+    }
+
+    @Column(name = "timestamp_updated")
+    public OffsetDateTime timestampUpdated;
+
+    public OffsetDateTime getTimestampUpdated() {
+      return timestampUpdated;
+    }
+
+    public void setTimestampUpdated(OffsetDateTime a) {
+      this.timestampUpdated = a;
+    }
+
+    public String modelNumber;
+
+    public String getModelNumber() {
+      return modelNumber;
+    }
+
+    public void setModelNumber(String c) {
+      this.modelNumber = c;
+    }
+
+    public String photoUrl;
+
+    public String getPhotoUrl() {
+      return photoUrl;
+    }
+
+    public void setPhotoUrl(String c) {
+      this.photoUrl = c;
+    }
+
+    public Float mtow;
+
+    public Float getMtow() {
+      return mtow;
+    }
+
+    public void setMtow(Float c) {
+      this.mtow = c;
+    }
+
     // Convenience constructor.
-    public UasType(UUID id, Manufacturer manufacturer) {
+    public UasType(
+      UUID id,
+      Manufacturer manufacturer,
+      String modelNumber,
+      String photoUrl,
+      Float mtow,
+      OffsetDateTime tc,
+      OffsetDateTime tu
+    ) {
       this.id = id;
       this.manufacturer = manufacturer;
+      this.modelNumber = modelNumber;
+      this.photoUrl = photoUrl;
+      this.mtow = mtow;
+      this.timestampCreated = tc;
+      this.timestampUpdated = tu;
     }
 
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public UasType() {}
   }
 
-    // UasType is our model, which corresponds to the "uas_types" database table.
+  // UasType is our model, which corresponds to the "uas_types" database table.
   @Entity
   @Table(name = "uass")
   public static class Uas {
@@ -153,28 +343,507 @@ public class Dao implements Serializable {
       this.uasType = ut;
     }
 
+    @Column(name = "oem_serial_no")
+    public String oemSerialNo;
+
+    public String getOemSerialNo() {
+      return oemSerialNo;
+    }
+
+    public void setOemSerialNo(String c) {
+      this.oemSerialNo = c;
+    }
+
     // Convenience constructor.
-    public Uas(UUID id, UasType ut) {
+    public Uas(UUID id, UasType ut, String oemSerialNo) {
       this.id = id;
       this.uasType = ut;
+      this.oemSerialNo = oemSerialNo;
     }
 
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public Uas() {}
   }
 
+  // User is our model, which corresponds to the "users" database table.
+  @Entity
+  @Table(name = "users")
+  public static class User {
+    @Id
+    @Column(name = "id")
+    public UUID id;
+
+    public UUID getId() {
+      return id;
+    }
+
+    public User(UUID id) {
+      this.id = id;
+    }
+
+    public String email;
+
+    public String getEmail() {
+      return email;
+    }
+
+    public void setEmail(String c) {
+      this.email = c;
+    }
+
+    @Column(name = "timestamp_created")
+    public OffsetDateTime timestampCreated;
+
+    public OffsetDateTime getTimestampCreated() {
+      return timestampCreated;
+    }
+
+    public void setTimestampCreated(OffsetDateTime a) {
+      this.timestampCreated = a;
+    }
+
+    @Column(name = "timestamp_updated")
+    public OffsetDateTime timestampUpdated;
+
+    public OffsetDateTime getTimestampUpdated() {
+      return timestampUpdated;
+    }
+
+    public void setTimestampUpdated(OffsetDateTime a) {
+      this.timestampUpdated = a;
+    }
+
+    // Convenience constructor.
+    public User(UUID id, String email, OffsetDateTime tc, OffsetDateTime tu) {
+      this.id = id;
+      this.email = email;
+      this.timestampCreated = tc;
+      this.timestampUpdated = tu;
+    }
+
+    // Hibernate needs a default (no-arg) constructor to create model objects.
+    public User() {}
+  }
+
+  // Pilot is our model, which corresponds to the "pilots" database table.
+  @Entity
+  @Table(name = "pilots")
+  public static class Pilot {
+    @Id
+    @Column(name = "id")
+    public UUID id;
+
+    public UUID getId() {
+      return id;
+    }
+
+    public Pilot(UUID id) {
+      this.id = id;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "FK_user")
+    // @Column(name = "balance")
+    public User user;
+
+    public User getUser() {
+      return user;
+    }
+
+    public void setUser(User m) {
+      this.user = m;
+    }
+
+    @Column(name = "timestamp_created")
+    public OffsetDateTime timestampCreated;
+
+    public OffsetDateTime getTimestampCreated() {
+      return timestampCreated;
+    }
+
+    public void setTimestampCreated(OffsetDateTime a) {
+      this.timestampCreated = a;
+    }
+
+    @Column(name = "timestamp_updated")
+    public OffsetDateTime timestampUpdated;
+
+    public OffsetDateTime getTimestampUpdated() {
+      return timestampUpdated;
+    }
+
+    public void setTimestampUpdated(OffsetDateTime a) {
+      this.timestampUpdated = a;
+    }
+
+    @Column(name = "validity_start")
+    public OffsetDateTime validityStart;
+
+    public OffsetDateTime getValidityStart() {
+      return validityStart;
+    }
+
+    public void setValidityStart(OffsetDateTime a) {
+      this.validityStart = a;
+    }
+
+    @Column(name = "validity_end")
+    public OffsetDateTime validityEnd;
+
+    public OffsetDateTime getValidityEnd() {
+      return validityEnd;
+    }
+
+    public void setValidityEnd(OffsetDateTime a) {
+      this.validityEnd = a;
+    }
+
+    // Convenience constructor.
+    public Pilot(
+      UUID id,
+      User u,
+      OffsetDateTime tc,
+      OffsetDateTime tu,
+      OffsetDateTime vs,
+      OffsetDateTime ve
+    ) {
+      this.id = id;
+      this.user = u;
+      this.validityStart = vs;
+      this.validityEnd = ve;
+      this.timestampCreated = tc;
+      this.timestampUpdated = tu;
+    }
+
+    // Hibernate needs a default (no-arg) constructor to create model objects.
+    public Pilot() {}
+  }
+
+  // Address is our model, which corresponds to the "addresses" database table.
+  @Entity
+  @Table(name = "addresses")
+  public static class Address {
+    @Id
+    @Column(name = "id")
+    public UUID id;
+
+    public UUID getId() {
+      return id;
+    }
+
+    public Address(UUID id) {
+      this.id = id;
+    }
+
+    @Column(name = "line1")
+    public String line1;
+
+    public String getLine1() {
+      return line1;
+    }
+
+    public void setLine1(String a) {
+      this.line1 = a;
+    }
+
+    @Column(name = "line2")
+    public String line2;
+
+    public String getLine2() {
+      return line2;
+    }
+
+    public void setLine2(String a) {
+      this.line2 = a;
+    }
+
+    @Column(name = "line3")
+    public String line3;
+
+    public String getLine3() {
+      return line3;
+    }
+
+    public void setLine3(String a) {
+      this.line3 = a;
+    }
+
+    @Column(name = "city")
+    public String city;
+
+    public String getCity() {
+      return city;
+    }
+
+    public void setCity(String a) {
+      this.city = a;
+    }
+
+    @Column(name = "pin_code")
+    public String pinCode;
+
+    public String getPinCode() {
+      return pinCode;
+    }
+
+    public void setPinCode(String a) {
+      this.pinCode = a;
+    }
+
+    // Convenience constructor.
+    public Address(UUID id, String l1, String l2, String l3, String c, String pinCode) {
+      this.id = id;
+      this.line1 = l1;
+      this.line2 = l2;
+      this.line3 = l3;
+      this.city = city;
+      this.pinCode = pinCode;
+    }
+
+    // Hibernate needs a default (no-arg) constructor to create model objects.
+    public Address() {}
+  }
+
+  // Civil Aviation Authority is our model, which corresponds to the "civil_aviation_authorities" database table.
+  @Entity
+  @Table(name = "civil_aviation_authorities")
+  public static class CivilAviationAuthority {
+    @Id
+    @Column(name = "id")
+    public UUID id;
+
+    public UUID getId() {
+      return id;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "FK_legal_entity")
+    // @Column(name = "legal_entity")
+    public LegalEntity legalEntity;
+
+    public LegalEntity getLegalEntity() {
+      return legalEntity;
+    }
+
+    public void setLegalEntity(LegalEntity nlegalEntity) {
+      this.legalEntity = nlegalEntity;
+    }
+
+    @Column(name = "timestamp_created")
+    public OffsetDateTime timestampCreated;
+
+    public OffsetDateTime getTimestampCreated() {
+      return timestampCreated;
+    }
+
+    public void setTimestampCreated(OffsetDateTime a) {
+      this.timestampCreated = a;
+    }
+
+    @Column(name = "timestamp_updated")
+    public OffsetDateTime timestampUpdated;
+
+    public OffsetDateTime getTimestampUpdated() {
+      return timestampUpdated;
+    }
+
+    public void setTimestampUpdated(OffsetDateTime a) {
+      this.timestampUpdated = a;
+    }
+
+    @Column(name = "validity_start")
+    public OffsetDateTime validityStart;
+
+    public OffsetDateTime getValidityStart() {
+      return validityStart;
+    }
+
+    public void setValidityStart(OffsetDateTime a) {
+      this.validityStart = a;
+    }
+
+    @Column(name = "validity_end")
+    public OffsetDateTime validityEnd;
+
+    public OffsetDateTime getValidityEnd() {
+      return validityEnd;
+    }
+
+    public void setValidityEnd(OffsetDateTime a) {
+      this.validityEnd = a;
+    }
+
+    // Convenience constructor.
+    public CivilAviationAuthority(
+      UUID id,
+      LegalEntity legalEntity,
+      OffsetDateTime tc,
+      OffsetDateTime tu,
+      OffsetDateTime vs,
+      OffsetDateTime ve
+    ) {
+      this.id = id;
+      this.legalEntity = legalEntity;
+      this.timestampCreated = tc;
+      this.timestampUpdated = tu;
+      this.validityStart = vs;
+      this.validityEnd = ve;
+    }
+
+    // Hibernate needs a default (no-arg) constructor to create model objects.
+    public CivilAviationAuthority() {}
+  }
+
+  // Operator is our model, which corresponds to the "operators" database table.
+  @Entity
+  @Table(name = "operators")
+  public static class Operator {
+    @Id
+    @Column(name = "id")
+    public UUID id;
+
+    public UUID getId() {
+      return id;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "FK_legal_entity")
+    // @Column(name = "legal_entity")
+    public LegalEntity legalEntity;
+
+    public LegalEntity getLegalEntity() {
+      return legalEntity;
+    }
+
+    public void setLegalEntity(LegalEntity nlegalEntity) {
+      this.legalEntity = nlegalEntity;
+    }
+
+    @Column(name = "timestamp_created")
+    public OffsetDateTime timestampCreated;
+
+    public OffsetDateTime getTimestampCreated() {
+      return timestampCreated;
+    }
+
+    public void setTimestampCreated(OffsetDateTime a) {
+      this.timestampCreated = a;
+    }
+
+    @Column(name = "timestamp_updated")
+    public OffsetDateTime timestampUpdated;
+
+    public OffsetDateTime getTimestampUpdated() {
+      return timestampUpdated;
+    }
+
+    public void setTimestampUpdated(OffsetDateTime a) {
+      this.timestampUpdated = a;
+    }
+
+    @Column(name = "validity_start")
+    public OffsetDateTime validityStart;
+
+    public OffsetDateTime getValidityStart() {
+      return validityStart;
+    }
+
+    public void setValidityStart(OffsetDateTime a) {
+      this.validityStart = a;
+    }
+
+    @Column(name = "validity_end")
+    public OffsetDateTime validityEnd;
+
+    public OffsetDateTime getValidityEnd() {
+      return validityEnd;
+    }
+
+    public void setValidityEnd(OffsetDateTime a) {
+      this.validityEnd = a;
+    }
+
+    // Convenience constructor.
+    public Operator(
+      UUID id,
+      LegalEntity legalEntity,
+      OffsetDateTime tc,
+      OffsetDateTime tu,
+      OffsetDateTime vs,
+      OffsetDateTime ve
+    ) {
+      this.id = id;
+      this.legalEntity = legalEntity;
+      this.timestampCreated = tc;
+      this.timestampUpdated = tu;
+      this.validityStart = vs;
+      this.validityEnd = ve;
+    }
+
+    // Hibernate needs a default (no-arg) constructor to create model objects.
+    public Operator() {}
+  }
+
   public static Function<Session, BigDecimal> addUasTypes() throws JDBCException {
     Function<Session, BigDecimal> f = s -> {
       BigDecimal rv = new BigDecimal(0);
       try {
-        LegalEntity l = new LegalEntity(UUID.randomUUID(), "TEST COMPANY PVT LTD");
-        Manufacturer m = new Manufacturer(UUID.randomUUID(), l);
-        UasType ut = new UasType(UUID.randomUUID(), m);
-        Uas u = new Uas(UUID.randomUUID(), ut);
+        OffsetDateTime n = OffsetDateTime.now();
+        Address a = new Address(
+          UUID.randomUUID(),
+          "Address Line 1",
+          "Address Line 2",
+          "Address Line 3",
+          "Address City",
+          "400000"
+        );
+        s.save(a);
+        LegalEntity l = new LegalEntity(
+          UUID.randomUUID(),
+          "TEST COMPANY PVT LTD",
+          a,
+          "CIN0000000",
+          "GSTN000000",
+          n,
+          n
+        );
+        Manufacturer m = new Manufacturer(UUID.randomUUID(), l, n, n, n, n);
+        UasType ut = new UasType(
+          UUID.randomUUID(),
+          m,
+          "UASMN",
+          "https://ispirt.github.io/pushpaka",
+          2.5f,
+          n,
+          n
+        );
+        Uas u = new Uas(UUID.randomUUID(), ut, "UAS000000");
         s.save(l);
         s.save(m);
         s.save(ut);
         s.save(u);
+        User uu = new User(UUID.randomUUID(), "test@company.com", n, n);
+        s.save(uu);
+        Pilot p = new Pilot(UUID.randomUUID(), uu, n, n, n, n);
+        s.save(p);
+
+        CivilAviationAuthority caa = new CivilAviationAuthority(
+          UUID.randomUUID(),
+          l,
+          n,
+          n,
+          n,
+          n
+        );
+        s.save(caa);
+
+        Operator o1 = new Operator(
+          UUID.randomUUID(),
+          l,
+          n,n,n,n
+        );
+        s.save(o1);
+
         rv = BigDecimal.valueOf(1);
         System.out.printf("APP: addUasTypes() --> %.2f\n", rv);
       } catch (JDBCException e) {
@@ -202,22 +871,6 @@ public class Dao implements Serializable {
     };
     return f;
   }
-
-  // private static Function<Session, BigDecimal> getUasTypeName(long id)
-  //   throws JDBCException {
-  //   Function<Session, BigDecimal> f = s -> {
-  //     BigDecimal balance;
-  //     try {
-  //       UasType uasType = s.get(UasType.class, id);
-  //       balance = uasType.getName();
-  //       System.out.printf("APP: getUasTypeBalance(%d) --> %.2f\n", id, balance);
-  //     } catch (JDBCException e) {
-  //       throw e;
-  //     }
-  //     return balance;
-  //   };
-  //   return f;
-  // }
 
   // Run SQL code in a way that automatically handles the
   // transaction retry logic so we don't have to duplicate it in
