@@ -4,6 +4,7 @@ import in.ispirt.pushpaka.registry.models.State;
 import in.ispirt.pushpaka.registry.models.UasPropulsionCategory;
 import in.ispirt.pushpaka.registry.models.UasStatus;
 import in.ispirt.pushpaka.registry.models.UserStatus;
+import in.ispirt.pushpaka.registry.models.Country;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -709,6 +710,18 @@ public class Dao implements Serializable {
       this.state = s;
     }
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 3, name = "country")
+    private Country country;
+
+    public Country getCountry() {
+      return country;
+    }
+
+    public void setCountry(Country s) {
+      this.country = s;
+    }
+
     // Convenience constructor.
     public Address(
       UUID id,
@@ -717,15 +730,17 @@ public class Dao implements Serializable {
       String l3,
       String c,
       String pinCode,
-      State s
+      State s,
+      Country co
     ) {
       this.id = id;
       this.line1 = l1;
       this.line2 = l2;
       this.line3 = l3;
-      this.city = city;
+      this.city = c;
       this.pinCode = pinCode;
       this.state = s;
+      this.country = co;
     }
 
     // Hibernate needs a default (no-arg) constructor to create model objects.
@@ -924,7 +939,8 @@ public class Dao implements Serializable {
           "Address Line 3",
           "Address City",
           "400000",
-          State.MAHARASHTRA
+          State.MAHARASHTRA,
+          Country.IND
         );
         s.save(a);
         LegalEntity l = new LegalEntity(
@@ -1003,7 +1019,8 @@ public class Dao implements Serializable {
           "Address Line 3",
           "Address City",
           "400000",
-          State.MAHARASHTRA
+          State.MAHARASHTRA,
+          Country.IND
         );
         s.save(a);
         LegalEntity l = new LegalEntity(

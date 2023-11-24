@@ -37,7 +37,7 @@ public class Address {
 
   private String pinCode;
 
-  private String country;
+  private Country country;
 
   /**
    * Default constructor
@@ -58,7 +58,7 @@ public class Address {
     String city,
     State state,
     String pinCode,
-    String country
+    Country country
   ) {
     this.line1 = line1;
     this.line2 = line2;
@@ -148,11 +148,11 @@ public class Address {
   @NotNull
   @Schema(name = "country", example = "IND", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("country")
-  public String getCountry() {
+  public Country getCountry() {
     return country;
   }
 
-  public void setCountry(String country) {
+  public void setCountry(Country country) {
     this.country = country;
   }
 
@@ -210,7 +210,7 @@ public class Address {
    */
   @NotNull
   @Valid
-  @Schema(name = "pinCode", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(name = "pinCode", example="400000", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("pinCode")
   public String getPinCode() {
     return pinCode;
@@ -280,7 +280,8 @@ public class Address {
       this.line3,
       this.city,
       this.pinCode,
-      this.state
+      this.state,
+      this.country
     );
     return u;
   }
@@ -293,7 +294,7 @@ public class Address {
       x.getCity(),
       x.getState(),
       x.getPinCode(),
-      "INDIA"
+      x.getCountry()
     );
     return le;
   }

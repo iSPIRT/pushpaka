@@ -225,7 +225,11 @@ public class UasType {
    */
   @Valid
   // @Size(max = 512)
-  @Schema(name = "photoUrl", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @Schema(
+    name = "photoUrl",
+    requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+    example = "https://ispirt.github.io/pushpaka/"
+  )
   @JsonProperty("photoUrl")
   public URI getPhotoUrl() {
     return photoUrl;

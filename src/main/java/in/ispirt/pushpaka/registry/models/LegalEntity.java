@@ -97,7 +97,7 @@ public class LegalEntity {
    * @return cin
    */
   @NotNull
-  @Schema(name = "cin", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(name = "cin", example="CIN0000000", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("cin")
   public String getCin() {
     return cin;
@@ -158,7 +158,7 @@ public class LegalEntity {
    * @return gstin
    */
 
-  @Schema(name = "gstin", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @Schema(name = "gstin", example="GSTN0000000", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("gstin")
   public String getGstin() {
     return gstin;
