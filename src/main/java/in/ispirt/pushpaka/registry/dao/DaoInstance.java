@@ -46,9 +46,13 @@ public class DaoInstance {
     return single_instance;
   }
 
-  public static void addUasTypes() {
-    _dao.runTransaction(session, _dao.addUasTypes());
+  public Session getSession() {
+    return session;
   }
+
+  // public static void addUasTypes() {
+  //   _dao.runTransaction(session, _dao.addUasTypes());
+  // }
 
   public static void uassCreate(Uas u) {
     _dao.runTransaction(session, _dao.uassCreate(u));

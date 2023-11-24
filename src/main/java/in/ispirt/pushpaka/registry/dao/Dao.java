@@ -6,8 +6,10 @@ import in.ispirt.pushpaka.registry.models.UasStatus;
 import in.ispirt.pushpaka.registry.models.UserStatus;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.function.Function;
@@ -26,7 +28,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-import java.net.MalformedURLException;
 
 public class Dao implements Serializable {
   private static final Random RAND = new Random();
@@ -35,9 +36,11 @@ public class Dao implements Serializable {
   private static final int MAX_ATTEMPT_COUNT = 6;
 
   // LegalEntity is our model, which corresponds to the "legal_entities" database table.
-  @Entity
-  @Table(name = "legal_entities")
+  @Entity(name = LegalEntity.PERSISTENCE_NAME)
+  @Table(name = LegalEntity.PERSISTENCE_NAME)
   public static class LegalEntity {
+    static final String PERSISTENCE_NAME = "LegalEntity";
+
     @Id
     @Column(name = "id")
     public UUID id;
@@ -134,6 +137,48 @@ public class Dao implements Serializable {
 
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public LegalEntity() {}
+
+    public static List<LegalEntity> getAll(Session s) {
+      return s.createQuery("from LegalEntity", LegalEntity.class).getResultList();
+    }
+
+    public static LegalEntity get(Session s, UUID id) {
+      return s
+        .createQuery("from LegalEntity where id= :id", LegalEntity.class)
+        .setString("id", id.toString())
+        .uniqueResult();
+    }
+
+    public static void delete(Session s, UUID id) {
+      s
+        .createQuery("delete from LegalEntity where id= :id", LegalEntity.class)
+        .setString("id", id.toString())
+        .executeUpdate();
+    }
+
+    public static LegalEntity update(Session s, UUID id, LegalEntity le) {
+      LegalEntity leo = s
+        .createQuery("from LegalEntity where id= :id", LegalEntity.class)
+        .setString("id", id.toString())
+        .uniqueResult();
+      leo.setName(le.getName());
+      leo.setCin(le.getCin());
+      leo.setGstin(le.getGstin());
+      leo.setTimestampUpdated(OffsetDateTime.now());
+      Address a = leo.getAddress();
+      Address ao = le.getAddress();
+      ao.setLine1(a.getLine1());
+      ao.setLine2(a.getLine2());
+      ao.setLine3(a.getLine3());
+      ao.setCity(a.getCity());
+      ao.setPinCode(a.getPinCode());
+      ao.setState(a.getState());
+      // ao.setCountry(a.getCountry());
+      s.saveOrUpdate(ao);
+      s.saveOrUpdate(leo);
+      leo.setAddress(ao);
+      return leo;
+    }
   }
 
   // Manufacturer is our model, which corresponds to the "uas_types" database table.
@@ -655,6 +700,14 @@ public class Dao implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(length = 32, name = "state")
     private State state;
+
+    public State getState() {
+      return state;
+    }
+
+    public void setState(State s) {
+      this.state = s;
+    }
 
     // Convenience constructor.
     public Address(

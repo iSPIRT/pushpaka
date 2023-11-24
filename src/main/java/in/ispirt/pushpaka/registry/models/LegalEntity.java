@@ -251,4 +251,19 @@ public class LegalEntity {
     );
     return u;
   }
+
+  public static LegalEntity toOa(Dao.LegalEntity x) {
+    ObjectTimestamps timestamps = new ObjectTimestamps(
+      x.getTimestampCreated(),
+      x.getTimestampUpdated()
+    );
+    LegalEntity le = new LegalEntity(
+      x.getId(),
+      x.getCin(),
+      x.getName(),
+      Address.toOa(x.getAddress()),
+      timestamps
+    );
+    return le;
+  }
 }

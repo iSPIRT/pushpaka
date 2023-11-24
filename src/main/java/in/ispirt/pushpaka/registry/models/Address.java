@@ -284,4 +284,17 @@ public class Address {
     );
     return u;
   }
+
+  public static Address toOa(Dao.Address x) {
+    Address le = new Address(
+      x.getLine1(),
+      x.getLine2(),
+      x.getLine3(),
+      x.getCity(),
+      x.getState(),
+      x.getPinCode(),
+      "INDIA"
+    );
+    return le;
+  }
 }
