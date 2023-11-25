@@ -210,7 +210,11 @@ public class Address {
    */
   @NotNull
   @Valid
-  @Schema(name = "pinCode", example="400000", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(
+    name = "pinCode",
+    example = "400000",
+    requiredMode = Schema.RequiredMode.REQUIRED
+  )
   @JsonProperty("pinCode")
   public String getPinCode() {
     return pinCode;

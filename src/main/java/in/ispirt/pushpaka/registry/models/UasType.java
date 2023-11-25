@@ -380,7 +380,7 @@ public class UasType {
       OffsetDateTime n = OffsetDateTime.now();
       Dao.UasType u = new Dao.UasType(
         this.id,
-        this.manufacturer.fromOa(),
+        Manufacturer.fromOa(this.manufacturer),
         this.modelNumber,
         this.photoUrl.toURL(),
         this.mtow,
@@ -393,7 +393,7 @@ public class UasType {
       OffsetDateTime n = OffsetDateTime.now();
       Dao.UasType u = new Dao.UasType(
         this.id,
-        this.manufacturer.fromOa(),
+        Manufacturer.fromOa(this.manufacturer),
         this.modelNumber,
         null,
         this.mtow,

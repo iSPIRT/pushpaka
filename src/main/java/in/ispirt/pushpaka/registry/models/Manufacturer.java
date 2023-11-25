@@ -190,11 +190,28 @@ public class Manufacturer {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public Dao.Manufacturer fromOa() {
+  public static Manufacturer toOa(Dao.Manufacturer x) {
+    Validity vtimestamps = new Validity();
+    vtimestamps.setFrom(x.getValidityStart());
+    vtimestamps.setTill(x.getValidityEnd());
+    ObjectTimestamps timestamps = new ObjectTimestamps(
+      x.getTimestampCreated(),
+      x.getTimestampUpdated()
+    );
+    Manufacturer le = new Manufacturer(
+      x.getId(),
+      LegalEntity.toOa(x.getLegalEntity()),
+      vtimestamps,
+      timestamps
+    );
+    return le;
+  }
+
+  public static Dao.Manufacturer fromOa(Manufacturer m) {
     OffsetDateTime n = OffsetDateTime.now();
     Dao.Manufacturer u = new Dao.Manufacturer(
-      this.id,
-      this.legalEntity.fromOa(),
+      m.id,
+      LegalEntity.fromOa(m.getLegalEntity()),
       n,
       n,
       n,

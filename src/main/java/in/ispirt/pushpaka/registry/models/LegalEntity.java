@@ -54,13 +54,15 @@ public class LegalEntity {
     String cin,
     String name,
     Address regdAddress,
-    ObjectTimestamps timestamps
+    ObjectTimestamps timestamps,
+    String gstin
   ) {
     this.id = id;
     this.cin = cin;
     this.name = name;
     this.regdAddress = regdAddress;
     this.timestamps = timestamps;
+    this.gstin = gstin;
   }
 
   public LegalEntity id(UUID id) {
@@ -97,7 +99,7 @@ public class LegalEntity {
    * @return cin
    */
   @NotNull
-  @Schema(name = "cin", example="CIN0000000", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(name = "cin", example="CIN00000", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("cin")
   public String getCin() {
     return cin;
@@ -158,7 +160,7 @@ public class LegalEntity {
    * @return gstin
    */
 
-  @Schema(name = "gstin", example="GSTN0000000", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @Schema(name = "gstin", example="GSTIN00000", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("gstin")
   public String getGstin() {
     return gstin;
@@ -238,16 +240,16 @@ public class LegalEntity {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public Dao.LegalEntity fromOa() {
+  public static Dao.LegalEntity fromOa(LegalEntity le) {
     OffsetDateTime n = OffsetDateTime.now();
     Dao.LegalEntity u = new Dao.LegalEntity(
-      this.id,
-      this.name,
-      this.regdAddress.fromOa(),
-      this.cin,
-      this.gstin,
-      n,
-      n
+      le.getId(),
+      le.getName(),
+      le.getRegdAddress().fromOa(),
+      le.getCin(),
+      le.getGstin(),
+      le.getTimestamps().getCreated(),
+      le.getTimestamps().getUpdated() 
     );
     return u;
   }
@@ -262,7 +264,8 @@ public class LegalEntity {
       x.getCin(),
       x.getName(),
       Address.toOa(x.getAddress()),
-      timestamps
+      timestamps,
+      x.getGstin()
     );
     return le;
   }

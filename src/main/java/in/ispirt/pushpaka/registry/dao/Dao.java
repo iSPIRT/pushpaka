@@ -1,10 +1,10 @@
 package in.ispirt.pushpaka.registry.dao;
 
+import in.ispirt.pushpaka.registry.models.Country;
 import in.ispirt.pushpaka.registry.models.State;
 import in.ispirt.pushpaka.registry.models.UasPropulsionCategory;
 import in.ispirt.pushpaka.registry.models.UasStatus;
 import in.ispirt.pushpaka.registry.models.UserStatus;
-import in.ispirt.pushpaka.registry.models.Country;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -48,6 +48,10 @@ public class Dao implements Serializable {
 
     public UUID getId() {
       return id;
+    }
+
+    public void setId(UUID id) {
+      this.id = id;
     }
 
     public String cin;
@@ -138,6 +142,19 @@ public class Dao implements Serializable {
 
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public LegalEntity() {}
+
+    public static LegalEntity create(Session s, LegalEntity le) {
+      OffsetDateTime n = OffsetDateTime.now();
+      le.setId(UUID.randomUUID());
+      le.setTimestampCreated(n);
+      le.setTimestampUpdated(n);
+      Address a = le.getAddress();
+      a.setId(UUID.randomUUID());
+      s.save(a);
+      le.setAddress(a);
+      s.save(le);
+      return le;
+    }
 
     public static List<LegalEntity> getAll(Session s) {
       return s.createQuery("from LegalEntity", LegalEntity.class).getResultList();
@@ -270,6 +287,41 @@ public class Dao implements Serializable {
 
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public Manufacturer() {}
+
+    public static List<Manufacturer> getAll(Session s) {
+      return s.createQuery("from Manufacturer", Manufacturer.class).getResultList();
+    }
+
+    public static Manufacturer get(Session s, UUID id) {
+      return s
+        .createQuery("from Manufacturer where id= :id", Manufacturer.class)
+        .setString("id", id.toString())
+        .uniqueResult();
+    }
+
+    public static void delete(Session s, UUID id) {
+      s
+        .createQuery("delete from Manufacturer where id= :id", Manufacturer.class)
+        .setString("id", id.toString())
+        .executeUpdate();
+    }
+
+    public static Manufacturer update(Session s, UUID id, Manufacturer le) {
+      Manufacturer leo = s
+        .createQuery("from Manufacturer where id= :id", Manufacturer.class)
+        .setString("id", id.toString())
+        .uniqueResult();
+      leo.setTimestampUpdated(OffsetDateTime.now());
+      leo.setValidityStart(le.getValidityStart());
+      leo.setValidityEnd(le.getValidityEnd());
+      LegalEntity a = leo.getLegalEntity();
+      LegalEntity ao = le.getLegalEntity();
+      // ao.setCountry(a.getCountry());
+      s.saveOrUpdate(ao);
+      s.saveOrUpdate(leo);
+      leo.setLegalEntity(ao);
+      return leo;
+    }
   }
 
   // UasType is our model, which corresponds to the "uas_types" database table.
@@ -637,6 +689,10 @@ public class Dao implements Serializable {
 
     public UUID getId() {
       return id;
+    }
+
+    public void setId(UUID id) {
+      this.id = id;
     }
 
     public Address(UUID id) {

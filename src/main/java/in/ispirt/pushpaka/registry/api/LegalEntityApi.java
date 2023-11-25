@@ -34,6 +34,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
+import java.time.OffsetDateTime;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
@@ -92,29 +93,34 @@ public interface LegalEntityApi {
       required = true
     ) @Valid @RequestBody LegalEntity legalEntity
   ) {
-    DaoInstance d = DaoInstance.getInstance();
-    getRequest()
-      .ifPresent(
-        request -> {
-          for (MediaType mediaType : MediaType.parseMediaTypes(
-            request.getHeader("Accept")
-          )) {
-            if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-              String exampleString =
-                "{ \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"manufacturer\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"legalEntity\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } }";
-              ApiUtil.setExampleResponse(request, "application/json", exampleString);
+    // getRequest()
+    //   .ifPresent(
+    //     request -> {
+    //       for (MediaType mediaType : MediaType.parseMediaTypes(
+    //         request.getHeader("Accept")
+    //       )) {
+    //         if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+    //           String exampleString =
+    //             "{ \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"manufacturer\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"legalEntity\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } }";
+    //           ApiUtil.setExampleResponse(request, "application/json", exampleString);
 
-              try {
-                System.out.println("Create LegalEntity " + legalEntity.toString());
-                // d.legalEntitysCreate(legalEntity);
-              } catch (Exception e) {
-                System.err.println("Exception: " + e.toString());
-              }
-              break;
-            }
-          }
-        }
+    //           break;
+    //         }
+    //       }
+    //     }
+    //   );
+    try {
+      System.out.println("Create LegalEntity " + legalEntity.toString());
+      Dao.LegalEntity le = LegalEntity.fromOa(legalEntity);
+      Dao.LegalEntity lec = Dao.LegalEntity.create(
+        DaoInstance.getInstance().getSession(),
+        le
       );
+
+      return ResponseEntity.ok(LegalEntity.toOa(lec));
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+    }
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
@@ -325,9 +331,9 @@ public interface LegalEntityApi {
     Dao.LegalEntity le = Dao.LegalEntity.update(
       DaoInstance.getInstance().getSession(),
       legalEntityId,
-      legalEntity.fromOa()
+      LegalEntity.fromOa(legalEntity)
     );
-    return ResponseEntity.ok(in.ispirt.pushpaka.registry.models.LegalEntity.toOa(le));
+    return ResponseEntity.ok(LegalEntity.toOa(le));
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }
