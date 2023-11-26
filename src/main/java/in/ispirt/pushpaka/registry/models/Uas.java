@@ -23,9 +23,8 @@ import org.openapitools.jackson.nullable.JsonNullable;
  */
 
 @Generated(
-  value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]"
-)
+    value = "org.openapitools.codegen.languages.SpringCodegen",
+    date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]")
 public class Uas {
   private UUID id;
 
@@ -50,12 +49,11 @@ public class Uas {
    * Constructor with only required parameters
    */
   public Uas(
-    UUID id,
-    UasType type,
-    String oemSerialNumber,
-    ObjectTimestamps timestamps,
-    UasStatus status
-  ) {
+      UUID id,
+      UasType type,
+      String oemSerialNumber,
+      ObjectTimestamps timestamps,
+      UasStatus status) {
     this.id = id;
     this.type = type;
     this.oemSerialNumber = oemSerialNumber;
@@ -74,12 +72,12 @@ public class Uas {
    */
   @Valid
   @Schema(
-    name = "id",
-    accessMode = Schema.AccessMode.READ_ONLY,
-    requiredMode = Schema.RequiredMode.REQUIRED
-  )
+      name = "id",
+      accessMode = Schema.AccessMode.READ_ONLY,
+      requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("id")
-  public UUID getId() {
+  public UUID
+  getId() {
     return id;
   }
 
@@ -181,12 +179,7 @@ public class Uas {
     }
     Uas uas = (Uas) o;
     return (
-      Objects.equals(this.id, uas.id) &&
-      Objects.equals(this.type, uas.type) &&
-      Objects.equals(this.oemSerialNumber, uas.oemSerialNumber) &&
-      Objects.equals(this.timestamps, uas.timestamps) &&
-      Objects.equals(this.status, uas.status)
-    );
+        Objects.equals(this.id, uas.id) && Objects.equals(this.type, uas.type) && Objects.equals(this.oemSerialNumber, uas.oemSerialNumber) && Objects.equals(this.timestamps, uas.timestamps) && Objects.equals(this.status, uas.status));
   }
 
   @Override
@@ -201,9 +194,9 @@ public class Uas {
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb
-      .append("    oemSerialNumber: ")
-      .append(toIndentedString(oemSerialNumber))
-      .append("\n");
+        .append("    oemSerialNumber: ")
+        .append(toIndentedString(oemSerialNumber))
+        .append("\n");
     sb.append("    timestamps: ").append(toIndentedString(timestamps)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("}");
@@ -224,13 +217,12 @@ public class Uas {
   public Dao.Uas fromOa() {
     OffsetDateTime n = OffsetDateTime.now();
     Dao.Uas u = new Dao.Uas(
-      this.id,
-      this.type.fromOa(),
-      this.oemSerialNumber,
-      this.status,
-      n,
-      n
-    );
+        this.id,
+        UasType.fromOa(this.type),
+        this.oemSerialNumber,
+        this.status,
+        n,
+        n);
     return u;
   }
 }

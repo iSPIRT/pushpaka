@@ -25,6 +25,8 @@ import org.openapitools.jackson.nullable.JsonNullable;
   date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]"
 )
 public class Address {
+  private UUID id;
+
   private String line1;
 
   private String line2;
@@ -52,6 +54,7 @@ public class Address {
    * Constructor with only required parameters
    */
   public Address(
+    UUID id,
     String line1,
     String line2,
     String line3,
@@ -60,6 +63,7 @@ public class Address {
     String pinCode,
     Country country
   ) {
+    this.id = id;
     this.line1 = line1;
     this.line2 = line2;
     this.line3 = line3;
@@ -67,6 +71,18 @@ public class Address {
     this.state = state;
     this.pinCode = pinCode;
     this.country = country;
+  }
+
+  public Address setId(UUID id) {
+    this.id = id;
+    return this;
+  }
+
+  @NotNull
+  @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("id")
+  public UUID getId() {
+    return id;
   }
 
   public Address line1(String line1) {
@@ -275,23 +291,23 @@ public class Address {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public Dao.Address fromOa() {
-    OffsetDateTime n = OffsetDateTime.now();
+  public static Dao.Address fromOa(Address a) {
     Dao.Address u = new Dao.Address(
-      UUID.randomUUID(),
-      this.line1,
-      this.line2,
-      this.line3,
-      this.city,
-      this.pinCode,
-      this.state,
-      this.country
+      a.getId(),
+      a.getLine1(),
+      a.getLine2(),
+      a.getLine3(),
+      a.getCity(),
+      a.getState(),
+      a.getPinCode(),
+      a.getCountry()
     );
     return u;
   }
 
   public static Address toOa(Dao.Address x) {
     Address le = new Address(
+      x.getId(),
       x.getLine1(),
       x.getLine2(),
       x.getLine3(),

@@ -99,7 +99,7 @@ public class LegalEntity {
    * @return cin
    */
   @NotNull
-  @Schema(name = "cin", example="CIN00000", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(name = "cin", example = "CIN00000", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("cin")
   public String getCin() {
     return cin;
@@ -119,7 +119,11 @@ public class LegalEntity {
    * @return name
    */
   @NotNull
-  @Schema(name = "name", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(
+    name = "name",
+    example = "Test Company Pvt Ltd",
+    requiredMode = Schema.RequiredMode.REQUIRED
+  )
   @JsonProperty("name")
   public String getName() {
     return name;
@@ -160,7 +164,11 @@ public class LegalEntity {
    * @return gstin
    */
 
-  @Schema(name = "gstin", example="GSTIN00000", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @Schema(
+    name = "gstin",
+    example = "GSTIN00000",
+    requiredMode = Schema.RequiredMode.NOT_REQUIRED
+  )
   @JsonProperty("gstin")
   public String getGstin() {
     return gstin;
@@ -245,11 +253,11 @@ public class LegalEntity {
     Dao.LegalEntity u = new Dao.LegalEntity(
       le.getId(),
       le.getName(),
-      le.getRegdAddress().fromOa(),
+      Address.fromOa(le.getRegdAddress()),
       le.getCin(),
       le.getGstin(),
       le.getTimestamps().getCreated(),
-      le.getTimestamps().getUpdated() 
+      le.getTimestamps().getUpdated()
     );
     return u;
   }
