@@ -21,6 +21,7 @@ mvn prettier:write
 ### Running Tests
 ```
 mvn test
+mvn test -Dtest="EntityTests"
 ```
 
 ## OpenAPI server

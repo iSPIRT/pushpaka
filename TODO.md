@@ -9,8 +9,8 @@
 	1. [-] LegalEntity xx_xx
 	1. [-] Manufacturer xx_xx
 	1. [-] UasType xx_xx
-	1. [-] Uas ____
+	1. [-] Uas xx_xx
 	1. [-] Operator ____
 	1. [-] Pilot  ____
 	1. [-] UasType ____
-	1. [-] UasType ____
+	1. [-] E2E Tests x____
