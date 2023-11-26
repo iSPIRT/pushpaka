@@ -28,8 +28,9 @@ import org.openapitools.jackson.nullable.JsonNullable;
  */
 
 @Generated(
-    value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]")
+  value = "org.openapitools.codegen.languages.SpringCodegen",
+  date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]"
+)
 public class UasType {
   private UUID id;
 
@@ -63,14 +64,15 @@ public class UasType {
    * Constructor with only required parameters
    */
   public UasType(
-      UUID id,
-      String modelNumber,
-      Manufacturer manufacturer,
-      UasPropulsionCategory propulsionCategory,
-      UasWeightCategory weightCategory,
-      Float mtow,
-      List<OperationCategory> supportedOperationCategories,
-      ObjectTimestamps timestamps) {
+    UUID id,
+    String modelNumber,
+    Manufacturer manufacturer,
+    UasPropulsionCategory propulsionCategory,
+    UasWeightCategory weightCategory,
+    Float mtow,
+    List<OperationCategory> supportedOperationCategories,
+    ObjectTimestamps timestamps
+  ) {
     this.id = id;
     this.modelNumber = modelNumber;
     this.manufacturer = manufacturer;
@@ -92,12 +94,12 @@ public class UasType {
    */
   @Valid
   @Schema(
-      name = "id",
-      accessMode = Schema.AccessMode.READ_ONLY,
-      requiredMode = Schema.RequiredMode.REQUIRED)
+    name = "id",
+    accessMode = Schema.AccessMode.READ_ONLY,
+    requiredMode = Schema.RequiredMode.REQUIRED
+  )
   @JsonProperty("id")
-  public UUID
-  getId() {
+  public UUID getId() {
     return id;
   }
 
@@ -199,12 +201,12 @@ public class UasType {
    */
   @NotNull
   @Schema(
-      name = "mtow",
-      description = "maximum take off weight in kilograms",
-      requiredMode = Schema.RequiredMode.REQUIRED)
+    name = "mtow",
+    description = "maximum take off weight in kilograms",
+    requiredMode = Schema.RequiredMode.REQUIRED
+  )
   @JsonProperty("mtow")
-  public Float
-  getMtow() {
+  public Float getMtow() {
     return mtow;
   }
 
@@ -224,12 +226,12 @@ public class UasType {
   @Valid
   // @Size(max = 512)
   @Schema(
-      name = "photoUrl",
-      requiredMode = Schema.RequiredMode.NOT_REQUIRED,
-      example = "https://ispirt.github.io/pushpaka/")
+    name = "photoUrl",
+    requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+    example = "https://ispirt.github.io/pushpaka/"
+  )
   @JsonProperty("photoUrl")
-  public URI
-  getPhotoUrl() {
+  public URI getPhotoUrl() {
     return photoUrl;
   }
 
@@ -238,13 +240,15 @@ public class UasType {
   }
 
   public UasType supportedOperationCategories(
-      List<OperationCategory> supportedOperationCategories) {
+    List<OperationCategory> supportedOperationCategories
+  ) {
     this.supportedOperationCategories = supportedOperationCategories;
     return this;
   }
 
   public UasType addSupportedOperationCategoriesItem(
-      OperationCategory supportedOperationCategoriesItem) {
+    OperationCategory supportedOperationCategoriesItem
+  ) {
     if (this.supportedOperationCategories == null) {
       this.supportedOperationCategories = new ArrayList<>();
     }
@@ -259,16 +263,17 @@ public class UasType {
   @NotNull
   @Valid
   @Schema(
-      name = "supportedOperationCategories",
-      requiredMode = Schema.RequiredMode.REQUIRED)
+    name = "supportedOperationCategories",
+    requiredMode = Schema.RequiredMode.REQUIRED
+  )
   @JsonProperty("supportedOperationCategories")
-  public List<OperationCategory>
-  getSupportedOperationCategories() {
+  public List<OperationCategory> getSupportedOperationCategories() {
     return supportedOperationCategories;
   }
 
   public void setSupportedOperationCategories(
-      List<OperationCategory> supportedOperationCategories) {
+    List<OperationCategory> supportedOperationCategories
+  ) {
     this.supportedOperationCategories = supportedOperationCategories;
   }
 
@@ -303,21 +308,34 @@ public class UasType {
     }
     UasType uasType = (UasType) o;
     return (
-        Objects.equals(this.id, uasType.id) && Objects.equals(this.modelNumber, uasType.modelNumber) && Objects.equals(this.manufacturer, uasType.manufacturer) && Objects.equals(this.propulsionCategory, uasType.propulsionCategory) && Objects.equals(this.weightCategory, uasType.weightCategory) && Objects.equals(this.mtow, uasType.mtow) && Objects.equals(this.photoUrl, uasType.photoUrl) && Objects.equals(this.supportedOperationCategories, uasType.supportedOperationCategories) && Objects.equals(this.timestamps, uasType.timestamps));
+      Objects.equals(this.id, uasType.id) &&
+      Objects.equals(this.modelNumber, uasType.modelNumber) &&
+      Objects.equals(this.manufacturer, uasType.manufacturer) &&
+      Objects.equals(this.propulsionCategory, uasType.propulsionCategory) &&
+      Objects.equals(this.weightCategory, uasType.weightCategory) &&
+      Objects.equals(this.mtow, uasType.mtow) &&
+      Objects.equals(this.photoUrl, uasType.photoUrl) &&
+      Objects.equals(
+        this.supportedOperationCategories,
+        uasType.supportedOperationCategories
+      ) &&
+      Objects.equals(this.timestamps, uasType.timestamps)
+    );
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-        id,
-        modelNumber,
-        manufacturer,
-        propulsionCategory,
-        weightCategory,
-        mtow,
-        photoUrl,
-        supportedOperationCategories,
-        timestamps);
+      id,
+      modelNumber,
+      manufacturer,
+      propulsionCategory,
+      weightCategory,
+      mtow,
+      photoUrl,
+      supportedOperationCategories,
+      timestamps
+    );
   }
 
   @Override
@@ -328,19 +346,19 @@ public class UasType {
     sb.append("    modelNumber: ").append(toIndentedString(modelNumber)).append("\n");
     sb.append("    manufacturer: ").append(toIndentedString(manufacturer)).append("\n");
     sb
-        .append("    propulsionCategory: ")
-        .append(toIndentedString(propulsionCategory))
-        .append("\n");
+      .append("    propulsionCategory: ")
+      .append(toIndentedString(propulsionCategory))
+      .append("\n");
     sb
-        .append("    weightCategory: ")
-        .append(toIndentedString(weightCategory))
-        .append("\n");
+      .append("    weightCategory: ")
+      .append(toIndentedString(weightCategory))
+      .append("\n");
     sb.append("    mtow: ").append(toIndentedString(mtow)).append("\n");
     sb.append("    photoUrl: ").append(toIndentedString(photoUrl)).append("\n");
     sb
-        .append("    supportedOperationCategories: ")
-        .append(toIndentedString(supportedOperationCategories))
-        .append("\n");
+      .append("    supportedOperationCategories: ")
+      .append(toIndentedString(supportedOperationCategories))
+      .append("\n");
     sb.append("    timestamps: ").append(toIndentedString(timestamps)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -361,43 +379,47 @@ public class UasType {
     try {
       OffsetDateTime n = OffsetDateTime.now();
       Dao.UasType uu = new Dao.UasType(
-          u.id,
-          Manufacturer.fromOa(u.manufacturer),
-          u.modelNumber,
-          u.photoUrl.toURL(),
-          u.mtow,
-          n,
-          n,
-          u.propulsionCategory);
+        u.id,
+        Manufacturer.fromOa(u.manufacturer),
+        u.modelNumber,
+        u.photoUrl.toURL(),
+        u.mtow,
+        n,
+        n,
+        u.propulsionCategory
+      );
       return uu;
     } catch (MalformedURLException e) {
       OffsetDateTime n = OffsetDateTime.now();
       Dao.UasType uu = new Dao.UasType(
-          u.id,
-          Manufacturer.fromOa(u.manufacturer),
-          u.modelNumber,
-          null,
-          u.mtow,
-          n,
-          n,
-          u.propulsionCategory);
+        u.id,
+        Manufacturer.fromOa(u.manufacturer),
+        u.modelNumber,
+        null,
+        u.mtow,
+        n,
+        n,
+        u.propulsionCategory
+      );
       return uu;
     }
   }
 
   public static UasType toOa(Dao.UasType u) {
     ObjectTimestamps timestamps = new ObjectTimestamps(
-        u.getTimestampCreated(),
-        u.getTimestampUpdated());
+      u.getTimestampCreated(),
+      u.getTimestampUpdated()
+    );
     UasType uu = new UasType(
-        u.getId(),
-        u.getModelNumber(),
-        Manufacturer.toOa(u.getManufacturer()),
-        u.getPropulsionCategory(),
-        u.getWeightCategory(),
-        u.getMtow(),
-        u.getSupportedOperationCategories(),
-        timestamps);
+      u.getId(),
+      u.getModelNumber(),
+      Manufacturer.toOa(u.getManufacturer()),
+      u.getPropulsionCategory(),
+      u.getWeightCategory(),
+      u.getMtow(),
+      u.getSupportedOperationCategories(),
+      timestamps
+    );
     return uu;
   }
 }
