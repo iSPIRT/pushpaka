@@ -127,13 +127,14 @@ public class Dao implements Serializable {
 
     // Convenience constructor.
     public LegalEntity(
-        UUID id,
-        String name,
-        Address a,
-        String cin,
-        String gstin,
-        OffsetDateTime tc,
-        OffsetDateTime tu) {
+      UUID id,
+      String name,
+      Address a,
+      String cin,
+      String gstin,
+      OffsetDateTime tc,
+      OffsetDateTime tu
+    ) {
       this.id = id;
       this.name = name;
       this.address = a;
@@ -167,25 +168,25 @@ public class Dao implements Serializable {
 
     public static LegalEntity get(Session s, UUID id) {
       return s
-          .createQuery("from LegalEntity where id= :id", LegalEntity.class)
-          .setString("id", id.toString())
-          .uniqueResult();
+        .createQuery("from LegalEntity where id= :id", LegalEntity.class)
+        .setString("id", id.toString())
+        .uniqueResult();
     }
 
     public static void delete(Session s, UUID id) {
       Transaction t = s.beginTransaction();
       s
-          .createQuery("delete from LegalEntity where id= :id")
-          .setString("id", id.toString())
-          .executeUpdate();
+        .createQuery("delete from LegalEntity where id= :id")
+        .setString("id", id.toString())
+        .executeUpdate();
       t.commit();
     }
 
     public static LegalEntity update(Session s, UUID id, LegalEntity le) {
       LegalEntity leo = s
-                            .createQuery("from LegalEntity where id= :id", LegalEntity.class)
-                            .setString("id", id.toString())
-                            .uniqueResult();
+        .createQuery("from LegalEntity where id= :id", LegalEntity.class)
+        .setString("id", id.toString())
+        .uniqueResult();
       leo.setName(le.getName());
       leo.setCin(le.getCin());
       leo.setGstin(le.getGstin());
@@ -296,12 +297,13 @@ public class Dao implements Serializable {
 
     // Convenience constructor.
     public Manufacturer(
-        UUID id,
-        LegalEntity legalEntity,
-        OffsetDateTime tc,
-        OffsetDateTime tu,
-        OffsetDateTime vs,
-        OffsetDateTime ve) {
+      UUID id,
+      LegalEntity legalEntity,
+      OffsetDateTime tc,
+      OffsetDateTime tu,
+      OffsetDateTime vs,
+      OffsetDateTime ve
+    ) {
       this.id = id;
       this.legalEntity = legalEntity;
       this.timestampCreated = tc;
@@ -332,25 +334,25 @@ public class Dao implements Serializable {
 
     public static Manufacturer get(Session s, UUID id) {
       return s
-          .createQuery("from Manufacturer where id= :id", Manufacturer.class)
-          .setString("id", id.toString())
-          .uniqueResult();
+        .createQuery("from Manufacturer where id= :id", Manufacturer.class)
+        .setString("id", id.toString())
+        .uniqueResult();
     }
 
     public static void delete(Session s, UUID id) {
       Transaction t = s.beginTransaction();
       s
-          .createQuery("delete from Manufacturer where id= :id")
-          .setString("id", id.toString())
-          .executeUpdate();
+        .createQuery("delete from Manufacturer where id= :id")
+        .setString("id", id.toString())
+        .executeUpdate();
       t.commit();
     }
 
     public static Manufacturer update(Session s, UUID id, Manufacturer le) {
       Manufacturer leo = s
-                             .createQuery("from Manufacturer where id= :id", Manufacturer.class)
-                             .setString("id", id.toString())
-                             .uniqueResult();
+        .createQuery("from Manufacturer where id= :id", Manufacturer.class)
+        .setString("id", id.toString())
+        .uniqueResult();
       leo.setTimestampUpdated(OffsetDateTime.now());
       leo.setValidityStart(le.getValidityStart());
       leo.setValidityEnd(le.getValidityEnd());
@@ -467,14 +469,15 @@ public class Dao implements Serializable {
 
     // Convenience constructor.
     public UasType(
-        UUID id,
-        Manufacturer manufacturer,
-        String modelNumber,
-        URL photoUrl,
-        Float mtow,
-        OffsetDateTime tc,
-        OffsetDateTime tu,
-        UasPropulsionCategory pc) {
+      UUID id,
+      Manufacturer manufacturer,
+      String modelNumber,
+      URL photoUrl,
+      Float mtow,
+      OffsetDateTime tc,
+      OffsetDateTime tu,
+      UasPropulsionCategory pc
+    ) {
       this.id = id;
       this.manufacturer = manufacturer;
       this.modelNumber = modelNumber;
@@ -507,25 +510,25 @@ public class Dao implements Serializable {
 
     public static UasType get(Session s, UUID id) {
       return s
-          .createQuery("from UasType where id= :id", UasType.class)
-          .setString("id", id.toString())
-          .uniqueResult();
+        .createQuery("from UasType where id= :id", UasType.class)
+        .setString("id", id.toString())
+        .uniqueResult();
     }
 
     public static void delete(Session s, UUID id) {
       Transaction t = s.beginTransaction();
       s
-          .createQuery("delete from UasType where id= :id")
-          .setString("id", id.toString())
-          .executeUpdate();
+        .createQuery("delete from UasType where id= :id")
+        .setString("id", id.toString())
+        .executeUpdate();
       t.commit();
     }
 
     public static UasType update(Session s, UUID id, UasType le) {
       UasType leo = s
-                        .createQuery("from UasType where id= :id", UasType.class)
-                        .setString("id", id.toString())
-                        .uniqueResult();
+        .createQuery("from UasType where id= :id", UasType.class)
+        .setString("id", id.toString())
+        .uniqueResult();
       leo.setTimestampUpdated(OffsetDateTime.now());
       Manufacturer a = leo.getManufacturer();
       Manufacturer ao = le.getManufacturer();
@@ -609,12 +612,13 @@ public class Dao implements Serializable {
 
     // Convenience constructor.
     public Uas(
-        UUID id,
-        UasType ut,
-        String oemSerialNo,
-        UasStatus s,
-        OffsetDateTime tc,
-        OffsetDateTime tu) {
+      UUID id,
+      UasType ut,
+      String oemSerialNo,
+      UasStatus s,
+      OffsetDateTime tc,
+      OffsetDateTime tu
+    ) {
       this.id = id;
       this.uasType = ut;
       this.oemSerialNo = oemSerialNo;
@@ -645,25 +649,25 @@ public class Dao implements Serializable {
 
     public static Uas get(Session s, UUID id) {
       return s
-          .createQuery("from Uas where id= :id", Uas.class)
-          .setString("id", id.toString())
-          .uniqueResult();
+        .createQuery("from Uas where id= :id", Uas.class)
+        .setString("id", id.toString())
+        .uniqueResult();
     }
 
     public static void delete(Session s, UUID id) {
       Transaction t = s.beginTransaction();
       s
-          .createQuery("delete from Uas where id= :id")
-          .setString("id", id.toString())
-          .executeUpdate();
+        .createQuery("delete from Uas where id= :id")
+        .setString("id", id.toString())
+        .executeUpdate();
       t.commit();
     }
 
     public static Uas update(Session s, UUID id, Uas le) {
       Uas leo = s
-                    .createQuery("from Uas where id= :id", Uas.class)
-                    .setString("id", id.toString())
-                    .uniqueResult();
+        .createQuery("from Uas where id= :id", Uas.class)
+        .setString("id", id.toString())
+        .uniqueResult();
       leo.setTimestampUpdated(OffsetDateTime.now());
       UasType a = leo.getUasType();
       UasType ao = le.getUasType();
@@ -729,11 +733,12 @@ public class Dao implements Serializable {
 
     // Convenience constructor.
     public User(
-        UUID id,
-        String email,
-        OffsetDateTime tc,
-        OffsetDateTime tu,
-        UserStatus s) {
+      UUID id,
+      String email,
+      OffsetDateTime tc,
+      OffsetDateTime tu,
+      UserStatus s
+    ) {
       this.id = id;
       this.email = email;
       this.timestampCreated = tc;
@@ -820,12 +825,13 @@ public class Dao implements Serializable {
 
     // Convenience constructor.
     public Pilot(
-        UUID id,
-        User u,
-        OffsetDateTime tc,
-        OffsetDateTime tu,
-        OffsetDateTime vs,
-        OffsetDateTime ve) {
+      UUID id,
+      User u,
+      OffsetDateTime tc,
+      OffsetDateTime tu,
+      OffsetDateTime vs,
+      OffsetDateTime ve
+    ) {
       this.id = id;
       this.user = u;
       this.validityStart = vs;
@@ -941,14 +947,15 @@ public class Dao implements Serializable {
 
     // Convenience constructor.
     public Address(
-        UUID id,
-        String l1,
-        String l2,
-        String l3,
-        String c,
-        State s,
-        String pinCode,
-        Country co) {
+      UUID id,
+      String l1,
+      String l2,
+      String l3,
+      String c,
+      State s,
+      String pinCode,
+      Country co
+    ) {
       this.id = id;
       this.line1 = l1;
       this.line2 = l2;
@@ -967,7 +974,8 @@ public class Dao implements Serializable {
       UUID aid = UUID.randomUUID();
       a.setId(aid);
       System.out.println(
-          "Create Address: " + a.getLine1().toString() + " " + a.toString());
+        "Create Address: " + a.getLine1().toString() + " " + a.toString()
+      );
       s.save(a);
       s.flush();
       t.commit();
@@ -1063,12 +1071,13 @@ public class Dao implements Serializable {
 
     // Convenience constructor.
     public CivilAviationAuthority(
-        UUID id,
-        LegalEntity legalEntity,
-        OffsetDateTime tc,
-        OffsetDateTime tu,
-        OffsetDateTime vs,
-        OffsetDateTime ve) {
+      UUID id,
+      LegalEntity legalEntity,
+      OffsetDateTime tc,
+      OffsetDateTime tu,
+      OffsetDateTime vs,
+      OffsetDateTime ve
+    ) {
       this.id = id;
       this.legalEntity = legalEntity;
       this.timestampCreated = tc;
@@ -1152,12 +1161,13 @@ public class Dao implements Serializable {
 
     // Convenience constructor.
     public Operator(
-        UUID id,
-        LegalEntity legalEntity,
-        OffsetDateTime tc,
-        OffsetDateTime tu,
-        OffsetDateTime vs,
-        OffsetDateTime ve) {
+      UUID id,
+      LegalEntity legalEntity,
+      OffsetDateTime tc,
+      OffsetDateTime tu,
+      OffsetDateTime vs,
+      OffsetDateTime ve
+    ) {
       this.id = id;
       this.legalEntity = legalEntity;
       this.timestampCreated = tc;
@@ -1176,55 +1186,60 @@ public class Dao implements Serializable {
       try {
         OffsetDateTime n = OffsetDateTime.now();
         Address a = new Address(
-            UUID.randomUUID(),
-            "Address Line 1",
-            "Address Line 2",
-            "Address Line 3",
-            "Address City",
-            State.MAHARASHTRA,
-            "400000",
-            Country.IND);
+          UUID.randomUUID(),
+          "Address Line 1",
+          "Address Line 2",
+          "Address Line 3",
+          "Address City",
+          State.MAHARASHTRA,
+          "400000",
+          Country.IND
+        );
         s.save(a);
         LegalEntity l = new LegalEntity(
-            UUID.randomUUID(),
-            "TEST COMPANY PVT LTD",
-            a,
-            "CIN0000000",
-            "GSTN000000",
-            n,
-            n);
+          UUID.randomUUID(),
+          "TEST COMPANY PVT LTD",
+          a,
+          "CIN0000000",
+          "GSTN000000",
+          n,
+          n
+        );
         Manufacturer m = new Manufacturer(UUID.randomUUID(), l, n, n, n, n);
         UasType ut = new UasType(
-            UUID.randomUUID(),
-            m,
-            "UASMN",
-            new URL("https://ispirt.github.io/pushpaka"),
-            2.5f,
-            n,
-            n,
-            UasPropulsionCategory.VTOL);
+          UUID.randomUUID(),
+          m,
+          "UASMN",
+          new URL("https://ispirt.github.io/pushpaka"),
+          2.5f,
+          n,
+          n,
+          UasPropulsionCategory.VTOL
+        );
         Uas u = new Uas(UUID.randomUUID(), ut, "UAS000000", UasStatus.REGISTERED, n, n);
         s.save(l);
         s.save(m);
         s.save(ut);
         s.save(u);
         User uu = new User(
-            UUID.randomUUID(),
-            "test@company.com",
-            n,
-            n,
-            UserStatus.ACTIVE);
+          UUID.randomUUID(),
+          "test@company.com",
+          n,
+          n,
+          UserStatus.ACTIVE
+        );
         s.save(uu);
         Pilot p = new Pilot(UUID.randomUUID(), uu, n, n, n, n);
         s.save(p);
 
         CivilAviationAuthority caa = new CivilAviationAuthority(
-            UUID.randomUUID(),
-            l,
-            n,
-            n,
-            n,
-            n);
+          UUID.randomUUID(),
+          l,
+          n,
+          n,
+          n,
+          n
+        );
         s.save(caa);
 
         Operator o1 = new Operator(UUID.randomUUID(), l, n, n, n, n);
@@ -1264,8 +1279,9 @@ public class Dao implements Serializable {
   // transaction retry logic so we don't have to duplicate it in
   // various places.
   public static BigDecimal runTransaction(
-      Session session,
-      Function<Session, BigDecimal> fn) {
+    Session session,
+    Function<Session, BigDecimal> fn
+  ) {
     BigDecimal rv = new BigDecimal(0);
     int attemptCount = 0;
 
@@ -1306,16 +1322,18 @@ public class Dao implements Serializable {
           // loop we sleep for a little longer than the last
           // time (A.K.A. exponential backoff).
           System.out.printf(
-              "APP: retryable exception occurred:\n    sql state = [%s]\n    message = [%s]\n    retry counter = %s\n",
-              e.getSQLState(),
-              e.getMessage(),
-              attemptCount);
+            "APP: retryable exception occurred:\n    sql state = [%s]\n    message = [%s]\n    retry counter = %s\n",
+            e.getSQLState(),
+            e.getMessage(),
+            attemptCount
+          );
           System.out.printf("APP: ROLLBACK;\n");
           txn.rollback();
           int sleepMillis = (int) (Math.pow(2, attemptCount) * 100) + RAND.nextInt(100);
           System.out.printf(
-              "APP: Hit 40001 transaction retry error, sleeping %s milliseconds\n",
-              sleepMillis);
+            "APP: Hit 40001 transaction retry error, sleeping %s milliseconds\n",
+            sleepMillis
+          );
           try {
             Thread.sleep(sleepMillis);
           } catch (InterruptedException ignored) {
@@ -1334,9 +1352,9 @@ public class Dao implements Serializable {
     // Create a SessionFactory based on our hibernate.cfg.xml configuration
     // file, which defines how to connect to the database.
     SessionFactory sessionFactory = new Configuration()
-                                        .configure("hibernate.cfg.xml")
-                                        .addAnnotatedClass(UasType.class)
-                                        .buildSessionFactory();
+      .configure("hibernate.cfg.xml")
+      .addAnnotatedClass(UasType.class)
+      .buildSessionFactory();
 
     try (Session session = sessionFactory.openSession()) {
       long fromUasTypeId = 1;
