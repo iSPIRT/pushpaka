@@ -59,7 +59,6 @@ public interface LegalEntityApi {
     operationId = "addLegalEntity",
     summary = "Add a new legalEntity to the store",
     description = "Add a new legalEntity to the store",
-    tags = { "legalEntity" },
     responses = {
       @ApiResponse(
         responseCode = "200",
@@ -135,7 +134,6 @@ public interface LegalEntityApi {
     operationId = "deleteLegalEntity",
     summary = "Deletes a legalEntity",
     description = "",
-    tags = { "legalEntity" },
     responses = {
       @ApiResponse(responseCode = "400", description = "Invalid legalEntity value")
     },
@@ -169,7 +167,6 @@ public interface LegalEntityApi {
   @Operation(
     operationId = "findLegalEntitys",
     summary = "Finds LegalEntitys",
-    tags = { "legalEntity" },
     responses = {
       @ApiResponse(
         responseCode = "200",
@@ -234,7 +231,6 @@ public interface LegalEntityApi {
     operationId = "getLegalEntityById",
     summary = "Find legalEntity by ID",
     description = "Returns a single legalEntity",
-    tags = { "legalEntity" },
     responses = {
       @ApiResponse(
         responseCode = "200",
@@ -304,7 +300,6 @@ public interface LegalEntityApi {
     operationId = "updateLegalEntity",
     summary = "Updates a legalEntity in the store",
     description = "",
-    tags = { "legalEntity" },
     responses = { @ApiResponse(responseCode = "405", description = "Invalid input") },
     security = {
       @SecurityRequirement(
