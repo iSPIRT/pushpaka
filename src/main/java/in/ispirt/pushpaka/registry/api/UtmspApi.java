@@ -198,9 +198,7 @@ public interface UtmspApi {
     //       }
     //     }
     //   );
-    List<Dao.Utmsp> les = Dao.Utmsp.getAll(
-      DaoInstance.getInstance().getSession()
-    );
+    List<Dao.Utmsp> les = Dao.Utmsp.getAll(DaoInstance.getInstance().getSession());
     List<Utmsp> leso = les
       .stream()
       .map(x -> in.ispirt.pushpaka.registry.models.Utmsp.toOa(x))
@@ -271,10 +269,7 @@ public interface UtmspApi {
     //       }
     //     }
     //   );
-    Dao.Utmsp le = Dao.Utmsp.get(
-      DaoInstance.getInstance().getSession(),
-      utmspId
-    );
+    Dao.Utmsp le = Dao.Utmsp.get(DaoInstance.getInstance().getSession(), utmspId);
     return ResponseEntity.ok(in.ispirt.pushpaka.registry.models.Utmsp.toOa(le));
   }
 

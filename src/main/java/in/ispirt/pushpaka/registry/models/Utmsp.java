@@ -209,14 +209,7 @@ public class Utmsp {
 
   public static Dao.Utmsp fromOa(Utmsp m) {
     OffsetDateTime n = OffsetDateTime.now();
-    Dao.Utmsp u = new Dao.Utmsp(
-      m.id,
-      LegalEntity.fromOa(m.getLegalEntity()),
-      n,
-      n,
-      n,
-      n
-    );
+    Dao.Utmsp u = new Dao.Utmsp(m.id, LegalEntity.fromOa(m.getLegalEntity()), n, n, n, n);
     return u;
   }
 }
