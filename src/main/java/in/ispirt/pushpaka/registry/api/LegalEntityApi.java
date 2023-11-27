@@ -41,7 +41,7 @@ import org.springframework.web.multipart.MultipartFile;
   date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]"
 )
 @Validated
-@Tag(name = "legal_entities", description = "Legal Entity")
+@Tag(name = "legal_entity", description = "Legal Entity")
 public interface LegalEntityApi {
   default Optional<NativeWebRequest> getRequest() {
     return Optional.empty();
@@ -59,6 +59,7 @@ public interface LegalEntityApi {
     operationId = "addLegalEntity",
     summary = "Add a new legalEntity to the store",
     description = "Add a new legalEntity to the store",
+    tags = { "legal_entity" },
     responses = {
       @ApiResponse(
         responseCode = "200",
@@ -134,6 +135,7 @@ public interface LegalEntityApi {
     operationId = "deleteLegalEntity",
     summary = "Deletes a legalEntity",
     description = "",
+    tags = { "legal_entity" },
     responses = {
       @ApiResponse(responseCode = "400", description = "Invalid legalEntity value")
     },
@@ -167,6 +169,7 @@ public interface LegalEntityApi {
   @Operation(
     operationId = "findLegalEntitys",
     summary = "Finds LegalEntitys",
+    tags = { "legal_entity" },
     responses = {
       @ApiResponse(
         responseCode = "200",
@@ -231,6 +234,7 @@ public interface LegalEntityApi {
     operationId = "getLegalEntityById",
     summary = "Find legalEntity by ID",
     description = "Returns a single legalEntity",
+    tags = { "legal_entity" },
     responses = {
       @ApiResponse(
         responseCode = "200",
@@ -300,6 +304,7 @@ public interface LegalEntityApi {
     operationId = "updateLegalEntity",
     summary = "Updates a legalEntity in the store",
     description = "",
+    tags = { "legal_entity" },
     responses = { @ApiResponse(responseCode = "405", description = "Invalid input") },
     security = {
       @SecurityRequirement(

@@ -18,14 +18,14 @@ import javax.validation.constraints.*;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 /**
- * Operator
+ * Utmsp
  */
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
   date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]"
 )
-public class Operator {
+public class Utmsp {
   private UUID id;
 
   private LegalEntity legalEntity;
@@ -36,17 +36,17 @@ public class Operator {
 
   /**
    * Default constructor
-   * @deprecated Use {@link Operator#Operator(UUID, LegalEntity, Validity, ObjectTimestamps)}
+   * @deprecated Use {@link Utmsp#Utmsp(UUID, LegalEntity, Validity, ObjectTimestamps)}
    */
   @Deprecated
-  public Operator() {
+  public Utmsp() {
     super();
   }
 
   /**
    * Constructor with only required parameters
    */
-  public Operator(
+  public Utmsp(
     UUID id,
     LegalEntity legalEntity,
     Validity validity,
@@ -58,7 +58,7 @@ public class Operator {
     this.timestamps = timestamps;
   }
 
-  public Operator id(UUID id) {
+  public Utmsp id(UUID id) {
     this.id = id;
     return this;
   }
@@ -82,7 +82,7 @@ public class Operator {
     this.id = id;
   }
 
-  public Operator legalEntity(LegalEntity legalEntity) {
+  public Utmsp legalEntity(LegalEntity legalEntity) {
     this.legalEntity = legalEntity;
     return this;
   }
@@ -103,7 +103,7 @@ public class Operator {
     this.legalEntity = legalEntity;
   }
 
-  public Operator validity(Validity validity) {
+  public Utmsp validity(Validity validity) {
     this.validity = validity;
     return this;
   }
@@ -124,7 +124,7 @@ public class Operator {
     this.validity = validity;
   }
 
-  public Operator timestamps(ObjectTimestamps timestamps) {
+  public Utmsp timestamps(ObjectTimestamps timestamps) {
     this.timestamps = timestamps;
     return this;
   }
@@ -153,12 +153,12 @@ public class Operator {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Operator operator = (Operator) o;
+    Utmsp utmsp = (Utmsp) o;
     return (
-      Objects.equals(this.id, operator.id) &&
-      Objects.equals(this.legalEntity, operator.legalEntity) &&
-      Objects.equals(this.validity, operator.validity) &&
-      Objects.equals(this.timestamps, operator.timestamps)
+      Objects.equals(this.id, utmsp.id) &&
+      Objects.equals(this.legalEntity, utmsp.legalEntity) &&
+      Objects.equals(this.validity, utmsp.validity) &&
+      Objects.equals(this.timestamps, utmsp.timestamps)
     );
   }
 
@@ -170,7 +170,7 @@ public class Operator {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Operator {\n");
+    sb.append("class Utmsp {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    legalEntity: ").append(toIndentedString(legalEntity)).append("\n");
     sb.append("    validity: ").append(toIndentedString(validity)).append("\n");
@@ -190,7 +190,7 @@ public class Operator {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public static Operator toOa(Dao.Operator x) {
+  public static Utmsp toOa(Dao.Utmsp x) {
     Validity vtimestamps = new Validity();
     vtimestamps.setFrom(x.getValidityStart());
     vtimestamps.setTill(x.getValidityEnd());
@@ -198,7 +198,7 @@ public class Operator {
       x.getTimestampCreated(),
       x.getTimestampUpdated()
     );
-    Operator le = new Operator(
+    Utmsp le = new Utmsp(
       x.getId(),
       LegalEntity.toOa(x.getLegalEntity()),
       vtimestamps,
@@ -207,9 +207,9 @@ public class Operator {
     return le;
   }
 
-  public static Dao.Operator fromOa(Operator m) {
+  public static Dao.Utmsp fromOa(Utmsp m) {
     OffsetDateTime n = OffsetDateTime.now();
-    Dao.Operator u = new Dao.Operator(
+    Dao.Utmsp u = new Dao.Utmsp(
       m.id,
       LegalEntity.fromOa(m.getLegalEntity()),
       n,

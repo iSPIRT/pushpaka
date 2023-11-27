@@ -8,6 +8,7 @@ package in.ispirt.pushpaka.registry.api;
 import in.ispirt.pushpaka.registry.dao.Dao;
 import in.ispirt.pushpaka.registry.dao.DaoInstance;
 import in.ispirt.pushpaka.registry.models.Manufacturer;
+import in.ispirt.pushpaka.registry.utils.DaoException;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -92,20 +93,6 @@ public interface ManufacturerApi {
       required = true
     ) @Valid @RequestBody Manufacturer manufacturer
   ) {
-    //       getRequest()
-    //           .ifPresent(
-    //               request -> {
-    //                 for (MediaType mediaType : MediaType.parseMediaTypes(
-    //                          request.getHeader("Accept"))) {
-    //                   if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-    //                     String exampleString =
-    //                         "{ \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"manufacturer\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"manufacturer\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } }";
-    //                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
-    //
-    //   }
-    // });
-    // break;
-    // }
     try {
       System.out.println("Create Manufacturer " + manufacturer.toString());
       Dao.Manufacturer mm = Dao.Manufacturer.create(
@@ -113,11 +100,15 @@ public interface ManufacturerApi {
         Manufacturer.fromOa(manufacturer)
       );
       return ResponseEntity.ok(Manufacturer.toOa(mm));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
       System.err.println("Exception: " + e.toString());
       e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
   /**

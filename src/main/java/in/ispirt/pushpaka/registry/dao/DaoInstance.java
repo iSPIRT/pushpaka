@@ -35,6 +35,7 @@ public class DaoInstance {
         .addAnnotatedClass(Dao.Address.class)
         .addAnnotatedClass(Dao.CivilAviationAuthority.class)
         .addAnnotatedClass(Dao.Operator.class)
+        .addAnnotatedClass(Dao.Utmsp.class)
         .buildSessionFactory();
     session = sessionFactory.openSession();
   }

@@ -10,7 +10,7 @@
 	1. [-] Manufacturer xx_xx
 	1. [-] UasType xx_xx
 	1. [-] Uas xx_xx
-	1. [-] Operator ____
+	1. [-] Operator xx_xx
 	1. [-] Pilot  ____
-	1. [-] UasType ____
+	1. [-] Utmsp xx_xx
 	1. [-] E2E Tests x____

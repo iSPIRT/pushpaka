@@ -9,6 +9,7 @@ import in.ispirt.pushpaka.registry.dao.Dao;
 import in.ispirt.pushpaka.registry.dao.DaoInstance;
 import in.ispirt.pushpaka.registry.models.ModelApiResponse;
 import in.ispirt.pushpaka.registry.models.UasType;
+import in.ispirt.pushpaka.registry.utils.DaoException;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -97,6 +98,10 @@ public interface UasTypeApi {
       Dao.UasType le = UasType.fromOa(uasType);
       Dao.UasType lec = Dao.UasType.create(DaoInstance.getInstance().getSession(), le);
       return ResponseEntity.ok(UasType.toOa(lec));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
       System.err.println("Exception: " + e.toString());
       e.printStackTrace(System.err);

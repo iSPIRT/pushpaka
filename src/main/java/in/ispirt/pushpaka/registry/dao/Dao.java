@@ -7,6 +7,7 @@ import in.ispirt.pushpaka.registry.models.UasPropulsionCategory;
 import in.ispirt.pushpaka.registry.models.UasStatus;
 import in.ispirt.pushpaka.registry.models.UasWeightCategory;
 import in.ispirt.pushpaka.registry.models.UserStatus;
+import in.ispirt.pushpaka.registry.utils.DaoException;
 import in.ispirt.pushpaka.registry.utils.Utils;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -315,8 +316,11 @@ public class Dao implements Serializable {
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public Manufacturer() {}
 
-    public static Manufacturer create(Session s, Manufacturer m) {
+    public static Manufacturer create(Session s, Manufacturer m) throws DaoException {
       LegalEntity le = LegalEntity.get(s, m.getLegalEntity().getId());
+      if (le == null) {
+        throw new DaoException(DaoException.Code.NOT_FOUND, "LegalEntity");
+      }
       Transaction t = s.beginTransaction();
       OffsetDateTime n = OffsetDateTime.now();
       m.setId(UUID.randomUUID());
@@ -491,8 +495,11 @@ public class Dao implements Serializable {
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public UasType() {}
 
-    public static UasType create(Session s, UasType m) {
+    public static UasType create(Session s, UasType m) throws DaoException {
       Manufacturer le = Manufacturer.get(s, m.getManufacturer().getId());
+      if (le == null) {
+        throw new DaoException(DaoException.Code.NOT_FOUND, "Manufacturer");
+      }
       Transaction t = s.beginTransaction();
       OffsetDateTime n = OffsetDateTime.now();
       m.setId(UUID.randomUUID());
@@ -630,8 +637,11 @@ public class Dao implements Serializable {
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public Uas() {}
 
-    public static Uas create(Session s, Uas m) {
+    public static Uas create(Session s, Uas m) throws DaoException {
       UasType le = UasType.get(s, m.getUasType().getId());
+      if (le == null) {
+        throw new DaoException(DaoException.Code.NOT_FOUND, "UasType");
+      }
       Transaction t = s.beginTransaction();
       OffsetDateTime n = OffsetDateTime.now();
       m.setId(UUID.randomUUID());
@@ -1091,15 +1101,22 @@ public class Dao implements Serializable {
   }
 
   // Operator is our model, which corresponds to the "operators" database table.
-  @Entity
-  @Table(name = "operators")
+  @Entity(name = Operator.PERSISTENCE_NAME)
+  @Table(name = Operator.PERSISTENCE_NAME)
   public static class Operator {
+    static final String PERSISTENCE_NAME = "Operator";
+
     @Id
     @Column(name = "id")
     public UUID id;
 
     public UUID getId() {
       return id;
+    }
+
+    public Operator setId(UUID id) {
+      this.id = id;
+      return this;
     }
 
     @OneToOne
@@ -1178,6 +1195,209 @@ public class Dao implements Serializable {
 
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public Operator() {}
+
+    public static Operator create(Session s, Operator m) throws DaoException {
+      LegalEntity le = LegalEntity.get(s, m.getLegalEntity().getId());
+      if (le == null) {
+        throw new DaoException(DaoException.Code.NOT_FOUND, "LegalEntity");
+      }
+      Transaction t = s.beginTransaction();
+      OffsetDateTime n = OffsetDateTime.now();
+      m.setId(UUID.randomUUID());
+      m.setLegalEntity(le);
+      s.save(m);
+      s.flush();
+      t.commit();
+      s.refresh(m);
+      return m;
+    }
+
+    public static List<Operator> getAll(Session s) {
+      return s.createQuery("from Operator", Operator.class).getResultList();
+    }
+
+    public static Operator get(Session s, UUID id) {
+      return s
+        .createQuery("from Operator where id= :id", Operator.class)
+        .setString("id", id.toString())
+        .uniqueResult();
+    }
+
+    public static void delete(Session s, UUID id) {
+      Transaction t = s.beginTransaction();
+      s
+        .createQuery("delete from Operator where id= :id")
+        .setString("id", id.toString())
+        .executeUpdate();
+      t.commit();
+    }
+
+    public static Operator update(Session s, UUID id, Operator le) {
+      Operator leo = s
+        .createQuery("from Operator where id= :id", Operator.class)
+        .setString("id", id.toString())
+        .uniqueResult();
+      leo.setTimestampUpdated(OffsetDateTime.now());
+      leo.setValidityStart(le.getValidityStart());
+      leo.setValidityEnd(le.getValidityEnd());
+      LegalEntity a = leo.getLegalEntity();
+      LegalEntity ao = le.getLegalEntity();
+      // ao.setCountry(a.getCountry());
+      s.saveOrUpdate(ao);
+      s.saveOrUpdate(leo);
+      leo.setLegalEntity(ao);
+      return leo;
+    }
+  }
+
+  // Utmsp is our model, which corresponds to the "utmsps" database table.
+  @Entity(name = Utmsp.PERSISTENCE_NAME)
+  @Table(name = Utmsp.PERSISTENCE_NAME)
+  public static class Utmsp {
+    static final String PERSISTENCE_NAME = "Utmsp";
+
+    @Id
+    @Column(name = "id")
+    public UUID id;
+
+    public UUID getId() {
+      return id;
+    }
+
+    public Utmsp setId(UUID id) {
+      this.id = id;
+      return this;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "FK_legal_entity")
+    // @Column(name = "legal_entity")
+    public LegalEntity legalEntity;
+
+    public LegalEntity getLegalEntity() {
+      return legalEntity;
+    }
+
+    public void setLegalEntity(LegalEntity nlegalEntity) {
+      this.legalEntity = nlegalEntity;
+    }
+
+    @Column(name = "timestamp_created")
+    public OffsetDateTime timestampCreated;
+
+    public OffsetDateTime getTimestampCreated() {
+      return timestampCreated;
+    }
+
+    public void setTimestampCreated(OffsetDateTime a) {
+      this.timestampCreated = a;
+    }
+
+    @Column(name = "timestamp_updated")
+    public OffsetDateTime timestampUpdated;
+
+    public OffsetDateTime getTimestampUpdated() {
+      return timestampUpdated;
+    }
+
+    public void setTimestampUpdated(OffsetDateTime a) {
+      this.timestampUpdated = a;
+    }
+
+    @Column(name = "validity_start")
+    public OffsetDateTime validityStart;
+
+    public OffsetDateTime getValidityStart() {
+      return validityStart;
+    }
+
+    public void setValidityStart(OffsetDateTime a) {
+      this.validityStart = a;
+    }
+
+    @Column(name = "validity_end")
+    public OffsetDateTime validityEnd;
+
+    public OffsetDateTime getValidityEnd() {
+      return validityEnd;
+    }
+
+    public void setValidityEnd(OffsetDateTime a) {
+      this.validityEnd = a;
+    }
+
+    // Convenience constructor.
+    public Utmsp(
+      UUID id,
+      LegalEntity legalEntity,
+      OffsetDateTime tc,
+      OffsetDateTime tu,
+      OffsetDateTime vs,
+      OffsetDateTime ve
+    ) {
+      this.id = id;
+      this.legalEntity = legalEntity;
+      this.timestampCreated = tc;
+      this.timestampUpdated = tu;
+      this.validityStart = vs;
+      this.validityEnd = ve;
+    }
+
+    // Hibernate needs a default (no-arg) constructor to create model objects.
+    public Utmsp() {}
+
+    public static Utmsp create(Session s, Utmsp m) throws DaoException {
+      LegalEntity le = LegalEntity.get(s, m.getLegalEntity().getId());
+      if (le == null) {
+        throw new DaoException(DaoException.Code.NOT_FOUND, "LegalEntity");
+      }
+      Transaction t = s.beginTransaction();
+      OffsetDateTime n = OffsetDateTime.now();
+      m.setId(UUID.randomUUID());
+      m.setLegalEntity(le);
+      s.save(m);
+      s.flush();
+      t.commit();
+      s.refresh(m);
+      return m;
+    }
+
+    public static List<Utmsp> getAll(Session s) {
+      return s.createQuery("from Utmsp", Utmsp.class).getResultList();
+    }
+
+    public static Utmsp get(Session s, UUID id) {
+      return s
+        .createQuery("from Utmsp where id= :id", Utmsp.class)
+        .setString("id", id.toString())
+        .uniqueResult();
+    }
+
+    public static void delete(Session s, UUID id) {
+      Transaction t = s.beginTransaction();
+      s
+        .createQuery("delete from Utmsp where id= :id")
+        .setString("id", id.toString())
+        .executeUpdate();
+      t.commit();
+    }
+
+    public static Utmsp update(Session s, UUID id, Utmsp le) {
+      Utmsp leo = s
+        .createQuery("from Utmsp where id= :id", Utmsp.class)
+        .setString("id", id.toString())
+        .uniqueResult();
+      leo.setTimestampUpdated(OffsetDateTime.now());
+      leo.setValidityStart(le.getValidityStart());
+      leo.setValidityEnd(le.getValidityEnd());
+      LegalEntity a = leo.getLegalEntity();
+      LegalEntity ao = le.getLegalEntity();
+      // ao.setCountry(a.getCountry());
+      s.saveOrUpdate(ao);
+      s.saveOrUpdate(leo);
+      leo.setLegalEntity(ao);
+      return leo;
+    }
   }
 
   public static Function<Session, BigDecimal> addUasTypes() throws JDBCException {
