@@ -28,6 +28,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 import javax.persistence.Table;
 import org.hibernate.JDBCException;
 import org.hibernate.Session;
@@ -59,6 +60,7 @@ public class Dao implements Serializable {
       this.id = id;
     }
 
+    @Column(name = "cin")
     public String cin;
 
     public String getCin() {
@@ -69,6 +71,7 @@ public class Dao implements Serializable {
       this.cin = c;
     }
 
+    @NotNull
     @Column(name = "name")
     public String name;
 
@@ -91,6 +94,7 @@ public class Dao implements Serializable {
       this.gstin = a;
     }
 
+    @NotNull
     @Column(name = "timestamp_created")
     public OffsetDateTime timestampCreated;
 
@@ -102,6 +106,7 @@ public class Dao implements Serializable {
       this.timestampCreated = a;
     }
 
+    @NotNull
     @Column(name = "timestamp_updated")
     public OffsetDateTime timestampUpdated;
 
@@ -113,6 +118,7 @@ public class Dao implements Serializable {
       this.timestampUpdated = a;
     }
 
+    @NotNull
     @OneToOne
     @JoinColumn(name = "FK_address")
     // @Column(name = "name")
@@ -239,6 +245,7 @@ public class Dao implements Serializable {
       return id;
     }
 
+    @NotNull
     @OneToOne
     @JoinColumn(name = "FK_legal_entity")
     // @Column(name = "legal_entity")
@@ -252,6 +259,7 @@ public class Dao implements Serializable {
       this.legalEntity = nlegalEntity;
     }
 
+    @NotNull
     @Column(name = "timestamp_created")
     public OffsetDateTime timestampCreated;
 
@@ -263,6 +271,7 @@ public class Dao implements Serializable {
       this.timestampCreated = a;
     }
 
+    @NotNull
     @Column(name = "timestamp_updated")
     public OffsetDateTime timestampUpdated;
 
@@ -389,6 +398,7 @@ public class Dao implements Serializable {
       return this;
     }
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "FK_manufacturer")
     // @Column(name = "balance")
@@ -402,6 +412,7 @@ public class Dao implements Serializable {
       this.manufacturer = m;
     }
 
+    @NotNull
     @Column(name = "timestamp_created")
     public OffsetDateTime timestampCreated;
 
@@ -413,6 +424,7 @@ public class Dao implements Serializable {
       this.timestampCreated = a;
     }
 
+    @NotNull
     @Column(name = "timestamp_updated")
     public OffsetDateTime timestampUpdated;
 
@@ -424,6 +436,8 @@ public class Dao implements Serializable {
       this.timestampUpdated = a;
     }
 
+    @NotNull
+    @Column(name = "model_number")
     public String modelNumber;
 
     public String getModelNumber() {
@@ -434,7 +448,8 @@ public class Dao implements Serializable {
       this.modelNumber = c;
     }
 
-    @Column(name = "photo_url")
+    @NotNull
+    @Column(length = 1024, name = "photo_url")
     public URL photoUrl;
 
     public URL getPhotoUrl() {
@@ -445,6 +460,8 @@ public class Dao implements Serializable {
       this.photoUrl = c;
     }
 
+    @NotNull
+    @Column(name = "mtow")
     public Float mtow;
 
     public Float getMtow() {
@@ -455,6 +472,7 @@ public class Dao implements Serializable {
       this.mtow = c;
     }
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(length = 16, name = "propulsion_category")
     private UasPropulsionCategory propulsionCategory;
@@ -563,6 +581,7 @@ public class Dao implements Serializable {
       this.id = id;
     }
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "FK_uas_type")
     // @Column(name = "uas_type")
@@ -576,6 +595,7 @@ public class Dao implements Serializable {
       this.uasType = ut;
     }
 
+    @NotNull
     @Column(name = "oem_serial_no")
     public String oemSerialNo;
 
@@ -587,6 +607,7 @@ public class Dao implements Serializable {
       this.oemSerialNo = c;
     }
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(length = 16, name = "status")
     private UasStatus status;
@@ -595,6 +616,7 @@ public class Dao implements Serializable {
       return this.status;
     }
 
+    @NotNull
     @Column(name = "timestamp_created")
     public OffsetDateTime timestampCreated;
 
@@ -606,6 +628,7 @@ public class Dao implements Serializable {
       this.timestampCreated = a;
     }
 
+    @NotNull
     @Column(name = "timestamp_updated")
     public OffsetDateTime timestampUpdated;
 
@@ -705,6 +728,8 @@ public class Dao implements Serializable {
       this.id = id;
     }
 
+    @NotNull
+    @Column(name = "email")
     public String email;
 
     public String getEmail() {
@@ -715,6 +740,7 @@ public class Dao implements Serializable {
       this.email = c;
     }
 
+    @NotNull
     @Column(name = "timestamp_created")
     public OffsetDateTime timestampCreated;
 
@@ -726,6 +752,7 @@ public class Dao implements Serializable {
       this.timestampCreated = a;
     }
 
+    @NotNull
     @Column(name = "timestamp_updated")
     public OffsetDateTime timestampUpdated;
 
@@ -737,6 +764,7 @@ public class Dao implements Serializable {
       this.timestampUpdated = a;
     }
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(length = 16, name = "status")
     private UserStatus status;
@@ -776,6 +804,7 @@ public class Dao implements Serializable {
       this.id = id;
     }
 
+    @NotNull
     @OneToOne
     @JoinColumn(name = "FK_user")
     // @Column(name = "balance")
@@ -789,6 +818,7 @@ public class Dao implements Serializable {
       this.user = m;
     }
 
+    @NotNull
     @Column(name = "timestamp_created")
     public OffsetDateTime timestampCreated;
 
@@ -800,6 +830,7 @@ public class Dao implements Serializable {
       this.timestampCreated = a;
     }
 
+    @NotNull
     @Column(name = "timestamp_updated")
     public OffsetDateTime timestampUpdated;
 
@@ -876,6 +907,7 @@ public class Dao implements Serializable {
       this.id = id;
     }
 
+    @NotNull
     @Column(name = "line1")
     public String line1;
 
@@ -909,6 +941,7 @@ public class Dao implements Serializable {
       this.line3 = a;
     }
 
+    @NotNull
     @Column(name = "city")
     public String city;
 
@@ -920,6 +953,7 @@ public class Dao implements Serializable {
       this.city = a;
     }
 
+    @NotNull
     @Column(name = "pin_code")
     public String pinCode;
 
@@ -931,6 +965,7 @@ public class Dao implements Serializable {
       this.pinCode = a;
     }
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(length = 32, name = "state")
     private State state;
@@ -943,6 +978,7 @@ public class Dao implements Serializable {
       this.state = s;
     }
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(length = 3, name = "country")
     private Country country;
@@ -1022,6 +1058,7 @@ public class Dao implements Serializable {
       return id;
     }
 
+    @NotNull
     @OneToOne
     @JoinColumn(name = "FK_legal_entity")
     // @Column(name = "legal_entity")
@@ -1035,6 +1072,7 @@ public class Dao implements Serializable {
       this.legalEntity = nlegalEntity;
     }
 
+    @NotNull
     @Column(name = "timestamp_created")
     public OffsetDateTime timestampCreated;
 
@@ -1046,6 +1084,7 @@ public class Dao implements Serializable {
       this.timestampCreated = a;
     }
 
+    @NotNull
     @Column(name = "timestamp_updated")
     public OffsetDateTime timestampUpdated;
 
@@ -1119,6 +1158,7 @@ public class Dao implements Serializable {
       return this;
     }
 
+    @NotNull
     @OneToOne
     @JoinColumn(name = "FK_legal_entity")
     // @Column(name = "legal_entity")
@@ -1132,6 +1172,7 @@ public class Dao implements Serializable {
       this.legalEntity = nlegalEntity;
     }
 
+    @NotNull
     @Column(name = "timestamp_created")
     public OffsetDateTime timestampCreated;
 
@@ -1143,6 +1184,7 @@ public class Dao implements Serializable {
       this.timestampCreated = a;
     }
 
+    @NotNull
     @Column(name = "timestamp_updated")
     public OffsetDateTime timestampUpdated;
 
@@ -1269,6 +1311,7 @@ public class Dao implements Serializable {
       return this;
     }
 
+    @NotNull
     @OneToOne
     @JoinColumn(name = "FK_legal_entity")
     // @Column(name = "legal_entity")
@@ -1282,6 +1325,7 @@ public class Dao implements Serializable {
       this.legalEntity = nlegalEntity;
     }
 
+    @NotNull
     @Column(name = "timestamp_created")
     public OffsetDateTime timestampCreated;
 
@@ -1293,6 +1337,7 @@ public class Dao implements Serializable {
       this.timestampCreated = a;
     }
 
+    @NotNull
     @Column(name = "timestamp_updated")
     public OffsetDateTime timestampUpdated;
 
