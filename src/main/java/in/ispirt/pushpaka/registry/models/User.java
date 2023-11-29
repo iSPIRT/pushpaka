@@ -20,8 +20,9 @@ import org.openapitools.jackson.nullable.JsonNullable;
  */
 
 @Generated(
-    value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]")
+  value = "org.openapitools.codegen.languages.SpringCodegen",
+  date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]"
+)
 public class User {
   private UUID id;
 
@@ -56,15 +57,16 @@ public class User {
    * Constructor with only required parameters
    */
   public User(
-      UUID id,
-      String firstName,
-      String lastName,
-      String email,
-      String phone,
-      String aadharId,
-      Address address,
-      ObjectTimestamps timestamps,
-      UserStatus status) {
+    UUID id,
+    String firstName,
+    String lastName,
+    String email,
+    String phone,
+    String aadharId,
+    Address address,
+    ObjectTimestamps timestamps,
+    UserStatus status
+  ) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
@@ -87,13 +89,13 @@ public class User {
    */
   @Valid
   @Schema(
-      name = "id",
-      accessMode = Schema.AccessMode.READ_ONLY,
-      example = "e66b7c9e-79f5-44b0-9642-59ca20b7af63",
-      requiredMode = Schema.RequiredMode.REQUIRED)
+    name = "id",
+    accessMode = Schema.AccessMode.READ_ONLY,
+    example = "e66b7c9e-79f5-44b0-9642-59ca20b7af63",
+    requiredMode = Schema.RequiredMode.REQUIRED
+  )
   @JsonProperty("id")
-  public UUID
-  getId() {
+  public UUID getId() {
     return id;
   }
 
@@ -110,14 +112,13 @@ public class User {
    * Get firstName
    * @return firstName
    */
-  @NotNull
   @Schema(
-      name = "firstName",
-      example = "John",
-      requiredMode = Schema.RequiredMode.REQUIRED)
+    name = "firstName",
+    example = "John",
+    requiredMode = Schema.RequiredMode.REQUIRED
+  )
   @JsonProperty("firstName")
-  public String
-  getFirstName() {
+  public String getFirstName() {
     return firstName;
   }
 
@@ -134,14 +135,13 @@ public class User {
    * Get lastName
    * @return lastName
    */
-  @NotNull
   @Schema(
-      name = "lastName",
-      example = "James",
-      requiredMode = Schema.RequiredMode.REQUIRED)
+    name = "lastName",
+    example = "James",
+    requiredMode = Schema.RequiredMode.REQUIRED
+  )
   @JsonProperty("lastName")
-  public String
-  getLastName() {
+  public String getLastName() {
     return lastName;
   }
 
@@ -158,14 +158,13 @@ public class User {
    * Get email
    * @return email
    */
-  @NotNull
   @Schema(
-      name = "email",
-      example = "john@email.com",
-      requiredMode = Schema.RequiredMode.REQUIRED)
+    name = "email",
+    example = "john@email.com",
+    requiredMode = Schema.RequiredMode.REQUIRED
+  )
   @JsonProperty("email")
-  public String
-  getEmail() {
+  public String getEmail() {
     return email;
   }
 
@@ -179,12 +178,12 @@ public class User {
    */
 
   @Schema(
-      name = "phone",
-      example = "+919999999999",
-      requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    name = "phone",
+    example = "+919999999999",
+    requiredMode = Schema.RequiredMode.NOT_REQUIRED
+  )
   @JsonProperty("phone")
-  public String
-  getPhone() {
+  public String getPhone() {
     return phone;
   }
 
@@ -203,12 +202,12 @@ public class User {
    */
 
   @Schema(
-      name = "aadharId",
-      example = "+919999999999",
-      requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    name = "aadharId",
+    example = "+919999999999",
+    requiredMode = Schema.RequiredMode.NOT_REQUIRED
+  )
   @JsonProperty("aadharId")
-  public String
-  getAadharId() {
+  public String getAadharId() {
     return aadharId;
   }
 
@@ -222,15 +221,12 @@ public class User {
   }
 
   /**
- * Get address
- * @return address
- */
-  @Schema(
-      name = "",
-      requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+   * Get address
+   * @return address
+   */
+  @Schema(name = "", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("address")
-  public Address
-  getAddress() {
+  public Address getAddress() {
     return address;
   }
 
@@ -244,13 +240,13 @@ public class User {
    */
 
   @Schema(
-      name = "status",
-      example = "ACTIVE",
-      description = "User Status",
-      requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    name = "status",
+    example = "ACTIVE",
+    description = "User Status",
+    requiredMode = Schema.RequiredMode.NOT_REQUIRED
+  )
   @JsonProperty("status")
-  public UserStatus
-  getStatus() {
+  public UserStatus getStatus() {
     return status;
   }
 
@@ -289,19 +285,19 @@ public class User {
     }
     User user = (User) o;
     return (
-        Objects.equals(this.id, user.id) && Objects.equals(this.firstName, user.firstName) && Objects.equals(this.lastName, user.lastName) && Objects.equals(this.email, user.email) && Objects.equals(this.phone, user.phone) && Objects.equals(this.status, user.status) && Objects.equals(this.timestamps, user.timestamps));
+      Objects.equals(this.id, user.id) &&
+      Objects.equals(this.firstName, user.firstName) &&
+      Objects.equals(this.lastName, user.lastName) &&
+      Objects.equals(this.email, user.email) &&
+      Objects.equals(this.phone, user.phone) &&
+      Objects.equals(this.status, user.status) &&
+      Objects.equals(this.timestamps, user.timestamps)
+    );
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(
-        id,
-        firstName,
-        lastName,
-        email,
-        phone,
-        status,
-        timestamps);
+    return Objects.hash(id, firstName, lastName, email, phone, status, timestamps);
   }
 
   @Override
@@ -332,30 +328,33 @@ public class User {
 
   public static User toOa(Dao.Users u) {
     ObjectTimestamps ot = new ObjectTimestamps(
-        u.getTimestampCreated(),
-        u.getTimestampUpdated());
+      u.getTimestampCreated(),
+      u.getTimestampUpdated()
+    );
     User uu = new User(
-        u.id,
-        "firstName",
-        "lastName",
-        "",
-        u.getPhone(),
-        u.getAadharId(),
-        Address.toOa(u.getAddress()),
-        ot,
-        u.getStatus());
+      u.getId(),
+      "firstName",
+      "lastName",
+      "",
+      u.getPhone(),
+      u.getAadharId(),
+      Address.toOa(u.getAddress()),
+      ot,
+      u.getStatus()
+    );
     return uu;
   }
 
   public static Dao.Users fromOa(User u) {
     Dao.Users uu = new Dao.Users(
-        u.getId(),
-        u.getPhone(),
-        u.getAadharId(),
-        Address.fromOa(u.getAddress()),
-        u.getTimestamps().getCreated(),
-        u.getTimestamps().getUpdated(),
-        u.getStatus());
+      u.getId(),
+      u.getPhone(),
+      u.getAadharId(),
+      Address.fromOa(u.getAddress()),
+      u.getTimestamps().getCreated(),
+      u.getTimestamps().getUpdated(),
+      u.getStatus()
+    );
     return uu;
   }
 }

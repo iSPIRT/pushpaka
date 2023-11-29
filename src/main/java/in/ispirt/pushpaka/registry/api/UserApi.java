@@ -5,8 +5,11 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.registry.models.User;
+import in.ispirt.pushpaka.registry.dao.Dao;
+import in.ispirt.pushpaka.registry.dao.DaoInstance;
 import in.ispirt.pushpaka.registry.models.Address;
+import in.ispirt.pushpaka.registry.models.User;
+import in.ispirt.pushpaka.registry.utils.DaoException;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -24,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import org.springframework.http.HttpStatus;
@@ -35,59 +39,72 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 @Generated(
-    value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]")
+  value = "org.openapitools.codegen.languages.SpringCodegen",
+  date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]"
+)
 @Validated
 @Tag(name = "user", description = "Operations about user")
 public interface UserApi {
-  default Optional
-    <NativeWebRequest> getRequest() {
-      return Optional.empty();
-    }
+  default Optional<NativeWebRequest> getRequest() {
+    return Optional.empty();
+  }
 
-    /**
+  /**
    * POST /user : Create user
    * This can only be done by the logged in user.
    *
    * @param user Created user object (optional)
    * @return successful operation (status code 200)
    */
-    @Operation(
-        operationId = "createUser",
-        summary = "Create user",
-        description = "This can only be done by the logged in user.",
-        tags = {"user"},
-        responses = {
-          @ApiResponse(
-              responseCode = "default",
-              description = "successful operation",
-              content = {
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = User.class)
-                )
-              })
-        })
-    @RequestMapping(method = RequestMethod.POST, value = "/user", produces = {"application/json"}, consumes = {"application/json"})
-    default ResponseEntity<User>
-    createUser(@Parameter(name = "aadharId", description = "User's Aadhar ID") @Valid @RequestBody(required = true) String aadharId, @Parameter(name = "phone", description = "User's phone number") @Valid @RequestBody(required = true) String phone, @Parameter(name = "address", description = "User's address") @Valid @RequestBody(required = true) Address address) {
-      getRequest()
-          .ifPresent(
-              request -> {
-                for (MediaType mediaType : MediaType.parseMediaTypes(
-                         request.getHeader("Accept"))) {
-                  if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString =
-                        "{ \"firstName\" : \"John\", \"lastName\" : \"James\", \"userStatus\" : 1, \"phone\" : \"+919999999999\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"e66b7c9e-79f5-44b0-9642-59ca20b7af63\", \"email\" : \"john@email.com\", \"username\" : \"theUser\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                  }
-                }
-              });
-      return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+  @Operation(
+    operationId = "createUser",
+    summary = "Create user",
+    description = "This can only be done by the logged in user.",
+    tags = { "user" },
+    responses = {
+      @ApiResponse(
+        responseCode = "default",
+        description = "successful operation",
+        content = {
+          @Content(
+            mediaType = "application/json",
+            schema = @Schema(implementation = User.class)
+          )
+        }
+      )
     }
+  )
+  @RequestMapping(
+    method = RequestMethod.POST,
+    value = "/user",
+    produces = { "application/json" },
+    consumes = { "application/json" }
+  )
+  default ResponseEntity<User> createUser(
+    @Parameter(name = "user", description = "User data") @Valid @RequestBody(
+      required = true
+    ) User user
+  ) {
+    try {
+      Dao.Users le = User.fromOa(user);
+      Dao.Users lec = Dao.Users.create(DaoInstance.getInstance().getSession(), le);
+      return ResponseEntity.ok(User.toOa(lec));
+    } catch (ConstraintViolationException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 
-    /**
+  /**
    * DELETE /user/{username} : Delete user
    * This can only be done by the logged in user.
    *
@@ -95,23 +112,29 @@ public interface UserApi {
    * @return Invalid username supplied (status code 400)
    *         or User not found (status code 404)
    */
-    @Operation(
-        operationId = "deleteUser",
-        summary = "Delete user",
-        description = "This can only be done by the logged in user.",
-        tags = {"user"},
-        responses = {
-          @ApiResponse(responseCode = "400", description = "Invalid username supplied")
-          ,
-              @ApiResponse(responseCode = "404", description = "User not found")
-        })
-    @RequestMapping(method = RequestMethod.DELETE, value = "/user/{username}")
-    default ResponseEntity<Void>
-    deleteUser(@Parameter(name = "username", description = "The name that needs to be deleted", required = true, in = ParameterIn.PATH) @PathVariable("username") String username) {
-      return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+  @Operation(
+    operationId = "deleteUser",
+    summary = "Delete user",
+    description = "This can only be done by the logged in user.",
+    tags = { "user" },
+    responses = {
+      @ApiResponse(responseCode = "400", description = "Invalid username supplied"),
+      @ApiResponse(responseCode = "404", description = "User not found")
     }
+  )
+  @RequestMapping(method = RequestMethod.DELETE, value = "/user/{username}")
+  default ResponseEntity<Void> deleteUser(
+    @Parameter(
+      name = "username",
+      description = "The name that needs to be deleted",
+      required = true,
+      in = ParameterIn.PATH
+    ) @PathVariable("username") String username
+  ) {
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+  }
 
-    /**
+  /**
    * PUT /user/{username} : Update user
    * This can only be done by the logged in user.
    *
@@ -119,17 +142,32 @@ public interface UserApi {
    * @param user Update an existent user in the store (optional)
    * @return successful operation (status code 200)
    */
-    @Operation(
-        operationId = "updateUser",
-        summary = "Update user",
-        description = "This can only be done by the logged in user.",
-        tags = {"user"},
-        responses = {
-          @ApiResponse(responseCode = "default", description = "successful operation")
-        })
-    @RequestMapping(method = RequestMethod.PUT, value = "/user/{username}", consumes = {"application/json"})
-    default ResponseEntity<Void>
-    updateUser(@Parameter(name = "username", description = "name that need to be deleted", required = true, in = ParameterIn.PATH) @PathVariable("username") String username, @Parameter(name = "User", description = "Update an existent user in the store") @Valid @RequestBody(required = false) User user) {
-      return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+  @Operation(
+    operationId = "updateUser",
+    summary = "Update user",
+    description = "This can only be done by the logged in user.",
+    tags = { "user" },
+    responses = {
+      @ApiResponse(responseCode = "default", description = "successful operation")
     }
+  )
+  @RequestMapping(
+    method = RequestMethod.PUT,
+    value = "/user/{username}",
+    consumes = { "application/json" }
+  )
+  default ResponseEntity<Void> updateUser(
+    @Parameter(
+      name = "username",
+      description = "name that need to be deleted",
+      required = true,
+      in = ParameterIn.PATH
+    ) @PathVariable("username") String username,
+    @Parameter(
+      name = "User",
+      description = "Update an existent user in the store"
+    ) @Valid @RequestBody(required = false) User user
+  ) {
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+  }
 }

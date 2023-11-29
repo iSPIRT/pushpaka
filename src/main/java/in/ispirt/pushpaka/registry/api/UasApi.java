@@ -26,6 +26,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.annotation.Generated;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import org.springframework.http.HttpStatus;
@@ -94,6 +95,10 @@ public interface UasApi {
       Dao.Uas le = Uas.fromOa(uas);
       Dao.Uas lec = Dao.Uas.create(DaoInstance.getInstance().getSession(), le);
       return ResponseEntity.ok(Uas.toOa(lec));
+    } catch (ConstraintViolationException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (DaoException e) {
       System.err.println("Exception: " + e.toString());
       e.printStackTrace(System.err);
