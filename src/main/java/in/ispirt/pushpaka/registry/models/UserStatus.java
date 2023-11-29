@@ -18,9 +18,8 @@ import org.openapitools.jackson.nullable.JsonNullable;
  */
 
 @Generated(
-  value = "org.openapitools.codegen.languages.SpringCodegen",
-  date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]"
-)
+    value = "org.openapitools.codegen.languages.SpringCodegen",
+    date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]")
 public enum UserStatus {
   ACTIVE("ACTIVE"),
 

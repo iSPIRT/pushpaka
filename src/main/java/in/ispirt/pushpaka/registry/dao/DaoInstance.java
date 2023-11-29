@@ -24,26 +24,27 @@ public class DaoInstance {
   private DaoInstance() {
     _dao = new Dao();
     sessionFactory =
-      new Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Dao.LegalEntity.class)
-        .addAnnotatedClass(Dao.Manufacturer.class)
-        .addAnnotatedClass(Dao.UasType.class)
-        .addAnnotatedClass(Dao.Uas.class)
-        .addAnnotatedClass(Dao.User.class)
-        .addAnnotatedClass(Dao.Pilot.class)
-        .addAnnotatedClass(Dao.Address.class)
-        .addAnnotatedClass(Dao.CivilAviationAuthority.class)
-        .addAnnotatedClass(Dao.Operator.class)
-        .addAnnotatedClass(Dao.Utmsp.class)
-        .buildSessionFactory();
+        new Configuration()
+            .configure("hibernate.cfg.xml")
+            .addAnnotatedClass(Dao.LegalEntity.class)
+            .addAnnotatedClass(Dao.Manufacturer.class)
+            .addAnnotatedClass(Dao.UasType.class)
+            .addAnnotatedClass(Dao.Uas.class)
+            .addAnnotatedClass(Dao.Users.class)
+            .addAnnotatedClass(Dao.Pilot.class)
+            .addAnnotatedClass(Dao.Address.class)
+            .addAnnotatedClass(Dao.CivilAviationAuthority.class)
+            .addAnnotatedClass(Dao.Operator.class)
+            .addAnnotatedClass(Dao.Utmsp.class)
+            .buildSessionFactory();
     session = sessionFactory.openSession();
   }
 
   // Static method
   // Static method to create instance of DaoInstance class
   public static synchronized DaoInstance getInstance() {
-    if (single_instance == null) single_instance = new DaoInstance();
+    if (single_instance == null)
+      single_instance = new DaoInstance();
     return single_instance;
   }
 
