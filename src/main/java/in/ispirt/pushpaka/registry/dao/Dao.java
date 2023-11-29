@@ -727,15 +727,21 @@ public class Dao implements Serializable {
   }
 
   // Pilot is our model, which corresponds to the "pilots" database table.
-  @Entity
-  @Table(name = "pilots")
+  @Entity(name = Pilot.PERSISTENCE_NAME)
+  @Table(name = Pilot.PERSISTENCE_NAME)
   public static class Pilot {
+    static final String PERSISTENCE_NAME = "Pilot";
+
     @Id
     @Column(name = "id")
-    public UUID id;
+    private UUID id;
 
     public UUID getId() {
       return id;
+    }
+
+    public void setId(UUID id) {
+      this.id = id;
     }
 
     public Pilot(UUID id) {
@@ -821,6 +827,55 @@ public class Dao implements Serializable {
 
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public Pilot() {}
+
+    public static Pilot create(Session s, Pilot le)
+      throws DaoException, ConstraintViolationException {
+      Users aa = Users.get(s, le.getUser().getId());
+      if (aa == null) {
+        throw new DaoException(DaoException.Code.NOT_FOUND, "User");
+      }
+      Transaction t = s.beginTransaction();
+      OffsetDateTime n = OffsetDateTime.now();
+      le.setId(UUID.randomUUID());
+      le.setUser(aa);
+      le.setTimestampCreated(n);
+      le.setTimestampUpdated(n);
+      s.save(le);
+      s.flush();
+      t.commit();
+      s.refresh(le);
+      return le;
+    }
+
+    public static List<Pilot> getAll(Session s) {
+      return s.createQuery("from Pilot", Pilot.class).getResultList();
+    }
+
+    public static Pilot get(Session s, UUID id) {
+      return s
+        .createQuery("from Pilot where id= :id", Pilot.class)
+        .setString("id", id.toString())
+        .uniqueResult();
+    }
+
+    public static void delete(Session s, UUID id) {
+      Transaction t = s.beginTransaction();
+      s
+        .createQuery("delete from Pilot where id= :id")
+        .setString("id", id.toString())
+        .executeUpdate();
+      t.commit();
+    }
+
+    public static Pilot update(Session s, UUID id, Pilot le) {
+      Pilot leo = s
+        .createQuery("from Pilot where id= :id", Pilot.class)
+        .setString("id", id.toString())
+        .uniqueResult();
+      leo.setTimestampUpdated(OffsetDateTime.now());
+      s.saveOrUpdate(leo);
+      return leo;
+    }
   }
 
   // Address is our model, which corresponds to the "addresses" database table.
@@ -1111,7 +1166,6 @@ public class Dao implements Serializable {
       Address aa = Address.create(s, le.getAddress());
       Transaction t = s.beginTransaction();
       OffsetDateTime n = OffsetDateTime.now();
-      le.setId(UUID.randomUUID());
       le.setTimestampCreated(n);
       le.setTimestampUpdated(n);
       le.setAddress(aa);

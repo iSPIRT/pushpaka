@@ -38,6 +38,11 @@ public class Validity {
     super();
   }
 
+  public Validity(OffsetDateTime s, OffsetDateTime e) {
+    this.from = s;
+    this.till = e;
+  }
+
   /**
    * Constructor with only required parameters
    */

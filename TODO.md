@@ -11,7 +11,7 @@
 	1. [-] UasType xx_xx
 	1. [-] Uas xx_xx
 	1. [-] Operator xx_xx
-	1. [ ] User x____
-	1. [-] Pilot  ____
+	1. [-] User x____
+	1. [-] Pilot  x___
 	1. [-] Utmsp xx_xx
-	1. [-] E2E Tests -____
+	1. [-] E2E Tests x____

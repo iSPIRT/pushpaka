@@ -259,6 +259,44 @@ class EntityTests {
     return;
   }
 
+  public UUID pilotCreate(UUID uid)
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    StringEntity e = new StringEntity(
+      "{ \"user\": { \"id\": \"" +
+      uid.toString() +
+      "\", \"firstName\": \"John\", \"lastName\": \"James\", \"email\": \"john@email.com\", \"phone\": \"+919999999999\", \"aadharId\": \"+919999999999\", \"address\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"timestamps\": {}, \"status\": \"ACTIVE\" }, \"timestamps\": {}, \"validity\": { \"from\": \"2023-11-29T06:20:07.699Z\", \"till\": \"2023-11-29T06:20:07.699Z\" } }",
+      ContentType.APPLICATION_JSON
+    );
+    HttpPost request = new HttpPost("http://localhost:8083/api/v1/pilot");
+    request.setEntity(e);
+
+    // When
+    HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+    assertEquals(httpResponse.getStatusLine().getStatusCode(), 200);
+    HttpEntity re = httpResponse.getEntity();
+    String reb = EntityUtils.toString(re);
+    EntityUtils.consume(re);
+    return extractUuid(reb);
+  }
+
+  public void pilotCreate()
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    UUID uid = UUID.randomUUID();
+    StringEntity e = new StringEntity(
+      "{ \"user\": { \"id\": \"" +
+      uid.toString() +
+      "\", \"firstName\": \"John\", \"lastName\": \"James\", \"email\": \"john@email.com\", \"phone\": \"+919999999999\", \"aadharId\": \"+919999999999\", \"address\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"timestamps\": {}, \"status\": \"ACTIVE\" }, \"timestamps\": {}, \"validity\": { \"from\": \"2023-11-29T06:20:07.699Z\", \"till\": \"2023-11-29T06:20:07.699Z\" } }",
+      ContentType.APPLICATION_JSON
+    );
+    HttpPost request = new HttpPost("http://localhost:8083/api/v1/pilot");
+    request.setEntity(e);
+
+    // When
+    HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+    assertEquals(httpResponse.getStatusLine().getStatusCode(), 400);
+    return;
+  }
+
   @Test
   public void testLegalEntityCreate() throws ClientProtocolException, IOException {
     // create legal entity
@@ -331,5 +369,15 @@ class EntityTests {
   public void testUserCreate() throws ClientProtocolException, IOException {
     UUID uid = UUID.randomUUID();
     userCreate(uid);
+  }
+
+  @Test
+  public void testPilotCreate() throws ClientProtocolException, IOException {
+    UUID uid = UUID.randomUUID();
+    userCreate(uid);
+
+    UUID pid = pilotCreate(uid);
+
+    pilotCreate();
   }
 }
