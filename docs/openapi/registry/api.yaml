@@ -19,10 +19,16 @@ info:
 servers:
 - url: http://localhost:8083/
 tags:
-- name: legal_entities
+- name: utmsps
+  description: Utmsps
+- name: legal_entity
   description: Legal Entity
+- name: pilot
+  description: Pilots
 - name: manufacturers
   description: Manufacturers
+- name: operators
+  description: Operators
 - name: uas_types
   description: the uas_types API
 - name: uas
@@ -30,38 +36,98 @@ tags:
 - name: user
   description: Operations about user
 paths:
-  /api/v1/user/{username}:
+  /api/v1/utmsp/{utmspId}:
     get:
       tags:
-      - user
-      summary: Get user by user name
-      operationId: getUserByName
+      - utmsps
+      - utmsp
+      summary: Find utmsp by ID
+      description: Returns a single utmsp
+      operationId: getUtmspById
       parameters:
-      - name: username
+      - name: utmspId
         in: path
-        description: 'The name that needs to be fetched. Use user1 for testing. '
+        description: ID of utmsp to return
         required: true
         schema:
           type: string
+          format: uuid
       responses:
         "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/Utmsp'
         "400":
-          description: Invalid username supplied
+          description: Invalid ID supplied
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/Utmsp'
         "404":
-          description: User not found
+          description: Utmsp not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/Utmsp'
+      security:
+      - registry_auth:
+        - write:utmsps
+        - read:utmsps
+    put:
+      tags:
+      - utmsps
+      - utmsp
+      summary: Updates a utmsp in the store
+      operationId: updateUtmsp
+      parameters:
+      - name: utmspId
+        in: path
+        description: ID of utmsp that needs to be updated
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Utmsp'
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Utmsp'
+      security:
+      - registry_auth:
+        - write:utmsps
+        - read:utmsps
+    delete:
+      tags:
+      - utmsps
+      - utmsp
+      summary: Deletes a utmsp
+      operationId: deleteUtmsp
+      parameters:
+      - name: utmspId
+        in: path
+        description: Utmsp id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "400":
+          description: Invalid utmsp value
+      security:
+      - registry_auth:
+        - write:utmsps
+        - read:utmsps
+  /api/v1/user/{username}:
     put:
       tags:
       - user
@@ -243,6 +309,185 @@ paths:
       - registry_auth:
         - write:uasTypes
         - read:uasTypes
+  /api/v1/pilot/{pilotId}:
+    get:
+      tags:
+      - pilot
+      summary: Find pilot by ID
+      description: Returns a single pilot
+      operationId: getPilotById
+      parameters:
+      - name: pilotId
+        in: path
+        description: ID of pilot to return
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pilot'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pilot'
+        "404":
+          description: Pilot not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pilot'
+      security:
+      - registry_auth:
+        - write:pilots
+        - read:pilots
+    put:
+      tags:
+      - pilot
+      summary: Updates a pilot in the store
+      operationId: updatePilot
+      parameters:
+      - name: pilotId
+        in: path
+        description: ID of pilot that needs to be updated
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pilot'
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Pilot'
+      security:
+      - registry_auth:
+        - write:pilots
+        - read:pilots
+    delete:
+      tags:
+      - pilot
+      summary: Deletes a pilot
+      operationId: deletePilot
+      parameters:
+      - name: pilotId
+        in: path
+        description: Pilot id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "400":
+          description: Invalid pilot value
+      security:
+      - registry_auth:
+        - write:pilots
+        - read:pilots
+  /api/v1/operator/{operatorId}:
+    get:
+      tags:
+      - operators
+      - operator
+      summary: Find operator by ID
+      description: Returns a single operator
+      operationId: getOperatorById
+      parameters:
+      - name: operatorId
+        in: path
+        description: ID of operator to return
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operator'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operator'
+        "404":
+          description: Operator not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operator'
+      security:
+      - registry_auth:
+        - write:operators
+        - read:operators
+    put:
+      tags:
+      - operators
+      - operator
+      summary: Updates a operator in the store
+      operationId: updateOperator
+      parameters:
+      - name: operatorId
+        in: path
+        description: ID of operator that needs to be updated
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Operator'
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Operator'
+      security:
+      - registry_auth:
+        - write:operators
+        - read:operators
+    delete:
+      tags:
+      - operators
+      - operator
+      summary: Deletes a operator
+      operationId: deleteOperator
+      parameters:
+      - name: operatorId
+        in: path
+        description: Operator id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "400":
+          description: Invalid operator value
+      security:
+      - registry_auth:
+        - write:operators
+        - read:operators
   /api/v1/manufacturer/{manufacturerId}:
     get:
       tags:
@@ -337,8 +582,7 @@ paths:
   /api/v1/legalEntity/{legalEntityId}:
     get:
       tags:
-      - legal_entities
-      - legalEntity
+      - legal_entity
       summary: Find legalEntity by ID
       description: Returns a single legalEntity
       operationId: getLegalEntityById
@@ -375,8 +619,7 @@ paths:
         - read:legalEntitys
     put:
       tags:
-      - legal_entities
-      - legalEntity
+      - legal_entity
       summary: Updates a legalEntity in the store
       operationId: updateLegalEntity
       parameters:
@@ -406,8 +649,7 @@ paths:
         - read:legalEntitys
     delete:
       tags:
-      - legal_entities
-      - legalEntity
+      - legal_entity
       summary: Deletes a legalEntity
       operationId: deleteLegalEntity
       parameters:
@@ -425,6 +667,37 @@ paths:
       - registry_auth:
         - write:legalEntitys
         - read:legalEntitys
+  /api/v1/utmsp:
+    post:
+      tags:
+      - utmsps
+      - utmsp
+      summary: Add a new utmsp to the store
+      description: Add a new utmsp to the store
+      operationId: addUtmsp
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Utmsp'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Utmsp'
+        "405":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Utmsp'
+      security:
+      - registry_auth:
+        - write:utmsps
+        - read:utmsps
   /api/v1/user:
     post:
       tags:
@@ -437,6 +710,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/User'
+        required: true
       responses:
         default:
           description: successful operation
@@ -444,33 +718,67 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-  /api/v1/user/createWithList:
+  /api/v1/pilot:
     post:
       tags:
-      - user
-      summary: Creates list of users with given input array
-      description: Creates list of users with given input array
-      operationId: createUsersWithListInput
+      - pilot
+      summary: Add a new pilot to the store
+      description: Add a new pilot to the store
+      operationId: addPilot
       requestBody:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/Pilot'
+        required: true
       responses:
         "200":
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        default:
-          description: successful operation
+                $ref: '#/components/schemas/Pilot'
+        "405":
+          description: Invalid input
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/Pilot'
+      security:
+      - registry_auth:
+        - write:pilots
+        - read:pilots
+  /api/v1/operator:
+    post:
+      tags:
+      - operators
+      - operator
+      summary: Add a new operator to the store
+      description: Add a new operator to the store
+      operationId: addOperator
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Operator'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operator'
+        "405":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operator'
+      security:
+      - registry_auth:
+        - write:operators
+        - read:operators
   /api/v1/manufacturer:
     post:
       tags:
@@ -505,8 +813,7 @@ paths:
   /api/v1/legalEntity:
     post:
       tags:
-      - legal_entities
-      - legalEntity
+      - legal_entity
       summary: Add a new legalEntity to the store
       description: Add a new legalEntity to the store
       operationId: addLegalEntity
@@ -533,47 +840,34 @@ paths:
       - registry_auth:
         - write:legalEntitys
         - read:legalEntitys
-  /api/v1/user/logout:
+  /api/v1/utmsp/find:
     get:
       tags:
-      - user
-      summary: Logs out current logged in user session
-      operationId: logoutUser
-      responses:
-        default:
-          description: successful operation
-  /api/v1/user/login:
-    get:
-      tags:
-      - user
-      summary: Logs user into the system
-      operationId: loginUser
-      parameters:
-      - name: username
-        in: query
-        description: The user name for login
-        required: false
-        schema:
-          type: string
-      - name: password
-        in: query
-        description: The password for login in clear text
-        required: false
-        schema:
-          type: string
+      - utmsps
+      - utmsp
+      summary: Finds Utmsps
+      operationId: findUtmsps
       responses:
         "200":
           description: successful operation
           content:
             application/json:
               schema:
-                type: string
+                type: array
+                items:
+                  $ref: '#/components/schemas/Utmsp'
         "400":
-          description: Invalid username/password supplied
+          description: Invalid value
           content:
             application/json:
               schema:
-                type: string
+                type: array
+                items:
+                  $ref: '#/components/schemas/Utmsp'
+      security:
+      - registry_auth:
+        - write:utmsps
+        - read:utmsps
   /api/v1/uasType/{uasTypeId}:
     get:
       tags:
@@ -751,6 +1045,61 @@ paths:
       - registry_auth:
         - write:uass
         - read:uass
+  /api/v1/pilot/find:
+    get:
+      tags:
+      - pilot
+      summary: Finds Pilots
+      operationId: findPilots
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pilot'
+        "400":
+          description: Invalid value
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pilot'
+      security:
+      - registry_auth:
+        - write:pilots
+        - read:pilots
+  /api/v1/operator/find:
+    get:
+      tags:
+      - operators
+      - operator
+      summary: Finds Operators
+      operationId: findOperators
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Operator'
+        "400":
+          description: Invalid value
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Operator'
+      security:
+      - registry_auth:
+        - write:operators
+        - read:operators
   /api/v1/manufacturer/find:
     get:
       tags:
@@ -782,8 +1131,7 @@ paths:
   /api/v1/legalEntity/find:
     get:
       tags:
-      - legal_entities
-      - legalEntity
+      - legal_entity
       summary: Finds LegalEntitys
       operationId: findLegalEntitys
       responses:
@@ -809,59 +1157,6 @@ paths:
         - read:legalEntitys
 components:
   schemas:
-    ObjectTimestamps:
-      required:
-      - created
-      - updated
-      type: object
-      properties:
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        updated:
-          type: string
-          format: date-time
-          readOnly: true
-    User:
-      required:
-      - email
-      - firstName
-      - id
-      - lastName
-      - timestamps
-      - username
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-          example: e66b7c9e-79f5-44b0-9642-59ca20b7af63
-        username:
-          type: string
-          example: theUser
-        firstName:
-          type: string
-          example: John
-        lastName:
-          type: string
-          example: James
-        email:
-          type: string
-          example: john@email.com
-        phone:
-          type: string
-          example: +919999999999
-        timestamps:
-          $ref: '#/components/schemas/ObjectTimestamps'
-        status:
-          type: string
-          description: User Status
-          example: ACTIVE
-          enum:
-          - ACTIVE
-          - INACTIVE
     Address:
       required:
       - city
@@ -963,6 +1258,89 @@ components:
           example: GSTIN00000
         timestamps:
           $ref: '#/components/schemas/ObjectTimestamps'
+    ObjectTimestamps:
+      required:
+      - created
+      - updated
+      type: object
+      properties:
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        updated:
+          type: string
+          format: date-time
+          readOnly: true
+    Utmsp:
+      required:
+      - id
+      - legalEntity
+      - timestamps
+      - validity
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        legalEntity:
+          $ref: '#/components/schemas/LegalEntity'
+        validity:
+          $ref: '#/components/schemas/Validity'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+    Validity:
+      required:
+      - from
+      type: object
+      properties:
+        from:
+          type: string
+          format: date-time
+        till:
+          type: string
+          format: date-time
+    User:
+      required:
+      - email
+      - firstName
+      - id
+      - lastName
+      - timestamps
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          example: e66b7c9e-79f5-44b0-9642-59ca20b7af63
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        phone:
+          type: string
+          example: +919999999999
+        aadharId:
+          type: string
+          example: +919999999999
+        address:
+          $ref: '#/components/schemas/Address'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+        status:
+          type: string
+          description: User Status
+          example: ACTIVE
+          enum:
+          - ACTIVE
+          - INACTIVE
     Manufacturer:
       required:
       - id
@@ -1060,17 +1438,42 @@ components:
             - C3
         timestamps:
           $ref: '#/components/schemas/ObjectTimestamps'
-    Validity:
+    Pilot:
       required:
-      - from
+      - id
+      - timestamps
+      - user
+      - validity
       type: object
       properties:
-        from:
+        id:
           type: string
-          format: date-time
-        till:
+          format: uuid
+          readOnly: true
+        user:
+          $ref: '#/components/schemas/User'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+        validity:
+          $ref: '#/components/schemas/Validity'
+    Operator:
+      required:
+      - id
+      - legalEntity
+      - timestamps
+      - validity
+      type: object
+      properties:
+        id:
           type: string
-          format: date-time
+          format: uuid
+          readOnly: true
+        legalEntity:
+          $ref: '#/components/schemas/LegalEntity'
+        validity:
+          $ref: '#/components/schemas/Validity'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
   securitySchemes:
     registry_auth:
       type: oauth2
