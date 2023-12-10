@@ -1,2780 +1,1585 @@
-openapi: 3.0.2
+openapi: 3.0.1
 info:
-  title: ''
-  version: ''
+  title: Pushpaka Registry
+  description: "This is a sample UasType Store Server based on the OpenAPI 3.0 specification.\
+    \  You can find out more about Swagger at [http://swagger.io](http://swagger.io).\
+    \ In the third iteration of the uasType store, we've switched to the design first\
+    \ approach! You can now help us improve the API whether it's by making changes\
+    \ to the definition itself or to the code. That way, with time, we can improve\
+    \ the API in general, and expose some of the new features in OAS3.  Some useful\
+    \ links: - [The UasType Store repository](https://github.com/swagger-api/swagger-petstore)\
+    \ - [The source API definition for the UasType Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)"
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: sayandeep@ispirt.in
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.17
+servers:
+- url: http://localhost:8083/
+tags:
+- name: civilAviationAuthorities
+  description: CivilAviationAuthorities
+- name: utmsps
+  description: Utmsps
+- name: legal_entity
+  description: Legal Entity
+- name: manufacturers
+  description: Manufacturers
+- name: operators
+  description: Operators
+- name: uas_types
+  description: the uas_types API
+- name: uas
+  description: UAS
+- name: user
+  description: Operations about user
 paths:
-  /api/v1/manufacturers:
+  /api/v1/utmsp/{utmspId}:
     get:
-      operationId: listManufacturers
-      description: List all manufacturers.
-      parameters: []
+      tags:
+      - utmsps
+      - utmsp
+      summary: Find utmsp by ID
+      description: Returns a single utmsp
+      operationId: getUtmspById
+      parameters:
+      - name: utmspId
+        in: path
+        description: ID of utmsp to return
+        required: true
+        schema:
+          type: string
+          format: uuid
       responses:
-        '200':
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Utmsp'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Utmsp'
+        "404":
+          description: Utmsp not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Utmsp'
+      security:
+      - registry_auth:
+        - write:utmsps
+        - read:utmsps
+    put:
+      tags:
+      - utmsps
+      - utmsp
+      summary: Updates a utmsp in the store
+      operationId: updateUtmsp
+      parameters:
+      - name: utmspId
+        in: path
+        description: ID of utmsp that needs to be updated
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Utmsp'
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Utmsp'
+      security:
+      - registry_auth:
+        - write:utmsps
+        - read:utmsps
+    delete:
+      tags:
+      - utmsps
+      - utmsp
+      summary: Deletes a utmsp
+      operationId: deleteUtmsp
+      parameters:
+      - name: utmspId
+        in: path
+        description: Utmsp id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "400":
+          description: Invalid utmsp value
+      security:
+      - registry_auth:
+        - write:utmsps
+        - read:utmsps
+  /api/v1/user/{username}:
+    get:
+      tags:
+      - user
+      summary: Get user by user name
+      operationId: getUserByName
+      parameters:
+      - name: username
+        in: path
+        description: 'The name that needs to be fetched. Use user1 for testing. '
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "400":
+          description: Invalid username supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      tags:
+      - user
+      summary: Update user
+      description: This can only be done by the logged in user.
+      operationId: updateUser
+      parameters:
+      - name: username
+        in: path
+        description: name that need to be deleted
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        default:
+          description: successful operation
+    delete:
+      tags:
+      - user
+      summary: Delete user
+      description: This can only be done by the logged in user.
+      operationId: deleteUser
+      parameters:
+      - name: username
+        in: path
+        description: The name that needs to be deleted
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Invalid username supplied
+        "404":
+          description: User not found
+  /api/v1/uas:
+    put:
+      tags:
+      - uas
+      summary: Update an existing uas
+      description: Update an existing uas by Id
+      operationId: updateUas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Uas'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Uas'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Uas'
+        "404":
+          description: Uas not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Uas'
+        "405":
+          description: Validation exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Uas'
+      security:
+      - registry_auth:
+        - write:uass
+        - read:uass
+    post:
+      tags:
+      - uas
+      summary: Add a new uas to the store
+      description: Add a new uas to the store
+      operationId: addUas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Uas'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Uas'
+        "405":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Uas'
+      security:
+      - registry_auth:
+        - write:uass
+        - read:uass
+  /api/v1/uasType:
+    put:
+      tags:
+      - uas_types
+      summary: Update an existing uasType
+      description: Update an existing uasType by Id
+      operationId: updateUasType
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UasType'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UasType'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UasType'
+        "404":
+          description: UasType not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UasType'
+        "405":
+          description: Validation exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UasType'
+      security:
+      - registry_auth:
+        - write:uasTypes
+        - read:uasTypes
+    post:
+      tags:
+      - uas_types
+      summary: Add a new uasType to the store
+      description: Add a new uasType to the store
+      operationId: addUasType
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UasType'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UasType'
+        "405":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UasType'
+      security:
+      - registry_auth:
+        - write:uasTypes
+        - read:uasTypes
+  /api/v1/operator/{operatorId}:
+    get:
+      tags:
+      - operators
+      - operator
+      summary: Find operator by ID
+      description: Returns a single operator
+      operationId: getOperatorById
+      parameters:
+      - name: operatorId
+        in: path
+        description: ID of operator to return
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operator'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operator'
+        "404":
+          description: Operator not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operator'
+      security:
+      - registry_auth:
+        - write:operators
+        - read:operators
+    put:
+      tags:
+      - operators
+      - operator
+      summary: Updates a operator in the store
+      operationId: updateOperator
+      parameters:
+      - name: operatorId
+        in: path
+        description: ID of operator that needs to be updated
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Operator'
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Operator'
+      security:
+      - registry_auth:
+        - write:operators
+        - read:operators
+    delete:
+      tags:
+      - operators
+      - operator
+      summary: Deletes a operator
+      operationId: deleteOperator
+      parameters:
+      - name: operatorId
+        in: path
+        description: Operator id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "400":
+          description: Invalid operator value
+      security:
+      - registry_auth:
+        - write:operators
+        - read:operators
+  /api/v1/manufacturer/{manufacturerId}:
+    get:
+      tags:
+      - manufacturers
+      - manufacturer
+      summary: Find manufacturer by ID
+      description: Returns a single manufacturer
+      operationId: getManufacturerById
+      parameters:
+      - name: manufacturerId
+        in: path
+        description: ID of manufacturer to return
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manufacturer'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manufacturer'
+        "404":
+          description: Manufacturer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manufacturer'
+      security:
+      - registry_auth:
+        - write:manufacturers
+        - read:manufacturers
+    put:
+      tags:
+      - manufacturers
+      - manufacturer
+      summary: Updates a manufacturer in the store
+      operationId: updateManufacturer
+      parameters:
+      - name: manufacturerId
+        in: path
+        description: ID of manufacturer that needs to be updated
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Manufacturer'
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Manufacturer'
+      security:
+      - registry_auth:
+        - write:manufacturers
+        - read:manufacturers
+    delete:
+      tags:
+      - manufacturers
+      - manufacturer
+      summary: Deletes a manufacturer
+      operationId: deleteManufacturer
+      parameters:
+      - name: manufacturerId
+        in: path
+        description: Manufacturer id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "400":
+          description: Invalid manufacturer value
+      security:
+      - registry_auth:
+        - write:manufacturers
+        - read:manufacturers
+  /api/v1/legalEntity/{legalEntityId}:
+    get:
+      tags:
+      - legal_entity
+      summary: Find legalEntity by ID
+      description: Returns a single legalEntity
+      operationId: getLegalEntityById
+      parameters:
+      - name: legalEntityId
+        in: path
+        description: ID of legalEntity to return
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegalEntity'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegalEntity'
+        "404":
+          description: LegalEntity not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegalEntity'
+      security:
+      - registry_auth:
+        - write:legalEntitys
+        - read:legalEntitys
+    put:
+      tags:
+      - legal_entity
+      summary: Updates a legalEntity in the store
+      operationId: updateLegalEntity
+      parameters:
+      - name: legalEntityId
+        in: path
+        description: ID of legalEntity that needs to be updated
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LegalEntity'
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LegalEntity'
+      security:
+      - registry_auth:
+        - write:legalEntitys
+        - read:legalEntitys
+    delete:
+      tags:
+      - legal_entity
+      summary: Deletes a legalEntity
+      operationId: deleteLegalEntity
+      parameters:
+      - name: legalEntityId
+        in: path
+        description: LegalEntity id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "400":
+          description: Invalid legalEntity value
+      security:
+      - registry_auth:
+        - write:legalEntitys
+        - read:legalEntitys
+  /api/v1/civilAviationAuthority/{civilAviationAuthorityId}:
+    get:
+      tags:
+      - civilAviationAuthorities
+      - civilAviationAuthority
+      summary: Find civilAviationAuthority by ID
+      description: Returns a single civilAviationAuthority
+      operationId: getCivilAviationAuthorityById
+      parameters:
+      - name: civilAviationAuthorityId
+        in: path
+        description: ID of civilAviationAuthority to return
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CivilAviationAuthority'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CivilAviationAuthority'
+        "404":
+          description: CivilAviationAuthority not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CivilAviationAuthority'
+      security:
+      - registry_auth:
+        - write:civilAviationAuthorities
+        - read:civilAviationAuthorities
+    put:
+      tags:
+      - civilAviationAuthorities
+      - civilAviationAuthority
+      summary: Updates a civilAviationAuthority in the store
+      operationId: updateCivilAviationAuthority
+      parameters:
+      - name: civilAviationAuthorityId
+        in: path
+        description: ID of civilAviationAuthority that needs to be updated
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CivilAviationAuthority'
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CivilAviationAuthority'
+      security:
+      - registry_auth:
+        - write:civilAviationAuthorities
+        - read:civilAviationAuthorities
+    delete:
+      tags:
+      - civilAviationAuthorities
+      - civilAviationAuthority
+      summary: Deletes a civilAviationAuthority
+      operationId: deleteCivilAviationAuthority
+      parameters:
+      - name: civilAviationAuthorityId
+        in: path
+        description: CivilAviationAuthority id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "400":
+          description: Invalid civilAviationAuthority value
+      security:
+      - registry_auth:
+        - write:civilAviationAuthorities
+        - read:civilAviationAuthorities
+  /api/v1/utmsp:
+    post:
+      tags:
+      - utmsps
+      - utmsp
+      summary: Add a new utmsp to the store
+      description: Add a new utmsp to the store
+      operationId: addUtmsp
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Utmsp'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Utmsp'
+        "405":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Utmsp'
+      security:
+      - registry_auth:
+        - write:utmsps
+        - read:utmsps
+  /api/v1/user:
+    post:
+      tags:
+      - user
+      summary: Create user
+      description: This can only be done by the logged in user.
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        default:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /api/v1/user/createWithList:
+    post:
+      tags:
+      - user
+      summary: Creates list of users with given input array
+      description: Creates list of users with given input array
+      operationId: createUsersWithListInput
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /api/v1/operator:
+    post:
+      tags:
+      - operators
+      - operator
+      summary: Add a new operator to the store
+      description: Add a new operator to the store
+      operationId: addOperator
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Operator'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operator'
+        "405":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operator'
+      security:
+      - registry_auth:
+        - write:operators
+        - read:operators
+  /api/v1/manufacturer:
+    post:
+      tags:
+      - manufacturers
+      - manufacturer
+      summary: Add a new manufacturer to the store
+      description: Add a new manufacturer to the store
+      operationId: addManufacturer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Manufacturer'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manufacturer'
+        "405":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manufacturer'
+      security:
+      - registry_auth:
+        - write:manufacturers
+        - read:manufacturers
+  /api/v1/legalEntity:
+    post:
+      tags:
+      - legal_entity
+      summary: Add a new legalEntity to the store
+      description: Add a new legalEntity to the store
+      operationId: addLegalEntity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LegalEntity'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegalEntity'
+        "405":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegalEntity'
+      security:
+      - registry_auth:
+        - write:legalEntitys
+        - read:legalEntitys
+  /api/v1/civilAviationAuthority:
+    post:
+      tags:
+      - civilAviationAuthorities
+      - civilAviationAuthority
+      summary: Add a new civilAviationAuthority to the store
+      description: Add a new civilAviationAuthority to the store
+      operationId: addCivilAviationAuthority
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CivilAviationAuthority'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CivilAviationAuthority'
+        "405":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CivilAviationAuthority'
+      security:
+      - registry_auth:
+        - write:civilAviationAuthorities
+        - read:civilAviationAuthorities
+  /api/v1/utmsp/find:
+    get:
+      tags:
+      - utmsps
+      - utmsp
+      summary: Finds Utmsps
+      operationId: findUtmsps
+      responses:
+        "200":
+          description: successful operation
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Manufacturer'
-          description: ''
-      tags:
-      - api
-  /api/v1/operators:
-    get:
-      operationId: listOperators
-      description: List all operators, or create a new operator.
-      parameters: []
-      responses:
-        '200':
+                  $ref: '#/components/schemas/Utmsp'
+        "400":
+          description: Invalid value
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Operator'
-          description: ''
-      tags:
-      - api
-  /api/v1/operators{format}:
+                  $ref: '#/components/schemas/Utmsp'
+      security:
+      - registry_auth:
+        - write:utmsps
+        - read:utmsps
+  /api/v1/user/logout:
     get:
-      operationId: retrieveOperator
-      description: List all operators, or create a new operator.
+      tags:
+      - user
+      summary: Logs out current logged in user session
+      operationId: logoutUser
+      responses:
+        default:
+          description: successful operation
+  /api/v1/user/login:
+    get:
+      tags:
+      - user
+      summary: Logs user into the system
+      operationId: loginUser
       parameters:
-      - name: format
-        in: path
-        required: true
-        description: ''
+      - name: username
+        in: query
+        description: The user name for login
+        required: false
+        schema:
+          type: string
+      - name: password
+        in: query
+        description: The password for login in clear text
+        required: false
         schema:
           type: string
       responses:
-        '200':
+        "200":
+          description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Operator'
-          description: ''
-      tags:
-      - api
-  /api/v1/operators/{id}:
-    get:
-      operationId: retrieveOperator
-      description: Retrieve, update or delete a Operator instance.
-      parameters:
-      - name: id
-        in: path
-        required: true
-        description: A UUID string identifying this operator.
-        schema:
-          type: string
-      responses:
-        '200':
+                type: string
+        "400":
+          description: Invalid username/password supplied
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Operator'
-          description: ''
-      tags:
-      - api
-  /api/v1/operators/{id}{format}:
+                type: string
+  /api/v1/uasType/{uasTypeId}:
     get:
-      operationId: retrieveOperator
-      description: Retrieve, update or delete a Operator instance.
+      tags:
+      - uas_types
+      summary: Find uasType by ID
+      description: Returns a single uasType
+      operationId: getUasTypeById
       parameters:
-      - name: id
+      - name: uasTypeId
         in: path
+        description: ID of uasType to return
         required: true
-        description: A UUID string identifying this operator.
         schema:
           type: string
-      - name: format
-        in: path
-        required: true
-        description: ''
-        schema:
-          type: string
+          format: uuid
       responses:
-        '200':
+        "200":
+          description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Operator'
-          description: ''
-      tags:
-      - api
-  /api/v1/operators/{id}/privileged:
-    get:
-      operationId: retrieveOperator
-      description: Retrieve, update or delete a Operator instance.
-      parameters:
-      - name: id
-        in: path
-        required: true
-        description: A UUID string identifying this operator.
-        schema:
-          type: string
-      responses:
-        '200':
+                $ref: '#/components/schemas/UasType'
+        "400":
+          description: Invalid ID supplied
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PrivilegedOperator'
-          description: ''
-      tags:
-      - api
-  /api/v1/operators/{id}/privileged{format}:
-    get:
-      operationId: retrieveOperator
-      description: Retrieve, update or delete a Operator instance.
-      parameters:
-      - name: id
-        in: path
-        required: true
-        description: A UUID string identifying this operator.
-        schema:
-          type: string
-      - name: format
-        in: path
-        required: true
-        description: ''
-        schema:
-          type: string
-      responses:
-        '200':
+                $ref: '#/components/schemas/UasType'
+        "404":
+          description: UasType not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PrivilegedOperator'
-          description: ''
+                $ref: '#/components/schemas/UasType'
+      security:
+      - api_key: []
+      - registry_auth:
+        - write:uasTypes
+        - read:uasTypes
+    delete:
       tags:
-      - api
-  /api/v1/operators/{id}/uas:
-    get:
-      operationId: retrieveUas
-      description: Retrieve, update or delete a Operator instance.
+      - uas_types
+      summary: Deletes a uasType
+      operationId: deleteUasType
       parameters:
-      - name: id
+      - name: uasTypeId
         in: path
+        description: UasType id to delete
         required: true
-        description: A UUID string identifying this uas.
         schema:
           type: string
+          format: uuid
       responses:
-        '200':
+        "400":
+          description: Invalid uasType value
+      security:
+      - registry_auth:
+        - write:uasTypes
+        - read:uasTypes
+  /api/v1/uasType/find:
+    get:
+      tags:
+      - uas_types
+      summary: Finds UasTypes
+      operationId: findUasTypes
+      responses:
+        "200":
+          description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Uas'
-          description: ''
-      tags:
-      - api
-  /api/v1/operators/{id}/uas{format}:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UasType'
+        "400":
+          description: Invalid value
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UasType'
+      security:
+      - registry_auth:
+        - write:uasTypes
+        - read:uasTypes
+  /api/v1/uas/{uasId}:
     get:
-      operationId: retrieveUas
-      description: Retrieve, update or delete a Operator instance.
+      tags:
+      - uas
+      summary: Find uas by ID
+      description: Returns a single uas
+      operationId: getUasById
       parameters:
-      - name: id
+      - name: uasId
         in: path
+        description: ID of uas to return
         required: true
-        description: A UUID string identifying this uas.
         schema:
           type: string
-      - name: format
-        in: path
-        required: true
-        description: ''
-        schema:
-          type: string
+          format: uuid
       responses:
-        '200':
+        "200":
+          description: successful operation
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Uas'
-          description: ''
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Uas'
+        "404":
+          description: Uas not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Uas'
+      security:
+      - api_key: []
+      - registry_auth:
+        - write:uass
+        - read:uass
+    delete:
       tags:
-      - api
-  /api/v1/aircrafts:
-    get:
-      operationId: listUass
-      description: List all aircrafts in the database
-      parameters: []
+      - uas
+      summary: Deletes a uas
+      operationId: deleteUas
+      parameters:
+      - name: uasId
+        in: path
+        description: Uas id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: api_key
+        in: header
+        required: false
+        schema:
+          type: string
       responses:
-        '200':
+        "400":
+          description: Invalid uas value
+      security:
+      - registry_auth:
+        - write:uass
+        - read:uass
+  /api/v1/uas/find:
+    get:
+      tags:
+      - uas
+      summary: Finds Uass
+      operationId: findUass
+      responses:
+        "200":
+          description: successful operation
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Uas'
-          description: ''
-      tags:
-      - api
-  /api/v1/aircrafts{format}:
-    get:
-      operationId: retrieveUas
-      description: List all aircrafts in the database
-      parameters:
-      - name: format
-        in: path
-        required: true
-        description: ''
-        schema:
-          type: string
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Uas'
-          description: ''
-      tags:
-      - api
-  /api/v1/aircrafts/{id}:
-    get:
-      operationId: retrieveUas
-      description: Retrieve, update or delete a Uas instance.
-      parameters:
-      - name: id
-        in: path
-        required: true
-        description: ''
-        schema:
-          type: string
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Uas'
-          description: ''
-      tags:
-      - api
-  /api/v1/aircrafts/{id}{format}:
-    get:
-      operationId: retrieveUas
-      description: Retrieve, update or delete a Uas instance.
-      parameters:
-      - name: id
-        in: path
-        required: true
-        description: ''
-        schema:
-          type: string
-      - name: format
-        in: path
-        required: true
-        description: ''
-        schema:
-          type: string
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Uas'
-          description: ''
-      tags:
-      - api
-  /api/v1/aircrafts/{id}/privileged:
-    get:
-      operationId: retrieveUasDetail
-      description: Retrieve, update or delete a Uas instance.
-      parameters:
-      - name: id
-        in: path
-        required: true
-        description: ''
-        schema:
-          type: string
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UasDetail'
-          description: ''
-      tags:
-      - api
-  /api/v1/aircrafts/{id}/privileged{format}:
-    get:
-      operationId: retrieveUasDetail
-      description: Retrieve, update or delete a Uas instance.
-      parameters:
-      - name: id
-        in: path
-        required: true
-        description: ''
-        schema:
-          type: string
-      - name: format
-        in: path
-        required: true
-        description: ''
-        schema:
-          type: string
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UasDetail'
-          description: ''
-      tags:
-      - api
-  /api/v1/contacts:
-    get:
-      operationId: listContacts
-      description: List all contacts in the database
-      parameters: []
-      responses:
-        '200':
+        "400":
+          description: Invalid value
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Contact'
-          description: ''
-      tags:
-      - api
-  /api/v1/contacts{format}:
+                  $ref: '#/components/schemas/Uas'
+      security:
+      - registry_auth:
+        - write:uass
+        - read:uass
+  /api/v1/operator/find:
     get:
-      operationId: retrieveContact
-      description: List all contacts in the database
-      parameters:
-      - name: format
-        in: path
-        required: true
-        description: ''
-        schema:
-          type: string
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Contact'
-          description: ''
       tags:
-      - api
-  /api/v1/contacts/{id}:
-    get:
-      operationId: retrieveContact
-      description: Retrieve, update or delete a Contact instance.
-      parameters:
-      - name: id
-        in: path
-        required: true
-        description: A UUID string identifying this contact.
-        schema:
-          type: string
+      - operators
+      - operator
+      summary: Finds Operators
+      operationId: findOperators
       responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ContactDetail'
-          description: ''
-      tags:
-      - api
-  /api/v1/contacts/{id}{format}:
-    get:
-      operationId: retrieveContact
-      description: Retrieve, update or delete a Contact instance.
-      parameters:
-      - name: id
-        in: path
-        required: true
-        description: A UUID string identifying this contact.
-        schema:
-          type: string
-      - name: format
-        in: path
-        required: true
-        description: ''
-        schema:
-          type: string
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ContactDetail'
-          description: ''
-      tags:
-      - api
-  /api/v1/contacts/{id}/privileged:
-    get:
-      operationId: retrieveContact
-      description: Retrieve, update or delete a Contact instance.
-      parameters:
-      - name: id
-        in: path
-        required: true
-        description: A UUID string identifying this contact.
-        schema:
-          type: string
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PrivilegedContact'
-          description: ''
-      tags:
-      - api
-  /api/v1/contacts/{id}/privileged{format}:
-    get:
-      operationId: retrieveContact
-      description: Retrieve, update or delete a Contact instance.
-      parameters:
-      - name: id
-        in: path
-        required: true
-        description: A UUID string identifying this contact.
-        schema:
-          type: string
-      - name: format
-        in: path
-        required: true
-        description: ''
-        schema:
-          type: string
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PrivilegedContact'
-          description: ''
-      tags:
-      - api
-  /api/v1/pilots:
-    get:
-      operationId: listPilots
-      description: List all pilots in the database
-      parameters: []
-      responses:
-        '200':
+        "200":
+          description: successful operation
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Pilot'
-          description: ''
-      tags:
-      - api
-  /api/v1/pilots{format}:
-    get:
-      operationId: retrievePilot
-      description: List all pilots in the database
-      parameters:
-      - name: format
-        in: path
-        required: true
-        description: ''
-        schema:
-          type: string
-      responses:
-        '200':
+                  $ref: '#/components/schemas/Operator'
+        "400":
+          description: Invalid value
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pilot'
-          description: ''
-      tags:
-      - api
-  /api/v1/pilots/{id}:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Operator'
+      security:
+      - registry_auth:
+        - write:operators
+        - read:operators
+  /api/v1/manufacturer/find:
     get:
-      operationId: retrievePilot
-      description: Retrieve, update or delete a Pilot instance.
-      parameters:
-      - name: id
-        in: path
-        required: true
-        description: A UUID string identifying this pilot.
-        schema:
-          type: string
+      tags:
+      - manufacturers
+      - manufacturer
+      summary: Finds Manufacturers
+      operationId: findManufacturers
       responses:
-        '200':
+        "200":
+          description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PilotDetail'
-          description: ''
-      tags:
-      - api
-  /api/v1/pilots/{id}{format}:
-    get:
-      operationId: retrievePilot
-      description: Retrieve, update or delete a Pilot instance.
-      parameters:
-      - name: id
-        in: path
-        required: true
-        description: A UUID string identifying this pilot.
-        schema:
-          type: string
-      - name: format
-        in: path
-        required: true
-        description: ''
-        schema:
-          type: string
-      responses:
-        '200':
+                type: array
+                items:
+                  $ref: '#/components/schemas/Manufacturer'
+        "400":
+          description: Invalid value
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PilotDetail'
-          description: ''
-      tags:
-      - api
-  /api/v1/pilots/{id}/privileged:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Manufacturer'
+      security:
+      - registry_auth:
+        - write:manufacturers
+        - read:manufacturers
+  /api/v1/legalEntity/find:
     get:
-      operationId: retrievePilot
-      description: Retrieve, update or delete a Pilot instance.
-      parameters:
-      - name: id
-        in: path
-        required: true
-        description: A UUID string identifying this pilot.
-        schema:
-          type: string
+      tags:
+      - legal_entity
+      summary: Finds LegalEntitys
+      operationId: findLegalEntitys
       responses:
-        '200':
+        "200":
+          description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PrivilegedPilotDetail'
-          description: ''
-      tags:
-      - api
-  /api/v1/pilots/{id}/privileged{format}:
-    get:
-      operationId: retrievePilot
-      description: Retrieve, update or delete a Pilot instance.
-      parameters:
-      - name: id
-        in: path
-        required: true
-        description: A UUID string identifying this pilot.
-        schema:
-          type: string
-      - name: format
-        in: path
-        required: true
-        description: ''
-        schema:
-          type: string
-      responses:
-        '200':
+                type: array
+                items:
+                  $ref: '#/components/schemas/LegalEntity'
+        "400":
+          description: Invalid value
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PrivilegedPilotDetail'
-          description: ''
+                type: array
+                items:
+                  $ref: '#/components/schemas/LegalEntity'
+      security:
+      - registry_auth:
+        - write:legalEntitys
+        - read:legalEntitys
+  /api/v1/civilAviationAuthority/find:
+    get:
       tags:
-      - api
+      - civilAviationAuthorities
+      - civilAviationAuthority
+      summary: Finds CivilAviationAuthorities
+      operationId: findCivilAviationAuthorities
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CivilAviationAuthority'
+        "400":
+          description: Invalid value
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CivilAviationAuthority'
+      security:
+      - registry_auth:
+        - write:civilAviationAuthorities
+        - read:civilAviationAuthorities
 components:
   schemas:
-    Operator:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        company_name:
-          type: string
-          description: Enter the official name of the company
-          maxLength: 280
-        website:
-          type: string
-          format: uri
-          description: Put the company homepage URL
-          maxLength: 200
-          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\\
-            .(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\\
-            ]|([a-z\xA1-\uFFFF0-9](?:[a-z\xA1-\uFFFF0-9-]{0,61}[a-z\xA1-\uFFFF0-9])?(?:\\\
-            .(?!-)[a-z\xA1-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z\xA1-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\\
-            .?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
-        email:
-          type: string
-          format: email
-          description: Support email for queries / followup
-          maxLength: 254
-        phone_number:
-          type: string
-          pattern: ^\+?1?\d{9,15}$
-          maxLength: 17
+    Address:
       required:
-      - company_name
-      - website
-      - email
-    PrivilegedOperator:
+      - city
+      - country
+      - id
+      - line1
+      - line2
+      - line3
+      - pinCode
+      - state
       type: object
       properties:
         id:
           type: string
           format: uuid
-          readOnly: true
-        company_name:
+        line1:
           type: string
-          description: Enter the official name of the company
-          maxLength: 280
+          example: 123 ABC Housing Society
+        line2:
+          type: string
+          example: Landmark
+        line3:
+          type: string
+          example: Bandra West
+        city:
+          type: string
+          example: Mumbai
+        state:
+          type: string
+          enum:
+          - ANDHRA_PRADESH
+          - ARUNACHAL_PRADESH
+          - ASSAM
+          - BIHAR
+          - CHHATTISGARH
+          - GOA
+          - GUJARAT
+          - HARYANA
+          - HIMACHAL_PRADESH
+          - JHARKHAND
+          - KARNATAKA
+          - KERALA
+          - MADHYA_PRADESH
+          - MAHARASHTRA
+          - MANIPUR
+          - MEGHALAYA
+          - MIZORAM
+          - NAGALAND
+          - ODISHA
+          - PUNJAB
+          - RAJASTHAN
+          - SIKKIM
+          - TAMIL_NADU
+          - TELANGANA
+          - TRIPURA
+          - UTTARAKHAND
+          - UTTAR_PRADESH
+          - WEST_BENGAL
+          - ANDAMAN_NICOBAR_ISLANDS
+          - CHANDIGARH
+          - DADRA_NAGAR_HAVELI_DAMAN_DIU
+          - NCT
+          - JAMMU_KASHMIR
+          - LADAKH
+          - LAKSHADWEEP
+          - PUDUCHERRY
+        pinCode:
+          type: string
+          example: "400000"
         country:
+          type: string
+          example: IND
           enum:
-          - AF
-          - AX
-          - AL
-          - DZ
-          - AS
-          - AD
-          - AO
-          - AI
-          - AQ
-          - AG
-          - AR
-          - AM
-          - AW
-          - AU
-          - AT
-          - AZ
-          - BS
-          - BH
-          - BD
-          - BB
-          - BY
-          - BE
-          - BZ
-          - BJ
-          - BM
-          - BT
-          - BO
-          - BQ
-          - BA
-          - BW
-          - BV
-          - BR
-          - IO
-          - BN
-          - BG
-          - BF
-          - BI
-          - KH
-          - CM
-          - CA
-          - CV
-          - KY
-          - CF
-          - TD
-          - CL
-          - CN
-          - CX
-          - CC
-          - CO
-          - KM
-          - CG
-          - CD
-          - CK
-          - CR
-          - CI
-          - HR
-          - CU
-          - CW
-          - CY
-          - CZ
-          - DK
-          - DJ
-          - DM
-          - DO
-          - EC
-          - EG
-          - SV
-          - GQ
-          - ER
-          - EE
-          - ET
-          - FK
-          - FO
-          - FJ
-          - FI
-          - FR
-          - GF
-          - PF
-          - TF
-          - GA
-          - GM
-          - GE
-          - DE
-          - GH
-          - GI
-          - GR
-          - GL
-          - GD
-          - GP
-          - GU
-          - GT
-          - GG
-          - GN
-          - GW
-          - GY
-          - HT
-          - HM
-          - VA
-          - HN
-          - HK
-          - HU
-          - IS
-          - IN
-          - ID
-          - IR
-          - IQ
-          - IE
-          - IM
-          - IL
-          - IT
-          - JM
-          - JP
-          - JE
-          - JO
-          - KZ
-          - KE
-          - KI
-          - KP
-          - KR
-          - KW
-          - KG
-          - LA
-          - LV
-          - LB
-          - LS
-          - LR
-          - LY
-          - LI
-          - LT
-          - LU
-          - MO
-          - MK
-          - MG
-          - MW
-          - MY
-          - MV
-          - ML
-          - MT
-          - MH
-          - MQ
-          - MR
-          - MU
-          - YT
-          - MX
-          - FM
-          - MD
-          - MC
-          - MN
-          - ME
-          - MS
-          - MA
-          - MZ
-          - MM
-          - NA
-          - NR
-          - NP
-          - NL
-          - NC
-          - NZ
-          - NI
-          - NE
-          - NG
-          - NU
-          - NF
-          - MP
-          - 'NO'
-          - OM
-          - PK
-          - PW
-          - PS
-          - PA
-          - PG
-          - PY
-          - PE
-          - PH
-          - PN
-          - PL
-          - PT
-          - PR
-          - QA
-          - RE
-          - RO
-          - RU
-          - RW
-          - BL
-          - SH
-          - KN
-          - LC
-          - MF
-          - PM
-          - VC
-          - WS
-          - SM
-          - ST
-          - SA
-          - SN
-          - RS
-          - SC
-          - SL
-          - SG
-          - SX
-          - SK
-          - SI
-          - SB
-          - SO
-          - ZA
-          - GS
-          - SS
-          - ES
-          - LK
-          - SD
-          - SR
-          - SJ
-          - SZ
-          - SE
-          - CH
-          - SY
-          - TW
-          - TJ
-          - TZ
-          - TH
-          - TL
-          - TG
-          - TK
-          - TO
-          - TT
-          - TN
-          - TR
-          - TM
-          - TC
-          - TV
-          - UG
-          - UA
-          - AE
-          - GB
-          - US
-          - UM
-          - UY
-          - UZ
-          - VU
-          - VE
-          - VN
-          - VG
-          - VI
-          - WF
-          - EH
-          - YE
-          - ZM
-          - ZW
-          type: string
-        website:
-          type: string
-          format: uri
-          description: Put the company homepage URL
-          maxLength: 200
-          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\\
-            .(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\\
-            ]|([a-z\xA1-\uFFFF0-9](?:[a-z\xA1-\uFFFF0-9-]{0,61}[a-z\xA1-\uFFFF0-9])?(?:\\\
-            .(?!-)[a-z\xA1-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z\xA1-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\\
-            .?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
-        email:
-          type: string
-          format: email
-          description: Support email for queries / followup
-          maxLength: 254
-        operator_type:
-          enum:
-          - 0
-          - 1
-          - 2
-          - 3
-          - 4
-          type: integer
-        address:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            address_line_1:
-              type: string
-              maxLength: 140
-            address_line_2:
-              type: string
-              maxLength: 140
-            address_line_3:
-              type: string
-              maxLength: 140
-            postcode:
-              type: string
-              maxLength: 10
-            city:
-              type: string
-              maxLength: 140
-            country:
-              enum:
-              - AF
-              - AX
-              - AL
-              - DZ
-              - AS
-              - AD
-              - AO
-              - AI
-              - AQ
-              - AG
-              - AR
-              - AM
-              - AW
-              - AU
-              - AT
-              - AZ
-              - BS
-              - BH
-              - BD
-              - BB
-              - BY
-              - BE
-              - BZ
-              - BJ
-              - BM
-              - BT
-              - BO
-              - BQ
-              - BA
-              - BW
-              - BV
-              - BR
-              - IO
-              - BN
-              - BG
-              - BF
-              - BI
-              - KH
-              - CM
-              - CA
-              - CV
-              - KY
-              - CF
-              - TD
-              - CL
-              - CN
-              - CX
-              - CC
-              - CO
-              - KM
-              - CG
-              - CD
-              - CK
-              - CR
-              - CI
-              - HR
-              - CU
-              - CW
-              - CY
-              - CZ
-              - DK
-              - DJ
-              - DM
-              - DO
-              - EC
-              - EG
-              - SV
-              - GQ
-              - ER
-              - EE
-              - ET
-              - FK
-              - FO
-              - FJ
-              - FI
-              - FR
-              - GF
-              - PF
-              - TF
-              - GA
-              - GM
-              - GE
-              - DE
-              - GH
-              - GI
-              - GR
-              - GL
-              - GD
-              - GP
-              - GU
-              - GT
-              - GG
-              - GN
-              - GW
-              - GY
-              - HT
-              - HM
-              - VA
-              - HN
-              - HK
-              - HU
-              - IS
-              - IN
-              - ID
-              - IR
-              - IQ
-              - IE
-              - IM
-              - IL
-              - IT
-              - JM
-              - JP
-              - JE
-              - JO
-              - KZ
-              - KE
-              - KI
-              - KP
-              - KR
-              - KW
-              - KG
-              - LA
-              - LV
-              - LB
-              - LS
-              - LR
-              - LY
-              - LI
-              - LT
-              - LU
-              - MO
-              - MK
-              - MG
-              - MW
-              - MY
-              - MV
-              - ML
-              - MT
-              - MH
-              - MQ
-              - MR
-              - MU
-              - YT
-              - MX
-              - FM
-              - MD
-              - MC
-              - MN
-              - ME
-              - MS
-              - MA
-              - MZ
-              - MM
-              - NA
-              - NR
-              - NP
-              - NL
-              - NC
-              - NZ
-              - NI
-              - NE
-              - NG
-              - NU
-              - NF
-              - MP
-              - 'NO'
-              - OM
-              - PK
-              - PW
-              - PS
-              - PA
-              - PG
-              - PY
-              - PE
-              - PH
-              - PN
-              - PL
-              - PT
-              - PR
-              - QA
-              - RE
-              - RO
-              - RU
-              - RW
-              - BL
-              - SH
-              - KN
-              - LC
-              - MF
-              - PM
-              - VC
-              - WS
-              - SM
-              - ST
-              - SA
-              - SN
-              - RS
-              - SC
-              - SL
-              - SG
-              - SX
-              - SK
-              - SI
-              - SB
-              - SO
-              - ZA
-              - GS
-              - SS
-              - ES
-              - LK
-              - SD
-              - SR
-              - SJ
-              - SZ
-              - SE
-              - CH
-              - SY
-              - TW
-              - TJ
-              - TZ
-              - TH
-              - TL
-              - TG
-              - TK
-              - TO
-              - TT
-              - TN
-              - TR
-              - TM
-              - TC
-              - TV
-              - UG
-              - UA
-              - AE
-              - GB
-              - US
-              - UM
-              - UY
-              - UZ
-              - VU
-              - VE
-              - VN
-              - VG
-              - VI
-              - WF
-              - EH
-              - YE
-              - ZM
-              - ZW
-              type: string
-            created_at:
-              type: string
-              format: date-time
-              readOnly: true
-            updated_at:
-              type: string
-              format: date-time
-              readOnly: true
-          required:
-          - address_line_1
-          - address_line_2
-          - address_line_3
-          - city
-          readOnly: true
-        operational_authorizations:
-          type: string
-          readOnly: true
-        authorized_activities:
-          type: string
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
+          - IND
+          - USA
+    LegalEntity:
       required:
-      - company_name
-      - website
-      - email
-    Uas:
+      - cin
+      - id
+      - name
+      - regdAddress
+      - timestamps
       type: object
       properties:
         id:
           type: string
           format: uuid
           readOnly: true
-        'type':
-          $ref: '#/components/schemas/UasType'
-        registration_mark:
+        cin:
           type: string
-          nullable: true
-          maxLength: 10
-        updated_at:
+          example: CIN00000
+        name:
           type: string
-          format: date-time
-          readOnly: true
-        maci_number:
+          example: Test Company Pvt Ltd
+        regdAddress:
+          $ref: '#/components/schemas/Address'
+        gstin:
           type: string
-          maxLength: 280
-        manufacturer:
-          type: string
-        model:
-          type: string
-          maxLength: 280
-        status:
-          enum:
-          - 0
-          - 1
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
+          example: GSTIN00000
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+    ObjectTimestamps:
       required:
-      - mass
-      - maci_number
-      - manufacturer
-      - model
-    UasDetail:
+      - created
+      - updated
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        'type':
-          $ref: '#/components/schemas/UasType'
-        mass:
-          type: integer
-        manufacturer:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            full_name:
-              type: string
-              maxLength: 140
-            common_name:
-              type: string
-              maxLength: 140
-            address:
-              type: object
-              properties:
-                id:
-                  type: string
-                  format: uuid
-                  readOnly: true
-                address_line_1:
-                  type: string
-                  maxLength: 140
-                address_line_2:
-                  type: string
-                  maxLength: 140
-                address_line_3:
-                  type: string
-                  maxLength: 140
-                postcode:
-                  type: string
-                  maxLength: 10
-                city:
-                  type: string
-                  maxLength: 140
-                country:
-                  enum:
-                  - AF
-                  - AX
-                  - AL
-                  - DZ
-                  - AS
-                  - AD
-                  - AO
-                  - AI
-                  - AQ
-                  - AG
-                  - AR
-                  - AM
-                  - AW
-                  - AU
-                  - AT
-                  - AZ
-                  - BS
-                  - BH
-                  - BD
-                  - BB
-                  - BY
-                  - BE
-                  - BZ
-                  - BJ
-                  - BM
-                  - BT
-                  - BO
-                  - BQ
-                  - BA
-                  - BW
-                  - BV
-                  - BR
-                  - IO
-                  - BN
-                  - BG
-                  - BF
-                  - BI
-                  - KH
-                  - CM
-                  - CA
-                  - CV
-                  - KY
-                  - CF
-                  - TD
-                  - CL
-                  - CN
-                  - CX
-                  - CC
-                  - CO
-                  - KM
-                  - CG
-                  - CD
-                  - CK
-                  - CR
-                  - CI
-                  - HR
-                  - CU
-                  - CW
-                  - CY
-                  - CZ
-                  - DK
-                  - DJ
-                  - DM
-                  - DO
-                  - EC
-                  - EG
-                  - SV
-                  - GQ
-                  - ER
-                  - EE
-                  - ET
-                  - FK
-                  - FO
-                  - FJ
-                  - FI
-                  - FR
-                  - GF
-                  - PF
-                  - TF
-                  - GA
-                  - GM
-                  - GE
-                  - DE
-                  - GH
-                  - GI
-                  - GR
-                  - GL
-                  - GD
-                  - GP
-                  - GU
-                  - GT
-                  - GG
-                  - GN
-                  - GW
-                  - GY
-                  - HT
-                  - HM
-                  - VA
-                  - HN
-                  - HK
-                  - HU
-                  - IS
-                  - IN
-                  - ID
-                  - IR
-                  - IQ
-                  - IE
-                  - IM
-                  - IL
-                  - IT
-                  - JM
-                  - JP
-                  - JE
-                  - JO
-                  - KZ
-                  - KE
-                  - KI
-                  - KP
-                  - KR
-                  - KW
-                  - KG
-                  - LA
-                  - LV
-                  - LB
-                  - LS
-                  - LR
-                  - LY
-                  - LI
-                  - LT
-                  - LU
-                  - MO
-                  - MK
-                  - MG
-                  - MW
-                  - MY
-                  - MV
-                  - ML
-                  - MT
-                  - MH
-                  - MQ
-                  - MR
-                  - MU
-                  - YT
-                  - MX
-                  - FM
-                  - MD
-                  - MC
-                  - MN
-                  - ME
-                  - MS
-                  - MA
-                  - MZ
-                  - MM
-                  - NA
-                  - NR
-                  - NP
-                  - NL
-                  - NC
-                  - NZ
-                  - NI
-                  - NE
-                  - NG
-                  - NU
-                  - NF
-                  - MP
-                  - 'NO'
-                  - OM
-                  - PK
-                  - PW
-                  - PS
-                  - PA
-                  - PG
-                  - PY
-                  - PE
-                  - PH
-                  - PN
-                  - PL
-                  - PT
-                  - PR
-                  - QA
-                  - RE
-                  - RO
-                  - RU
-                  - RW
-                  - BL
-                  - SH
-                  - KN
-                  - LC
-                  - MF
-                  - PM
-                  - VC
-                  - WS
-                  - SM
-                  - ST
-                  - SA
-                  - SN
-                  - RS
-                  - SC
-                  - SL
-                  - SG
-                  - SX
-                  - SK
-                  - SI
-                  - SB
-                  - SO
-                  - ZA
-                  - GS
-                  - SS
-                  - ES
-                  - LK
-                  - SD
-                  - SR
-                  - SJ
-                  - SZ
-                  - SE
-                  - CH
-                  - SY
-                  - TW
-                  - TJ
-                  - TZ
-                  - TH
-                  - TL
-                  - TG
-                  - TK
-                  - TO
-                  - TT
-                  - TN
-                  - TR
-                  - TM
-                  - TC
-                  - TV
-                  - UG
-                  - UA
-                  - AE
-                  - GB
-                  - US
-                  - UM
-                  - UY
-                  - UZ
-                  - VU
-                  - VE
-                  - VN
-                  - VG
-                  - VI
-                  - WF
-                  - EH
-                  - YE
-                  - ZM
-                  - ZW
-                  type: string
-                created_at:
-                  type: string
-                  format: date-time
-                  readOnly: true
-                updated_at:
-                  type: string
-                  format: date-time
-                  readOnly: true
-              required:
-              - address_line_1
-              - address_line_2
-              - address_line_3
-              - city
-              readOnly: true
-            role:
-              type: string
-              maxLength: 140
-          readOnly: true
-        model:
-          type: string
-          maxLength: 280
-        esn:
-          type: string
-          maxLength: 48
-        maci_number:
-          type: string
-          maxLength: 280
-        status:
-          enum:
-          - 0
-          - 1
-          type: integer
-        registration_mark:
-          type: string
-          nullable: true
-          maxLength: 10
-        category:
-          type: string
-          readOnly: true
-        type_certificate:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            type_certificate_id:
-              type: string
-              maxLength: 280
-            type_certificate_issuing_country:
-              type: string
-              maxLength: 280
-            type_certificate_holder:
-              type: string
-              maxLength: 140
-            type_certificate_holder_country:
-              type: string
-              maxLength: 140
-          required:
-          - type_certificate_id
-          - type_certificate_issuing_country
-          - type_certificate_holder
-          - type_certificate_holder_country
-          readOnly: true
-        created_at:
+        created:
           type: string
           format: date-time
           readOnly: true
-        master_series:
-          type: string
-          nullable: true
-          maxLength: 280
-        series:
-          type: string
-          nullable: true
-          maxLength: 280
-        popular_name:
-          type: string
-          nullable: true
-          maxLength: 280
-        sub_category:
-          type: string
-          readOnly: true
-        photo:
-          type: string
-          format: uri
-          nullable: true
-          maxLength: 200
-          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\\
-            .(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\\
-            ]|([a-z\xA1-\uFFFF0-9](?:[a-z\xA1-\uFFFF0-9-]{0,61}[a-z\xA1-\uFFFF0-9])?(?:\\\
-            .(?!-)[a-z\xA1-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z\xA1-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\\
-            .?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
-        photo_small:
-          type: string
-          format: uri
-          nullable: true
-          maxLength: 200
-          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\\
-            .(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\\
-            ]|([a-z\xA1-\uFFFF0-9](?:[a-z\xA1-\uFFFF0-9-]{0,61}[a-z\xA1-\uFFFF0-9])?(?:\\\
-            .(?!-)[a-z\xA1-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z\xA1-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\\
-            .?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
-        icao_aircraft_type_designator:
-          type: string
-          maxLength: 4
-        max_certified_takeoff_weight:
-          type: string
-          format: decimal
-          multipleOf: 0.001
-          maximum: 10000000
-          minimum: -10000000
-        updated_at:
+        updated:
           type: string
           format: date-time
           readOnly: true
+    Utmsp:
       required:
-      - mass
-      - model
-      - maci_number
-    Contact:
+      - id
+      - legalEntity
+      - timestamps
+      - validity
       type: object
       properties:
         id:
           type: string
           format: uuid
           readOnly: true
-        person:
-          type: string
-        role_type:
-          enum:
-          - 0
-          - 1
-          type: integer
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - person
-    ContactDetail:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        operator:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            company_name:
-              type: string
-              description: Enter the official name of the company
-              maxLength: 280
-            website:
-              type: string
-              format: uri
-              description: Put the company homepage URL
-              maxLength: 200
-              pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\\
-                .(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\\
-                ]|([a-z\xA1-\uFFFF0-9](?:[a-z\xA1-\uFFFF0-9-]{0,61}[a-z\xA1-\uFFFF\
-                0-9])?(?:\\.(?!-)[a-z\xA1-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z\xA1\
-                -\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\\
-                s]*)?\\z"
-            email:
-              type: string
-              format: email
-              description: Support email for queries / followup
-              maxLength: 254
-            phone_number:
-              type: string
-              pattern: ^\+?1?\d{9,15}$
-              maxLength: 17
-          required:
-          - company_name
-          - website
-          - email
-          readOnly: true
-        person:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            first_name:
-              type: string
-              maxLength: 30
-            middle_name:
-              type: string
-              nullable: true
-              maxLength: 30
-            last_name:
-              type: string
-              maxLength: 30
-            email:
-              type: string
-              format: email
-              maxLength: 254
-            created_at:
-              type: string
-              format: date-time
-              readOnly: true
-            updated_at:
-              type: string
-              format: date-time
-              readOnly: true
-          required:
-          - first_name
-          - last_name
-          - email
-          readOnly: true
-        role_type:
-          enum:
-          - 0
-          - 1
-          type: integer
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-    PrivilegedContact:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        operator:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            company_name:
-              type: string
-              description: Enter the official name of the company
-              maxLength: 280
-            website:
-              type: string
-              format: uri
-              description: Put the company homepage URL
-              maxLength: 200
-              pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\\
-                .(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\\
-                ]|([a-z\xA1-\uFFFF0-9](?:[a-z\xA1-\uFFFF0-9-]{0,61}[a-z\xA1-\uFFFF\
-                0-9])?(?:\\.(?!-)[a-z\xA1-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z\xA1\
-                -\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\\
-                s]*)?\\z"
-            email:
-              type: string
-              format: email
-              description: Support email for queries / followup
-              maxLength: 254
-            phone_number:
-              type: string
-              pattern: ^\+?1?\d{9,15}$
-              maxLength: 17
-          required:
-          - company_name
-          - website
-          - email
-          readOnly: true
-        address:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            address_line_1:
-              type: string
-              maxLength: 140
-            address_line_2:
-              type: string
-              maxLength: 140
-            address_line_3:
-              type: string
-              maxLength: 140
-            postcode:
-              type: string
-              maxLength: 10
-            city:
-              type: string
-              maxLength: 140
-            country:
-              enum:
-              - AF
-              - AX
-              - AL
-              - DZ
-              - AS
-              - AD
-              - AO
-              - AI
-              - AQ
-              - AG
-              - AR
-              - AM
-              - AW
-              - AU
-              - AT
-              - AZ
-              - BS
-              - BH
-              - BD
-              - BB
-              - BY
-              - BE
-              - BZ
-              - BJ
-              - BM
-              - BT
-              - BO
-              - BQ
-              - BA
-              - BW
-              - BV
-              - BR
-              - IO
-              - BN
-              - BG
-              - BF
-              - BI
-              - KH
-              - CM
-              - CA
-              - CV
-              - KY
-              - CF
-              - TD
-              - CL
-              - CN
-              - CX
-              - CC
-              - CO
-              - KM
-              - CG
-              - CD
-              - CK
-              - CR
-              - CI
-              - HR
-              - CU
-              - CW
-              - CY
-              - CZ
-              - DK
-              - DJ
-              - DM
-              - DO
-              - EC
-              - EG
-              - SV
-              - GQ
-              - ER
-              - EE
-              - ET
-              - FK
-              - FO
-              - FJ
-              - FI
-              - FR
-              - GF
-              - PF
-              - TF
-              - GA
-              - GM
-              - GE
-              - DE
-              - GH
-              - GI
-              - GR
-              - GL
-              - GD
-              - GP
-              - GU
-              - GT
-              - GG
-              - GN
-              - GW
-              - GY
-              - HT
-              - HM
-              - VA
-              - HN
-              - HK
-              - HU
-              - IS
-              - IN
-              - ID
-              - IR
-              - IQ
-              - IE
-              - IM
-              - IL
-              - IT
-              - JM
-              - JP
-              - JE
-              - JO
-              - KZ
-              - KE
-              - KI
-              - KP
-              - KR
-              - KW
-              - KG
-              - LA
-              - LV
-              - LB
-              - LS
-              - LR
-              - LY
-              - LI
-              - LT
-              - LU
-              - MO
-              - MK
-              - MG
-              - MW
-              - MY
-              - MV
-              - ML
-              - MT
-              - MH
-              - MQ
-              - MR
-              - MU
-              - YT
-              - MX
-              - FM
-              - MD
-              - MC
-              - MN
-              - ME
-              - MS
-              - MA
-              - MZ
-              - MM
-              - NA
-              - NR
-              - NP
-              - NL
-              - NC
-              - NZ
-              - NI
-              - NE
-              - NG
-              - NU
-              - NF
-              - MP
-              - 'NO'
-              - OM
-              - PK
-              - PW
-              - PS
-              - PA
-              - PG
-              - PY
-              - PE
-              - PH
-              - PN
-              - PL
-              - PT
-              - PR
-              - QA
-              - RE
-              - RO
-              - RU
-              - RW
-              - BL
-              - SH
-              - KN
-              - LC
-              - MF
-              - PM
-              - VC
-              - WS
-              - SM
-              - ST
-              - SA
-              - SN
-              - RS
-              - SC
-              - SL
-              - SG
-              - SX
-              - SK
-              - SI
-              - SB
-              - SO
-              - ZA
-              - GS
-              - SS
-              - ES
-              - LK
-              - SD
-              - SR
-              - SJ
-              - SZ
-              - SE
-              - CH
-              - SY
-              - TW
-              - TJ
-              - TZ
-              - TH
-              - TL
-              - TG
-              - TK
-              - TO
-              - TT
-              - TN
-              - TR
-              - TM
-              - TC
-              - TV
-              - UG
-              - UA
-              - AE
-              - GB
-              - US
-              - UM
-              - UY
-              - UZ
-              - VU
-              - VE
-              - VN
-              - VG
-              - VI
-              - WF
-              - EH
-              - YE
-              - ZM
-              - ZW
-              type: string
-            created_at:
-              type: string
-              format: date-time
-              readOnly: true
-            updated_at:
-              type: string
-              format: date-time
-              readOnly: true
-          required:
-          - address_line_1
-          - address_line_2
-          - address_line_3
-          - city
-          readOnly: true
-        person:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            first_name:
-              type: string
-              maxLength: 30
-            middle_name:
-              type: string
-              nullable: true
-              maxLength: 30
-            last_name:
-              type: string
-              maxLength: 30
-            email:
-              type: string
-              format: email
-              maxLength: 254
-            created_at:
-              type: string
-              format: date-time
-              readOnly: true
-            updated_at:
-              type: string
-              format: date-time
-              readOnly: true
-          required:
-          - first_name
-          - last_name
-          - email
-          readOnly: true
-        operational_authorizations:
-          type: string
-          readOnly: true
-        authorized_activities:
-          type: string
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-    Pilot:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-    PilotDetail:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        is_active:
-          type: boolean
-        tests:
-          type: string
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        person:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            first_name:
-              type: string
-              maxLength: 30
-            middle_name:
-              type: string
-              nullable: true
-              maxLength: 30
-            last_name:
-              type: string
-              maxLength: 30
-            email:
-              type: string
-              format: email
-              maxLength: 254
-            created_at:
-              type: string
-              format: date-time
-              readOnly: true
-            updated_at:
-              type: string
-              format: date-time
-              readOnly: true
-          required:
-          - first_name
-          - last_name
-          - email
-          readOnly: true
-    PrivilegedPilotDetail:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        operator:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            company_name:
-              type: string
-              description: Enter the official name of the company
-              maxLength: 280
-            website:
-              type: string
-              format: uri
-              description: Put the company homepage URL
-              maxLength: 200
-              pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\\
-                .(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\\
-                ]|([a-z\xA1-\uFFFF0-9](?:[a-z\xA1-\uFFFF0-9-]{0,61}[a-z\xA1-\uFFFF\
-                0-9])?(?:\\.(?!-)[a-z\xA1-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z\xA1\
-                -\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\\
-                s]*)?\\z"
-            email:
-              type: string
-              format: email
-              description: Support email for queries / followup
-              maxLength: 254
-            phone_number:
-              type: string
-              pattern: ^\+?1?\d{9,15}$
-              maxLength: 17
-          required:
-          - company_name
-          - website
-          - email
-          readOnly: true
-        is_active:
-          type: boolean
-        tests:
-          type: string
-          readOnly: true
-        address:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            address_line_1:
-              type: string
-              maxLength: 140
-            address_line_2:
-              type: string
-              maxLength: 140
-            address_line_3:
-              type: string
-              maxLength: 140
-            postcode:
-              type: string
-              maxLength: 10
-            city:
-              type: string
-              maxLength: 140
-            country:
-              enum:
-              - AF
-              - AX
-              - AL
-              - DZ
-              - AS
-              - AD
-              - AO
-              - AI
-              - AQ
-              - AG
-              - AR
-              - AM
-              - AW
-              - AU
-              - AT
-              - AZ
-              - BS
-              - BH
-              - BD
-              - BB
-              - BY
-              - BE
-              - BZ
-              - BJ
-              - BM
-              - BT
-              - BO
-              - BQ
-              - BA
-              - BW
-              - BV
-              - BR
-              - IO
-              - BN
-              - BG
-              - BF
-              - BI
-              - KH
-              - CM
-              - CA
-              - CV
-              - KY
-              - CF
-              - TD
-              - CL
-              - CN
-              - CX
-              - CC
-              - CO
-              - KM
-              - CG
-              - CD
-              - CK
-              - CR
-              - CI
-              - HR
-              - CU
-              - CW
-              - CY
-              - CZ
-              - DK
-              - DJ
-              - DM
-              - DO
-              - EC
-              - EG
-              - SV
-              - GQ
-              - ER
-              - EE
-              - ET
-              - FK
-              - FO
-              - FJ
-              - FI
-              - FR
-              - GF
-              - PF
-              - TF
-              - GA
-              - GM
-              - GE
-              - DE
-              - GH
-              - GI
-              - GR
-              - GL
-              - GD
-              - GP
-              - GU
-              - GT
-              - GG
-              - GN
-              - GW
-              - GY
-              - HT
-              - HM
-              - VA
-              - HN
-              - HK
-              - HU
-              - IS
-              - IN
-              - ID
-              - IR
-              - IQ
-              - IE
-              - IM
-              - IL
-              - IT
-              - JM
-              - JP
-              - JE
-              - JO
-              - KZ
-              - KE
-              - KI
-              - KP
-              - KR
-              - KW
-              - KG
-              - LA
-              - LV
-              - LB
-              - LS
-              - LR
-              - LY
-              - LI
-              - LT
-              - LU
-              - MO
-              - MK
-              - MG
-              - MW
-              - MY
-              - MV
-              - ML
-              - MT
-              - MH
-              - MQ
-              - MR
-              - MU
-              - YT
-              - MX
-              - FM
-              - MD
-              - MC
-              - MN
-              - ME
-              - MS
-              - MA
-              - MZ
-              - MM
-              - NA
-              - NR
-              - NP
-              - NL
-              - NC
-              - NZ
-              - NI
-              - NE
-              - NG
-              - NU
-              - NF
-              - MP
-              - 'NO'
-              - OM
-              - PK
-              - PW
-              - PS
-              - PA
-              - PG
-              - PY
-              - PE
-              - PH
-              - PN
-              - PL
-              - PT
-              - PR
-              - QA
-              - RE
-              - RO
-              - RU
-              - RW
-              - BL
-              - SH
-              - KN
-              - LC
-              - MF
-              - PM
-              - VC
-              - WS
-              - SM
-              - ST
-              - SA
-              - SN
-              - RS
-              - SC
-              - SL
-              - SG
-              - SX
-              - SK
-              - SI
-              - SB
-              - SO
-              - ZA
-              - GS
-              - SS
-              - ES
-              - LK
-              - SD
-              - SR
-              - SJ
-              - SZ
-              - SE
-              - CH
-              - SY
-              - TW
-              - TJ
-              - TZ
-              - TH
-              - TL
-              - TG
-              - TK
-              - TO
-              - TT
-              - TN
-              - TR
-              - TM
-              - TC
-              - TV
-              - UG
-              - UA
-              - AE
-              - GB
-              - US
-              - UM
-              - UY
-              - UZ
-              - VU
-              - VE
-              - VN
-              - VG
-              - VI
-              - WF
-              - EH
-              - YE
-              - ZM
-              - ZW
-              type: string
-            created_at:
-              type: string
-              format: date-time
-              readOnly: true
-            updated_at:
-              type: string
-              format: date-time
-              readOnly: true
-          required:
-          - address_line_1
-          - address_line_2
-          - address_line_3
-          - city
-          readOnly: true
-        person:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            first_name:
-              type: string
-              maxLength: 30
-            middle_name:
-              type: string
-              nullable: true
-              maxLength: 30
-            last_name:
-              type: string
-              maxLength: 30
-            email:
-              type: string
-              format: email
-              maxLength: 254
-            created_at:
-              type: string
-              format: date-time
-              readOnly: true
-            updated_at:
-              type: string
-              format: date-time
-              readOnly: true
-          required:
-          - first_name
-          - last_name
-          - email
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        photo_small:
-          type: string
-          format: uri
-          nullable: true
-          maxLength: 200
-          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\\
-            .(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\\
-            ]|([a-z\xA1-\uFFFF0-9](?:[a-z\xA1-\uFFFF0-9-]{0,61}[a-z\xA1-\uFFFF0-9])?(?:\\\
-            .(?!-)[a-z\xA1-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z\xA1-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\\
-            .?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
-        photo:
-          type: string
-          format: uri
-          nullable: true
-          maxLength: 200
-          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\\
-            .(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\\
-            ]|([a-z\xA1-\uFFFF0-9](?:[a-z\xA1-\uFFFF0-9-]{0,61}[a-z\xA1-\uFFFF0-9])?(?:\\\
-            .(?!-)[a-z\xA1-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z\xA1-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\\
-            .?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
-    Manufacturer:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
         legalEntity:
           $ref: '#/components/schemas/LegalEntity'
+        validity:
+          $ref: '#/components/schemas/Validity'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+    Validity:
       required:
-        - id
-        - legalEntity
-    UasType:
+      - from
+      type: object
+      properties:
+        from:
+          type: string
+          format: date-time
+        till:
+          type: string
+          format: date-time
+    User:
+      required:
+      - email
+      - firstName
+      - id
+      - lastName
+      - timestamps
+      - username
       type: object
       properties:
         id:
           type: string
           format: uuid
+          readOnly: true
+          example: e66b7c9e-79f5-44b0-9642-59ca20b7af63
+        username:
+          type: string
+          example: theUser
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        phone:
+          type: string
+          example: +919999999999
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+        status:
+          type: string
+          description: User Status
+          example: ACTIVE
+          enum:
+          - ACTIVE
+          - INACTIVE
+    Manufacturer:
+      required:
+      - id
+      - legalEntity
+      - timestamps
+      - validity
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        legalEntity:
+          $ref: '#/components/schemas/LegalEntity'
+        validity:
+          $ref: '#/components/schemas/Validity'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+    Uas:
+      required:
+      - id
+      - oemSerialNumber
+      - status
+      - timestamps
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        type:
+          $ref: '#/components/schemas/UasType'
+        oemSerialNumber:
+          maxLength: 12
+          minLength: 6
+          type: string
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+        status:
+          type: string
+          enum:
+          - REGISTERED
+          - ACTIVE
+          - GROUNDED
+    UasType:
+      required:
+      - id
+      - manufacturer
+      - modelNumber
+      - mtow
+      - propulsionCategory
+      - supportedOperationCategories
+      - timestamps
+      - weightCategory
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
         modelNumber:
           type: string
         manufacturer:
           $ref: '#/components/schemas/Manufacturer'
-        mass:
-          type: number
-          format: integer
-          description: maximum take off mass in grams
-      required:
-        - id
-        - manufacturer
-        - mass
-        - modelNumber
-    Importer:
-      type: object
-      properties:
-        id:
+        propulsionCategory:
           type: string
-          format: uuid
-        uasTypes:
+          enum:
+          - VTOL
+          - FIXED_WING
+          - HYBRID
+        weightCategory:
+          type: string
+          enum:
+          - NANO
+          - SMALL
+          - MICRO
+          - MEDIUM
+          - LARGE
+        mtow:
+          type: number
+          description: maximum take off weight in kilograms
+          format: float
+        photoUrl:
+          type: string
+          format: uri
+          example: https://ispirt.github.io/pushpaka/
+        supportedOperationCategories:
           type: array
           items:
-            $ref: '#/components/schemas/UasType'
+            type: string
+            enum:
+            - C1
+            - C2
+            - C3
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+    Operator:
       required:
-        - id
-    Sale:
+      - id
+      - legalEntity
+      - timestamps
+      - validity
       type: object
       properties:
         id:
           type: string
           format: uuid
-        uas:
-          $ref: '#/components/schemas/Uas'
+          readOnly: true
+        legalEntity:
+          $ref: '#/components/schemas/LegalEntity'
+        validity:
+          $ref: '#/components/schemas/Validity'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+    CivilAviationAuthority:
       required:
-        - id
-        - uas
-    Lease:
+      - id
+      - legalEntity
+      - timestamps
+      - validity
       type: object
       properties:
         id:
           type: string
           format: uuid
-        uas:
-          $ref: '#/components/schemas/Uas'
-        startDate:
-          type: string
-          format: date-time
-        endDate:
-          type: string
-          format: date-time
-      required:
-        - id
-        - uas
-    OwnershipTransfer:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        uas:
-          $ref: '#/components/schemas/Uas'
-        ownershipOld:
-          $ref: '#/components/schemas/Ownership'
-        ownershipNew:
-          $ref: '#/components/schemas/Ownership'
-      required:
-        - id
-        - uas
-        - ownershipOld
-        - ownershipNew
-    Ownership:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        uas:
-          $ref: '#/components/schemas/Uas'
-        date:
-          type: string
-          format: date-time
-      required:
-        - id
-        - uas
-    TrainingOrganisation:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-      required:
-        - id
-    UasWeightCategory:
-      type: string
-      enum:
-        - NANO
-        - SMALL
-        - MICRO
-        - MEDIUM
-        - LARGE
-    UasPropulsionCategory:
-      type: string
-      enum:
-        - VTOL
-        - FIXED_WING
-        - HYBRID
-    Person:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        address:
-          $ref: '#/components/schemas/Address'
-    State:
-      type: string
-      enum:
-        - MAHARASHTRA
-        - 
-    Address:
-      type: object
-      properties:
-        line1:
-          type: string
-        line2:
-          type: string
-        line3:
-          type: string
-        state:
-          pinCode:
-          type: number
-          min: 100000
-          max: 999999
-
-    LegalEntity:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-      required:
-        - id
-        - name
+          readOnly: true
+        legalEntity:
+          $ref: '#/components/schemas/LegalEntity'
+        validity:
+          $ref: '#/components/schemas/Validity'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+  securitySchemes:
+    registry_auth:
+      type: oauth2
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
