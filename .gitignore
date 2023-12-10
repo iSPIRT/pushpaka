@@ -1,3 +1,6 @@
 site
 .DS_Store
 .obsidian
+docs/aut/target/
+docs/aut/.vscode
+
