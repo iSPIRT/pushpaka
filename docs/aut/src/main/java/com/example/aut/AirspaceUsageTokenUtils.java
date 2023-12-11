@@ -4,28 +4,7 @@ import java.util.UUID;
 
 public class AirspaceUsageTokenUtils {
 
-  public static String generateAirspaceUsageToken(
-    String droneID,
-    String pilotID,
-    AirspaceUsageOperationType airspaceUsageOperationType,
-    String startTime,
-    String endTime
-  ) {
-    //Create AUT for VLOS
-    AirspaceUsageToken airspaceUsageToken = new AirspaceUsageToken();
-    UUID uuid = UUID.randomUUID();
-
-    airspaceUsageToken.setId(uuid.toString());
-    airspaceUsageToken.setDroneID(droneID);
-    airspaceUsageToken.setPilotID(pilotID);
-    airspaceUsageToken.setOperationType(airspaceUsageOperationType);
-    airspaceUsageToken.setStartTime(startTime);
-    airspaceUsageToken.setEndTime(endTime);
-    airspaceUsageToken.setState(AirspaceUsageTokenState.CREATED);
-
-    return airspaceUsageToken.toJson();
-  }
-
+  //methods below are representative of manipulation of AUT at object level in SDK
   public static AirspaceUsageToken createAirspaceUsageTokenObject(
     String droneID,
     String pilotID,
@@ -55,11 +34,39 @@ public class AirspaceUsageTokenUtils {
     airspaceUsageToken.setAttenuations(airspaceUsageTokenAttenuations);
   }
 
-  public static void updateAirspaceUsageTokenAttenuations(
-    AirspaceUsageToken airspaceUsageToken,
-    AirspaceUsageTokenAttenuations airspaceUsageTokenAttenuations
+  public static String signAirspaceUsageTokenObjectJWT(
+    AirspaceUsageToken airspaceUsageToken
   ) {
-    //update the attentuation and return the payload
+    return null;
+  }
+  
+  public static String validateAirspaceUsageTokenObjectJWT(
+   String signedAirspaceUsageToken
+  ) {
+    return null;
+  }
+
+  //methods below are representative of service end points for AUT
+  public static String generateAirspaceUsageToken(
+    String droneID,
+    String pilotID,
+    AirspaceUsageOperationType airspaceUsageOperationType,
+    String startTime,
+    String endTime
+  ) {
+    //Create AUT for VLOS
+    AirspaceUsageToken airspaceUsageToken = new AirspaceUsageToken();
+    UUID uuid = UUID.randomUUID();
+
+    airspaceUsageToken.setId(uuid.toString());
+    airspaceUsageToken.setDroneID(droneID);
+    airspaceUsageToken.setPilotID(pilotID);
+    airspaceUsageToken.setOperationType(airspaceUsageOperationType);
+    airspaceUsageToken.setStartTime(startTime);
+    airspaceUsageToken.setEndTime(endTime);
+    airspaceUsageToken.setState(AirspaceUsageTokenState.CREATED);
+
+    return airspaceUsageToken.toJson();
   }
 
   public static void updateAirspaceUsageTokenAttenuations(
@@ -69,7 +76,11 @@ public class AirspaceUsageTokenUtils {
     //update the attentuation and return the payload
   }
 
-  public static void inspectAirspaceUsageToken(String airspaceUsageTokenId) {
+  public static void signAirspaceUsageToken(String airspaceUsageTokenId) {
+    //get the JSON representation of the AUT
+  }
+
+  public static void validateAirspaceUsageToken(String airspaceUsageTokenId) {
     //get the JSON representation of the AUT
   }
 

@@ -40,7 +40,6 @@ public class JwtSigner {
       claims.setClaim("email", "mail@example.com"); // additional claims/attributes about the subject can be added
       List<String> groups = Arrays.asList("group-one", "other-group", "group-three");
       claims.setStringListClaim("groups", groups); // multi-valued claims work too and will end up as a JSON array
-
       // A JWT is a JWS and/or a JWE with JSON claims as the payload.
       // In this example it is a JWS so we create a JsonWebSignature object.
       JsonWebSignature jws = new JsonWebSignature();

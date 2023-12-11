@@ -3,17 +3,6 @@ package com.example.aut;
 public class App {
 
   public static void main(String[] args) {
-    //generate AUT for VLOS
-    String airspaceUsageTokenPayload = AirspaceUsageTokenUtils.generateAirspaceUsageToken(
-      "DRONE12345",
-      "PILOT98765",
-      AirspaceUsageOperationType.VLOS,
-      "2023-11-19T14:28:15Z",
-      "2023-11-19T15:28:15Z"
-    );
-
-    System.out.println(airspaceUsageTokenPayload);
-
     //generate & patch attenuations VLOS
     AirspaceUsageToken airspaceUsageToken = AirspaceUsageTokenUtils.createAirspaceUsageTokenObject(
       "DRONE12345",
