@@ -1,5 +1,9 @@
 package com.example.aut;
 
+import org.jose4j.jwk.RsaJsonWebKey;
+import org.jose4j.jwk.RsaJwkGenerator;
+import org.jose4j.jwt.JwtClaims;
+
 public class App {
 
   public static void main(String[] args) {
@@ -27,6 +31,39 @@ public class App {
 
     System.out.println(airspaceUsageToken.toJson());
 
+    //signing the claim
+    try {
+      RsaJsonWebKey rsaJsonWebKey = RsaJwkGenerator.generateJwk(2048);
+      rsaJsonWebKey.setKeyId("k1");
+     
+      String signedToken = AirspaceUsageTokenUtils.signAirspaceUsageTokenObjectJWT(
+      rsaJsonWebKey.getPrivateKey(),
+      rsaJsonWebKey.getKeyId(),
+      airspaceUsageToken,
+      "Issuer",
+      "Audience",
+      "subject",
+      10,
+      2
+      );
+
+      System.out.println(signedToken);
+      
+      JwtClaims jwtClaims = AirspaceUsageTokenUtils.validateAirspaceUsageTokenObjectJWT(
+        rsaJsonWebKey.getKey(), 
+        signedToken, 
+        "Issuer", 
+        "Audience", 
+        30);
+      
+      System.out.println(jwtClaims);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    
+
+   
     //generate and patch attenuations for BVLOS
     airspaceUsageToken =
       AirspaceUsageTokenUtils.createAirspaceUsageTokenObject(
@@ -52,5 +89,35 @@ public class App {
     );
 
     System.out.println(airspaceUsageToken.toJson());
+
+      try {
+        RsaJsonWebKey rsaJsonWebKey = RsaJwkGenerator.generateJwk(2048);
+        rsaJsonWebKey.setKeyId("k1");
+        
+        String signedToken = AirspaceUsageTokenUtils.signAirspaceUsageTokenObjectJWT(
+        rsaJsonWebKey.getPrivateKey(),
+        rsaJsonWebKey.getKeyId(),
+        airspaceUsageToken,
+        "Issuer",
+        "Audience",
+        "subject",
+        10,
+        2
+        );
+
+        System.out.println(signedToken);
+
+        JwtClaims jwtClaims = AirspaceUsageTokenUtils.validateAirspaceUsageTokenObjectJWT(
+        rsaJsonWebKey.getKey(), 
+        signedToken, 
+        "Issuer", 
+        "Audience", 
+        30);
+      
+      System.out.println(jwtClaims);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
   }
 }

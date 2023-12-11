@@ -93,7 +93,7 @@ public class AirspaceUsageToken {
     JsonElement jsonElement = gson.toJsonTree(this);
     JsonObject jsonObject = new JsonObject();
     jsonObject.add("payload", jsonElement);
-    String airspaceUsageTokenJson = gson.toJson(jsonObject);
+    String airspaceUsageTokenJson = gson.toJson(this);
 
     return airspaceUsageTokenJson;
   }
