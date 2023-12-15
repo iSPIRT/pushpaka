@@ -28,8 +28,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import org.hibernate.JDBCException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -1047,15 +1047,21 @@ public class Dao implements Serializable {
   }
 
   // Civil Aviation Authority is our model, which corresponds to the "civil_aviation_authorities" database table.
-  @Entity
-  @Table(name = "civil_aviation_authorities")
+  @Entity(name = CivilAviationAuthority.PERSISTENCE_NAME)
+  @Table(name = CivilAviationAuthority.PERSISTENCE_NAME)
   public static class CivilAviationAuthority {
+    static final String PERSISTENCE_NAME = "CivilAviationAuthority";
+
     @Id
     @Column(name = "id")
     public UUID id;
 
     public UUID getId() {
       return id;
+    }
+
+    public void setId(UUID id) {
+      this.id = id;
     }
 
     @NotNull
@@ -1137,6 +1143,72 @@ public class Dao implements Serializable {
 
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public CivilAviationAuthority() {}
+
+    public static CivilAviationAuthority create(Session s, CivilAviationAuthority m)
+      throws DaoException {
+      LegalEntity le = LegalEntity.get(s, m.getLegalEntity().getId());
+      if (le == null) {
+        throw new DaoException(DaoException.Code.NOT_FOUND, "LegalEntity");
+      }
+      Transaction t = s.beginTransaction();
+      OffsetDateTime n = OffsetDateTime.now();
+      m.setId(UUID.randomUUID());
+      m.setLegalEntity(le);
+      s.save(m);
+      s.flush();
+      t.commit();
+      s.refresh(m);
+      return m;
+    }
+
+    public static List<CivilAviationAuthority> getAll(Session s) {
+      return s
+        .createQuery("from CivilAviationAuthority", CivilAviationAuthority.class)
+        .getResultList();
+    }
+
+    public static CivilAviationAuthority get(Session s, UUID id) {
+      return s
+        .createQuery(
+          "from CivilAviationAuthority where id= :id",
+          CivilAviationAuthority.class
+        )
+        .setString("id", id.toString())
+        .uniqueResult();
+    }
+
+    public static void delete(Session s, UUID id) {
+      Transaction t = s.beginTransaction();
+      s
+        .createQuery("delete from CivilAviationAuthority where id= :id")
+        .setString("id", id.toString())
+        .executeUpdate();
+      t.commit();
+    }
+
+    public static CivilAviationAuthority update(
+      Session s,
+      UUID id,
+      CivilAviationAuthority le
+    ) {
+      CivilAviationAuthority leo = s
+        .createQuery(
+          "from CivilAviationAuthority where id= :id",
+          CivilAviationAuthority.class
+        )
+        .setString("id", id.toString())
+        .uniqueResult();
+      leo.setTimestampUpdated(OffsetDateTime.now());
+      leo.setValidityStart(le.getValidityStart());
+      leo.setValidityEnd(le.getValidityEnd());
+      LegalEntity a = leo.getLegalEntity();
+      LegalEntity ao = le.getLegalEntity();
+      // ao.setCountry(a.getCountry());
+      s.saveOrUpdate(ao);
+      s.saveOrUpdate(leo);
+      leo.setLegalEntity(ao);
+      return leo;
+    }
   }
 
   // Operator is our model, which corresponds to the "operators" database table.

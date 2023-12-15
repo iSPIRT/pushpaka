@@ -2,6 +2,7 @@ package in.ispirt.pushpaka.registry.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import in.ispirt.pushpaka.registry.dao.Dao;
 import in.ispirt.pushpaka.registry.models.LegalEntity;
 import in.ispirt.pushpaka.registry.models.ObjectTimestamps;
 import in.ispirt.pushpaka.registry.models.Validity;
@@ -187,5 +188,35 @@ public class CivilAviationAuthority {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+
+  public static CivilAviationAuthority toOa(Dao.CivilAviationAuthority x) {
+    Validity vtimestamps = new Validity();
+    vtimestamps.setFrom(x.getValidityStart());
+    vtimestamps.setTill(x.getValidityEnd());
+    ObjectTimestamps timestamps = new ObjectTimestamps(
+      x.getTimestampCreated(),
+      x.getTimestampUpdated()
+    );
+    CivilAviationAuthority le = new CivilAviationAuthority(
+      x.getId(),
+      LegalEntity.toOa(x.getLegalEntity()),
+      vtimestamps,
+      timestamps
+    );
+    return le;
+  }
+
+  public static Dao.CivilAviationAuthority fromOa(CivilAviationAuthority m) {
+    OffsetDateTime n = OffsetDateTime.now();
+    Dao.CivilAviationAuthority u = new Dao.CivilAviationAuthority(
+      m.id,
+      LegalEntity.fromOa(m.getLegalEntity()),
+      n,
+      n,
+      n,
+      n
+    );
+    return u;
   }
 }

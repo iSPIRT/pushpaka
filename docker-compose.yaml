@@ -53,7 +53,7 @@ services:
   spicedb:
     image: "authzed/spicedb"
     command: "serve"
-    restart: "always"
+    restart: "unless-stopped"
     ports:
       - "8081:8080"
       - "9090:9090"
