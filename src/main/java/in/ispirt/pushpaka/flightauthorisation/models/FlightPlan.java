@@ -62,8 +62,8 @@ public class FlightPlan {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FlightPlan FlightPlan = (FlightPlan) o;
-    return (Objects.equals(this.id, FlightPlan.id));
+    FlightPlan fp = (FlightPlan) o;
+    return (Objects.equals(this.id, fp.id));
   }
 
   @Override

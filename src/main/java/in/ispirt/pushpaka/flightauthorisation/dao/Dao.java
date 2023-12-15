@@ -1,6 +1,12 @@
 package in.ispirt.pushpaka.flightauthorisation.dao;
 
+import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageOperationType;
+import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageToken;
+import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageTokenAttenuations;
+import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageTokenState;
 import in.ispirt.pushpaka.flightauthorisation.models.FlightPlan;
+import in.ispirt.pushpaka.flightauthorisation.models.GeocageData;
+import in.ispirt.pushpaka.flightauthorisation.models.GeospatialData;
 import in.ispirt.pushpaka.flightauthorisation.utils.DaoException;
 import in.ispirt.pushpaka.flightauthorisation.utils.Utils;
 import java.io.Serializable;
@@ -113,6 +119,91 @@ public class Dao implements Serializable {
     public String toString() {
       StringBuilder sb = new StringBuilder();
       sb.append("class FlightPlan {\n");
+      sb.append("    id: ").append(id.toString()).append("\n");
+      sb.append("}");
+      return sb.toString();
+    }
+  }
+
+  // AirspaceUsageToken is our model, which corresponds to the "AirspaceUsageTokenes" database table.
+  @Entity(name = AirspaceUsageToken.PERSISTENCE_NAME)
+  @Table(name = AirspaceUsageToken.PERSISTENCE_NAME)
+  public static class AirspaceUsageToken {
+    static final String PERSISTENCE_NAME = "AirspaceUsageToken";
+
+    @Id
+    @Column(name = "id")
+    public UUID id;
+
+    public UUID getId() {
+      return id;
+    }
+
+    public void setId(UUID id) {
+      this.id = id;
+    }
+
+    public AirspaceUsageToken(UUID id) {
+      this.id = id;
+    }
+
+    // Convenience constructor.
+    // public AirspaceUsageToken(
+    //   UUID id
+    // ) {
+    //   this.id = id;
+    // }
+
+    // Hibernate needs a default (no-arg) constructor to create model objects.
+    public AirspaceUsageToken() {}
+
+    public static AirspaceUsageToken create(Session s, AirspaceUsageToken a) {
+      Transaction t = s.beginTransaction();
+      UUID aid = UUID.randomUUID();
+      a.setId(aid);
+      s.save(a);
+      s.flush();
+      t.commit();
+      s.refresh(a);
+      return a;
+    }
+
+    public static List<AirspaceUsageToken> getAll(Session s) {
+      return s
+        .createQuery("from AirspaceUsageToken", AirspaceUsageToken.class)
+        .getResultList();
+    }
+
+    public static AirspaceUsageToken get(Session s, UUID id) {
+      return s
+        .createQuery("from AirspaceUsageToken where id= :id", AirspaceUsageToken.class)
+        .setString("id", id.toString())
+        .uniqueResult();
+    }
+
+    public static void delete(Session s, UUID id) {
+      Transaction t = s.beginTransaction();
+      s
+        .createQuery("delete from AirspaceUsageToken where id= :id")
+        .setString("id", id.toString())
+        .executeUpdate();
+      t.commit();
+    }
+
+    public static AirspaceUsageToken update(Session s, UUID id, AirspaceUsageToken le) {
+      AirspaceUsageToken leo = s
+        .createQuery("from AirspaceUsageToken where id= :id", AirspaceUsageToken.class)
+        .setString("id", id.toString())
+        .uniqueResult();
+      // ao.setCountry(a.getCountry());
+      s.saveOrUpdate(leo);
+      return leo;
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder();
+      sb.append("class AirspaceUsageToken {\n");
       sb.append("    id: ").append(id.toString()).append("\n");
       sb.append("}");
       return sb.toString();
