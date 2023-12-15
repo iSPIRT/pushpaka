@@ -5,7 +5,11 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
+import in.ispirt.pushpaka.registry.dao.Dao;
+import in.ispirt.pushpaka.registry.dao.DaoInstance;
+import in.ispirt.pushpaka.registry.models.Address;
 import in.ispirt.pushpaka.registry.models.User;
+import in.ispirt.pushpaka.registry.utils.DaoException;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -23,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import org.springframework.http.HttpStatus;
@@ -76,82 +81,27 @@ public interface UserApi {
     consumes = { "application/json" }
   )
   default ResponseEntity<User> createUser(
-    @Parameter(name = "User", description = "Created user object") @Valid @RequestBody(
-      required = false
+    @Parameter(name = "user", description = "User data") @Valid @RequestBody(
+      required = true
     ) User user
   ) {
-    getRequest()
-      .ifPresent(
-        request -> {
-          for (MediaType mediaType : MediaType.parseMediaTypes(
-            request.getHeader("Accept")
-          )) {
-            if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-              String exampleString =
-                "{ \"firstName\" : \"John\", \"lastName\" : \"James\", \"userStatus\" : 1, \"phone\" : \"+919999999999\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"e66b7c9e-79f5-44b0-9642-59ca20b7af63\", \"email\" : \"john@email.com\", \"username\" : \"theUser\" }";
-              ApiUtil.setExampleResponse(request, "application/json", exampleString);
-              break;
-            }
-          }
-        }
-      );
-    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-  }
-
-  /**
-   * POST /user/createWithList : Creates list of users with given input array
-   * Creates list of users with given input array
-   *
-   * @param user  (optional)
-   * @return Successful operation (status code 200)
-   *         or successful operation (status code 200)
-   */
-  @Operation(
-    operationId = "createUsersWithListInput",
-    summary = "Creates list of users with given input array",
-    description = "Creates list of users with given input array",
-    tags = { "user" },
-    responses = {
-      @ApiResponse(
-        responseCode = "200",
-        description = "Successful operation",
-        content = {
-          @Content(
-            mediaType = "application/json",
-            schema = @Schema(implementation = User.class)
-          )
-        }
-      ),
-      @ApiResponse(responseCode = "default", description = "successful operation")
+    try {
+      Dao.Users le = User.fromOa(user);
+      Dao.Users lec = Dao.Users.create(DaoInstance.getInstance().getSession(), le);
+      return ResponseEntity.ok(User.toOa(lec));
+    } catch (ConstraintViolationException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
-  )
-  @RequestMapping(
-    method = RequestMethod.POST,
-    value = "/user/createWithList",
-    produces = { "application/json" },
-    consumes = { "application/json" }
-  )
-  default ResponseEntity<User> createUsersWithListInput(
-    @Parameter(name = "User", description = "") @Valid @RequestBody(
-      required = false
-    ) List<User> user
-  ) {
-    getRequest()
-      .ifPresent(
-        request -> {
-          for (MediaType mediaType : MediaType.parseMediaTypes(
-            request.getHeader("Accept")
-          )) {
-            if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-              String exampleString =
-                "{ \"firstName\" : \"John\", \"lastName\" : \"James\", \"userStatus\" : 1, \"phone\" : \"+919999999999\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"e66b7c9e-79f5-44b0-9642-59ca20b7af63\", \"email\" : \"john@email.com\", \"username\" : \"theUser\" }";
-              ApiUtil.setExampleResponse(request, "application/json", exampleString);
-              break;
-            }
-          }
-        }
-      );
-    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
   /**
@@ -181,137 +131,6 @@ public interface UserApi {
       in = ParameterIn.PATH
     ) @PathVariable("username") String username
   ) {
-    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-  }
-
-  /**
-   * GET /user/{username} : Get user by user name
-   *
-   *
-   * @param username The name that needs to be fetched. Use user1 for testing.  (required)
-   * @return successful operation (status code 200)
-   *         or Invalid username supplied (status code 400)
-   *         or User not found (status code 404)
-   */
-  @Operation(
-    operationId = "getUserByName",
-    summary = "Get user by user name",
-    description = "",
-    tags = { "user" },
-    responses = {
-      @ApiResponse(
-        responseCode = "200",
-        description = "successful operation",
-        content = {
-          @Content(
-            mediaType = "application/json",
-            schema = @Schema(implementation = User.class)
-          )
-        }
-      ),
-      @ApiResponse(responseCode = "400", description = "Invalid username supplied"),
-      @ApiResponse(responseCode = "404", description = "User not found")
-    }
-  )
-  @RequestMapping(
-    method = RequestMethod.GET,
-    value = "/user/{username}",
-    produces = { "application/json" }
-  )
-  default ResponseEntity<User> getUserByName(
-    @Parameter(
-      name = "username",
-      description = "The name that needs to be fetched. Use user1 for testing. ",
-      required = true,
-      in = ParameterIn.PATH
-    ) @PathVariable("username") String username
-  ) {
-    getRequest()
-      .ifPresent(
-        request -> {
-          for (MediaType mediaType : MediaType.parseMediaTypes(
-            request.getHeader("Accept")
-          )) {
-            if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-              String exampleString =
-                "{ \"firstName\" : \"John\", \"lastName\" : \"James\", \"userStatus\" : 1, \"phone\" : \"+919999999999\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"e66b7c9e-79f5-44b0-9642-59ca20b7af63\", \"email\" : \"john@email.com\", \"username\" : \"theUser\" }";
-              ApiUtil.setExampleResponse(request, "application/json", exampleString);
-              break;
-            }
-          }
-        }
-      );
-    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-  }
-
-  /**
-   * GET /user/login : Logs user into the system
-   *
-   *
-   * @param username The user name for login (optional)
-   * @param password The password for login in clear text (optional)
-   * @return successful operation (status code 200)
-   *         or Invalid username/password supplied (status code 400)
-   */
-  @Operation(
-    operationId = "loginUser",
-    summary = "Logs user into the system",
-    description = "",
-    tags = { "user" },
-    responses = {
-      @ApiResponse(
-        responseCode = "200",
-        description = "successful operation",
-        content = {
-          @Content(
-            mediaType = "application/json",
-            schema = @Schema(implementation = String.class)
-          )
-        }
-      ),
-      @ApiResponse(
-        responseCode = "400",
-        description = "Invalid username/password supplied"
-      )
-    }
-  )
-  @RequestMapping(
-    method = RequestMethod.GET,
-    value = "/user/login",
-    produces = { "application/json" }
-  )
-  default ResponseEntity<String> loginUser(
-    @Parameter(
-      name = "username",
-      description = "The user name for login",
-      in = ParameterIn.QUERY
-    ) @Valid @RequestParam(value = "username", required = false) String username,
-    @Parameter(
-      name = "password",
-      description = "The password for login in clear text",
-      in = ParameterIn.QUERY
-    ) @Valid @RequestParam(value = "password", required = false) String password
-  ) {
-    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-  }
-
-  /**
-   * GET /user/logout : Logs out current logged in user session
-   *
-   *
-   * @return successful operation (status code 200)
-   */
-  @Operation(
-    operationId = "logoutUser",
-    summary = "Logs out current logged in user session",
-    description = "",
-    tags = { "user" },
-    responses = {
-      @ApiResponse(responseCode = "default", description = "successful operation")
-    }
-  )
-  @RequestMapping(method = RequestMethod.GET, value = "/user/logout")
-  default ResponseEntity<Void> logoutUser() {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 

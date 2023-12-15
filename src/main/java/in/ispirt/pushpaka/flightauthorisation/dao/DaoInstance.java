@@ -1,7 +1,6 @@
 package in.ispirt.pushpaka.flightauthorisation.dao;
 
-import in.ispirt.pushpaka.registry.dao.Dao;
-import in.ispirt.pushpaka.registry.models.Uas;
+import in.ispirt.pushpaka.flightauthorisation.dao.Dao;
 import java.math.BigDecimal;
 import java.util.function.Function;
 import org.hibernate.Session;
@@ -26,16 +25,7 @@ public class DaoInstance {
     sessionFactory =
       new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Dao.LegalEntity.class)
-        .addAnnotatedClass(Dao.Manufacturer.class)
-        .addAnnotatedClass(Dao.UasType.class)
-        .addAnnotatedClass(Dao.Uas.class)
-        .addAnnotatedClass(Dao.User.class)
-        .addAnnotatedClass(Dao.Pilot.class)
-        .addAnnotatedClass(Dao.Address.class)
-        .addAnnotatedClass(Dao.CivilAviationAuthority.class)
-        .addAnnotatedClass(Dao.Operator.class)
-        .addAnnotatedClass(Dao.Utmsp.class)
+        .addAnnotatedClass(Dao.FlightPlan.class)
         .buildSessionFactory();
     session = sessionFactory.openSession();
   }

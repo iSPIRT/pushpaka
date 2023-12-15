@@ -30,7 +30,7 @@ public class DaoInstance {
         .addAnnotatedClass(Dao.Manufacturer.class)
         .addAnnotatedClass(Dao.UasType.class)
         .addAnnotatedClass(Dao.Uas.class)
-        .addAnnotatedClass(Dao.User.class)
+        .addAnnotatedClass(Dao.Users.class)
         .addAnnotatedClass(Dao.Pilot.class)
         .addAnnotatedClass(Dao.Address.class)
         .addAnnotatedClass(Dao.CivilAviationAuthority.class)

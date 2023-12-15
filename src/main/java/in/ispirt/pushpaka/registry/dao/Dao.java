@@ -29,6 +29,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotNull;
 import org.hibernate.JDBCException;
 import org.hibernate.Session;
@@ -182,6 +183,14 @@ public class Dao implements Serializable {
 
     public static void delete(Session s, UUID id) {
       Transaction t = s.beginTransaction();
+      LegalEntity le = s
+        .createQuery("from LegalEntity where id= :id", LegalEntity.class)
+        .setString("id", id.toString())
+        .uniqueResult();
+      s
+        .createQuery("delete from Address where id= :id")
+        .setString("id", le.getAddress().getId().toString())
+        .executeUpdate();
       s
         .createQuery("delete from LegalEntity where id= :id")
         .setString("id", id.toString())
@@ -325,7 +334,8 @@ public class Dao implements Serializable {
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public Manufacturer() {}
 
-    public static Manufacturer create(Session s, Manufacturer m) throws DaoException {
+    public static Manufacturer create(Session s, Manufacturer m)
+      throws DaoException, ConstraintViolationException {
       LegalEntity le = LegalEntity.get(s, m.getLegalEntity().getId());
       if (le == null) {
         throw new DaoException(DaoException.Code.NOT_FOUND, "LegalEntity");
@@ -513,7 +523,8 @@ public class Dao implements Serializable {
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public UasType() {}
 
-    public static UasType create(Session s, UasType m) throws DaoException {
+    public static UasType create(Session s, UasType m)
+      throws DaoException, ConstraintViolationException {
       Manufacturer le = Manufacturer.get(s, m.getManufacturer().getId());
       if (le == null) {
         throw new DaoException(DaoException.Code.NOT_FOUND, "Manufacturer");
@@ -660,7 +671,8 @@ public class Dao implements Serializable {
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public Uas() {}
 
-    public static Uas create(Session s, Uas m) throws DaoException {
+    public static Uas create(Session s, Uas m)
+      throws DaoException, ConstraintViolationException {
       UasType le = UasType.get(s, m.getUasType().getId());
       if (le == null) {
         throw new DaoException(DaoException.Code.NOT_FOUND, "UasType");
@@ -668,6 +680,8 @@ public class Dao implements Serializable {
       Transaction t = s.beginTransaction();
       OffsetDateTime n = OffsetDateTime.now();
       m.setId(UUID.randomUUID());
+      m.setTimestampCreated(n);
+      m.setTimestampUpdated(n);
       m.setUasType(le);
       s.save(m);
       s.flush();
@@ -712,92 +726,22 @@ public class Dao implements Serializable {
     }
   }
 
-  // User is our model, which corresponds to the "users" database table.
-  @Entity
-  @Table(name = "users")
-  public static class User {
-    @Id
-    @Column(name = "id")
-    public UUID id;
-
-    public UUID getId() {
-      return id;
-    }
-
-    public User(UUID id) {
-      this.id = id;
-    }
-
-    @NotNull
-    @Column(name = "email")
-    public String email;
-
-    public String getEmail() {
-      return email;
-    }
-
-    public void setEmail(String c) {
-      this.email = c;
-    }
-
-    @NotNull
-    @Column(name = "timestamp_created")
-    public OffsetDateTime timestampCreated;
-
-    public OffsetDateTime getTimestampCreated() {
-      return timestampCreated;
-    }
-
-    public void setTimestampCreated(OffsetDateTime a) {
-      this.timestampCreated = a;
-    }
-
-    @NotNull
-    @Column(name = "timestamp_updated")
-    public OffsetDateTime timestampUpdated;
-
-    public OffsetDateTime getTimestampUpdated() {
-      return timestampUpdated;
-    }
-
-    public void setTimestampUpdated(OffsetDateTime a) {
-      this.timestampUpdated = a;
-    }
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(length = 16, name = "status")
-    private UserStatus status;
-
-    // Convenience constructor.
-    public User(
-      UUID id,
-      String email,
-      OffsetDateTime tc,
-      OffsetDateTime tu,
-      UserStatus s
-    ) {
-      this.id = id;
-      this.email = email;
-      this.timestampCreated = tc;
-      this.timestampUpdated = tu;
-      this.status = s;
-    }
-
-    // Hibernate needs a default (no-arg) constructor to create model objects.
-    public User() {}
-  }
-
   // Pilot is our model, which corresponds to the "pilots" database table.
-  @Entity
-  @Table(name = "pilots")
+  @Entity(name = Pilot.PERSISTENCE_NAME)
+  @Table(name = Pilot.PERSISTENCE_NAME)
   public static class Pilot {
+    static final String PERSISTENCE_NAME = "Pilot";
+
     @Id
     @Column(name = "id")
-    public UUID id;
+    private UUID id;
 
     public UUID getId() {
       return id;
+    }
+
+    public void setId(UUID id) {
+      this.id = id;
     }
 
     public Pilot(UUID id) {
@@ -808,13 +752,13 @@ public class Dao implements Serializable {
     @OneToOne
     @JoinColumn(name = "FK_user")
     // @Column(name = "balance")
-    public User user;
+    public Users user;
 
-    public User getUser() {
+    public Users getUser() {
       return user;
     }
 
-    public void setUser(User m) {
+    public void setUser(Users m) {
       this.user = m;
     }
 
@@ -867,7 +811,7 @@ public class Dao implements Serializable {
     // Convenience constructor.
     public Pilot(
       UUID id,
-      User u,
+      Users u,
       OffsetDateTime tc,
       OffsetDateTime tu,
       OffsetDateTime vs,
@@ -883,6 +827,55 @@ public class Dao implements Serializable {
 
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public Pilot() {}
+
+    public static Pilot create(Session s, Pilot le)
+      throws DaoException, ConstraintViolationException {
+      Users aa = Users.get(s, le.getUser().getId());
+      if (aa == null) {
+        throw new DaoException(DaoException.Code.NOT_FOUND, "User");
+      }
+      Transaction t = s.beginTransaction();
+      OffsetDateTime n = OffsetDateTime.now();
+      le.setId(UUID.randomUUID());
+      le.setUser(aa);
+      le.setTimestampCreated(n);
+      le.setTimestampUpdated(n);
+      s.save(le);
+      s.flush();
+      t.commit();
+      s.refresh(le);
+      return le;
+    }
+
+    public static List<Pilot> getAll(Session s) {
+      return s.createQuery("from Pilot", Pilot.class).getResultList();
+    }
+
+    public static Pilot get(Session s, UUID id) {
+      return s
+        .createQuery("from Pilot where id= :id", Pilot.class)
+        .setString("id", id.toString())
+        .uniqueResult();
+    }
+
+    public static void delete(Session s, UUID id) {
+      Transaction t = s.beginTransaction();
+      s
+        .createQuery("delete from Pilot where id= :id")
+        .setString("id", id.toString())
+        .executeUpdate();
+      t.commit();
+    }
+
+    public static Pilot update(Session s, UUID id, Pilot le) {
+      Pilot leo = s
+        .createQuery("from Pilot where id= :id", Pilot.class)
+        .setString("id", id.toString())
+        .uniqueResult();
+      leo.setTimestampUpdated(OffsetDateTime.now());
+      s.saveOrUpdate(leo);
+      return leo;
+    }
   }
 
   // Address is our model, which corresponds to the "addresses" database table.
@@ -1029,6 +1022,15 @@ public class Dao implements Serializable {
       return a;
     }
 
+    public static void delete(Session s, UUID id) {
+      Transaction t = s.beginTransaction();
+      s
+        .createQuery("delete from Address where id= :id")
+        .setString("id", id.toString())
+        .executeUpdate();
+      t.commit();
+    }
+
     @Override
     public String toString() {
       StringBuilder sb = new StringBuilder();
@@ -1043,6 +1045,187 @@ public class Dao implements Serializable {
       sb.append("    country: ").append(country).append("\n");
       sb.append("}");
       return sb.toString();
+    }
+  }
+
+  // User is our model, which corresponds to the "users" database table.
+  @Entity(name = Users.PERSISTENCE_NAME)
+  @Table(name = Users.PERSISTENCE_NAME)
+  public static class Users {
+    static final String PERSISTENCE_NAME = "Users";
+
+    @Id
+    @Column(name = "id")
+    private UUID id;
+
+    public UUID getId() {
+      return id;
+    }
+
+    public void setId(UUID id) {
+      this.id = id;
+    }
+
+    public Users(UUID id) {
+      this.id = id;
+    }
+
+    public String phone;
+
+    public String getPhone() {
+      return phone;
+    }
+
+    public void setPhone(String c) {
+      this.phone = c;
+    }
+
+    public String aadharId;
+
+    public String getAadharId() {
+      return aadharId;
+    }
+
+    public void setAadharId(String c) {
+      this.aadharId = c;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "FK_address")
+    private Address address;
+
+    public Address getAddress() {
+      return address;
+    }
+
+    public void setAddress(Address x) {
+      this.address = x;
+    }
+
+    @NotNull
+    @Column(name = "timestamp_created")
+    public OffsetDateTime timestampCreated;
+
+    public OffsetDateTime getTimestampCreated() {
+      return timestampCreated;
+    }
+
+    public void setTimestampCreated(OffsetDateTime a) {
+      this.timestampCreated = a;
+    }
+
+    @NotNull
+    @Column(name = "timestamp_updated")
+    public OffsetDateTime timestampUpdated;
+
+    public OffsetDateTime getTimestampUpdated() {
+      return timestampUpdated;
+    }
+
+    public void setTimestampUpdated(OffsetDateTime a) {
+      this.timestampUpdated = a;
+    }
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(length = 16, name = "status")
+    private UserStatus status;
+
+    public UserStatus getStatus() {
+      return status;
+    }
+
+    public void setStatus(UserStatus x) {
+      this.status = x;
+    }
+
+    // Convenience constructor.
+    public Users(
+      UUID id,
+      String phone,
+      String aadharId,
+      Address address,
+      OffsetDateTime tc,
+      OffsetDateTime tu,
+      UserStatus s
+    ) {
+      this.id = id;
+      this.phone = phone;
+      this.aadharId = aadharId;
+      this.address = address;
+      this.timestampCreated = tc;
+      this.timestampUpdated = tu;
+      this.status = s;
+    }
+
+    // Hibernate needs a default (no-arg) constructor to create model objects.
+    public Users() {}
+
+    public static Users create(Session s, Users le)
+      throws DaoException, ConstraintViolationException {
+      Address aa = Address.create(s, le.getAddress());
+      Transaction t = s.beginTransaction();
+      OffsetDateTime n = OffsetDateTime.now();
+      le.setTimestampCreated(n);
+      le.setTimestampUpdated(n);
+      le.setAddress(aa);
+      le.setStatus(UserStatus.INACTIVE);
+      s.save(le);
+      s.flush();
+      t.commit();
+      s.refresh(le);
+      return le;
+    }
+
+    public static List<Users> getAll(Session s) {
+      return s.createQuery("from Users", Users.class).getResultList();
+    }
+
+    public static Users get(Session s, UUID id) {
+      return s
+        .createQuery("from Users where id= :id", Users.class)
+        .setString("id", id.toString())
+        .uniqueResult();
+    }
+
+    public static void delete(Session s, UUID id) {
+      Transaction t = s.beginTransaction();
+      Users le = s
+        .createQuery("from Users where id= :id", Users.class)
+        .setString("id", id.toString())
+        .uniqueResult();
+      s
+        .createQuery("delete from Address where id= :id")
+        .setString("id", le.getAddress().getId().toString())
+        .executeUpdate();
+      s
+        .createQuery("delete from Users where id= :id")
+        .setString("id", id.toString())
+        .executeUpdate();
+      t.commit();
+    }
+
+    public static Users update(Session s, UUID id, Users le) {
+      Users leo = s
+        .createQuery("from Users where id= :id", Users.class)
+        .setString("id", id.toString())
+        .uniqueResult();
+      leo.setPhone(leo.getPhone());
+      leo.setAadharId(leo.getAadharId());
+      leo.setTimestampUpdated(OffsetDateTime.now());
+      Address a = leo.getAddress();
+      Address ao = le.getAddress();
+      ao.setLine1(a.getLine1());
+      ao.setLine2(a.getLine2());
+      ao.setLine3(a.getLine3());
+      ao.setCity(a.getCity());
+      ao.setPinCode(a.getPinCode());
+      ao.setState(a.getState());
+      ao.setCountry(a.getCountry());
+      s.saveOrUpdate(ao);
+      s.saveOrUpdate(leo);
+      leo.setAddress(ao);
+      return leo;
     }
   }
 
@@ -1310,7 +1493,8 @@ public class Dao implements Serializable {
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public Operator() {}
 
-    public static Operator create(Session s, Operator m) throws DaoException {
+    public static Operator create(Session s, Operator m)
+      throws DaoException, ConstraintViolationException {
       LegalEntity le = LegalEntity.get(s, m.getLegalEntity().getId());
       if (le == null) {
         throw new DaoException(DaoException.Code.NOT_FOUND, "LegalEntity");
@@ -1463,7 +1647,8 @@ public class Dao implements Serializable {
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public Utmsp() {}
 
-    public static Utmsp create(Session s, Utmsp m) throws DaoException {
+    public static Utmsp create(Session s, Utmsp m)
+      throws DaoException, ConstraintViolationException {
       LegalEntity le = LegalEntity.get(s, m.getLegalEntity().getId());
       if (le == null) {
         throw new DaoException(DaoException.Code.NOT_FOUND, "LegalEntity");
@@ -1558,9 +1743,11 @@ public class Dao implements Serializable {
         s.save(m);
         s.save(ut);
         s.save(u);
-        User uu = new User(
+        Users uu = new Users(
           UUID.randomUUID(),
-          "test@company.com",
+          "+91000000000",
+          "0987654321123456",
+          a,
           n,
           n,
           UserStatus.ACTIVE
@@ -1683,47 +1870,5 @@ public class Dao implements Serializable {
       }
     }
     return rv;
-  }
-
-  public static void main(String[] args) {
-    // Create a SessionFactory based on our hibernate.cfg.xml configuration
-    // file, which defines how to connect to the database.
-    SessionFactory sessionFactory = new Configuration()
-      .configure("hibernate.cfg.xml")
-      .addAnnotatedClass(UasType.class)
-      .buildSessionFactory();
-
-    try (Session session = sessionFactory.openSession()) {
-      long fromUasTypeId = 1;
-      long toUasTypeId = 2;
-      BigDecimal transferAmount = BigDecimal.valueOf(100);
-
-      if (FORCE_RETRY) {
-        System.out.printf("APP: About to test retry logic in 'runTransaction'\n");
-        runTransaction(session, forceRetryLogic());
-      } else {
-        runTransaction(session, addUasTypes());
-        // BigDecimal fromBalance = runTransaction(
-        //   session,
-        //   getUasTypeBalance(fromUasTypeId)
-        // );
-        // BigDecimal toBalance = runTransaction(session, getUasTypeBalance(toUasTypeId));
-        // if (!fromBalance.equals(-1) && !toBalance.equals(-1)) {
-        //   // Success!
-        //   System.out.printf(
-        //     "APP: getUasTypeBalance(%d) --> %.2f\n",
-        //     fromUasTypeId,
-        //     fromBalance
-        //   );
-        //   System.out.printf(
-        //     "APP: getUasTypeBalance(%d) --> %.2f\n",
-        //     toUasTypeId,
-        //     toBalance
-        //   );
-        // }
-      }
-    } finally {
-      sessionFactory.close();
-    }
   }
 }

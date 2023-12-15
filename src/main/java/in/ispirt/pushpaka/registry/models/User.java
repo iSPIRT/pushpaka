@@ -2,6 +2,7 @@ package in.ispirt.pushpaka.registry.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import in.ispirt.pushpaka.registry.dao.Dao;
 import in.ispirt.pushpaka.registry.models.ObjectTimestamps;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.net.URI;
@@ -25,8 +26,6 @@ import org.openapitools.jackson.nullable.JsonNullable;
 public class User {
   private UUID id;
 
-  private String username;
-
   private String firstName;
 
   private String lastName;
@@ -34,6 +33,10 @@ public class User {
   private String email;
 
   private String phone;
+
+  private String aadharId;
+
+  private Address address;
 
   private Integer userStatus;
 
@@ -55,18 +58,22 @@ public class User {
    */
   public User(
     UUID id,
-    String username,
     String firstName,
     String lastName,
     String email,
+    String phone,
+    String aadharId,
+    Address address,
     ObjectTimestamps timestamps,
     UserStatus status
   ) {
     this.id = id;
-    this.username = username;
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
+    this.phone = phone;
+    this.aadharId = aadharId;
+    this.address = address;
     this.timestamps = timestamps;
     this.status = status;
   }
@@ -96,30 +103,6 @@ public class User {
     this.id = id;
   }
 
-  public User username(String username) {
-    this.username = username;
-    return this;
-  }
-
-  /**
-   * Get username
-   * @return username
-   */
-  @NotNull
-  @Schema(
-    name = "username",
-    example = "theUser",
-    requiredMode = Schema.RequiredMode.REQUIRED
-  )
-  @JsonProperty("username")
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
   public User firstName(String firstName) {
     this.firstName = firstName;
     return this;
@@ -129,7 +112,6 @@ public class User {
    * Get firstName
    * @return firstName
    */
-  @NotNull
   @Schema(
     name = "firstName",
     example = "John",
@@ -153,7 +135,6 @@ public class User {
    * Get lastName
    * @return lastName
    */
-  @NotNull
   @Schema(
     name = "lastName",
     example = "James",
@@ -177,7 +158,6 @@ public class User {
    * Get email
    * @return email
    */
-  @NotNull
   @Schema(
     name = "email",
     example = "john@email.com",
@@ -190,11 +170,6 @@ public class User {
 
   public void setEmail(String email) {
     this.email = email;
-  }
-
-  public User phone(String phone) {
-    this.phone = phone;
-    return this;
   }
 
   /**
@@ -216,9 +191,47 @@ public class User {
     this.phone = phone;
   }
 
+  public User phone(String phone) {
+    this.phone = phone;
+    return this;
+  }
+
+  /**
+   * Get aadharId
+   * @return aadharId
+   */
+
+  @Schema(
+    name = "aadharId",
+    example = "+919999999999",
+    requiredMode = Schema.RequiredMode.NOT_REQUIRED
+  )
+  @JsonProperty("aadharId")
+  public String getAadharId() {
+    return aadharId;
+  }
+
+  public void setAadharId(String aadharId) {
+    this.aadharId = aadharId;
+  }
+
   public User status(UserStatus status) {
     this.status = status;
     return this;
+  }
+
+  /**
+   * Get address
+   * @return address
+   */
+  @Schema(name = "", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("address")
+  public Address getAddress() {
+    return address;
+  }
+
+  public void setAddress(Address a) {
+    this.address = a;
   }
 
   /**
@@ -273,7 +286,6 @@ public class User {
     User user = (User) o;
     return (
       Objects.equals(this.id, user.id) &&
-      Objects.equals(this.username, user.username) &&
       Objects.equals(this.firstName, user.firstName) &&
       Objects.equals(this.lastName, user.lastName) &&
       Objects.equals(this.email, user.email) &&
@@ -285,16 +297,7 @@ public class User {
 
   @Override
   public int hashCode() {
-    return Objects.hash(
-      id,
-      username,
-      firstName,
-      lastName,
-      email,
-      phone,
-      status,
-      timestamps
-    );
+    return Objects.hash(id, firstName, lastName, email, phone, status, timestamps);
   }
 
   @Override
@@ -302,7 +305,6 @@ public class User {
     StringBuilder sb = new StringBuilder();
     sb.append("class User {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    username: ").append(toIndentedString(username)).append("\n");
     sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
     sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
@@ -322,5 +324,37 @@ public class User {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+
+  public static User toOa(Dao.Users u) {
+    ObjectTimestamps ot = new ObjectTimestamps(
+      u.getTimestampCreated(),
+      u.getTimestampUpdated()
+    );
+    User uu = new User(
+      u.getId(),
+      "firstName",
+      "lastName",
+      "",
+      u.getPhone(),
+      u.getAadharId(),
+      Address.toOa(u.getAddress()),
+      ot,
+      u.getStatus()
+    );
+    return uu;
+  }
+
+  public static Dao.Users fromOa(User u) {
+    Dao.Users uu = new Dao.Users(
+      u.getId(),
+      u.getPhone(),
+      u.getAadharId(),
+      Address.fromOa(u.getAddress()),
+      u.getTimestamps().getCreated(),
+      u.getTimestamps().getUpdated(),
+      u.getStatus()
+    );
+    return uu;
   }
 }
