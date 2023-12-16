@@ -1,12 +1,16 @@
 package com.example.aut;
 
+import java.io.FileInputStream;
 import java.security.Key;
+import java.security.KeyStore;
 import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
 
 import org.jose4j.jwa.AlgorithmConstraints.ConstraintType;
-import org.jose4j.jwk.RsaJsonWebKey;
-import org.jose4j.jwk.RsaJwkGenerator;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
@@ -14,6 +18,8 @@ import org.jose4j.jwt.consumer.ErrorCodes;
 import org.jose4j.jwt.consumer.InvalidJwtException;
 import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
+
+import com.nimbusds.jose.jwk.JWKSet;
 
 public class AirspaceUsageTokenUtils {
 
@@ -47,6 +53,42 @@ public class AirspaceUsageTokenUtils {
     airspaceUsageToken.setAttenuations(airspaceUsageTokenAttenuations);
   }
 
+  public static PublicKey getDigitalSkyPublicKey(String filename) throws Exception
+  {
+    CertificateFactory cf = CertificateFactory.getInstance("X.509");
+    X509Certificate cert = (X509Certificate) cf.generateCertificate(new FileInputStream(filename));
+    
+    PublicKey retVal = cert.getPublicKey();
+
+    return retVal;
+  }
+
+  public static String getDigitalSkyJwk(String filename) throws Exception
+  {
+    CertificateFactory cf = CertificateFactory.getInstance("X.509");
+    X509Certificate cert = (X509Certificate) cf.generateCertificate(new FileInputStream(filename));
+    
+    PublicKey retVal = cert.getPublicKey();
+
+    com.nimbusds.jose.jwk.RSAKey jwk = new com.nimbusds.jose.jwk.RSAKey.Builder((RSAPublicKey) retVal).build();
+    
+    return jwk.toJSONString();
+  }
+
+  public static PrivateKey getDigitalSkyPrivateKey(String filename) throws Exception
+  {
+    //keytool -genkey -alias digitalsky -keyalg RSA -keystore digitalsky.jks -keysize 2048
+    //keytool -export -keystore digitalsky.jks -alias digitalsky -file digitalsky.cer
+    
+    String jksPassword = "digitalsky";
+         
+    KeyStore ks  = KeyStore.getInstance(KeyStore.getDefaultType());
+    ks.load(new FileInputStream("digitalsky.jks"), jksPassword.toCharArray());
+    PrivateKey privateKey = (PrivateKey) ks.getKey(jksPassword, jksPassword.toCharArray());
+
+    return privateKey;
+  }
+
   public static String signAirspaceUsageTokenObjectJWT(
     PrivateKey privateKey,
     String keyID,
@@ -60,9 +102,6 @@ public class AirspaceUsageTokenUtils {
       String jwt = null;
       String additionalClaim = airspaceUsageToken.toJson();
       try {
-        RsaJsonWebKey rsaJsonWebKey = RsaJwkGenerator.generateJwk(2048);
-        rsaJsonWebKey.setKeyId("k1");
-
         JwtClaims claims = new JwtClaims();
         claims.setIssuer(issuer); // who creates the token and signs it
         claims.setAudience(audience); // to whom the token is intended to be sent
