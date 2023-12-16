@@ -6,8 +6,14 @@ import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageTokenAttenuati
 import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageTokenState;
 import in.ispirt.pushpaka.flightauthorisation.models.GeocageData;
 import in.ispirt.pushpaka.flightauthorisation.models.GeospatialData;
+import java.io.FileInputStream;
 import java.security.Key;
+import java.security.KeyStore;
 import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
 import org.jose4j.jwa.AlgorithmConstraints.ConstraintType;
 import org.jose4j.jwk.RsaJsonWebKey;
@@ -50,6 +56,49 @@ public class AirspaceUsageTokenUtils {
     AirspaceUsageTokenAttenuations airspaceUsageTokenAttenuations
   ) {
     airspaceUsageToken.setAttenuations(airspaceUsageTokenAttenuations);
+  }
+
+  public static PublicKey getDigitalSkyPublicKey(String filename) throws Exception {
+    CertificateFactory cf = CertificateFactory.getInstance("X.509");
+    X509Certificate cert = (X509Certificate) cf.generateCertificate(
+      new FileInputStream(filename)
+    );
+
+    PublicKey retVal = cert.getPublicKey();
+
+    return retVal;
+  }
+
+  public static String getDigitalSkyJwk(String filename) throws Exception {
+    CertificateFactory cf = CertificateFactory.getInstance("X.509");
+    X509Certificate cert = (X509Certificate) cf.generateCertificate(
+      new FileInputStream(filename)
+    );
+
+    PublicKey retVal = cert.getPublicKey();
+
+    com.nimbusds.jose.jwk.RSAKey jwk = new com.nimbusds.jose.jwk.RSAKey.Builder(
+      (RSAPublicKey) retVal
+    )
+    .build();
+
+    return jwk.toJSONString();
+  }
+
+  public static PrivateKey getDigitalSkyPrivateKey(String filename) throws Exception {
+    //keytool -genkey -alias digitalsky -keyalg RSA -keystore digitalsky.jks -keysize 2048
+    //keytool -export -keystore digitalsky.jks -alias digitalsky -file digitalsky.cer
+
+    String jksPassword = "digitalsky";
+
+    KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
+    ks.load(new FileInputStream("digitalsky.jks"), jksPassword.toCharArray());
+    PrivateKey privateKey = (PrivateKey) ks.getKey(
+      jksPassword,
+      jksPassword.toCharArray()
+    );
+
+    return privateKey;
   }
 
   public static String signAirspaceUsageTokenObjectJWT(

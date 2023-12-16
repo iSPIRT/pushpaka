@@ -7,8 +7,6 @@ import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageTokenState;
 import in.ispirt.pushpaka.flightauthorisation.models.GeocageData;
 import in.ispirt.pushpaka.flightauthorisation.models.GeospatialData;
 import java.util.UUID;
-import org.jose4j.jwk.RsaJsonWebKey;
-import org.jose4j.jwk.RsaJwkGenerator;
 import org.jose4j.jwt.JwtClaims;
 
 public class App {
@@ -40,12 +38,9 @@ public class App {
 
     //signing the claim
     try {
-      RsaJsonWebKey rsaJsonWebKey = RsaJwkGenerator.generateJwk(2048);
-      rsaJsonWebKey.setKeyId("k1");
-
       String signedToken = AirspaceUsageTokenUtils.signAirspaceUsageTokenObjectJWT(
-        rsaJsonWebKey.getPrivateKey(),
-        rsaJsonWebKey.getKeyId(),
+        AirspaceUsageTokenUtils.getDigitalSkyPrivateKey("digitalsky.jks"),
+        "digitalsky",
         airspaceUsageToken,
         "Issuer",
         "Audience",
@@ -54,17 +49,24 @@ public class App {
         2
       );
 
+      System.out.println("===signedToken===");
       System.out.println(signedToken);
+      System.out.println("===signedToken===");
 
       JwtClaims jwtClaims = AirspaceUsageTokenUtils.validateAirspaceUsageTokenObjectJWT(
-        rsaJsonWebKey.getKey(),
+        AirspaceUsageTokenUtils.getDigitalSkyPublicKey("digitalsky.cer"),
         signedToken,
         "Issuer",
         "Audience",
         30
       );
 
+      System.out.println("===jwtClaims===");
       System.out.println(jwtClaims);
+      System.out.println("===jwtClaims===");
+      System.out.println("===jwk===");
+      System.out.println(AirspaceUsageTokenUtils.getDigitalSkyJwk("digitalsky.cer"));
+      System.out.println("===jwk===");
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -96,12 +98,9 @@ public class App {
     System.out.println(airspaceUsageToken.toJson());
 
     try {
-      RsaJsonWebKey rsaJsonWebKey = RsaJwkGenerator.generateJwk(2048);
-      rsaJsonWebKey.setKeyId("k1");
-
       String signedToken = AirspaceUsageTokenUtils.signAirspaceUsageTokenObjectJWT(
-        rsaJsonWebKey.getPrivateKey(),
-        rsaJsonWebKey.getKeyId(),
+        AirspaceUsageTokenUtils.getDigitalSkyPrivateKey("digitalsky.jks"),
+        "digitalsky",
         airspaceUsageToken,
         "Issuer",
         "Audience",
@@ -113,14 +112,12 @@ public class App {
       System.out.println(signedToken);
 
       JwtClaims jwtClaims = AirspaceUsageTokenUtils.validateAirspaceUsageTokenObjectJWT(
-        rsaJsonWebKey.getKey(),
+        AirspaceUsageTokenUtils.getDigitalSkyPublicKey("digitalsky.cer"),
         signedToken,
         "Issuer",
         "Audience",
         30
       );
-
-      System.out.println(jwtClaims);
     } catch (Exception e) {
       e.printStackTrace();
     }
