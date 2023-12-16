@@ -1,8 +1,0 @@
-@startuml
-!include ../common.puml
-
-actor "UAS Owner" as owner
-owner -> Registry : Uas Decommission Request
-Registry -> owner : Uas Decommission Response
-
-@enduml

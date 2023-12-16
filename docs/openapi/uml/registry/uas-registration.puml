@@ -1,7 +1,0 @@
-@startuml
-!include ../common.puml
-
-Manufacturer -> Registry : Uas Registration Request
-Registry -> Manufacturer : Uas Registration Response
-
-@enduml
