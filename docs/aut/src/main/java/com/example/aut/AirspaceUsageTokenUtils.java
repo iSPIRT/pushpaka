@@ -19,7 +19,6 @@ import org.jose4j.jwt.consumer.InvalidJwtException;
 import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 
-import com.nimbusds.jose.jwk.JWKSet;
 
 public class AirspaceUsageTokenUtils {
 
