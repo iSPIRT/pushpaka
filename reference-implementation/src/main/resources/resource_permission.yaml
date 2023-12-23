@@ -2,10 +2,25 @@ schema: |-
   /** user represents a user */
   definition user {}
 
+  /** legal entity */
+  definition legal_entity {}
+
+  /** platform entity */
+  definition platform {
+  	relation administrator: user
+  	permission super_admin = administrator
+  }
+
+  definition resource {
+  	relation owner: platform
+  	permission super_admin = owner->super_admin
+  }
+
+
   /** pilot group that can operate flight operations */
   definition pilot {
   	relation member: user
-  	permission flight_operations_admin =member
+  	permission flight_operations_admin = member
   	permission file_flightplan = flight_operations_admin
   	permission submit_incidentreport = flight_operations_admin
   	permission submit_flightlog = flight_operations_admin
@@ -30,13 +45,14 @@ schema: |-
   	relation administrator: user
   	relation regulator: caa
   	relation pilot: pilot#member
-
-  	permission flight_operations_admin =pilot->flight_operations_admin
+  	permission flight_operations_admin = pilot->flight_operations_admin
   	permission super_admin = administrator
   	permission approve_operator = regulator->super_admin
   }
 
-  /** defines relationships of uas with regulator , manufacturer and who can own it */
+  /**
+   * defines relationships of uas with regulator , manufacturer and who can own it
+   */
   definition uas {
   	relation manufacturer: manufacturer
   	relation regulator: caa
@@ -45,7 +61,7 @@ schema: |-
   	permission decommision_uas = manufacturer->super_admin + regulator->super_admin + owner->super_admin
   }
 
-  /** defines relationships of uastype with regulator and manufacturer  */
+  /** defines relationships of uastype with regulator and manufacturer */
   definition uastype {
   	relation manufacturer: manufacturer
   	relation regulator: caa

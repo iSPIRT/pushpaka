@@ -5,7 +5,11 @@ public enum ResourceType {
     UASTYPE,
     FLIGHTPLAN,
     FLIGHTLOG,
-    INCIDENTREPORT;
+    INCIDENTREPORT,
+    CAA,
+    MANUFACTURER,
+    PLATFORM,
+    RESOURCE;
   
     public String getResourceType() {
       switch (this) {
@@ -19,6 +23,14 @@ public enum ResourceType {
           return "flightlog";
         case INCIDENTREPORT:
           return "incidentreport";
+          case CAA:
+          return "caa";
+        case MANUFACTURER:
+          return "manufacturer";
+        case PLATFORM:
+          return "platform";
+        case RESOURCE:
+          return "resource";
         default:
           return null;
       }

@@ -51,7 +51,7 @@ public enum Permission {
       case EXECUTE_FLIGHTPLAN:
         return "execute_flightplan";
       case SUPER_ADMIN:
-        return "super_Admin";
+        return "super_admin";
       default:
         return null;
     }
