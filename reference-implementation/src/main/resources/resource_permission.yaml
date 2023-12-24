@@ -5,17 +5,25 @@ schema: |-
   /** legal entity */
   definition legal_entity {}
 
-  /** platform entity */
   definition platform {
   	relation administrator: user
   	permission super_admin = administrator
   }
 
-  definition resource {
+
+  definition platform_resource_type {
   	relation owner: platform
   	permission super_admin = owner->super_admin
   }
 
+  definition flightoperations_resource_type {
+  	relation owner: pilot#member | operator#pilot
+  	permission update_flightplan = owner->flight_operations_admin
+  	permission delete_flightplan = owner->flight_operations_admin
+  	permission execute_flightplan = owner->flight_operations_admin
+  	permission submit_flightlog = owner->flight_operations_admin
+  	permission submit_incidentreport = owner->flight_operations_admin
+  }
 
   /** pilot group that can operate flight operations */
   definition pilot {

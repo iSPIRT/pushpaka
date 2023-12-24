@@ -4,7 +4,9 @@ public enum SubjectType {
     USER,
     PILOT,
     OPERATOR,
-    PLATFORM;
+    PLATFORM,
+    MANUFACTURER,
+    CAA;
 
     public String getSubjectType() {
         switch (this) {
@@ -14,8 +16,12 @@ public enum SubjectType {
             return "pilot";
         case OPERATOR:
             return "operator";
-         case PLATFORM:
+        case PLATFORM:
             return "platform";
+        case MANUFACTURER:
+            return "manufacturer";
+        case CAA:
+            return "caa";
         default:
             return null;
         }
