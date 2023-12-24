@@ -25,6 +25,8 @@ public class AuthUtils {
 
         //platform digital-sky administrator user<input/>
         //resource caa platform digital-sky
+        //platform:digital-sky-platform#administrator@user:platform-user
+        //platform_resource_type:caa#owner@platform:digital-sky-platform
     }
 
     /**This method allows for any resource type admin user to be created by a platform 
@@ -44,6 +46,8 @@ public class AuthUtils {
             SpicedbUtils.writeRelationship(RelationshipType.ADMINISTRATOR, 
             resourceID, resourceType, resourceAdminID, SubjectType.USER);
         }
+
+        //caa:caa-authority#administrator@user:caa-user
     }
 
     /** Thois method is used to get CAA resource ID*/
@@ -66,8 +70,11 @@ public class AuthUtils {
             resourceID, resourceType, getCAAResourceID(), SubjectType.CAA);
 
             SpicedbUtils.writeRelationship(RelationshipType.PILOT, 
-            resourceID, resourceType, resourceID+"-"+"pilot-group", SubjectType.PILOT);
+            resourceID, resourceType, resourceID+"-"+"pilot-group#member", SubjectType.PILOT);
         } 
+
+        //operator:operator-1#administrator@user:operator-user
+        //manufacturer:manufacturer-1#administrator@user:manufacturer-user
 
     }
 
@@ -85,6 +92,10 @@ public class AuthUtils {
         SpicedbUtils.writeRelationship(RelationshipType.REGULATOR, 
         UASID, ResourceType.UAS, getCAAResourceID(), SubjectType.CAA);
 
+        //uas:uas-1#owner@operator:operator-1
+        //uas:uas-1#manufacturer@manufacturer:manufacturer-1
+        //uas:uas-1#regulator@caa:caa-authority
+
     }
 
     /** This method creates more than one realtionships for UASType */
@@ -96,6 +107,9 @@ public class AuthUtils {
         SpicedbUtils.writeRelationship(RelationshipType.REGULATOR, 
         UASTypeID, ResourceType.UASTYPE, getCAAResourceID(), SubjectType.CAA);
 
+        //uastype:uastype-1#manufacturer@manufacturer:manufacturer-1
+        //uastype:uastype-1#regulator@caa:caa-authority
+
     }
 
     /**This method is used to create relationsip of pilot on what resource type they own to 
@@ -106,20 +120,29 @@ public class AuthUtils {
         SpicedbUtils.writeRelationship(RelationshipType.OWNER,
         ResourceType.FLIGHTPLAN.getResourceType(), 
         ResourceType.FLIGHTOPERATIONS_RESOURCETYPE, 
-        pilotGroupID, 
+        pilotGroupID+"#member", 
         SubjectType.PILOT);
 
         SpicedbUtils.writeRelationship(RelationshipType.OWNER,
         ResourceType.FLIGHTLOG.getResourceType(), 
         ResourceType.FLIGHTOPERATIONS_RESOURCETYPE, 
-        pilotGroupID, 
+        pilotGroupID+"#member", 
         SubjectType.PILOT);
 
         SpicedbUtils.writeRelationship(RelationshipType.OWNER,
         ResourceType.INCIDENTREPORT.getResourceType(), 
         ResourceType.FLIGHTOPERATIONS_RESOURCETYPE, 
-        pilotGroupID, 
+        pilotGroupID+"#member", 
         SubjectType.PILOT);
+
+        //flightoperations_resource_type:flightplan#owner@pilot:operator-1-pilot-group#member
+        //flightoperations_resource_type:flightlog#owner@pilot:operator-1-pilot-group#member
+        //flightoperations_resource_type:incidentreport#owner@pilot:operator-1-pilot-group#member
+        //flightoperations_resource_type:flightplan#owner@pilot:default-pilot-group#member
+        //flightoperations_resource_type:flightlog#owner@pilot:operator-1-pilot-group#member
+        //flightoperations_resource_type:incidentreport#owner@pilot:operator-1-pilot-group#member
+
+
     }
 
     /** This function allows us to check the resource type permission before creation
@@ -136,12 +159,20 @@ public class AuthUtils {
 
     }
 
+
+    /** This function is used to add pilot user to a pilto group */
     public static void addPilotUserToPilotGroup(String pilotUserID,
     String pilotGroupID){
+        if(pilotGroupID == null){
+            pilotGroupID = "default-pilot-group";
+        }
         SpicedbUtils.writeRelationship(RelationshipType.MEMBER,
         pilotGroupID, 
         ResourceType.PILOT,
         pilotUserID, 
         SubjectType.USER);
+
+        //pilot:operator-1-pilot-group#member@user:pilot-user
+        //pilot:default-pilot-group#member@user:pilot-user-2
     }
 }

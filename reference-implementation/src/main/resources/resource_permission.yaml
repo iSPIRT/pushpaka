@@ -97,6 +97,26 @@ schema: |-
   	relation owner: pilot#member | operator#pilot
   	permission submit_incidentreport = owner->flight_operations_admin
   }
-relationships: ""
+relationships: |-
+  platform:digital-sky-platform#administrator@user:platform-user
+  platform_resource_type:caa#owner@platform:digital-sky-platform
+  caa:caa-authority#administrator@user:caa-user
+  pilot:operator-1-pilot-group#member@user:pilot-user
+  operator:operator-1#administrator@user:operator-user
+  operator:operator-1#regulator@caa:caa-authority
+  manufacturer:manufacturer-1#administrator@user:manufacturer-user
+  flightoperations_resource_type:flightplan#owner@pilot:operator-1-pilot-group#member
+  flightoperations_resource_type:flightlog#owner@pilot:operator-1-pilot-group#member
+  flightoperations_resource_type:incidentreport#owner@pilot:operator-1-pilot-group#member
+  uas:uas-1#owner@operator:operator-1
+  uas:uas-1#manufacturer@manufacturer:manufacturer-1
+  uas:uas-1#regulator@caa:caa-authority
+  uastype:uastype-1#manufacturer@manufacturer:manufacturer-1
+  uastype:uastype-1#regulator@caa:caa-authority
+  pilot:default-pilot-group#member@user:pilot-user-2
+  operator:operator-1#pilot@pilot:operator-1-pilot-group#member
+  flightoperations_resource_type:flightplan#owner@pilot:default-pilot-group#member
+  flightoperations_resource_type:flightlog#owner@pilot:operator-1-pilot-group#member
+  flightoperations_resource_type:incidentreport#owner@pilot:operator-1-pilot-group#member
 assertions: null
 validation: null
