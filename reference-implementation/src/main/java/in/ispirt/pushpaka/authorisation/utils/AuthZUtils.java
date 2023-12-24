@@ -5,7 +5,7 @@ import in.ispirt.pushpaka.authorisation.RelationshipType;
 import in.ispirt.pushpaka.authorisation.ResourceType;
 import in.ispirt.pushpaka.authorisation.SubjectType;
 
-public class AuthUtils {
+public class AuthZUtils {
     /**This method is used to create a platform admin with a buil-in seed for the platform
      * This method also has a built-in seed for a resource type CAA that implies that 
      * the platform admin has access to resource type CAA and administer it
