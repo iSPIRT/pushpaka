@@ -19,7 +19,7 @@ public class AuthUtils {
 
         SpicedbUtils.writeRelationship(RelationshipType.OWNER,
         ResourceType.CAA.getResourceType(), 
-        ResourceType.RESOURCETYPE, 
+        ResourceType.PLATFORM_RESOURCETYPE, 
         "digital-sky-platform", 
         SubjectType.PLATFORM);
 
@@ -37,7 +37,7 @@ public class AuthUtils {
 
         //check permission and then create admin for the given resourceID
         boolean isPlatformAdmin = SpicedbUtils.checkPermission(Permission.SUPER_ADMIN, 
-        ResourceType.RESOURCETYPE, resourceType.getResourceType(), SubjectType.USER, platformAdminID);
+        ResourceType.PLATFORM_RESOURCETYPE, resourceType.getResourceType(), SubjectType.USER, platformAdminID);
 
         //create admin for the provided resource 
         if(isPlatformAdmin){
@@ -49,7 +49,7 @@ public class AuthUtils {
     /** Thois method is used to get CAA resource ID*/
     public static String getCAAResourceID(){
         //return the ID of the CCA resource in the system 
-        return null;
+        return "caa-authority";
     }
 
     /**This method is used to created resource type admin when creating the resource */
@@ -61,8 +61,12 @@ public class AuthUtils {
         resourceID, resourceType, resourceAdminID, SubjectType.USER);
 
         if(ResourceType.OPERATOR.equals(resourceType)){
+          
             SpicedbUtils.writeRelationship(RelationshipType.REGULATOR, 
-            getCAAResourceID(), ResourceType.CAA, resourceID, SubjectType.OPERATOR);
+            resourceID, resourceType, getCAAResourceID(), SubjectType.CAA);
+
+            SpicedbUtils.writeRelationship(RelationshipType.PILOT, 
+            resourceID, resourceType, resourceID+"-"+"pilot-group", SubjectType.PILOT);
         } 
 
     }
@@ -89,7 +93,7 @@ public class AuthUtils {
         SpicedbUtils.writeRelationship(RelationshipType.MANUFACTURER, 
         UASTypeID, ResourceType.UASTYPE, manufacturerID, SubjectType.MANUFACTURER);
 
-         SpicedbUtils.writeRelationship(RelationshipType.REGULATOR, 
+        SpicedbUtils.writeRelationship(RelationshipType.REGULATOR, 
         UASTypeID, ResourceType.UASTYPE, getCAAResourceID(), SubjectType.CAA);
 
     }
@@ -97,38 +101,47 @@ public class AuthUtils {
     /**This method is used to create relationsip of pilot on what resource type they own to 
      * adminsiter. We are only providing for resource type defintion that prevent each entry in Auth 
      * system and still helps us get auth restrictions by looking up the resource type  */
-    public static void createPilotFlightOperationsResourceTypeRelationships(String pilotID){
+    public static void createPilotFlightOperationsResourceTypeRelationships(String pilotGroupID){
 
         SpicedbUtils.writeRelationship(RelationshipType.OWNER,
         ResourceType.FLIGHTPLAN.getResourceType(), 
         ResourceType.FLIGHTOPERATIONS_RESOURCETYPE, 
-        pilotID, 
+        pilotGroupID, 
         SubjectType.PILOT);
 
         SpicedbUtils.writeRelationship(RelationshipType.OWNER,
         ResourceType.FLIGHTLOG.getResourceType(), 
         ResourceType.FLIGHTOPERATIONS_RESOURCETYPE, 
-        pilotID, 
+        pilotGroupID, 
         SubjectType.PILOT);
 
         SpicedbUtils.writeRelationship(RelationshipType.OWNER,
         ResourceType.INCIDENTREPORT.getResourceType(), 
         ResourceType.FLIGHTOPERATIONS_RESOURCETYPE, 
-        pilotID, 
+        pilotGroupID, 
         SubjectType.PILOT);
     }
 
     /** This function allows us to check the resource type permission before creation
      * of the resource in the system 
      */
-    public static boolean checkPilotFlightOperationsResourceTypePermission(String pilotID,
+    public static boolean checkPilotFlightOperationsResourceTypePermission(String pilotGroupID,
     Permission permission,
     ResourceType resourceType){
 
         boolean hasPermission = SpicedbUtils.checkPermission(permission, 
-        resourceType, resourceType.getResourceType() , SubjectType.PILOT, pilotID);
+        resourceType, resourceType.getResourceType() , SubjectType.PILOT, pilotGroupID);
 
         return hasPermission;
 
+    }
+
+    public static void addPilotUserToPilotGroup(String pilotUserID,
+    String pilotGroupID){
+        SpicedbUtils.writeRelationship(RelationshipType.MEMBER,
+        pilotGroupID, 
+        ResourceType.PILOT,
+        pilotUserID, 
+        SubjectType.USER);
     }
 }
