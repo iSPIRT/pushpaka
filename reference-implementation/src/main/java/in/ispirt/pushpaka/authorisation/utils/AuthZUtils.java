@@ -6,6 +6,11 @@ import in.ispirt.pushpaka.authorisation.ResourceType;
 import in.ispirt.pushpaka.authorisation.SubjectType;
 
 public class AuthZUtils {
+
+    public static final String PLATFORM_ID = "digital-sky-platform";
+    public static final String CAA_RESOURCE_ID = "caa-authority";
+    public static final String DEFAULT_PILOT_GROUP = "default-pilot-group";
+
     /**This method is used to create a platform admin with a buil-in seed for the platform
      * This method also has a built-in seed for a resource type CAA that implies that 
      * the platform admin has access to resource type CAA and administer it
@@ -15,12 +20,12 @@ public class AuthZUtils {
         //create relation with resource type
 
         SpicedbUtils.writeRelationship(RelationshipType.ADMINISTRATOR, 
-        "digital-sky-platform", ResourceType.PLATFORM, subjectID, SubjectType.USER);
+        PLATFORM_ID, ResourceType.PLATFORM, subjectID, SubjectType.USER);
 
         SpicedbUtils.writeRelationship(RelationshipType.OWNER,
         ResourceType.CAA.getResourceType(), 
         ResourceType.PLATFORM_RESOURCETYPE, 
-        "digital-sky-platform", 
+        PLATFORM_ID, 
         SubjectType.PLATFORM);
 
         //platform digital-sky administrator user<input/>
@@ -53,7 +58,7 @@ public class AuthZUtils {
     /** Thois method is used to get CAA resource ID*/
     public static String getCAAResourceID(){
         //return the ID of the CCA resource in the system 
-        return "caa-authority";
+        return CAA_RESOURCE_ID;
     }
 
     /**This method is used to created resource type admin when creating the resource */
@@ -82,6 +87,8 @@ public class AuthZUtils {
     public static void createUASRelationships(String UASID,
     String manufacturerID,
     String operatorID) {
+
+        /**Put additional checks for pre-condition on UAS*/
 
         SpicedbUtils.writeRelationship(RelationshipType.MANUFACTURER, 
         UASID, ResourceType.UAS, manufacturerID, SubjectType.MANUFACTURER);
@@ -159,12 +166,11 @@ public class AuthZUtils {
 
     }
 
-
     /** This function is used to add pilot user to a pilto group */
     public static void addPilotUserToPilotGroup(String pilotUserID,
     String pilotGroupID){
         if(pilotGroupID == null){
-            pilotGroupID = "default-pilot-group";
+            pilotGroupID = DEFAULT_PILOT_GROUP;
         }
         SpicedbUtils.writeRelationship(RelationshipType.MEMBER,
         pilotGroupID, 
@@ -174,5 +180,16 @@ public class AuthZUtils {
 
         //pilot:operator-1-pilot-group#member@user:pilot-user
         //pilot:default-pilot-group#member@user:pilot-user-2
+    }
+
+    /** this function will be used to lookup the groups to which a pilot belongs to */
+    public static void lookupPilotUserGroups(String pilotUserID){
+        /** this function will help in looking up pilot 
+         * across multiple groups */
+    }
+
+    /** This function will be used to lookup the UAS resource association with operators */
+    public static void lookupUASResource(String UASResourceID){
+
     }
 }
