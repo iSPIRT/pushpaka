@@ -73,8 +73,7 @@ public interface CivilAviationAuthorityApi {
       ),
       @ApiResponse(responseCode = "405", description = "Invalid input")
     },
-        security = { @SecurityRequirement(name = "jwt") }
-
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.POST,
@@ -127,8 +126,7 @@ public interface CivilAviationAuthorityApi {
         description = "Invalid civilAviationAuthority value"
       )
     },
-        security = { @SecurityRequirement(name = "jwt") }
-
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.DELETE,
