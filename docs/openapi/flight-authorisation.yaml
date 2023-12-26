@@ -19,21 +19,37 @@ info:
 servers:
 - url: http://localhost:8083/
 tags:
-- name: flightPlans
-  description: flightPlans
+- name: civilAviationAuthorities
+  description: CivilAviationAuthorities
+- name: utmsps
+  description: Utmsps
+- name: legal_entity
+  description: Legal Entity
+- name: pilot
+  description: Pilots
+- name: manufacturers
+  description: Manufacturers
+- name: operators
+  description: Operators
+- name: uas_types
+  description: the uas_types API
+- name: uas
+  description: UAS
+- name: user
+  description: Operations about user
 paths:
-  /api/v1/FlightPlan/{FlightPlanId}:
+  /api/v1/utmsp/{utmspId}:
     get:
       tags:
-      - flightPlans
-      - FlightPlan
-      summary: Find FlightPlan by ID
-      description: Returns a single FlightPlan
-      operationId: getFlightPlanById
+      - utmsps
+      - utmsp
+      summary: Find utmsp by ID
+      description: Returns a single utmsp
+      operationId: getUtmspById
       parameters:
-      - name: FlightPlanId
+      - name: utmspId
         in: path
-        description: ID of FlightPlan to return
+        description: ID of utmsp to return
         required: true
         schema:
           type: string
@@ -44,33 +60,31 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FlightPlan'
+                $ref: '#/components/schemas/Utmsp'
         "400":
           description: Invalid ID supplied
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FlightPlan'
+                $ref: '#/components/schemas/Utmsp'
         "404":
-          description: FlightPlan not found
+          description: Utmsp not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FlightPlan'
+                $ref: '#/components/schemas/Utmsp'
       security:
-      - flightauthorisation_auth:
-        - write:flightPlans
-        - read:flightPlans
+      - jwt: []
     put:
       tags:
-      - flightPlans
-      - FlightPlan
-      summary: Updates a FlightPlan in the store
-      operationId: updateFlightPlan
+      - utmsps
+      - utmsp
+      summary: Updates a utmsp in the store
+      operationId: updateUtmsp
       parameters:
-      - name: FlightPlanId
+      - name: utmspId
         in: path
-        description: ID of FlightPlan that needs to be updated
+        description: ID of utmsp that needs to be updated
         required: true
         schema:
           type: string
@@ -79,7 +93,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FlightPlan'
+              $ref: '#/components/schemas/Utmsp'
         required: true
       responses:
         "405":
@@ -87,45 +101,84 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/FlightPlan'
+                $ref: '#/components/schemas/Utmsp'
       security:
-      - flightauthorisation_auth:
-        - write:flightPlans
-        - read:flightPlans
+      - jwt: []
     delete:
       tags:
-      - flightPlans
-      - FlightPlan
-      summary: Deletes a FlightPlan
-      operationId: deleteFlightPlan
+      - utmsps
+      - utmsp
+      summary: Deletes a utmsp
+      operationId: deleteUtmsp
       parameters:
-      - name: FlightPlanId
+      - name: utmspId
         in: path
-        description: FlightPlan id to delete
+        description: Utmsp id to delete
         required: true
         schema:
           type: string
           format: uuid
       responses:
         "400":
-          description: Invalid FlightPlan value
+          description: Invalid utmsp value
       security:
-      - flightauthorisation_auth:
-        - write:flightPlans
-        - read:flightPlans
-  /api/v1/FlightPlan:
-    post:
+      - jwt: []
+  /api/v1/user/{username}:
+    put:
       tags:
-      - flightPlans
-      - FlightPlan
-      summary: Add a new FlightPlan to the store
-      description: Add a new FlightPlan to the store
-      operationId: addFlightPlan
+      - user
+      summary: Update user
+      description: This can only be done by the logged in user.
+      operationId: updateUser
+      parameters:
+      - name: username
+        in: path
+        description: name that need to be deleted
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FlightPlan'
+              $ref: '#/components/schemas/User'
+      responses:
+        default:
+          description: successful operation
+      security:
+      - jwt: []
+    delete:
+      tags:
+      - user
+      summary: Delete user
+      description: This can only be done by the logged in user.
+      operationId: deleteUser
+      parameters:
+      - name: username
+        in: path
+        description: The name that needs to be deleted
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Invalid username supplied
+        "404":
+          description: User not found
+      security:
+      - jwt: []
+  /api/v1/uas:
+    put:
+      tags:
+      - uas
+      summary: Update an existing uas
+      description: Update an existing uas by Id
+      operationId: updateUas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Uas'
         required: true
       responses:
         "200":
@@ -133,24 +186,741 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FlightPlan'
+                $ref: '#/components/schemas/Uas'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Uas'
+        "404":
+          description: Uas not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Uas'
+        "405":
+          description: Validation exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Uas'
+      security:
+      - jwt: []
+    post:
+      tags:
+      - uas
+      summary: Add a new uas to the store
+      description: Add a new uas to the store
+      operationId: addUas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Uas'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Uas'
         "405":
           description: Invalid input
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FlightPlan'
+                $ref: '#/components/schemas/Uas'
       security:
-      - flightauthorisation_auth:
-        - write:flightPlans
-        - read:flightPlans
-  /api/v1/FlightPlan/find:
+      - jwt: []
+  /api/v1/uasType:
+    put:
+      tags:
+      - uas_types
+      summary: Update an existing uasType
+      description: Update an existing uasType by Id
+      operationId: updateUasType
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UasType'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UasType'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UasType'
+        "404":
+          description: UasType not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UasType'
+        "405":
+          description: Validation exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UasType'
+      security:
+      - jwt: []
+    post:
+      tags:
+      - uas_types
+      summary: Add a new uasType to the store
+      description: Add a new uasType to the store
+      operationId: addUasType
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UasType'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UasType'
+        "405":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UasType'
+      security:
+      - jwt: []
+  /api/v1/pilot/{pilotId}:
     get:
       tags:
-      - flightPlans
-      - FlightPlan
-      summary: Finds flightPlans
-      operationId: findflightPlans
+      - pilot
+      summary: Find pilot by ID
+      description: Returns a single pilot
+      operationId: getPilotById
+      parameters:
+      - name: pilotId
+        in: path
+        description: ID of pilot to return
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pilot'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pilot'
+        "404":
+          description: Pilot not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pilot'
+      security:
+      - jwt: []
+    put:
+      tags:
+      - pilot
+      summary: Updates a pilot in the store
+      operationId: updatePilot
+      parameters:
+      - name: pilotId
+        in: path
+        description: ID of pilot that needs to be updated
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pilot'
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Pilot'
+      security:
+      - jwt: []
+    delete:
+      tags:
+      - pilot
+      summary: Deletes a pilot
+      operationId: deletePilot
+      parameters:
+      - name: pilotId
+        in: path
+        description: Pilot id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "400":
+          description: Invalid pilot value
+      security:
+      - jwt: []
+  /api/v1/operator/{operatorId}:
+    get:
+      tags:
+      - operators
+      - operator
+      summary: Find operator by ID
+      description: Returns a single operator
+      operationId: getOperatorById
+      parameters:
+      - name: operatorId
+        in: path
+        description: ID of operator to return
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operator'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operator'
+        "404":
+          description: Operator not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operator'
+      security:
+      - jwt: []
+    put:
+      tags:
+      - operators
+      - operator
+      summary: Updates a operator in the store
+      operationId: updateOperator
+      parameters:
+      - name: operatorId
+        in: path
+        description: ID of operator that needs to be updated
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Operator'
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Operator'
+      security:
+      - jwt: []
+    delete:
+      tags:
+      - operators
+      - operator
+      summary: Deletes a operator
+      operationId: deleteOperator
+      parameters:
+      - name: operatorId
+        in: path
+        description: Operator id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "400":
+          description: Invalid operator value
+      security:
+      - jwt: []
+  /api/v1/manufacturer/{manufacturerId}:
+    get:
+      tags:
+      - manufacturers
+      - manufacturer
+      summary: Find manufacturer by ID
+      description: Returns a single manufacturer
+      operationId: getManufacturerById
+      parameters:
+      - name: manufacturerId
+        in: path
+        description: ID of manufacturer to return
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manufacturer'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manufacturer'
+        "404":
+          description: Manufacturer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manufacturer'
+      security:
+      - jwt: []
+    put:
+      tags:
+      - manufacturers
+      - manufacturer
+      summary: Updates a manufacturer in the store
+      operationId: updateManufacturer
+      parameters:
+      - name: manufacturerId
+        in: path
+        description: ID of manufacturer that needs to be updated
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Manufacturer'
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Manufacturer'
+      security:
+      - jwt: []
+    delete:
+      tags:
+      - manufacturers
+      - manufacturer
+      summary: Deletes a manufacturer
+      operationId: deleteManufacturer
+      parameters:
+      - name: manufacturerId
+        in: path
+        description: Manufacturer id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "400":
+          description: Invalid manufacturer value
+      security:
+      - jwt: []
+  /api/v1/legalEntity/{legalEntityId}:
+    get:
+      tags:
+      - legal_entity
+      summary: Find legalEntity by ID
+      description: Returns a single legalEntity
+      operationId: getLegalEntityById
+      parameters:
+      - name: legalEntityId
+        in: path
+        description: ID of legalEntity to return
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegalEntity'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegalEntity'
+        "404":
+          description: LegalEntity not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegalEntity'
+      security:
+      - jwt: []
+    put:
+      tags:
+      - legal_entity
+      summary: Updates a legalEntity in the store
+      operationId: updateLegalEntity
+      parameters:
+      - name: legalEntityId
+        in: path
+        description: ID of legalEntity that needs to be updated
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LegalEntity'
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LegalEntity'
+      security:
+      - jwt: []
+    delete:
+      tags:
+      - legal_entity
+      summary: Deletes a legalEntity
+      operationId: deleteLegalEntity
+      parameters:
+      - name: legalEntityId
+        in: path
+        description: LegalEntity id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "400":
+          description: Invalid legalEntity value
+      security:
+      - jwt: []
+  /api/v1/civilAviationAuthority/{civilAviationAuthorityId}:
+    get:
+      tags:
+      - civilAviationAuthorities
+      - civilAviationAuthority
+      summary: Find civilAviationAuthority by ID
+      description: Returns a single civilAviationAuthority
+      operationId: getCivilAviationAuthorityById
+      parameters:
+      - name: civilAviationAuthorityId
+        in: path
+        description: ID of civilAviationAuthority to return
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CivilAviationAuthority'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CivilAviationAuthority'
+        "404":
+          description: CivilAviationAuthority not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CivilAviationAuthority'
+      security:
+      - jwt: []
+    put:
+      tags:
+      - civilAviationAuthorities
+      - civilAviationAuthority
+      summary: Updates a civilAviationAuthority in the store
+      operationId: updateCivilAviationAuthority
+      parameters:
+      - name: civilAviationAuthorityId
+        in: path
+        description: ID of civilAviationAuthority that needs to be updated
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CivilAviationAuthority'
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CivilAviationAuthority'
+      security:
+      - jwt: []
+    delete:
+      tags:
+      - civilAviationAuthorities
+      - civilAviationAuthority
+      summary: Deletes a civilAviationAuthority
+      operationId: deleteCivilAviationAuthority
+      parameters:
+      - name: civilAviationAuthorityId
+        in: path
+        description: CivilAviationAuthority id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "400":
+          description: Invalid civilAviationAuthority value
+      security:
+      - jwt: []
+  /api/v1/utmsp:
+    post:
+      tags:
+      - utmsps
+      - utmsp
+      summary: Add a new utmsp to the store
+      description: Add a new utmsp to the store
+      operationId: addUtmsp
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Utmsp'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Utmsp'
+        "405":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Utmsp'
+      security:
+      - jwt: []
+  /api/v1/user:
+    post:
+      tags:
+      - user
+      summary: Create user
+      description: This can only be done by the logged in user.
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      security:
+      - jwt: []
+  /api/v1/pilot:
+    post:
+      tags:
+      - pilot
+      summary: Add a new pilot to the store
+      description: Add a new pilot to the store
+      operationId: addPilot
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pilot'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pilot'
+        "405":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pilot'
+      security:
+      - jwt: []
+  /api/v1/operator:
+    post:
+      tags:
+      - operators
+      - operator
+      summary: Add a new operator to the store
+      description: Add a new operator to the store
+      operationId: addOperator
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Operator'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operator'
+        "405":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operator'
+      security:
+      - jwt: []
+  /api/v1/manufacturer:
+    post:
+      tags:
+      - manufacturers
+      - manufacturer
+      summary: Add a new manufacturer to the store
+      description: Add a new manufacturer to the store
+      operationId: addManufacturer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Manufacturer'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manufacturer'
+        "405":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manufacturer'
+      security:
+      - jwt: []
+  /api/v1/legalEntity:
+    post:
+      tags:
+      - legal_entity
+      summary: Add a new legalEntity to the store
+      description: Add a new legalEntity to the store
+      operationId: addLegalEntity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LegalEntity'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegalEntity'
+        "405":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegalEntity'
+      security:
+      - jwt: []
+  /api/v1/civilAviationAuthority:
+    post:
+      tags:
+      - civilAviationAuthorities
+      - civilAviationAuthority
+      summary: Add a new civilAviationAuthority to the store
+      description: Add a new civilAviationAuthority to the store
+      operationId: addCivilAviationAuthority
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CivilAviationAuthority'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CivilAviationAuthority'
+        "405":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CivilAviationAuthority'
+      security:
+      - jwt: []
+  /api/v1/utmsp/find:
+    get:
+      tags:
+      - utmsps
+      - utmsp
+      summary: Finds Utmsps
+      operationId: findUtmsps
       responses:
         "200":
           description: successful operation
@@ -159,7 +929,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/FlightPlan'
+                  $ref: '#/components/schemas/Utmsp'
         "400":
           description: Invalid value
           content:
@@ -167,25 +937,638 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/FlightPlan'
+                  $ref: '#/components/schemas/Utmsp'
       security:
-      - flightauthorisation_auth:
-        - write:flightPlans
-        - read:flightPlans
+      - jwt: []
+  /api/v1/uasType/{uasTypeId}:
+    get:
+      tags:
+      - uas_types
+      summary: Find uasType by ID
+      description: Returns a single uasType
+      operationId: getUasTypeById
+      parameters:
+      - name: uasTypeId
+        in: path
+        description: ID of uasType to return
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UasType'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UasType'
+        "404":
+          description: UasType not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UasType'
+      security:
+      - jwt: []
+    delete:
+      tags:
+      - uas_types
+      summary: Deletes a uasType
+      operationId: deleteUasType
+      parameters:
+      - name: uasTypeId
+        in: path
+        description: UasType id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "400":
+          description: Invalid uasType value
+      security:
+      - jwt: []
+  /api/v1/uasType/find:
+    get:
+      tags:
+      - uas_types
+      summary: Finds UasTypes
+      operationId: findUasTypes
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UasType'
+        "400":
+          description: Invalid value
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UasType'
+      security:
+      - jwt: []
+  /api/v1/uas/{uasId}:
+    get:
+      tags:
+      - uas
+      summary: Find uas by ID
+      description: Returns a single uas
+      operationId: getUasById
+      parameters:
+      - name: uasId
+        in: path
+        description: ID of uas to return
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Uas'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Uas'
+        "404":
+          description: Uas not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Uas'
+      security:
+      - jwt: []
+    delete:
+      tags:
+      - uas
+      summary: Deletes a uas
+      operationId: deleteUas
+      parameters:
+      - name: uasId
+        in: path
+        description: Uas id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: api_key
+        in: header
+        required: false
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Invalid uas value
+      security:
+      - jwt: []
+  /api/v1/uas/find:
+    get:
+      tags:
+      - uas
+      summary: Finds Uass
+      operationId: findUass
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Uas'
+        "400":
+          description: Invalid value
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Uas'
+      security:
+      - jwt: []
+  /api/v1/pilot/find:
+    get:
+      tags:
+      - pilot
+      summary: Finds Pilots
+      operationId: findPilots
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pilot'
+        "400":
+          description: Invalid value
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pilot'
+      security:
+      - jwt: []
+  /api/v1/operator/find:
+    get:
+      tags:
+      - operators
+      - operator
+      summary: Finds Operators
+      operationId: findOperators
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Operator'
+        "400":
+          description: Invalid value
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Operator'
+      security:
+      - jwt: []
+  /api/v1/manufacturer/find:
+    get:
+      tags:
+      - manufacturers
+      - manufacturer
+      summary: Finds Manufacturers
+      operationId: findManufacturers
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Manufacturer'
+        "400":
+          description: Invalid value
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Manufacturer'
+      security:
+      - jwt: []
+  /api/v1/legalEntity/find:
+    get:
+      tags:
+      - legal_entity
+      summary: Finds LegalEntitys
+      operationId: findLegalEntitys
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LegalEntity'
+        "400":
+          description: Invalid value
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LegalEntity'
+      security:
+      - jwt: []
+  /api/v1/civilAviationAuthority/find:
+    get:
+      tags:
+      - civilAviationAuthorities
+      - civilAviationAuthority
+      summary: Finds CivilAviationAuthorities
+      operationId: findCivilAviationAuthorities
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CivilAviationAuthority'
+        "400":
+          description: Invalid value
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CivilAviationAuthority'
+      security:
+      - jwt: []
 components:
   schemas:
-    FlightPlan:
+    Address:
       required:
+      - city
+      - country
       - id
+      - line1
+      - line2
+      - line3
+      - pinCode
+      - state
       type: object
       properties:
         id:
           type: string
           format: uuid
+        line1:
+          type: string
+          example: 123 ABC Housing Society
+        line2:
+          type: string
+          example: Landmark
+        line3:
+          type: string
+          example: Bandra West
+        city:
+          type: string
+          example: Mumbai
+        state:
+          type: string
+          enum:
+          - ANDHRA_PRADESH
+          - ARUNACHAL_PRADESH
+          - ASSAM
+          - BIHAR
+          - CHHATTISGARH
+          - GOA
+          - GUJARAT
+          - HARYANA
+          - HIMACHAL_PRADESH
+          - JHARKHAND
+          - KARNATAKA
+          - KERALA
+          - MADHYA_PRADESH
+          - MAHARASHTRA
+          - MANIPUR
+          - MEGHALAYA
+          - MIZORAM
+          - NAGALAND
+          - ODISHA
+          - PUNJAB
+          - RAJASTHAN
+          - SIKKIM
+          - TAMIL_NADU
+          - TELANGANA
+          - TRIPURA
+          - UTTARAKHAND
+          - UTTAR_PRADESH
+          - WEST_BENGAL
+          - ANDAMAN_NICOBAR_ISLANDS
+          - CHANDIGARH
+          - DADRA_NAGAR_HAVELI_DAMAN_DIU
+          - NCT
+          - JAMMU_KASHMIR
+          - LADAKH
+          - LAKSHADWEEP
+          - PUDUCHERRY
+        pinCode:
+          type: string
+          example: "400000"
+        country:
+          type: string
+          example: IND
+          enum:
+          - IND
+          - USA
+    LegalEntity:
+      required:
+      - cin
+      - id
+      - name
+      - regdAddress
+      - timestamps
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        cin:
+          type: string
+          example: CIN00000
+        name:
+          type: string
+          example: Test Company Pvt Ltd
+        regdAddress:
+          $ref: '#/components/schemas/Address'
+        gstin:
+          type: string
+          example: GSTIN00000
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+    ObjectTimestamps:
+      required:
+      - created
+      - updated
+      type: object
+      properties:
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        updated:
+          type: string
+          format: date-time
+          readOnly: true
+    Utmsp:
+      required:
+      - id
+      - legalEntity
+      - timestamps
+      - validity
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        legalEntity:
+          $ref: '#/components/schemas/LegalEntity'
+        validity:
+          $ref: '#/components/schemas/Validity'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+    Validity:
+      required:
+      - from
+      type: object
+      properties:
+        from:
+          type: string
+          format: date-time
+        till:
+          type: string
+          format: date-time
+    User:
+      required:
+      - email
+      - firstName
+      - id
+      - lastName
+      - timestamps
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          example: e66b7c9e-79f5-44b0-9642-59ca20b7af63
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        phone:
+          type: string
+          example: +919999999999
+        aadharId:
+          type: string
+          example: +919999999999
+        address:
+          $ref: '#/components/schemas/Address'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+        status:
+          type: string
+          description: User Status
+          example: ACTIVE
+          enum:
+          - ACTIVE
+          - INACTIVE
+    Manufacturer:
+      required:
+      - id
+      - legalEntity
+      - timestamps
+      - validity
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        legalEntity:
+          $ref: '#/components/schemas/LegalEntity'
+        validity:
+          $ref: '#/components/schemas/Validity'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+    Uas:
+      required:
+      - id
+      - oemSerialNumber
+      - status
+      - timestamps
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        type:
+          $ref: '#/components/schemas/UasType'
+        oemSerialNumber:
+          maxLength: 12
+          minLength: 6
+          type: string
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+        status:
+          type: string
+          enum:
+          - REGISTERED
+          - ACTIVE
+          - GROUNDED
+    UasType:
+      required:
+      - id
+      - manufacturer
+      - modelNumber
+      - mtow
+      - propulsionCategory
+      - supportedOperationCategories
+      - timestamps
+      - weightCategory
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        modelNumber:
+          type: string
+        manufacturer:
+          $ref: '#/components/schemas/Manufacturer'
+        propulsionCategory:
+          type: string
+          enum:
+          - VTOL
+          - FIXED_WING
+          - HYBRID
+        weightCategory:
+          type: string
+          enum:
+          - NANO
+          - SMALL
+          - MICRO
+          - MEDIUM
+          - LARGE
+        mtow:
+          type: number
+          description: maximum take off weight in kilograms
+          format: float
+        photoUrl:
+          type: string
+          format: uri
+          example: https://ispirt.github.io/pushpaka/
+        supportedOperationCategories:
+          type: array
+          items:
+            type: string
+            enum:
+            - C1
+            - C2
+            - C3
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+    Pilot:
+      required:
+      - id
+      - timestamps
+      - user
+      - validity
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          $ref: '#/components/schemas/User'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+        validity:
+          $ref: '#/components/schemas/Validity'
+    Operator:
+      required:
+      - id
+      - legalEntity
+      - timestamps
+      - validity
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        legalEntity:
+          $ref: '#/components/schemas/LegalEntity'
+        validity:
+          $ref: '#/components/schemas/Validity'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+    CivilAviationAuthority:
+      required:
+      - id
+      - legalEntity
+      - timestamps
+      - validity
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        legalEntity:
+          $ref: '#/components/schemas/LegalEntity'
+        validity:
+          $ref: '#/components/schemas/Validity'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
   securitySchemes:
-    registry_auth:
-      type: oauth2
-    api_key:
-      type: apiKey
-      name: api_key
-      in: header
+    jwt:
+      type: http
+      scheme: bearer
