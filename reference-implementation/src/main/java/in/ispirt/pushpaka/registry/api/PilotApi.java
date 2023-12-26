@@ -73,12 +73,7 @@ public interface PilotApi {
       ),
       @ApiResponse(responseCode = "405", description = "Invalid input")
     },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:pilots", "read:pilots" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.POST,
@@ -126,12 +121,7 @@ public interface PilotApi {
     responses = {
       @ApiResponse(responseCode = "400", description = "Invalid pilot value")
     },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:pilots", "read:pilots" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(method = RequestMethod.DELETE, value = "/pilot/{pilotId}")
   default ResponseEntity<Void> deletePilot(
@@ -170,12 +160,7 @@ public interface PilotApi {
       ),
       @ApiResponse(responseCode = "400", description = "Invalid value")
     },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:pilots", "read:pilots" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.GET,
@@ -234,12 +219,7 @@ public interface PilotApi {
       @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
       @ApiResponse(responseCode = "404", description = "Pilot not found")
     },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:pilots", "read:pilots" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.GET,
@@ -288,12 +268,7 @@ public interface PilotApi {
     description = "",
     tags = { "pilot" },
     responses = { @ApiResponse(responseCode = "405", description = "Invalid input") },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:pilots", "read:pilots" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(method = RequestMethod.PUT, value = "/pilot/{pilotId}")
   default ResponseEntity<Pilot> updatePilot(

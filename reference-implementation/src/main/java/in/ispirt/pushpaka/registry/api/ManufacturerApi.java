@@ -73,12 +73,7 @@ public interface ManufacturerApi {
       ),
       @ApiResponse(responseCode = "405", description = "Invalid input")
     },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:manufacturers", "read:manufacturers" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.POST,
@@ -126,12 +121,7 @@ public interface ManufacturerApi {
     responses = {
       @ApiResponse(responseCode = "400", description = "Invalid manufacturer value")
     },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:manufacturers", "read:manufacturers" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(method = RequestMethod.DELETE, value = "/manufacturer/{manufacturerId}")
   default ResponseEntity<Void> deleteManufacturer(
@@ -170,12 +160,7 @@ public interface ManufacturerApi {
       ),
       @ApiResponse(responseCode = "400", description = "Invalid value")
     },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:manufacturers", "read:manufacturers" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.GET,
@@ -236,12 +221,7 @@ public interface ManufacturerApi {
       @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
       @ApiResponse(responseCode = "404", description = "Manufacturer not found")
     },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:manufacturers", "read:manufacturers" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.GET,
@@ -293,12 +273,7 @@ public interface ManufacturerApi {
     description = "",
     tags = { "manufacturer" },
     responses = { @ApiResponse(responseCode = "405", description = "Invalid input") },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:manufacturers", "read:manufacturers" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(method = RequestMethod.PUT, value = "/manufacturer/{manufacturerId}")
   default ResponseEntity<Manufacturer> updateManufacturer(

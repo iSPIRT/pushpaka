@@ -36,16 +36,12 @@ public class SpringDocConfiguration {
       .servers(Arrays.asList(new Server().url("http://localhost:8083/")))
       .components(
         new Components()
-          .addSecuritySchemes(
-            "registry_auth",
-            new SecurityScheme().type(SecurityScheme.Type.OAUTH2)
-          )
-          .addSecuritySchemes(
-            "api_key",
+        .addSecuritySchemes(
+            "jwt",
             new SecurityScheme()
-              .type(SecurityScheme.Type.APIKEY)
-              .in(SecurityScheme.In.HEADER)
-              .name("api_key")
+              .name("mysecurity")
+              .type(SecurityScheme.Type.HTTP)
+              .scheme("bearer")
           )
       );
   }

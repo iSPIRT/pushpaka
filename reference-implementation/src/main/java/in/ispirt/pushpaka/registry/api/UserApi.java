@@ -72,7 +72,8 @@ public interface UserApi {
           )
         }
       )
-    }
+    },
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.POST,
@@ -120,7 +121,8 @@ public interface UserApi {
     responses = {
       @ApiResponse(responseCode = "400", description = "Invalid username supplied"),
       @ApiResponse(responseCode = "404", description = "User not found")
-    }
+    },
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(method = RequestMethod.DELETE, value = "/user/{username}")
   default ResponseEntity<Void> deleteUser(
@@ -149,7 +151,8 @@ public interface UserApi {
     tags = { "user" },
     responses = {
       @ApiResponse(responseCode = "default", description = "successful operation")
-    }
+    },
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.PUT,

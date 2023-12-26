@@ -73,12 +73,8 @@ public interface CivilAviationAuthorityApi {
       ),
       @ApiResponse(responseCode = "405", description = "Invalid input")
     },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:civilAviationAuthorities", "read:civilAviationAuthorities" }
-      )
-    }
+        security = { @SecurityRequirement(name = "jwt") }
+
   )
   @RequestMapping(
     method = RequestMethod.POST,
@@ -131,12 +127,8 @@ public interface CivilAviationAuthorityApi {
         description = "Invalid civilAviationAuthority value"
       )
     },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:civilAviationAuthorities", "read:civilAviationAuthorities" }
-      )
-    }
+        security = { @SecurityRequirement(name = "jwt") }
+
   )
   @RequestMapping(
     method = RequestMethod.DELETE,
@@ -183,12 +175,7 @@ public interface CivilAviationAuthorityApi {
       ),
       @ApiResponse(responseCode = "400", description = "Invalid value")
     },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:civilAviationAuthorities", "read:civilAviationAuthorities" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.GET,
@@ -249,12 +236,7 @@ public interface CivilAviationAuthorityApi {
       @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
       @ApiResponse(responseCode = "404", description = "CivilAviationAuthority not found")
     },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:civilAviationAuthorities", "read:civilAviationAuthorities" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.GET,
@@ -308,12 +290,7 @@ public interface CivilAviationAuthorityApi {
     description = "",
     tags = { "civilAviationAuthority" },
     responses = { @ApiResponse(responseCode = "405", description = "Invalid input") },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:civilAviationAuthorities", "read:civilAviationAuthorities" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.PUT,

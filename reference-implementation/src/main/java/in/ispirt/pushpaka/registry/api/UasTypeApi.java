@@ -74,12 +74,7 @@ public interface UasTypeApi {
       ),
       @ApiResponse(responseCode = "405", description = "Invalid input")
     },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:uasTypes", "read:uasTypes" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.POST,
@@ -124,12 +119,7 @@ public interface UasTypeApi {
     responses = {
       @ApiResponse(responseCode = "400", description = "Invalid uasType value")
     },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:uasTypes", "read:uasTypes" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(method = RequestMethod.DELETE, value = "/uasType/{uasTypeId}")
   default ResponseEntity<Void> deleteUasType(
@@ -167,12 +157,7 @@ public interface UasTypeApi {
       ),
       @ApiResponse(responseCode = "400", description = "Invalid value")
     },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:uasTypes", "read:uasTypes" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.GET,
@@ -216,13 +201,7 @@ public interface UasTypeApi {
       @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
       @ApiResponse(responseCode = "404", description = "UasType not found")
     },
-    security = {
-      @SecurityRequirement(name = "api_key"),
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:uasTypes", "read:uasTypes" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.GET,
@@ -271,12 +250,7 @@ public interface UasTypeApi {
       @ApiResponse(responseCode = "404", description = "UasType not found"),
       @ApiResponse(responseCode = "405", description = "Validation exception")
     },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:uasTypes", "read:uasTypes" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.PUT,

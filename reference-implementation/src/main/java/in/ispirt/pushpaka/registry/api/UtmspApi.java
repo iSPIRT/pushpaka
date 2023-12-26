@@ -73,12 +73,7 @@ public interface UtmspApi {
       ),
       @ApiResponse(responseCode = "405", description = "Invalid input")
     },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:utmsps", "read:utmsps" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.POST,
@@ -126,12 +121,7 @@ public interface UtmspApi {
     responses = {
       @ApiResponse(responseCode = "400", description = "Invalid utmsp value")
     },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:utmsps", "read:utmsps" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(method = RequestMethod.DELETE, value = "/utmsp/{utmspId}")
   default ResponseEntity<Void> deleteUtmsp(
@@ -170,12 +160,7 @@ public interface UtmspApi {
       ),
       @ApiResponse(responseCode = "400", description = "Invalid value")
     },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:utmsps", "read:utmsps" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.GET,
@@ -234,12 +219,7 @@ public interface UtmspApi {
       @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
       @ApiResponse(responseCode = "404", description = "Utmsp not found")
     },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:utmsps", "read:utmsps" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.GET,
@@ -288,12 +268,7 @@ public interface UtmspApi {
     description = "",
     tags = { "utmsp" },
     responses = { @ApiResponse(responseCode = "405", description = "Invalid input") },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:utmsps", "read:utmsps" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(method = RequestMethod.PUT, value = "/utmsp/{utmspId}")
   default ResponseEntity<Utmsp> updateUtmsp(

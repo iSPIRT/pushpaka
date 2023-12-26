@@ -74,9 +74,7 @@ public interface UasApi {
       ),
       @ApiResponse(responseCode = "405", description = "Invalid input")
     },
-    security = {
-      @SecurityRequirement(name = "registry_auth", scopes = { "write:uass", "read:uass" })
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.POST,
@@ -124,9 +122,7 @@ public interface UasApi {
     description = "",
     tags = { "uas" },
     responses = { @ApiResponse(responseCode = "400", description = "Invalid uas value") },
-    security = {
-      @SecurityRequirement(name = "registry_auth", scopes = { "write:uass", "read:uass" })
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(method = RequestMethod.DELETE, value = "/uas/{uasId}")
   default ResponseEntity<Void> deleteUas(
@@ -169,9 +165,7 @@ public interface UasApi {
       ),
       @ApiResponse(responseCode = "400", description = "Invalid value")
     },
-    security = {
-      @SecurityRequirement(name = "registry_auth", scopes = { "write:uass", "read:uass" })
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.GET,
@@ -215,10 +209,7 @@ public interface UasApi {
       @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
       @ApiResponse(responseCode = "404", description = "Uas not found")
     },
-    security = {
-      @SecurityRequirement(name = "api_key"),
-      @SecurityRequirement(name = "registry_auth", scopes = { "write:uass", "read:uass" })
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.GET,
@@ -267,9 +258,7 @@ public interface UasApi {
       @ApiResponse(responseCode = "404", description = "Uas not found"),
       @ApiResponse(responseCode = "405", description = "Validation exception")
     },
-    security = {
-      @SecurityRequirement(name = "registry_auth", scopes = { "write:uass", "read:uass" })
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.PUT,

@@ -1,5 +1,9 @@
 package in.ispirt.pushpaka.flightauthorisation.config;
 
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.OAuthFlow;
+import io.swagger.v3.oas.annotations.security.OAuthFlows;
+import io.swagger.v3.oas.annotations.security.OAuthScope;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
@@ -8,7 +12,6 @@ import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import java.util.Arrays;
-// import io.swagger.v3.oas.models.security.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -36,16 +39,12 @@ public class SpringDocConfiguration {
       .servers(Arrays.asList(new Server().url("http://localhost:8083/")))
       .components(
         new Components()
-          .addSecuritySchemes(
-            "registry_auth",
-            new SecurityScheme().type(SecurityScheme.Type.OAUTH2)
-          )
-          .addSecuritySchemes(
-            "api_key",
+        .addSecuritySchemes(
+            "jwt",
             new SecurityScheme()
-              .type(SecurityScheme.Type.APIKEY)
-              .in(SecurityScheme.In.HEADER)
-              .name("api_key")
+              .name("mysecurity")
+              .type(SecurityScheme.Type.HTTP)
+              .scheme("bearer")
           )
       );
   }

@@ -31,6 +31,8 @@ import javax.validation.constraints.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -73,12 +75,7 @@ public interface FlightPlanApi {
       ),
       @ApiResponse(responseCode = "405", description = "Invalid input")
     },
-    security = {
-      @SecurityRequirement(
-        name = "flightauthorisation_auth",
-        scopes = { "write:flightPlans", "read:flightPlans" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.POST,
@@ -91,7 +88,8 @@ public interface FlightPlanApi {
       name = "FlightPlan",
       description = "Create a new FlightPlan in the store",
       required = true
-    ) @Valid @RequestBody FlightPlan FlightPlan
+    ) @Valid @RequestBody FlightPlan FlightPlan,
+    @Parameter(hidden = true) @AuthenticationPrincipal Jwt authentication
   ) {
     try {
       System.out.println("Create FlightPlan " + FlightPlan.toString());
@@ -126,12 +124,7 @@ public interface FlightPlanApi {
     responses = {
       @ApiResponse(responseCode = "400", description = "Invalid FlightPlan value")
     },
-    security = {
-      @SecurityRequirement(
-        name = "flightauthorisation_auth",
-        scopes = { "write:flightPlans", "read:flightPlans" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(method = RequestMethod.DELETE, value = "/FlightPlan/{FlightPlanId}")
   default ResponseEntity<Void> deleteFlightPlan(
@@ -170,12 +163,7 @@ public interface FlightPlanApi {
       ),
       @ApiResponse(responseCode = "400", description = "Invalid value")
     },
-    security = {
-      @SecurityRequirement(
-        name = "flightauthorisation_auth",
-        scopes = { "write:flightPlans", "read:flightPlans" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.GET,
@@ -236,12 +224,7 @@ public interface FlightPlanApi {
       @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
       @ApiResponse(responseCode = "404", description = "FlightPlan not found")
     },
-    security = {
-      @SecurityRequirement(
-        name = "flightauthorisation_auth",
-        scopes = { "write:flightPlans", "read:flightPlans" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.GET,
@@ -295,12 +278,7 @@ public interface FlightPlanApi {
     description = "",
     tags = { "FlightPlan" },
     responses = { @ApiResponse(responseCode = "405", description = "Invalid input") },
-    security = {
-      @SecurityRequirement(
-        name = "flightauthorisation_auth",
-        scopes = { "write:flightPlans", "read:flightPlans" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(method = RequestMethod.PUT, value = "/FlightPlan/{FlightPlanId}")
   default ResponseEntity<FlightPlan> updateFlightPlan(

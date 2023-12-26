@@ -79,12 +79,7 @@ public interface AirspaceUsageTokenApi {
       ),
       @ApiResponse(responseCode = "405", description = "Invalid input")
     },
-    security = {
-      @SecurityRequirement(
-        name = "flightauthorisation_auth",
-        scopes = { "write:AirspaceUsageTokens", "read:AirspaceUsageTokens" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.POST,
@@ -132,12 +127,7 @@ public interface AirspaceUsageTokenApi {
     responses = {
       @ApiResponse(responseCode = "400", description = "Invalid AirspaceUsageToken value")
     },
-    security = {
-      @SecurityRequirement(
-        name = "flightauthorisation_auth",
-        scopes = { "write:AirspaceUsageTokens", "read:AirspaceUsageTokens" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.DELETE,
@@ -184,12 +174,7 @@ public interface AirspaceUsageTokenApi {
       ),
       @ApiResponse(responseCode = "400", description = "Invalid value")
     },
-    security = {
-      @SecurityRequirement(
-        name = "flightauthorisation_auth",
-        scopes = { "write:AirspaceUsageTokens", "read:AirspaceUsageTokens" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.GET,
@@ -250,12 +235,7 @@ public interface AirspaceUsageTokenApi {
       @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
       @ApiResponse(responseCode = "404", description = "AirspaceUsageToken not found")
     },
-    security = {
-      @SecurityRequirement(
-        name = "flightauthorisation_auth",
-        scopes = { "write:AirspaceUsageTokens", "read:AirspaceUsageTokens" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.GET,
@@ -309,12 +289,7 @@ public interface AirspaceUsageTokenApi {
     description = "",
     tags = { "AirspaceUsageToken" },
     responses = { @ApiResponse(responseCode = "405", description = "Invalid input") },
-    security = {
-      @SecurityRequirement(
-        name = "flightauthorisation_auth",
-        scopes = { "write:AirspaceUsageTokens", "read:AirspaceUsageTokens" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.PUT,

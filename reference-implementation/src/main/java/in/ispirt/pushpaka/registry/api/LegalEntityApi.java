@@ -73,12 +73,7 @@ public interface LegalEntityApi {
       ),
       @ApiResponse(responseCode = "405", description = "Invalid input")
     },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:legalEntitys", "read:legalEntitys" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.POST,
@@ -139,12 +134,7 @@ public interface LegalEntityApi {
     responses = {
       @ApiResponse(responseCode = "400", description = "Invalid legalEntity value")
     },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:legalEntitys", "read:legalEntitys" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(method = RequestMethod.DELETE, value = "/legalEntity/{legalEntityId}")
   default ResponseEntity<Void> deleteLegalEntity(
@@ -183,12 +173,7 @@ public interface LegalEntityApi {
       ),
       @ApiResponse(responseCode = "400", description = "Invalid value")
     },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:legalEntitys", "read:legalEntitys" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.GET,
@@ -249,12 +234,7 @@ public interface LegalEntityApi {
       @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
       @ApiResponse(responseCode = "404", description = "LegalEntity not found")
     },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:legalEntitys", "read:legalEntitys" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.GET,
@@ -306,12 +286,7 @@ public interface LegalEntityApi {
     description = "",
     tags = { "legal_entity" },
     responses = { @ApiResponse(responseCode = "405", description = "Invalid input") },
-    security = {
-      @SecurityRequirement(
-        name = "registry_auth",
-        scopes = { "write:legalEntitys", "read:legalEntitys" }
-      )
-    }
+    security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(method = RequestMethod.PUT, value = "/legalEntity/{legalEntityId}")
   default ResponseEntity<LegalEntity> updateLegalEntity(
