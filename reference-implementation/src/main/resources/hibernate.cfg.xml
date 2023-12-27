@@ -8,9 +8,9 @@
         <!-- Database connection settings -->
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
         <property name="hibernate.dialect">org.hibernate.dialect.CockroachDB201Dialect</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:26257/defaultdb?sslmode=disable</property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password"></property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/pushpaka?sslmode=disable</property>
+        <property name="hibernate.connection.username">postgres</property>
+        <property name="hibernate.connection.password">secret</property>
         <property name="hibernate.connection.ApplicationName">docs_simplecrud_hibernate</property>
 
         <!-- Required so a table can be created from the 'Account' class in Sample.java -->

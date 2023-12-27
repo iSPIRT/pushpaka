@@ -1,0 +1,3 @@
+CREATE DATABASE spicedb;
+CREATE DATABASE keycloak;
+CREATE DATABASE pushpaka;
