@@ -61,7 +61,7 @@ public class Dao implements Serializable {
       this.id = id;
     }
 
-    @Column(name = "cin")
+    @Column(name = "cin", unique = true)
     public String cin;
 
     public String getCin() {
@@ -84,7 +84,7 @@ public class Dao implements Serializable {
       this.name = newname;
     }
 
-    @Column(name = "gstin")
+    @Column(name = "gstin", unique = true)
     public String gstin;
 
     public String getGstin() {
@@ -1870,5 +1870,13 @@ public class Dao implements Serializable {
       }
     }
     return rv;
+  }
+
+  public static void deleteAll(Session s) {
+    Transaction t = s.beginTransaction();
+    s.createQuery("delete from LegalEntity", LegalEntity.class).executeUpdate();
+    s.createQuery("delete from Address").executeUpdate();
+    s.createQuery("delete from LegalEntity").executeUpdate();
+    t.commit();
   }
 }

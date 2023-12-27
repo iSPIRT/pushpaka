@@ -12,6 +12,7 @@ import java.util.*;
 import java.util.Objects;
 import java.util.UUID;
 import javax.annotation.Generated;
+import javax.persistence.Column;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import org.openapitools.jackson.nullable.JsonNullable;
