@@ -3,6 +3,7 @@ package in.ispirt.pushpaka.integration;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nimbusds.jwt.SignedJWT;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -51,7 +52,7 @@ public class TestUtils {
   // --data-urlencode 'username=test@test.com' \
   // --data-urlencode 'password=test'
 
-  public static String loginUser()
+  private static String loginUser(java.util.Map.Entry<String, String> user)
     throws ClientProtocolException, IOException, JsonProcessingException {
     HttpPost request = new HttpPost(
       "http://localhost:8080/realms/pushpaka/protocol/openid-connect/token"
@@ -61,8 +62,8 @@ public class TestUtils {
       new BasicNameValuePair("grant_type", "password"),
       new BasicNameValuePair("client_secret", "FH598McXo0GugVaKqAZYuiM6RDm99QY3"),
       new BasicNameValuePair("scope", "openid"),
-      new BasicNameValuePair("username", "test@test.com"),
-      new BasicNameValuePair("password", "test")
+      new BasicNameValuePair("username", user.getKey()),
+      new BasicNameValuePair("password", user.getValue())
     );
     UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams);
     request.setEntity(entity);
@@ -78,5 +79,91 @@ public class TestUtils {
     Map<String, Object> mm = extractJsonMap(reb);
     String jwt = String.valueOf(mm.get("access_token"));
     return jwt;
+  }
+
+  public static String loginPlatformAdminUser()
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    java.util.Map.Entry<String, String> u = new java.util.AbstractMap.SimpleEntry<>(
+      "test.platform.admin@test.com",
+      "test"
+    );
+    return loginUser(u);
+  }
+
+  public static String loginCaaAdminUser()
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    java.util.Map.Entry<String, String> u = new java.util.AbstractMap.SimpleEntry<>(
+      "test.caa.admin@test.com",
+      "test"
+    );
+    return loginUser(u);
+  }
+
+  public static String loginManufacturerAdminUser()
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    java.util.Map.Entry<String, String> u = new java.util.AbstractMap.SimpleEntry<>(
+      "test.manufacturer.0.admin@test.com",
+      "test"
+    );
+    return loginUser(u);
+  }
+
+  public static String loginTraderAdminUser()
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    java.util.Map.Entry<String, String> u = new java.util.AbstractMap.SimpleEntry<>(
+      "test.trader.0.admin@test.com",
+      "test"
+    );
+    return loginUser(u);
+  }
+
+  public static SignedJWT parseJwt(String jwt) throws java.text.ParseException {
+    SignedJWT signedJWT = SignedJWT.parse(jwt);
+    return signedJWT;
+  }
+
+  public static UUID userCreate(String jwt)
+    throws ClientProtocolException, IOException, JsonProcessingException, java.text.ParseException {
+    SignedJWT jwts = TestUtils.parseJwt(jwt);
+    UUID uid = UUID.fromString(jwts.getJWTClaimsSet().getSubject());
+
+    StringEntity e = new StringEntity(
+      "{\"id\": \"" +
+      uid.toString() +
+      "\", \"firstName\": \"John\", \"lastName\": \"James\", \"email\": \"john@email.com\", \"phone\": \"+919999999999\", \"aadharId\": \"+919999999999\", \"address\": {\"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"timestamps\": {}, \"status\": \"ACTIVE\" }",
+      ContentType.APPLICATION_JSON
+    );
+    HttpPost request = new HttpPost("http://localhost:8084/api/v1/user");
+    request.setEntity(e);
+    request.addHeader("Authorization", "Bearer " + jwt);
+
+    // When
+    HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+    // assertEquals(httpResponse.getStatusLine().getStatusCode(), 200);
+    HttpEntity re = httpResponse.getEntity();
+    String reb = EntityUtils.toString(re);
+    EntityUtils.consume(re);
+    return extractUuid(reb);
+  }
+
+  public static UUID pilotCreate(String jwt) {
+    SignedJWT jwts = TestUtils.parseJwt(jwt);
+    UUID uid = UUID.fromString(jwts.getJWTClaimsSet().getSubject());
+    StringEntity e = new StringEntity(
+      "{\"user\": {\"id\": \"" +
+      uid.toString() +
+      "\", \"firstName\": \"John\", \"lastName\": \"James\", \"email\": \"john@email.com\", \"phone\": \"+919999999999\", \"aadharId\": \"+919999999999\", \"address\": {\"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"timestamps\": {}, \"status\": \"ACTIVE\" }, \"timestamps\": {}, \"validity\": {\"from\": \"2024-01-03T13:41:00.461Z\", \"till\": \"2024-01-03T13:41:00.461Z\" } }"
+    );
+    HttpPost request = new HttpPost("http://localhost:8084/api/v1/user");
+    request.setEntity(e);
+    request.addHeader("Authorization", "Bearer " + jwt);
+
+    // When
+    HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+    // assertEquals(httpResponse.getStatusLine().getStatusCode(), 200);
+    HttpEntity re = httpResponse.getEntity();
+    String reb = EntityUtils.toString(re);
+    EntityUtils.consume(re);
+    return extractUuid(reb);
   }
 }

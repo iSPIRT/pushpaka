@@ -10,6 +10,7 @@ import in.ispirt.pushpaka.registry.dao.DaoInstance;
 import in.ispirt.pushpaka.registry.models.Address;
 import in.ispirt.pushpaka.registry.models.User;
 import in.ispirt.pushpaka.registry.utils.DaoException;
+import in.ispirt.pushpaka.utils.Logging;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -33,6 +34,8 @@ import javax.validation.constraints.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -84,8 +87,10 @@ public interface UserApi {
   default ResponseEntity<User> createUser(
     @Parameter(name = "user", description = "User data") @Valid @RequestBody(
       required = true
-    ) User user
+    ) User user,
+    @Parameter(hidden = true) @AuthenticationPrincipal Jwt authentication
   ) {
+    Logging.info("JWT: " + authentication.toString());
     try {
       Dao.Users le = User.fromOa(user);
       Dao.Users lec = Dao.Users.create(DaoInstance.getInstance().getSession(), le);

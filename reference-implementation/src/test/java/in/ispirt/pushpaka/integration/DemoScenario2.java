@@ -6,9 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jwt.SignedJWT;
-import in.ispirt.pushpaka.utils.Logging;
 import java.io.IOException;
-import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 import org.apache.http.HttpEntity;
@@ -26,21 +24,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Scenario 1: End to end Registration service workflow
- *   a. Explain that there are different personas (or user types) in Digital Sky and
- * their inter-relationships
- *      1. Civil Aviation Authority
- *      2. Manufacturers
- *      3. Operators
- *      4. Pilots
- *      5. DSSPs
- *      6. Repair Agencies
- *      7. Trader
- *      8. UAS
- *   b. Demonstrate the VLoS drone registration process at point of sale where
- * manufacturerID, TraderID, OperatorID, DroneID come together and register a drone .
+ * Scenario 2: Scenario 2: AUT issuance for VLoS
+ *   b. Show that Post registration, VLoS drone has long-term AUT assigned that
+ *   has expiry date 1 year from date of registration and status = “Created”.
  */
-class DemoScenario1 {
+class DemoScenario2 {
 
   @BeforeEach
   void cleanup() {
@@ -329,6 +317,12 @@ class DemoScenario1 {
     return UUID.randomUUID();
   }
 
+  public UUID autCreate(String jwt, UUID leid)
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    assertEquals(1, 2);
+    return UUID.randomUUID();
+  }
+
   public void grantCaaAdmin(String jwt, UUID id) {
     assertEquals(1, 2);
   }
@@ -345,120 +339,72 @@ class DemoScenario1 {
     assertEquals(1, 2);
   }
 
-  public void transferCreate(String jwt, UUID id) {
+  public UUID transferCreate(String jwt, UUID id) {
     assertEquals(1, 2);
+    return UUID.randomUUID();
   }
 
   public void saleApprove(String jwt, UUID id) {
     assertEquals(1, 2);
   }
 
-  public void assertJwt(SignedJWT t) throws java.text.ParseException {
-    assertEquals(
-      "http://localhost:8080/realms/pushpaka",
-      t.getJWTClaimsSet().getIssuer()
-    );
-    assertTrue(new Date().before(t.getJWTClaimsSet().getExpirationTime()));
-  }
-
-  // Scenario 1.a.1 Civil Aviation Authority
+  // Scenario 2.b.1
   @Test
-  public void testScenario_1_a_1()
+  public void testScenario_2_b_1()
     throws ClientProtocolException, IOException, java.text.ParseException {
+    // login platform admin user
     String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
-    UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion 
+
+    // login caa-admin user
     String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
-    try {
-      SignedJWT jwtsCaaAdmin = TestUtils.parseJwt(jwtCaaAdmin);
-      assertJwt(jwtsCaaAdmin);
-      UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
-      Logging.info("id Caa Admin: " + idCaaAdmin.toString());
-      // grant caa admin rights to caa admin user
-      grantCaaAdmin(jwtPlatformAdmin, idCaaAdmin); // TODO: spicedb call
+    SignedJWT jwtsCaaAdmin = TestUtils.parseJwt(jwtCaaAdmin);
+    UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
 
-      // create legal entity
-      UUID leid = legalEntityCreate(jwtCaaAdmin);
-      // create civilAviationAuthority
-      UUID mid = civilAviationAuthorityCreate(jwtCaaAdmin, leid);
-    } catch (java.text.ParseException e) {
-      Logging.severe("JWT ParseException");
-    }
+    // grant caa admin rights to caa admin user
+    grantCaaAdmin(jwtPlatformAdmin, idCaaAdmin);
+
+    // create legal entity
+    UUID leid = legalEntityCreate(jwtCaaAdmin);
+
+    // create civilAviationAuthority
+    UUID caaid = civilAviationAuthorityCreate(jwtCaaAdmin, leid);
+
+    // login manufacturer admin user
+    String jwtMfgAdmin = TestUtils.loginManufacturerAdminUser();
+
+    // create legal entity
+    UUID lemid = legalEntityCreate(jwtMfgAdmin);
+
+    // create manufacturer
+    UUID mid = manufacturerCreate(jwtMfgAdmin, lemid);
+
+    // approve manufacturer profild
+    manufacturerApprove(jwtCaaAdmin, mid);
+
+    // login trader admin user
+    String jwtSellerAdmin = TestUtils.loginTraderAdminUser();
+
+    UUID lesid = legalEntityCreate(jwtSellerAdmin);
+
+    // create trader
+    UUID sid = traderCreate(jwtSellerAdmin, lesid);
+
+    // approve trader profild
+    traderApprove(jwtCaaAdmin, sid);
+
+    // create uas type
+    UUID utid = uasTypeCreate(jwtMfgAdmin, mid);
+
+    // approve uas type profild
+    uasTypeApprove(jwtCaaAdmin, utid);
+
+    // create uas
+    UUID uid = uasCreate(jwtMfgAdmin, utid);
+
+    // create AUT
+    UUID x1 = autCreate(jwtMfgAdmin, uid);
+    // or
+    UUID transferId = transferCreate(jwtSellerAdmin, uid);
+    UUID x2 = autCreate(jwtSellerAdmin, uid);
   }
-  // // Scenario 1.a.2 Manufacturers
-  // @Ignore
-  // @Test
-  // public void testScenario_1_a_2() throws ClientProtocolException, IOException {
-  //   String jwt = loginUser();
-  //   // create legal entity
-  //   UUID leid = legalEntityCreate(jwt);
-  //   // create manufacturer
-  //   UUID mid = manufacturerCreate(jwt, leid);
-  // }
-
-  // // Scenario 1.a.3 Operators
-  // @Ignore
-  // @Test
-  // public void testScenario_1_a_3() throws ClientProtocolException, IOException {
-  //   String jwt = loginUser();
-  //   // create legal entity
-  //   UUID leid = legalEntityCreate(jwt);
-  //   // create manufacturer
-  //   UUID oid = operatorCreate(jwt, leid);
-  // }
-
-  // // Scenario 1.a.4 Pilots
-  // @Ignore
-  // @Test
-  // public void testScenario_1_a_4() throws ClientProtocolException, IOException {
-  //   String jwt = loginUser();
-  //   UUID pid = pilotCreate(jwt);
-  // }
-
-  // // Scenario 1.a.5 DSSPs
-  // @Ignore
-  // @Test
-  // public void testScenario_1_a_5() throws ClientProtocolException, IOException {
-  //   String jwt = loginUser();
-  //   // create legal entity
-  //   UUID leid = legalEntityCreate(jwt);
-  //   // create dssp
-  //   UUID dsspid = dsspCreate(jwt, leid);
-  // }
-
-  // // Scenario 1.a.6 Repair Agencies
-  // @Ignore
-  // @Test
-  // public void testScenario_1_a_6() throws ClientProtocolException, IOException {
-  //   String jwt = loginUser();
-  //   // create legal entity
-  //   UUID leid = legalEntityCreate(jwt);
-  //   // create repair agency
-  //   UUID mid = repairAgencyCreate(jwt, leid);
-  // }
-
-  // // Scenario 1.a.7 Trader
-  // @Ignore
-  // @Test
-  // public void testScenario_1_a_7() throws ClientProtocolException, IOException {
-  //   String jwt = loginUser();
-  //   // create legal entity
-  //   UUID leid = legalEntityCreate(jwt);
-  //   // create repair agency
-  //   UUID mid = traderCreate(jwt, leid);
-  // }
-
-  // // Scenario 1.a.8 UAS
-  // @Ignore
-  // @Test
-  // public void testScenario_1_a_8() throws ClientProtocolException, IOException {
-  //   String jwt = loginUser();
-  //   // create legal entity
-  //   UUID leid = legalEntityCreate(jwt);
-  //   // create manufacturer
-  //   UUID mid = manufacturerCreate(jwt, leid);
-  //   // create uas type
-  //   UUID utid = uasTypeCreate(jwt, mid);
-  //   // create uas
-  //   UUID uid = uasCreate(jwt, utid);
-  // }
 }
