@@ -390,7 +390,7 @@ class DemoScenario2 {
     UUID sid = traderCreate(jwtSellerAdmin, lesid);
 
     // approve trader profild
-    traderApprove(jwtCaaAdmin, sid);
+    traderApprove(jwtCaaAdmin, sid); // TODO: add trader can_approve permission
 
     // create uas type
     UUID utid = uasTypeCreate(jwtMfgAdmin, mid);

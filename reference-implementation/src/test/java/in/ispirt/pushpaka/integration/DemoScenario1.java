@@ -366,7 +366,7 @@ class DemoScenario1 {
   public void testScenario_1_a_1()
     throws ClientProtocolException, IOException, java.text.ParseException {
     String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
-    UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion 
+    UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
     String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
     try {
       SignedJWT jwtsCaaAdmin = TestUtils.parseJwt(jwtCaaAdmin);
