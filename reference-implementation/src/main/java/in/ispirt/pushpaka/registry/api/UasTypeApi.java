@@ -42,7 +42,7 @@ import org.springframework.web.multipart.MultipartFile;
   date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]"
 )
 @Validated
-@Tag(name = "uas_types", description = "the uas_types API")
+@Tag(name = "uasTypes", description = "the uas_types API")
 public interface UasTypeApi {
   default Optional<NativeWebRequest> getRequest() {
     return Optional.empty();
@@ -60,7 +60,7 @@ public interface UasTypeApi {
     operationId = "addUasType",
     summary = "Add a new uasType to the store",
     description = "Add a new uasType to the store",
-    tags = { "uas_types" },
+    tags = { "uasTypes" },
     responses = {
       @ApiResponse(
         responseCode = "200",
@@ -115,7 +115,7 @@ public interface UasTypeApi {
     operationId = "deleteUasType",
     summary = "Deletes a uasType",
     description = "",
-    tags = { "uas_types" },
+    tags = { "uasTypes" },
     responses = {
       @ApiResponse(responseCode = "400", description = "Invalid uasType value")
     },
@@ -143,7 +143,7 @@ public interface UasTypeApi {
   @Operation(
     operationId = "findUasTypes",
     summary = "Finds UasTypes",
-    tags = { "uas_types" },
+    tags = { "uasTypes" },
     responses = {
       @ApiResponse(
         responseCode = "200",
@@ -186,7 +186,7 @@ public interface UasTypeApi {
     operationId = "getUasTypeById",
     summary = "Find uasType by ID",
     description = "Returns a single uasType",
-    tags = { "uas_types" },
+    tags = { "uasTypes" },
     responses = {
       @ApiResponse(
         responseCode = "200",
@@ -234,7 +234,7 @@ public interface UasTypeApi {
     operationId = "updateUasType",
     summary = "Update an existing uasType",
     description = "Update an existing uasType by Id",
-    tags = { "uas_types" },
+    tags = { "uasTypes" },
     responses = {
       @ApiResponse(
         responseCode = "200",

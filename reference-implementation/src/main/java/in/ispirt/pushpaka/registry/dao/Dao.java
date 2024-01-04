@@ -1856,11 +1856,11 @@ public class Dao implements Serializable {
     }
   }
 
-  // Utmsp is our model, which corresponds to the "utmsps" database table.
-  @Entity(name = Utmsp.PERSISTENCE_NAME)
-  @Table(name = Utmsp.PERSISTENCE_NAME)
-  public static class Utmsp {
-    static final String PERSISTENCE_NAME = "Utmsp";
+  // DigitalSkyServiceProvider is our model, which corresponds to the "digitalSkyServiceProviders" database table.
+  @Entity(name = DigitalSkyServiceProvider.PERSISTENCE_NAME)
+  @Table(name = DigitalSkyServiceProvider.PERSISTENCE_NAME)
+  public static class DigitalSkyServiceProvider {
+    static final String PERSISTENCE_NAME = "DigitalSkyServiceProvider";
 
     @Id
     @Column(name = "id")
@@ -1870,7 +1870,7 @@ public class Dao implements Serializable {
       return id;
     }
 
-    public Utmsp setId(UUID id) {
+    public DigitalSkyServiceProvider setId(UUID id) {
       this.id = id;
       return this;
     }
@@ -1936,7 +1936,7 @@ public class Dao implements Serializable {
     }
 
     // Convenience constructor.
-    public Utmsp(
+    public DigitalSkyServiceProvider(
       UUID id,
       LegalEntity legalEntity,
       OffsetDateTime tc,
@@ -1953,9 +1953,9 @@ public class Dao implements Serializable {
     }
 
     // Hibernate needs a default (no-arg) constructor to create model objects.
-    public Utmsp() {}
+    public DigitalSkyServiceProvider() {}
 
-    public static Utmsp create(Session s, Utmsp m)
+    public static DigitalSkyServiceProvider create(Session s, DigitalSkyServiceProvider m)
       throws DaoException, ConstraintViolationException {
       LegalEntity le = LegalEntity.get(s, m.getLegalEntity().getId());
       if (le == null) {
@@ -1972,13 +1972,13 @@ public class Dao implements Serializable {
       return m;
     }
 
-    public static List<Utmsp> getAll(Session s) {
-      return s.createQuery("from Utmsp", Utmsp.class).getResultList();
+    public static List<DigitalSkyServiceProvider> getAll(Session s) {
+      return s.createQuery("from DigitalSkyServiceProvider", DigitalSkyServiceProvider.class).getResultList();
     }
 
-    public static Utmsp get(Session s, UUID id) {
+    public static DigitalSkyServiceProvider get(Session s, UUID id) {
       return s
-        .createQuery("from Utmsp where id= :id", Utmsp.class)
+        .createQuery("from DigitalSkyServiceProvider where id= :id", DigitalSkyServiceProvider.class)
         .setString("id", id.toString())
         .uniqueResult();
     }
@@ -1986,15 +1986,15 @@ public class Dao implements Serializable {
     public static void delete(Session s, UUID id) {
       Transaction t = s.beginTransaction();
       s
-        .createQuery("delete from Utmsp where id= :id")
+        .createQuery("delete from DigitalSkyServiceProvider where id= :id")
         .setString("id", id.toString())
         .executeUpdate();
       t.commit();
     }
 
-    public static Utmsp update(Session s, UUID id, Utmsp le) {
-      Utmsp leo = s
-        .createQuery("from Utmsp where id= :id", Utmsp.class)
+    public static DigitalSkyServiceProvider update(Session s, UUID id, DigitalSkyServiceProvider le) {
+      DigitalSkyServiceProvider leo = s
+        .createQuery("from DigitalSkyServiceProvider where id= :id", DigitalSkyServiceProvider.class)
         .setString("id", id.toString())
         .uniqueResult();
       leo.setTimestampUpdated(OffsetDateTime.now());

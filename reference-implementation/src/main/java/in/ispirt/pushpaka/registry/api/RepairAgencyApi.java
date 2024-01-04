@@ -41,7 +41,7 @@ import org.springframework.web.multipart.MultipartFile;
   date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]"
 )
 @Validated
-@Tag(name = "repairAgencys", description = "RepairAgencys")
+@Tag(name = "repairAgencies", description = "RepairAgencies")
 public interface RepairAgencyApi {
   default Optional<NativeWebRequest> getRequest() {
     return Optional.empty();
@@ -59,7 +59,6 @@ public interface RepairAgencyApi {
     operationId = "addRepairAgency",
     summary = "Add a new repairAgency to the store",
     description = "Add a new repairAgency to the store",
-    tags = { "repairAgency" },
     responses = {
       @ApiResponse(
         responseCode = "200",
@@ -117,7 +116,6 @@ public interface RepairAgencyApi {
     operationId = "deleteRepairAgency",
     summary = "Deletes a repairAgency",
     description = "",
-    tags = { "repairAgency" },
     responses = {
       @ApiResponse(responseCode = "400", description = "Invalid repairAgency value")
     },
@@ -138,15 +136,14 @@ public interface RepairAgencyApi {
   }
 
   /**
-   * GET /repairAgency/find : Finds RepairAgencys
+   * GET /repairAgency/find : Finds RepairAgencies
    *
    * @return successful operation (status code 200)
    *         or Invalid value (status code 400)
    */
   @Operation(
-    operationId = "findRepairAgencys",
-    summary = "Finds RepairAgencys",
-    tags = { "repairAgency" },
+    operationId = "findRepairAgencies",
+    summary = "Finds RepairAgencies",
     responses = {
       @ApiResponse(
         responseCode = "200",
@@ -167,7 +164,7 @@ public interface RepairAgencyApi {
     value = "/repairAgency/find",
     produces = { "application/json" }
   )
-  default ResponseEntity<List<RepairAgency>> findRepairAgencys() {
+  default ResponseEntity<List<RepairAgency>> findRepairAgencies() {
     // getRequest()
     //   .ifPresent(
     //     request -> {
@@ -206,7 +203,6 @@ public interface RepairAgencyApi {
     operationId = "getRepairAgencyById",
     summary = "Find repairAgency by ID",
     description = "Returns a single repairAgency",
-    tags = { "repairAgency" },
     responses = {
       @ApiResponse(
         responseCode = "200",
@@ -271,7 +267,6 @@ public interface RepairAgencyApi {
     operationId = "updateRepairAgency",
     summary = "Updates a repairAgency in the store",
     description = "",
-    tags = { "repairAgency" },
     responses = { @ApiResponse(responseCode = "405", description = "Invalid input") },
     security = { @SecurityRequirement(name = "jwt") }
   )

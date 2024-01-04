@@ -24,6 +24,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import java.util.Date;
+import java.text.ParseException;
 
 public class TestUtils {
   private static ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
@@ -117,13 +121,13 @@ public class TestUtils {
     return loginUser(u);
   }
 
-  public static SignedJWT parseJwt(String jwt) throws java.text.ParseException {
+  public static SignedJWT parseJwt(String jwt) throws ParseException {
     SignedJWT signedJWT = SignedJWT.parse(jwt);
     return signedJWT;
   }
 
   public static UUID userCreate(String jwt)
-    throws ClientProtocolException, IOException, JsonProcessingException, java.text.ParseException {
+    throws ClientProtocolException, IOException, JsonProcessingException, ParseException {
     SignedJWT jwts = TestUtils.parseJwt(jwt);
     UUID uid = UUID.fromString(jwts.getJWTClaimsSet().getSubject());
 
@@ -146,7 +150,7 @@ public class TestUtils {
     return extractUuid(reb);
   }
 
-  public static UUID pilotCreate(String jwt) {
+  public static UUID pilotCreate(String jwt) throws ClientProtocolException, IOException, JsonProcessingException, ParseException {
     SignedJWT jwts = TestUtils.parseJwt(jwt);
     UUID uid = UUID.fromString(jwts.getJWTClaimsSet().getSubject());
     StringEntity e = new StringEntity(
@@ -166,4 +170,312 @@ public class TestUtils {
     EntityUtils.consume(re);
     return extractUuid(reb);
   }
+
+  public static UUID legalEntityCreate(String jwt)
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    StringEntity e = new StringEntity(
+      "{ \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }",
+      ContentType.APPLICATION_JSON
+    );
+    HttpPost request = new HttpPost("http://localhost:8084/api/v1/legalEntity");
+    request.setEntity(e);
+    request.addHeader("Authorization", "Bearer " + jwt);
+
+    // When
+    HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+    assertEquals(httpResponse.getStatusLine().getStatusCode(), 200);
+    HttpEntity re = httpResponse.getEntity();
+    String reb = EntityUtils.toString(re);
+    EntityUtils.consume(re);
+    return TestUtils.extractUuid(reb);
+  }
+
+  public static UUID manufacturerCreate(String jwt, UUID x)
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    StringEntity e = new StringEntity(
+      "{ \"legalEntity\": { \"id\": \"" +
+      x.toString() +
+      "\", \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": { \"from\": \"2023-11-26T12:08:22.985Z\", \"till\": \"2023-11-26T12:08:22.985Z\" }, \"timestamps\": {} }",
+      ContentType.APPLICATION_JSON
+    );
+    HttpPost request = new HttpPost("http://localhost:8084/api/v1/manufacturer");
+    request.setEntity(e);
+    request.addHeader("Authorization", "Bearer " + jwt);
+
+    // When
+    HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+    assertEquals(httpResponse.getStatusLine().getStatusCode(), 200);
+    HttpEntity re = httpResponse.getEntity();
+    String reb = EntityUtils.toString(re);
+    EntityUtils.consume(re);
+    return TestUtils.extractUuid(reb);
+  }
+
+  public static void manufacturerCreate(String jwt)
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    UUID x = UUID.randomUUID();
+    StringEntity e = new StringEntity(
+      "{ \"legalEntity\": { \"id\": \"" +
+      x.toString() +
+      "\", \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": { \"from\": \"2023-11-26T12:08:22.985Z\", \"till\": \"2023-11-26T12:08:22.985Z\" }, \"timestamps\": {} }",
+      ContentType.APPLICATION_JSON
+    );
+    HttpPost request = new HttpPost("http://localhost:8084/api/v1/manufacturer");
+    request.setEntity(e);
+    request.addHeader("Authorization", "Bearer " + jwt);
+
+    // When
+    HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+    assertEquals(httpResponse.getStatusLine().getStatusCode(), 400);
+    return;
+  }
+
+  public static UUID civilAviationAuthorityCreate(String jwt, UUID x)
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    StringEntity e = new StringEntity(
+      "{ \"legalEntity\": { \"id\": \"" +
+      x.toString() +
+      "\", \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": { \"from\": \"2023-11-26T12:08:22.985Z\", \"till\": \"2023-11-26T12:08:22.985Z\" }, \"timestamps\": {} }",
+      ContentType.APPLICATION_JSON
+    );
+    HttpPost request = new HttpPost(
+      "http://localhost:8084/api/v1/civilAviationAuthority"
+    );
+    request.setEntity(e);
+    request.addHeader("Authorization", "Bearer " + jwt);
+
+    // When
+    HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+    assertEquals(httpResponse.getStatusLine().getStatusCode(), 200);
+    HttpEntity re = httpResponse.getEntity();
+    String reb = EntityUtils.toString(re);
+    EntityUtils.consume(re);
+    return TestUtils.extractUuid(reb);
+  }
+
+  public static void civilAviationAuthorityCreate(String jwt)
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    UUID x = UUID.randomUUID();
+    StringEntity e = new StringEntity(
+      "{ \"legalEntity\": { \"id\": \"" +
+      x.toString() +
+      "\", \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": { \"from\": \"2023-11-26T12:08:22.985Z\", \"till\": \"2023-11-26T12:08:22.985Z\" }, \"timestamps\": {} }",
+      ContentType.APPLICATION_JSON
+    );
+    HttpPost request = new HttpPost(
+      "http://localhost:8084/api/v1/civilAviationAuthority"
+    );
+    request.setEntity(e);
+    request.addHeader("Authorization", "Bearer " + jwt);
+
+    // When
+    HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+    assertEquals(httpResponse.getStatusLine().getStatusCode(), 400);
+    return;
+  }
+
+  public static UUID operatorCreate(String jwt, UUID x)
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    StringEntity e = new StringEntity(
+      "{\"legalEntity\": {\"id\": \"" +
+      x.toString() +
+      "\", \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": {\"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": {\"from\": \"2023-11-27T07:48:03.686Z\", \"till\": \"2023-11-27T07:48:03.686Z\" }, \"timestamps\": {} }",
+      ContentType.APPLICATION_JSON
+    );
+    HttpPost request = new HttpPost("http://localhost:8084/api/v1/operator");
+    request.setEntity(e);
+    request.addHeader("Authorization", "Bearer " + jwt);
+
+    // When
+    HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+    assertEquals(httpResponse.getStatusLine().getStatusCode(), 200);
+    HttpEntity re = httpResponse.getEntity();
+    String reb = EntityUtils.toString(re);
+    EntityUtils.consume(re);
+    return TestUtils.extractUuid(reb);
+  }
+
+  public static void operatorCreate(String jwt)
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    UUID x = UUID.randomUUID();
+    StringEntity e = new StringEntity(
+      "{\"legalEntity\": {\"id\": \"" +
+      x.toString() +
+      "\", \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": {\"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": {\"from\": \"2023-11-27T07:48:03.686Z\", \"till\": \"2023-11-27T07:48:03.686Z\" }, \"timestamps\": {} }",
+      ContentType.APPLICATION_JSON
+    );
+    HttpPost request = new HttpPost("http://localhost:8084/api/v1/operator");
+    request.setEntity(e);
+    request.addHeader("Authorization", "Bearer " + jwt);
+
+    // When
+    HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+    assertEquals(httpResponse.getStatusLine().getStatusCode(), 400);
+    return;
+  }
+
+  public static UUID dsspCreate(String jwt, UUID x)
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    StringEntity e = new StringEntity(
+      "{\"legalEntity\": {\"id\": \"" +
+      x.toString() +
+      "\", \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": {\"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": {\"from\": \"2023-11-27T07:48:03.686Z\", \"till\": \"2023-11-27T07:48:03.686Z\" }, \"timestamps\": {} }",
+      ContentType.APPLICATION_JSON
+    );
+    HttpPost request = new HttpPost("http://localhost:8084/api/v1/dssp");
+    request.setEntity(e);
+    request.addHeader("Authorization", "Bearer " + jwt);
+
+    // When
+    HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+    assertEquals(httpResponse.getStatusLine().getStatusCode(), 200);
+    HttpEntity re = httpResponse.getEntity();
+    String reb = EntityUtils.toString(re);
+    EntityUtils.consume(re);
+    return TestUtils.extractUuid(reb);
+  }
+
+  public static void dsspCreate(String jwt)
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    UUID x = UUID.randomUUID();
+    StringEntity e = new StringEntity(
+      "{\"legalEntity\": {\"id\": \"" +
+      x.toString() +
+      "\", \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": {\"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": {\"from\": \"2023-11-27T07:48:03.686Z\", \"till\": \"2023-11-27T07:48:03.686Z\" }, \"timestamps\": {} }",
+      ContentType.APPLICATION_JSON
+    );
+    HttpPost request = new HttpPost("http://localhost:8084/api/v1/dssp");
+    request.setEntity(e);
+    request.addHeader("Authorization", "Bearer " + jwt);
+
+    // When
+    HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+    assertEquals(httpResponse.getStatusLine().getStatusCode(), 400);
+    return;
+  }
+
+  public static UUID uasTypeCreate(String jwt, UUID x)
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    StringEntity e = new StringEntity(
+      "{ \"modelNumber\": \"string\", \"manufacturer\": { \"id\": \"" +
+      x.toString() +
+      "\", \"legalEntity\": { \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": { \"from\": \"2023-11-26T12:12:08.481Z\", \"till\": \"2023-11-26T12:12:08.481Z\" }, \"timestamps\": {} }, \"propulsionCategory\": \"VTOL\", \"weightCategory\": \"NANO\", \"mtow\": 0, \"photoUrl\": \"https://ispirt.github.io/pushpaka/\", \"supportedOperationCategories\": [ \"C1\" ], \"timestamps\": {} }",
+      ContentType.APPLICATION_JSON
+    );
+    HttpPost request = new HttpPost("http://localhost:8084/api/v1/uasType");
+    request.setEntity(e);
+    request.addHeader("Authorization", "Bearer " + jwt);
+
+    // When
+    HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+    assertEquals(httpResponse.getStatusLine().getStatusCode(), 200);
+    HttpEntity re = httpResponse.getEntity();
+    String reb = EntityUtils.toString(re);
+    EntityUtils.consume(re);
+    return TestUtils.extractUuid(reb);
+  }
+
+  public static void uasTypeCreate(String jwt)
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    UUID x = UUID.randomUUID();
+    StringEntity e = new StringEntity(
+      "{ \"modelNumber\": \"string\", \"manufacturer\": { \"id\": \"" +
+      x.toString() +
+      "\", \"legalEntity\": { \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": { \"from\": \"2023-11-26T12:12:08.481Z\", \"till\": \"2023-11-26T12:12:08.481Z\" }, \"timestamps\": {} }, \"propulsionCategory\": \"VTOL\", \"weightCategory\": \"NANO\", \"mtow\": 0, \"photoUrl\": \"https://ispirt.github.io/pushpaka/\", \"supportedOperationCategories\": [ \"C1\" ], \"timestamps\": {} }",
+      ContentType.APPLICATION_JSON
+    );
+    HttpPost request = new HttpPost("http://localhost:8084/api/v1/uasType");
+    request.setEntity(e);
+    request.addHeader("Authorization", "Bearer " + jwt);
+
+    // When
+    HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+    assertEquals(httpResponse.getStatusLine().getStatusCode(), 400);
+    return;
+  }
+
+  public static UUID uasCreate(String jwt, UUID x)
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    StringEntity e = new StringEntity(
+      "{ \"type\": { \"id\": \"" +
+      x.toString() +
+      "\", \"modelNumber\": \"string\", \"manufacturer\": { \"legalEntity\": { \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": { \"from\": \"2023-11-26T12:14:38.563Z\", \"till\": \"2023-11-26T12:14:38.563Z\" }, \"timestamps\": {} }, \"propulsionCategory\": \"VTOL\", \"weightCategory\": \"NANO\", \"mtow\": 0, \"photoUrl\": \"https://ispirt.github.io/pushpaka/\", \"supportedOperationCategories\": [ \"C1\" ], \"timestamps\": {} }, \"oemSerialNumber\": \"string\", \"timestamps\": {}, \"status\": \"REGISTERED\" }",
+      ContentType.APPLICATION_JSON
+    );
+    HttpPost request = new HttpPost("http://localhost:8084/api/v1/uas");
+    request.setEntity(e);
+    request.addHeader("Authorization", "Bearer " + jwt);
+
+    // When
+    HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+    assertEquals(httpResponse.getStatusLine().getStatusCode(), 200);
+    HttpEntity re = httpResponse.getEntity();
+    String reb = EntityUtils.toString(re);
+    EntityUtils.consume(re);
+    return TestUtils.extractUuid(reb);
+  }
+
+  public static void uasCreate(String jwt)
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    StringEntity e = new StringEntity(
+      "{ \"type\": { \"id\": \"" +
+      UUID.randomUUID().toString() +
+      "\", \"modelNumber\": \"string\", \"manufacturer\": { \"legalEntity\": { \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": { \"from\": \"2023-11-26T12:14:38.563Z\", \"till\": \"2023-11-26T12:14:38.563Z\" }, \"timestamps\": {} }, \"propulsionCategory\": \"VTOL\", \"weightCategory\": \"NANO\", \"mtow\": 0, \"photoUrl\": \"https://ispirt.github.io/pushpaka/\", \"supportedOperationCategories\": [ \"C1\" ], \"timestamps\": {} }, \"oemSerialNumber\": \"string\", \"timestamps\": {}, \"status\": \"REGISTERED\" }",
+      ContentType.APPLICATION_JSON
+    );
+    HttpPost request = new HttpPost("http://localhost:8084/api/v1/uas");
+    request.setEntity(e);
+    request.addHeader("Authorization", "Bearer " + jwt);
+
+    // When
+    HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+    assertEquals(httpResponse.getStatusLine().getStatusCode(), 400);
+    return;
+  }
+
+  public static UUID repairAgencyCreate(String jwt, UUID leid)
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    assertEquals(1, 2);
+    return UUID.randomUUID();
+  }
+
+  public static UUID traderCreate(String jwt, UUID leid)
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    assertEquals(1, 2);
+    return UUID.randomUUID();
+  }
+
+  public static void grantCaaAdmin(String jwt, UUID id) {
+    
+    assertEquals(1, 2);
+  }
+
+  public static void manufacturerApprove(String jwt, UUID id) {
+    assertEquals(1, 2);
+  }
+
+  public static void traderApprove(String jwt, UUID id) {
+    assertEquals(1, 2);
+  }
+
+  public static void uasTypeApprove(String jwt, UUID id) {
+    assertEquals(1, 2);
+  }
+
+  public static void transferCreate(String jwt, UUID id) {
+    assertEquals(1, 2);
+  }
+
+  public static void saleApprove(String jwt, UUID id) {
+    assertEquals(1, 2);
+  }
+
+  public static void assertJwt(SignedJWT t) throws ParseException {
+    assertEquals(
+      "http://localhost:8080/realms/pushpaka",
+      t.getJWTClaimsSet().getIssuer()
+    );
+    assertTrue(new Date().before(t.getJWTClaimsSet().getExpirationTime()));
+  }
+
 }

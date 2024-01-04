@@ -1,6 +1,6 @@
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.registry.models.Utmsp;
+import in.ispirt.pushpaka.registry.models.DigitalSkyServiceProvider;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -29,11 +29,11 @@ import org.springframework.web.multipart.MultipartFile;
 )
 @Controller
 @RequestMapping("${openapi.pushpakaRegistry.base-path:/api/v1}")
-public class UtmspApiController implements UtmspApi {
+public class DigitalSkyServiceProviderApiController implements DigitalSkyServiceProviderApi {
   private final NativeWebRequest request;
 
   @Autowired
-  public UtmspApiController(NativeWebRequest request) {
+  public DigitalSkyServiceProviderApiController(NativeWebRequest request) {
     this.request = request;
   }
 

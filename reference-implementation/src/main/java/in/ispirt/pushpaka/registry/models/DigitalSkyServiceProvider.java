@@ -18,14 +18,14 @@ import javax.validation.constraints.*;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 /**
- * Utmsp
+ * DigitalSkyServiceProvider
  */
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
   date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]"
 )
-public class Utmsp {
+public class DigitalSkyServiceProvider {
   private UUID id;
 
   private LegalEntity legalEntity;
@@ -36,17 +36,17 @@ public class Utmsp {
 
   /**
    * Default constructor
-   * @deprecated Use {@link Utmsp#Utmsp(UUID, LegalEntity, Validity, ObjectTimestamps)}
+   * @deprecated Use {@link DigitalSkyServiceProvider#DigitalSkyServiceProvider(UUID, LegalEntity, Validity, ObjectTimestamps)}
    */
   @Deprecated
-  public Utmsp() {
+  public DigitalSkyServiceProvider() {
     super();
   }
 
   /**
    * Constructor with only required parameters
    */
-  public Utmsp(
+  public DigitalSkyServiceProvider(
     UUID id,
     LegalEntity legalEntity,
     Validity validity,
@@ -58,7 +58,7 @@ public class Utmsp {
     this.timestamps = timestamps;
   }
 
-  public Utmsp id(UUID id) {
+  public DigitalSkyServiceProvider id(UUID id) {
     this.id = id;
     return this;
   }
@@ -82,7 +82,7 @@ public class Utmsp {
     this.id = id;
   }
 
-  public Utmsp legalEntity(LegalEntity legalEntity) {
+  public DigitalSkyServiceProvider legalEntity(LegalEntity legalEntity) {
     this.legalEntity = legalEntity;
     return this;
   }
@@ -103,7 +103,7 @@ public class Utmsp {
     this.legalEntity = legalEntity;
   }
 
-  public Utmsp validity(Validity validity) {
+  public DigitalSkyServiceProvider validity(Validity validity) {
     this.validity = validity;
     return this;
   }
@@ -124,7 +124,7 @@ public class Utmsp {
     this.validity = validity;
   }
 
-  public Utmsp timestamps(ObjectTimestamps timestamps) {
+  public DigitalSkyServiceProvider timestamps(ObjectTimestamps timestamps) {
     this.timestamps = timestamps;
     return this;
   }
@@ -153,12 +153,12 @@ public class Utmsp {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Utmsp utmsp = (Utmsp) o;
+    DigitalSkyServiceProvider digitalSkyServiceProvider = (DigitalSkyServiceProvider) o;
     return (
-      Objects.equals(this.id, utmsp.id) &&
-      Objects.equals(this.legalEntity, utmsp.legalEntity) &&
-      Objects.equals(this.validity, utmsp.validity) &&
-      Objects.equals(this.timestamps, utmsp.timestamps)
+      Objects.equals(this.id, digitalSkyServiceProvider.id) &&
+      Objects.equals(this.legalEntity, digitalSkyServiceProvider.legalEntity) &&
+      Objects.equals(this.validity, digitalSkyServiceProvider.validity) &&
+      Objects.equals(this.timestamps, digitalSkyServiceProvider.timestamps)
     );
   }
 
@@ -170,7 +170,7 @@ public class Utmsp {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Utmsp {\n");
+    sb.append("class DigitalSkyServiceProvider {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    legalEntity: ").append(toIndentedString(legalEntity)).append("\n");
     sb.append("    validity: ").append(toIndentedString(validity)).append("\n");
@@ -190,7 +190,7 @@ public class Utmsp {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public static Utmsp toOa(Dao.Utmsp x) {
+  public static DigitalSkyServiceProvider toOa(Dao.DigitalSkyServiceProvider x) {
     Validity vtimestamps = new Validity();
     vtimestamps.setFrom(x.getValidityStart());
     vtimestamps.setTill(x.getValidityEnd());
@@ -198,7 +198,7 @@ public class Utmsp {
       x.getTimestampCreated(),
       x.getTimestampUpdated()
     );
-    Utmsp le = new Utmsp(
+    DigitalSkyServiceProvider le = new DigitalSkyServiceProvider(
       x.getId(),
       LegalEntity.toOa(x.getLegalEntity()),
       vtimestamps,
@@ -207,9 +207,9 @@ public class Utmsp {
     return le;
   }
 
-  public static Dao.Utmsp fromOa(Utmsp m) {
+  public static Dao.DigitalSkyServiceProvider fromOa(DigitalSkyServiceProvider m) {
     OffsetDateTime n = OffsetDateTime.now();
-    Dao.Utmsp u = new Dao.Utmsp(m.id, LegalEntity.fromOa(m.getLegalEntity()), n, n, n, n);
+    Dao.DigitalSkyServiceProvider u = new Dao.DigitalSkyServiceProvider(m.id, LegalEntity.fromOa(m.getLegalEntity()), n, n, n, n);
     return u;
   }
 }
