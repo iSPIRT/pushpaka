@@ -49,6 +49,10 @@ public interface OwnershipApi {
     return Optional.empty();
   }
 
+  /******************************
+   *            LEASE           *
+   ******************************/
+
   /**
    * POST /lease : Add a new lease to the store
    * Add a new lease to the store
@@ -279,18 +283,22 @@ public interface OwnershipApi {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
+  /******************************
+   *             SALE           *
+   ******************************/
+
   /**
-   * POST /ownership : Add a new ownership to the store
-   * Add a new ownership to the store
+   * POST /sale : Add a new sale to the store
+   * Add a new sale to the store
    *
-   * @param ownership Create a new ownership in the store (required)
+   * @param sale Create a new sale in the store (required)
    * @return Successful operation (status code 200)
    *         or Invalid input (status code 405)
    */
   @Operation(
     operationId = "addSale",
-    summary = "Add a new ownership to the store",
-    description = "Add a new ownership to the store",
+    summary = "Add a new sale to the store",
+    description = "Add a new sale to the store",
     responses = {
       @ApiResponse(
         responseCode = "200",
@@ -308,19 +316,19 @@ public interface OwnershipApi {
   )
   @RequestMapping(
     method = RequestMethod.POST,
-    value = "/ownership",
+    value = "/sale",
     produces = { "application/json" },
     consumes = { "application/json" }
   )
   default ResponseEntity<Sale> addSale(
     @Parameter(
       name = "Sale",
-      description = "Create a new ownership in the store",
+      description = "Create a new sale in the store",
       required = true
-    ) @Valid @RequestBody Sale ownership
+    ) @Valid @RequestBody Sale sale
   ) {
     try {
-      Dao.Sale le = Sale.fromOa(ownership);
+      Dao.Sale le = Sale.fromOa(sale);
       Dao.Sale lec = Dao.Sale.create(DaoInstance.getInstance().getSession(), le);
       return ResponseEntity.ok(Sale.toOa(lec));
     } catch (DaoException e) {
@@ -335,36 +343,36 @@ public interface OwnershipApi {
   }
 
   /**
-   * DELETE /ownership/{ownershipId} : Deletes a ownership
+   * DELETE /sale/{saleId} : Deletes a sale
    *
    *
-   * @param ownershipId Sale id to delete (required)
-   * @return Invalid ownership value (status code 400)
+   * @param saleId Sale id to delete (required)
+   * @return Invalid sale value (status code 400)
    */
   @Operation(
     operationId = "deleteSale",
-    summary = "Deletes a ownership",
+    summary = "Deletes a sale",
     description = "",
     responses = {
-      @ApiResponse(responseCode = "400", description = "Invalid ownership value")
+      @ApiResponse(responseCode = "400", description = "Invalid sale value")
     },
     security = { @SecurityRequirement(name = "jwt") }
   )
-  @RequestMapping(method = RequestMethod.DELETE, value = "/ownership/{ownershipId}")
+  @RequestMapping(method = RequestMethod.DELETE, value = "/sale/{saleId}")
   default ResponseEntity<Void> deleteSale(
     @Parameter(
-      name = "ownershipId",
+      name = "saleId",
       description = "Sale id to delete",
       required = true,
       in = ParameterIn.PATH
-    ) @PathVariable("ownershipId") UUID ownershipId
+    ) @PathVariable("saleId") UUID saleId
   ) {
-    Dao.Sale.delete(DaoInstance.getInstance().getSession(), ownershipId);
+    Dao.Sale.delete(DaoInstance.getInstance().getSession(), saleId);
     return ResponseEntity.ok().build();
   }
 
   /**
-   * GET /ownership/find : Finds Sales
+   * GET /sale/find : Finds Sales
    *
    * @return successful operation (status code 200)
    *         or Invalid value (status code 400)
@@ -389,7 +397,7 @@ public interface OwnershipApi {
   )
   @RequestMapping(
     method = RequestMethod.GET,
-    value = "/ownership/find",
+    value = "/sale/find",
     produces = { "application/json" }
   )
   default ResponseEntity<List<Sale>> findSales() {
@@ -402,18 +410,18 @@ public interface OwnershipApi {
   }
 
   /**
-   * GET /ownership/{ownershipId} : Find ownership by ID
-   * Returns a single ownership
+   * GET /sale/{saleId} : Find sale by ID
+   * Returns a single sale
    *
-   * @param ownershipId ID of ownership to return (required)
+   * @param saleId ID of sale to return (required)
    * @return successful operation (status code 200)
    *         or Invalid ID supplied (status code 400)
    *         or Sale not found (status code 404)
    */
   @Operation(
     operationId = "getSaleById",
-    summary = "Find ownership by ID",
-    description = "Returns a single ownership",
+    summary = "Find sale by ID",
+    description = "Returns a single sale",
     responses = {
       @ApiResponse(
         responseCode = "200",
@@ -432,26 +440,26 @@ public interface OwnershipApi {
   )
   @RequestMapping(
     method = RequestMethod.GET,
-    value = "/ownership/{ownershipId}",
+    value = "/sale/{saleId}",
     produces = { "application/json" }
   )
   default ResponseEntity<Sale> getSaleById(
     @Parameter(
-      name = "ownershipId",
-      description = "ID of ownership to return",
+      name = "saleId",
+      description = "ID of sale to return",
       required = true,
       in = ParameterIn.PATH
-    ) @PathVariable("ownershipId") UUID ownershipId
+    ) @PathVariable("saleId") UUID saleId
   ) {
-    Dao.Sale le = Dao.Sale.get(DaoInstance.getInstance().getSession(), ownershipId);
+    Dao.Sale le = Dao.Sale.get(DaoInstance.getInstance().getSession(), saleId);
     return ResponseEntity.ok(in.ispirt.pushpaka.registry.models.Sale.toOa(le));
   }
 
   /**
-   * PUT /ownership : Update an existing ownership
-   * Update an existing ownership by Id
+   * PUT /sale : Update an existing sale
+   * Update an existing sale by Id
    *
-   * @param ownership Update an existent ownership in the store (required)
+   * @param sale Update an existent sale in the store (required)
    * @return Successful operation (status code 200)
    *         or Invalid ID supplied (status code 400)
    *         or Sale not found (status code 404)
@@ -459,8 +467,8 @@ public interface OwnershipApi {
    */
   @Operation(
     operationId = "updateSale",
-    summary = "Update an existing ownership",
-    description = "Update an existing ownership by Id",
+    summary = "Update an existing sale",
+    description = "Update an existing sale by Id",
     responses = {
       @ApiResponse(
         responseCode = "200",
@@ -480,16 +488,16 @@ public interface OwnershipApi {
   )
   @RequestMapping(
     method = RequestMethod.PUT,
-    value = "/ownership",
+    value = "/sale",
     produces = { "application/json" },
     consumes = { "application/json" }
   )
   default ResponseEntity<Sale> updateSale(
     @Parameter(
       name = "Sale",
-      description = "Update an existent ownership in the store",
+      description = "Update an existent sale in the store",
       required = true
-    ) @Valid @RequestBody Sale ownership
+    ) @Valid @RequestBody Sale sale
   ) {
     getRequest()
       .ifPresent(
