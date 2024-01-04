@@ -9,6 +9,7 @@ import in.ispirt.pushpaka.registry.models.UasWeightCategory;
 import in.ispirt.pushpaka.registry.models.UserStatus;
 import in.ispirt.pushpaka.registry.utils.DaoException;
 import in.ispirt.pushpaka.registry.utils.Utils;
+import in.ispirt.pushpaka.utils.Logging;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -159,7 +160,7 @@ public class Dao implements Serializable {
       Address aa = Address.create(s, le.getAddress());
       Transaction t = s.beginTransaction();
       OffsetDateTime n = OffsetDateTime.now();
-      le.setId(UUID.randomUUID());
+      // le.setId(UUID.randomUUID());
       le.setTimestampCreated(n);
       le.setTimestampUpdated(n);
       le.setAddress(aa);
@@ -177,7 +178,7 @@ public class Dao implements Serializable {
     public static LegalEntity get(Session s, UUID id) {
       return s
         .createQuery("from LegalEntity where id= :id", LegalEntity.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
     }
 
@@ -185,7 +186,7 @@ public class Dao implements Serializable {
       Transaction t = s.beginTransaction();
       LegalEntity le = s
         .createQuery("from LegalEntity where id= :id", LegalEntity.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
       s
         .createQuery("delete from Address where id= :id")
@@ -193,7 +194,7 @@ public class Dao implements Serializable {
         .executeUpdate();
       s
         .createQuery("delete from LegalEntity where id= :id")
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .executeUpdate();
       t.commit();
     }
@@ -201,7 +202,7 @@ public class Dao implements Serializable {
     public static LegalEntity update(Session s, UUID id, LegalEntity le) {
       LegalEntity leo = s
         .createQuery("from LegalEntity where id= :id", LegalEntity.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
       leo.setName(le.getName());
       leo.setCin(le.getCin());
@@ -358,7 +359,7 @@ public class Dao implements Serializable {
     public static Manufacturer get(Session s, UUID id) {
       return s
         .createQuery("from Manufacturer where id= :id", Manufacturer.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
     }
 
@@ -366,7 +367,7 @@ public class Dao implements Serializable {
       Transaction t = s.beginTransaction();
       s
         .createQuery("delete from Manufacturer where id= :id")
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .executeUpdate();
       t.commit();
     }
@@ -374,7 +375,7 @@ public class Dao implements Serializable {
     public static Manufacturer update(Session s, UUID id, Manufacturer le) {
       Manufacturer leo = s
         .createQuery("from Manufacturer where id= :id", Manufacturer.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
       leo.setTimestampUpdated(OffsetDateTime.now());
       leo.setValidityStart(le.getValidityStart());
@@ -512,7 +513,7 @@ public class Dao implements Serializable {
     public static RepairAgency get(Session s, UUID id) {
       return s
         .createQuery("from RepairAgency where id= :id", RepairAgency.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
     }
 
@@ -520,7 +521,7 @@ public class Dao implements Serializable {
       Transaction t = s.beginTransaction();
       s
         .createQuery("delete from RepairAgency where id= :id")
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .executeUpdate();
       t.commit();
     }
@@ -528,7 +529,7 @@ public class Dao implements Serializable {
     public static RepairAgency update(Session s, UUID id, RepairAgency le) {
       RepairAgency leo = s
         .createQuery("from RepairAgency where id= :id", RepairAgency.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
       leo.setTimestampUpdated(OffsetDateTime.now());
       leo.setValidityStart(le.getValidityStart());
@@ -666,7 +667,7 @@ public class Dao implements Serializable {
     public static Trader get(Session s, UUID id) {
       return s
         .createQuery("from Trader where id= :id", Trader.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
     }
 
@@ -674,7 +675,7 @@ public class Dao implements Serializable {
       Transaction t = s.beginTransaction();
       s
         .createQuery("delete from Trader where id= :id")
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .executeUpdate();
       t.commit();
     }
@@ -682,7 +683,7 @@ public class Dao implements Serializable {
     public static Trader update(Session s, UUID id, Trader le) {
       Trader leo = s
         .createQuery("from Trader where id= :id", Trader.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
       leo.setTimestampUpdated(OffsetDateTime.now());
       leo.setValidityStart(le.getValidityStart());
@@ -855,7 +856,7 @@ public class Dao implements Serializable {
     public static UasType get(Session s, UUID id) {
       return s
         .createQuery("from UasType where id= :id", UasType.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
     }
 
@@ -863,7 +864,7 @@ public class Dao implements Serializable {
       Transaction t = s.beginTransaction();
       s
         .createQuery("delete from UasType where id= :id")
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .executeUpdate();
       t.commit();
     }
@@ -871,7 +872,7 @@ public class Dao implements Serializable {
     public static UasType update(Session s, UUID id, UasType le) {
       UasType leo = s
         .createQuery("from UasType where id= :id", UasType.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
       leo.setTimestampUpdated(OffsetDateTime.now());
       Manufacturer a = leo.getManufacturer();
@@ -1005,7 +1006,7 @@ public class Dao implements Serializable {
     public static Uas get(Session s, UUID id) {
       return s
         .createQuery("from Uas where id= :id", Uas.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
     }
 
@@ -1013,7 +1014,7 @@ public class Dao implements Serializable {
       Transaction t = s.beginTransaction();
       s
         .createQuery("delete from Uas where id= :id")
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .executeUpdate();
       t.commit();
     }
@@ -1021,7 +1022,7 @@ public class Dao implements Serializable {
     public static Uas update(Session s, UUID id, Uas le) {
       Uas leo = s
         .createQuery("from Uas where id= :id", Uas.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
       leo.setTimestampUpdated(OffsetDateTime.now());
       UasType a = leo.getUasType();
@@ -1162,7 +1163,7 @@ public class Dao implements Serializable {
     public static Pilot get(Session s, UUID id) {
       return s
         .createQuery("from Pilot where id= :id", Pilot.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
     }
 
@@ -1170,7 +1171,7 @@ public class Dao implements Serializable {
       Transaction t = s.beginTransaction();
       s
         .createQuery("delete from Pilot where id= :id")
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .executeUpdate();
       t.commit();
     }
@@ -1178,7 +1179,7 @@ public class Dao implements Serializable {
     public static Pilot update(Session s, UUID id, Pilot le) {
       Pilot leo = s
         .createQuery("from Pilot where id= :id", Pilot.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
       leo.setTimestampUpdated(OffsetDateTime.now());
       s.saveOrUpdate(leo);
@@ -1330,11 +1331,18 @@ public class Dao implements Serializable {
       return a;
     }
 
+    public static Address get(Session s, UUID id) {
+      return s
+        .createQuery("from Address where id= :id", Address.class)
+        .setParameter("id", id)
+        .uniqueResult();
+    }
+
     public static void delete(Session s, UUID id) {
       Transaction t = s.beginTransaction();
       s
         .createQuery("delete from Address where id= :id")
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .executeUpdate();
       t.commit();
     }
@@ -1471,18 +1479,47 @@ public class Dao implements Serializable {
 
     public static Users create(Session s, Users le)
       throws DaoException, ConstraintViolationException {
-      Address aa = Address.create(s, le.getAddress());
-      Transaction t = s.beginTransaction();
-      OffsetDateTime n = OffsetDateTime.now();
-      le.setTimestampCreated(n);
-      le.setTimestampUpdated(n);
-      le.setAddress(aa);
-      le.setStatus(UserStatus.INACTIVE);
-      s.save(le);
-      s.flush();
-      t.commit();
-      s.refresh(le);
-      return le;
+      Users u = s
+        .createQuery("from Users where id= :id", Users.class)
+        .setParameter("id", le.getId())
+        .uniqueResult();
+      if (u != null) {
+        Address aa = Address.get(s, u.getAddress().getId());
+        Transaction t = s.beginTransaction();
+        OffsetDateTime n = OffsetDateTime.now();
+        aa.setLine1(le.getAddress().getLine1());
+        aa.setLine2(le.getAddress().getLine2());
+        aa.setLine3(le.getAddress().getLine3());
+        aa.setCity(le.getAddress().getCity());
+        aa.setState(le.getAddress().getState());
+        aa.setPinCode(le.getAddress().getPinCode());
+        aa.setCountry(le.getAddress().getCountry());
+        le.setTimestampCreated(n);
+        le.setTimestampUpdated(n);
+        le.setAddress(aa);
+        le.setStatus(UserStatus.INACTIVE);
+        s.merge(aa);
+        s.merge(le);
+        s.flush();
+        t.commit();
+        s.refresh(le);
+        // s.evict(le);
+        return le;
+      } else {
+        Address aa = Address.create(s, le.getAddress());
+        Transaction t = s.beginTransaction();
+        OffsetDateTime n = OffsetDateTime.now();
+        le.setTimestampCreated(n);
+        le.setTimestampUpdated(n);
+        le.setAddress(aa);
+        le.setStatus(UserStatus.INACTIVE);
+        s.save(le);
+        s.flush();
+        t.commit();
+        s.refresh(le);
+        // s.evict(le);
+        return le;
+      }
     }
 
     public static List<Users> getAll(Session s) {
@@ -1492,7 +1529,7 @@ public class Dao implements Serializable {
     public static Users get(Session s, UUID id) {
       return s
         .createQuery("from Users where id= :id", Users.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
     }
 
@@ -1500,7 +1537,7 @@ public class Dao implements Serializable {
       Transaction t = s.beginTransaction();
       Users le = s
         .createQuery("from Users where id= :id", Users.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
       s
         .createQuery("delete from Address where id= :id")
@@ -1508,7 +1545,7 @@ public class Dao implements Serializable {
         .executeUpdate();
       s
         .createQuery("delete from Users where id= :id")
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .executeUpdate();
       t.commit();
     }
@@ -1516,7 +1553,7 @@ public class Dao implements Serializable {
     public static Users update(Session s, UUID id, Users le) {
       Users leo = s
         .createQuery("from Users where id= :id", Users.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
       leo.setPhone(leo.getPhone());
       leo.setAadharId(leo.getAadharId());
@@ -1637,6 +1674,7 @@ public class Dao implements Serializable {
 
     public static CivilAviationAuthority create(Session s, CivilAviationAuthority m)
       throws DaoException {
+      Logging.info("LE: " + m.getLegalEntity().getId());
       LegalEntity le = LegalEntity.get(s, m.getLegalEntity().getId());
       if (le == null) {
         throw new DaoException(DaoException.Code.NOT_FOUND, "LegalEntity");
@@ -1664,7 +1702,7 @@ public class Dao implements Serializable {
           "from CivilAviationAuthority where id= :id",
           CivilAviationAuthority.class
         )
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
     }
 
@@ -1672,7 +1710,7 @@ public class Dao implements Serializable {
       Transaction t = s.beginTransaction();
       s
         .createQuery("delete from CivilAviationAuthority where id= :id")
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .executeUpdate();
       t.commit();
     }
@@ -1687,7 +1725,7 @@ public class Dao implements Serializable {
           "from CivilAviationAuthority where id= :id",
           CivilAviationAuthority.class
         )
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
       leo.setTimestampUpdated(OffsetDateTime.now());
       leo.setValidityStart(le.getValidityStart());
@@ -1825,7 +1863,7 @@ public class Dao implements Serializable {
     public static Operator get(Session s, UUID id) {
       return s
         .createQuery("from Operator where id= :id", Operator.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
     }
 
@@ -1833,7 +1871,7 @@ public class Dao implements Serializable {
       Transaction t = s.beginTransaction();
       s
         .createQuery("delete from Operator where id= :id")
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .executeUpdate();
       t.commit();
     }
@@ -1841,7 +1879,7 @@ public class Dao implements Serializable {
     public static Operator update(Session s, UUID id, Operator le) {
       Operator leo = s
         .createQuery("from Operator where id= :id", Operator.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
       leo.setTimestampUpdated(OffsetDateTime.now());
       leo.setValidityStart(le.getValidityStart());
@@ -1987,7 +2025,7 @@ public class Dao implements Serializable {
           "from DigitalSkyServiceProvider where id= :id",
           DigitalSkyServiceProvider.class
         )
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
     }
 
@@ -1995,7 +2033,7 @@ public class Dao implements Serializable {
       Transaction t = s.beginTransaction();
       s
         .createQuery("delete from DigitalSkyServiceProvider where id= :id")
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .executeUpdate();
       t.commit();
     }
@@ -2010,7 +2048,7 @@ public class Dao implements Serializable {
           "from DigitalSkyServiceProvider where id= :id",
           DigitalSkyServiceProvider.class
         )
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
       leo.setTimestampUpdated(OffsetDateTime.now());
       leo.setValidityStart(le.getValidityStart());
@@ -2127,7 +2165,7 @@ public class Dao implements Serializable {
     public static Sale get(Session s, UUID id) {
       return s
         .createQuery("from Sale where id= :id", Sale.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
     }
 
@@ -2135,7 +2173,7 @@ public class Dao implements Serializable {
       Transaction t = s.beginTransaction();
       s
         .createQuery("delete from Sale where id= :id")
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .executeUpdate();
       t.commit();
     }
@@ -2143,7 +2181,7 @@ public class Dao implements Serializable {
     public static Sale update(Session s, UUID id, Sale le) {
       Sale leo = s
         .createQuery("from Sale where id= :id", Sale.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
       leo.setTimestampUpdated(OffsetDateTime.now());
       leo.setValidityStart(le.getValidityStart());
@@ -2255,7 +2293,7 @@ public class Dao implements Serializable {
     public static Lease get(Session s, UUID id) {
       return s
         .createQuery("from Lease where id= :id", Lease.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
     }
 
@@ -2263,7 +2301,7 @@ public class Dao implements Serializable {
       Transaction t = s.beginTransaction();
       s
         .createQuery("delete from Lease where id= :id")
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .executeUpdate();
       t.commit();
     }
@@ -2271,7 +2309,7 @@ public class Dao implements Serializable {
     public static Lease update(Session s, UUID id, Lease le) {
       Lease leo = s
         .createQuery("from Lease where id= :id", Lease.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
       leo.setTimestampUpdated(OffsetDateTime.now());
       leo.setValidityStart(le.getValidityStart());
