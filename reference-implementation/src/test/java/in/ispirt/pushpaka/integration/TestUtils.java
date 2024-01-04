@@ -1,11 +1,16 @@
 package in.ispirt.pushpaka.integration;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jwt.SignedJWT;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -24,10 +29,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import java.util.Date;
-import java.text.ParseException;
 
 public class TestUtils {
   private static ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
@@ -150,7 +151,8 @@ public class TestUtils {
     return extractUuid(reb);
   }
 
-  public static UUID pilotCreate(String jwt) throws ClientProtocolException, IOException, JsonProcessingException, ParseException {
+  public static UUID pilotCreate(String jwt)
+    throws ClientProtocolException, IOException, JsonProcessingException, ParseException {
     SignedJWT jwts = TestUtils.parseJwt(jwt);
     UUID uid = UUID.fromString(jwts.getJWTClaimsSet().getSubject());
     StringEntity e = new StringEntity(
@@ -446,7 +448,6 @@ public class TestUtils {
   }
 
   public static void grantCaaAdmin(String jwt, UUID id) {
-    
     assertEquals(1, 2);
   }
 
@@ -477,5 +478,4 @@ public class TestUtils {
     );
     assertTrue(new Date().before(t.getJWTClaimsSet().getExpirationTime()));
   }
-
 }

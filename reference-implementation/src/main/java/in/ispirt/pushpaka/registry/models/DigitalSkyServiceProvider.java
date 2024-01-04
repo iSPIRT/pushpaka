@@ -209,7 +209,14 @@ public class DigitalSkyServiceProvider {
 
   public static Dao.DigitalSkyServiceProvider fromOa(DigitalSkyServiceProvider m) {
     OffsetDateTime n = OffsetDateTime.now();
-    Dao.DigitalSkyServiceProvider u = new Dao.DigitalSkyServiceProvider(m.id, LegalEntity.fromOa(m.getLegalEntity()), n, n, n, n);
+    Dao.DigitalSkyServiceProvider u = new Dao.DigitalSkyServiceProvider(
+      m.id,
+      LegalEntity.fromOa(m.getLegalEntity()),
+      n,
+      n,
+      n,
+      n
+    );
     return u;
   }
 }

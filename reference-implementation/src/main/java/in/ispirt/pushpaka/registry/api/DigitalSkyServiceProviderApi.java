@@ -89,7 +89,9 @@ public interface DigitalSkyServiceProviderApi {
     ) @Valid @RequestBody DigitalSkyServiceProvider digitalSkyServiceProvider
   ) {
     try {
-      System.out.println("Create DigitalSkyServiceProvider " + digitalSkyServiceProvider.toString());
+      System.out.println(
+        "Create DigitalSkyServiceProvider " + digitalSkyServiceProvider.toString()
+      );
       Dao.DigitalSkyServiceProvider mm = Dao.DigitalSkyServiceProvider.create(
         DaoInstance.getInstance().getSession(),
         DigitalSkyServiceProvider.fromOa(digitalSkyServiceProvider)
@@ -119,11 +121,17 @@ public interface DigitalSkyServiceProviderApi {
     description = "",
     tags = { "digitalSkyServiceProvider" },
     responses = {
-      @ApiResponse(responseCode = "400", description = "Invalid digitalSkyServiceProvider value")
+      @ApiResponse(
+        responseCode = "400",
+        description = "Invalid digitalSkyServiceProvider value"
+      )
     },
     security = { @SecurityRequirement(name = "jwt") }
   )
-  @RequestMapping(method = RequestMethod.DELETE, value = "/digitalSkyServiceProvider/{digitalSkyServiceProviderId}")
+  @RequestMapping(
+    method = RequestMethod.DELETE,
+    value = "/digitalSkyServiceProvider/{digitalSkyServiceProviderId}"
+  )
   default ResponseEntity<Void> deleteDigitalSkyServiceProvider(
     @Parameter(
       name = "digitalSkyServiceProviderId",
@@ -132,7 +140,10 @@ public interface DigitalSkyServiceProviderApi {
       in = ParameterIn.PATH
     ) @PathVariable("digitalSkyServiceProviderId") UUID digitalSkyServiceProviderId
   ) {
-    Dao.DigitalSkyServiceProvider.delete(DaoInstance.getInstance().getSession(), digitalSkyServiceProviderId);
+    Dao.DigitalSkyServiceProvider.delete(
+      DaoInstance.getInstance().getSession(),
+      digitalSkyServiceProviderId
+    );
     return ResponseEntity.ok().build();
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
@@ -154,7 +165,9 @@ public interface DigitalSkyServiceProviderApi {
         content = {
           @Content(
             mediaType = "application/json",
-            array = @ArraySchema(schema = @Schema(implementation = DigitalSkyServiceProvider.class))
+            array = @ArraySchema(
+              schema = @Schema(implementation = DigitalSkyServiceProvider.class)
+            )
           )
         }
       ),
@@ -183,7 +196,9 @@ public interface DigitalSkyServiceProviderApi {
     //       }
     //     }
     //   );
-    List<Dao.DigitalSkyServiceProvider> les = Dao.DigitalSkyServiceProvider.getAll(DaoInstance.getInstance().getSession());
+    List<Dao.DigitalSkyServiceProvider> les = Dao.DigitalSkyServiceProvider.getAll(
+      DaoInstance.getInstance().getSession()
+    );
     List<DigitalSkyServiceProvider> leso = les
       .stream()
       .map(x -> in.ispirt.pushpaka.registry.models.DigitalSkyServiceProvider.toOa(x))
@@ -217,7 +232,10 @@ public interface DigitalSkyServiceProviderApi {
         }
       ),
       @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
-      @ApiResponse(responseCode = "404", description = "DigitalSkyServiceProvider not found")
+      @ApiResponse(
+        responseCode = "404",
+        description = "DigitalSkyServiceProvider not found"
+      )
     },
     security = { @SecurityRequirement(name = "jwt") }
   )
@@ -249,8 +267,13 @@ public interface DigitalSkyServiceProviderApi {
     //       }
     //     }
     //   );
-    Dao.DigitalSkyServiceProvider le = Dao.DigitalSkyServiceProvider.get(DaoInstance.getInstance().getSession(), digitalSkyServiceProviderId);
-    return ResponseEntity.ok(in.ispirt.pushpaka.registry.models.DigitalSkyServiceProvider.toOa(le));
+    Dao.DigitalSkyServiceProvider le = Dao.DigitalSkyServiceProvider.get(
+      DaoInstance.getInstance().getSession(),
+      digitalSkyServiceProviderId
+    );
+    return ResponseEntity.ok(
+      in.ispirt.pushpaka.registry.models.DigitalSkyServiceProvider.toOa(le)
+    );
   }
 
   /**
@@ -270,7 +293,10 @@ public interface DigitalSkyServiceProviderApi {
     responses = { @ApiResponse(responseCode = "405", description = "Invalid input") },
     security = { @SecurityRequirement(name = "jwt") }
   )
-  @RequestMapping(method = RequestMethod.PUT, value = "/digitalSkyServiceProvider/{digitalSkyServiceProviderId}")
+  @RequestMapping(
+    method = RequestMethod.PUT,
+    value = "/digitalSkyServiceProvider/{digitalSkyServiceProviderId}"
+  )
   default ResponseEntity<DigitalSkyServiceProvider> updateDigitalSkyServiceProvider(
     @Parameter(
       name = "digitalSkyServiceProviderId",
@@ -289,7 +315,9 @@ public interface DigitalSkyServiceProviderApi {
       digitalSkyServiceProviderId,
       DigitalSkyServiceProvider.fromOa(digitalSkyServiceProvider)
     );
-    return ResponseEntity.ok(in.ispirt.pushpaka.registry.models.DigitalSkyServiceProvider.toOa(le));
+    return ResponseEntity.ok(
+      in.ispirt.pushpaka.registry.models.DigitalSkyServiceProvider.toOa(le)
+    );
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }

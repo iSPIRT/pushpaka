@@ -1955,7 +1955,10 @@ public class Dao implements Serializable {
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public DigitalSkyServiceProvider() {}
 
-    public static DigitalSkyServiceProvider create(Session s, DigitalSkyServiceProvider m)
+    public static DigitalSkyServiceProvider create(
+      Session s,
+      DigitalSkyServiceProvider m
+    )
       throws DaoException, ConstraintViolationException {
       LegalEntity le = LegalEntity.get(s, m.getLegalEntity().getId());
       if (le == null) {
@@ -1973,12 +1976,17 @@ public class Dao implements Serializable {
     }
 
     public static List<DigitalSkyServiceProvider> getAll(Session s) {
-      return s.createQuery("from DigitalSkyServiceProvider", DigitalSkyServiceProvider.class).getResultList();
+      return s
+        .createQuery("from DigitalSkyServiceProvider", DigitalSkyServiceProvider.class)
+        .getResultList();
     }
 
     public static DigitalSkyServiceProvider get(Session s, UUID id) {
       return s
-        .createQuery("from DigitalSkyServiceProvider where id= :id", DigitalSkyServiceProvider.class)
+        .createQuery(
+          "from DigitalSkyServiceProvider where id= :id",
+          DigitalSkyServiceProvider.class
+        )
         .setString("id", id.toString())
         .uniqueResult();
     }
@@ -1992,9 +2000,16 @@ public class Dao implements Serializable {
       t.commit();
     }
 
-    public static DigitalSkyServiceProvider update(Session s, UUID id, DigitalSkyServiceProvider le) {
+    public static DigitalSkyServiceProvider update(
+      Session s,
+      UUID id,
+      DigitalSkyServiceProvider le
+    ) {
       DigitalSkyServiceProvider leo = s
-        .createQuery("from DigitalSkyServiceProvider where id= :id", DigitalSkyServiceProvider.class)
+        .createQuery(
+          "from DigitalSkyServiceProvider where id= :id",
+          DigitalSkyServiceProvider.class
+        )
         .setString("id", id.toString())
         .uniqueResult();
       leo.setTimestampUpdated(OffsetDateTime.now());

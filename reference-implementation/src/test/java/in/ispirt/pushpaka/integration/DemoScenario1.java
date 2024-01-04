@@ -72,7 +72,6 @@ public class DemoScenario1 {
       Logging.severe("JWT ParseException");
     }
   }
-
   // // Scenario 1.a.2 Manufacturers
   // @Ignore
   // @Test

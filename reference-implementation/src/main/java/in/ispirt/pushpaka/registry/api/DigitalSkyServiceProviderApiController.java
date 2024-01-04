@@ -29,7 +29,8 @@ import org.springframework.web.multipart.MultipartFile;
 )
 @Controller
 @RequestMapping("${openapi.pushpakaRegistry.base-path:/api/v1}")
-public class DigitalSkyServiceProviderApiController implements DigitalSkyServiceProviderApi {
+public class DigitalSkyServiceProviderApiController
+  implements DigitalSkyServiceProviderApi {
   private final NativeWebRequest request;
 
   @Autowired
