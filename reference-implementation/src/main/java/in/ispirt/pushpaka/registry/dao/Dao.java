@@ -2025,174 +2025,260 @@ public class Dao implements Serializable {
     }
   }
 
-  public static Function<Session, BigDecimal> addUasTypes() throws JDBCException {
-    Function<Session, BigDecimal> f = s -> {
-      BigDecimal rv = new BigDecimal(0);
-      try {
-        OffsetDateTime n = OffsetDateTime.now();
-        Address a = new Address(
-          UUID.randomUUID(),
-          "Address Line 1",
-          "Address Line 2",
-          "Address Line 3",
-          "Address City",
-          State.MAHARASHTRA,
-          "400000",
-          Country.IND
-        );
-        s.save(a);
-        LegalEntity l = new LegalEntity(
-          UUID.randomUUID(),
-          "TEST COMPANY PVT LTD",
-          a,
-          "CIN0000000",
-          "GSTN000000",
-          n,
-          n
-        );
-        Manufacturer m = new Manufacturer(UUID.randomUUID(), l, n, n, n, n);
-        UasType ut = new UasType(
-          UUID.randomUUID(),
-          m,
-          "UASMN",
-          new URL("https://ispirt.github.io/pushpaka"),
-          2.5f,
-          n,
-          n,
-          UasPropulsionCategory.VTOL
-        );
-        Uas u = new Uas(UUID.randomUUID(), ut, "UAS000000", UasStatus.REGISTERED, n, n);
-        s.save(l);
-        s.save(m);
-        s.save(ut);
-        s.save(u);
-        Users uu = new Users(
-          UUID.randomUUID(),
-          "+91000000000",
-          "0987654321123456",
-          a,
-          n,
-          n,
-          UserStatus.ACTIVE
-        );
-        s.save(uu);
-        Pilot p = new Pilot(UUID.randomUUID(), uu, n, n, n, n);
-        s.save(p);
+  // Sale is our model, which corresponds to the "uas_types" database table.
+  @Entity(name = Sale.PERSISTENCE_NAME)
+  @Table(name = Sale.PERSISTENCE_NAME)
+  public static class Sale {
+    static final String PERSISTENCE_NAME = "Sale";
 
-        CivilAviationAuthority caa = new CivilAviationAuthority(
-          UUID.randomUUID(),
-          l,
-          n,
-          n,
-          n,
-          n
-        );
-        s.save(caa);
+    @Id
+    @Column(name = "id")
+    public UUID id;
 
-        Operator o1 = new Operator(UUID.randomUUID(), l, n, n, n, n);
-        s.save(o1);
-
-        rv = BigDecimal.valueOf(1);
-        System.out.printf("APP: addUasTypes() --> %.2f\n", rv);
-      } catch (JDBCException e) {
-        throw e;
-      } catch (MalformedURLException e) {
-        // throw e;
-      }
-      return rv;
-    };
-    return f;
-  }
-
-  // Test our retry handling logic if FORCE_RETRY is true.  This
-  // method is only used to test the retry logic.  It is not
-  // intended for production code.
-  private static Function<Session, BigDecimal> forceRetryLogic() throws JDBCException {
-    Function<Session, BigDecimal> f = s -> {
-      BigDecimal rv = new BigDecimal(-1);
-      try {
-        System.out.printf("APP: testRetryLogic: BEFORE EXCEPTION\n");
-        s.createNativeQuery("SELECT crdb_internal.force_retry('1s')").executeUpdate();
-      } catch (JDBCException e) {
-        System.out.printf("APP: testRetryLogic: AFTER EXCEPTION\n");
-        throw e;
-      }
-      return rv;
-    };
-    return f;
-  }
-
-  // Run SQL code in a way that automatically handles the
-  // transaction retry logic so we don't have to duplicate it in
-  // various places.
-  public static BigDecimal runTransaction(
-    Session session,
-    Function<Session, BigDecimal> fn
-  ) {
-    BigDecimal rv = new BigDecimal(0);
-    int attemptCount = 0;
-
-    while (attemptCount < MAX_ATTEMPT_COUNT) {
-      attemptCount++;
-
-      if (attemptCount > 1) {
-        System.out.printf("APP: Entering retry loop again, iteration %d\n", attemptCount);
-      }
-
-      Transaction txn = session.beginTransaction();
-      System.out.printf("APP: BEGIN;\n");
-
-      if (attemptCount == MAX_ATTEMPT_COUNT) {
-        String err = String.format("hit max of %s attempts, aborting", MAX_ATTEMPT_COUNT);
-        throw new RuntimeException(err);
-      }
-
-      // This block is only used to test the retry logic.
-      // It is not necessary in production code.  See also
-      // the method 'testRetryLogic()'.
-      if (FORCE_RETRY) {
-        session.createNativeQuery("SELECT now()").list();
-      }
-
-      try {
-        rv = fn.apply(session);
-        if (!rv.equals(-1)) {
-          txn.commit();
-          System.out.printf("APP: COMMIT;\n");
-          break;
-        }
-      } catch (JDBCException e) {
-        if (RETRY_SQL_STATE.equals(e.getSQLState())) {
-          // Since this is a transaction retry error, we
-          // roll back the transaction and sleep a little
-          // before trying again.  Each time through the
-          // loop we sleep for a little longer than the last
-          // time (A.K.A. exponential backoff).
-          System.out.printf(
-            "APP: retryable exception occurred:\n    sql state = [%s]\n    message = [%s]\n    retry counter = %s\n",
-            e.getSQLState(),
-            e.getMessage(),
-            attemptCount
-          );
-          System.out.printf("APP: ROLLBACK;\n");
-          txn.rollback();
-          int sleepMillis = (int) (Math.pow(2, attemptCount) * 100) + RAND.nextInt(100);
-          System.out.printf(
-            "APP: Hit 40001 transaction retry error, sleeping %s milliseconds\n",
-            sleepMillis
-          );
-          try {
-            Thread.sleep(sleepMillis);
-          } catch (InterruptedException ignored) {
-            // no-op
-          }
-          rv = BigDecimal.valueOf(-1);
-        } else {
-          throw e;
-        }
-      }
+    public Sale setId(UUID id) {
+      this.id = id;
+      return this;
     }
-    return rv;
+
+    public UUID getId() {
+      return id;
+    }
+
+    @NotNull
+    @Column(name = "timestamp_created")
+    public OffsetDateTime timestampCreated;
+
+    public OffsetDateTime getTimestampCreated() {
+      return timestampCreated;
+    }
+
+    public void setTimestampCreated(OffsetDateTime a) {
+      this.timestampCreated = a;
+    }
+
+    @NotNull
+    @Column(name = "timestamp_updated")
+    public OffsetDateTime timestampUpdated;
+
+    public OffsetDateTime getTimestampUpdated() {
+      return timestampUpdated;
+    }
+
+    public void setTimestampUpdated(OffsetDateTime a) {
+      this.timestampUpdated = a;
+    }
+
+    @Column(name = "validity_start")
+    public OffsetDateTime validityStart;
+
+    public OffsetDateTime getValidityStart() {
+      return validityStart;
+    }
+
+    public void setValidityStart(OffsetDateTime a) {
+      this.validityStart = a;
+    }
+
+    @Column(name = "validity_end")
+    public OffsetDateTime validityEnd;
+
+    public OffsetDateTime getValidityEnd() {
+      return validityEnd;
+    }
+
+    public void setValidityEnd(OffsetDateTime a) {
+      this.validityEnd = a;
+    }
+
+    // Convenience constructor.
+    public Sale(
+      UUID id,
+      OffsetDateTime tc,
+      OffsetDateTime tu,
+      OffsetDateTime vs,
+      OffsetDateTime ve
+    ) {
+      this.id = id;
+      this.timestampCreated = tc;
+      this.timestampUpdated = tu;
+      this.validityStart = vs;
+      this.validityEnd = ve;
+    }
+
+    // Hibernate needs a default (no-arg) constructor to create model objects.
+    public Sale() {}
+
+    public static Sale create(Session s, Sale m)
+      throws DaoException, ConstraintViolationException {
+      Transaction t = s.beginTransaction();
+      OffsetDateTime n = OffsetDateTime.now();
+      m.setId(UUID.randomUUID());
+      s.save(m);
+      s.flush();
+      t.commit();
+      s.refresh(m);
+      return m;
+    }
+
+    public static List<Sale> getAll(Session s) {
+      return s.createQuery("from Sale", Sale.class).getResultList();
+    }
+
+    public static Sale get(Session s, UUID id) {
+      return s
+        .createQuery("from Sale where id= :id", Sale.class)
+        .setString("id", id.toString())
+        .uniqueResult();
+    }
+
+    public static void delete(Session s, UUID id) {
+      Transaction t = s.beginTransaction();
+      s
+        .createQuery("delete from Sale where id= :id")
+        .setString("id", id.toString())
+        .executeUpdate();
+      t.commit();
+    }
+
+    public static Sale update(Session s, UUID id, Sale le) {
+      Sale leo = s
+        .createQuery("from Sale where id= :id", Sale.class)
+        .setString("id", id.toString())
+        .uniqueResult();
+      leo.setTimestampUpdated(OffsetDateTime.now());
+      leo.setValidityStart(le.getValidityStart());
+      leo.setValidityEnd(le.getValidityEnd());
+      s.saveOrUpdate(leo);
+      return leo;
+    }
+  }
+
+  // Lease is our model, which corresponds to the "uas_types" database table.
+  @Entity(name = Lease.PERSISTENCE_NAME)
+  @Table(name = Lease.PERSISTENCE_NAME)
+  public static class Lease {
+    static final String PERSISTENCE_NAME = "Lease";
+
+    @Id
+    @Column(name = "id")
+    public UUID id;
+
+    public Lease setId(UUID id) {
+      this.id = id;
+      return this;
+    }
+
+    public UUID getId() {
+      return id;
+    }
+
+    @NotNull
+    @Column(name = "timestamp_created")
+    public OffsetDateTime timestampCreated;
+
+    public OffsetDateTime getTimestampCreated() {
+      return timestampCreated;
+    }
+
+    public void setTimestampCreated(OffsetDateTime a) {
+      this.timestampCreated = a;
+    }
+
+    @NotNull
+    @Column(name = "timestamp_updated")
+    public OffsetDateTime timestampUpdated;
+
+    public OffsetDateTime getTimestampUpdated() {
+      return timestampUpdated;
+    }
+
+    public void setTimestampUpdated(OffsetDateTime a) {
+      this.timestampUpdated = a;
+    }
+
+    @Column(name = "validity_start")
+    public OffsetDateTime validityStart;
+
+    public OffsetDateTime getValidityStart() {
+      return validityStart;
+    }
+
+    public void setValidityStart(OffsetDateTime a) {
+      this.validityStart = a;
+    }
+
+    @Column(name = "validity_end")
+    public OffsetDateTime validityEnd;
+
+    public OffsetDateTime getValidityEnd() {
+      return validityEnd;
+    }
+
+    public void setValidityEnd(OffsetDateTime a) {
+      this.validityEnd = a;
+    }
+
+    // Convenience constructor.
+    public Lease(
+      UUID id,
+      OffsetDateTime tc,
+      OffsetDateTime tu,
+      OffsetDateTime vs,
+      OffsetDateTime ve
+    ) {
+      this.id = id;
+      this.timestampCreated = tc;
+      this.timestampUpdated = tu;
+      this.validityStart = vs;
+      this.validityEnd = ve;
+    }
+
+    // Hibernate needs a default (no-arg) constructor to create model objects.
+    public Lease() {}
+
+    public static Lease create(Session s, Lease m)
+      throws DaoException, ConstraintViolationException {
+      Transaction t = s.beginTransaction();
+      OffsetDateTime n = OffsetDateTime.now();
+      m.setId(UUID.randomUUID());
+      s.save(m);
+      s.flush();
+      t.commit();
+      s.refresh(m);
+      return m;
+    }
+
+    public static List<Lease> getAll(Session s) {
+      return s.createQuery("from Lease", Lease.class).getResultList();
+    }
+
+    public static Lease get(Session s, UUID id) {
+      return s
+        .createQuery("from Lease where id= :id", Lease.class)
+        .setString("id", id.toString())
+        .uniqueResult();
+    }
+
+    public static void delete(Session s, UUID id) {
+      Transaction t = s.beginTransaction();
+      s
+        .createQuery("delete from Lease where id= :id")
+        .setString("id", id.toString())
+        .executeUpdate();
+      t.commit();
+    }
+
+    public static Lease update(Session s, UUID id, Lease le) {
+      Lease leo = s
+        .createQuery("from Lease where id= :id", Lease.class)
+        .setString("id", id.toString())
+        .uniqueResult();
+      leo.setTimestampUpdated(OffsetDateTime.now());
+      leo.setValidityStart(le.getValidityStart());
+      leo.setValidityEnd(le.getValidityEnd());
+      s.saveOrUpdate(leo);
+      return leo;
+    }
   }
 
   public static void deleteAll(Session s) {
