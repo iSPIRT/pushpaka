@@ -21,108 +21,27 @@ servers:
 tags:
 - name: civilAviationAuthorities
   description: CivilAviationAuthorities
-- name: utmsps
-  description: Utmsps
-- name: legal_entity
-  description: Legal Entity
+- name: digitalSkyServiceProviders
+  description: DigitalSkyServiceProviders
 - name: pilot
   description: Pilots
+- name: legalEntities
+  description: Legal Entity
+- name: uasTypes
+  description: the uas_types API
+- name: ownership
+  description: the ownership API
 - name: manufacturers
   description: Manufacturers
 - name: operators
   description: Operators
-- name: uas_types
-  description: the uas_types API
 - name: uas
   description: UAS
 - name: user
   description: Operations about user
+- name: repairAgencies
+  description: RepairAgencies
 paths:
-  /api/v1/utmsp/{utmspId}:
-    get:
-      tags:
-      - utmsps
-      - utmsp
-      summary: Find utmsp by ID
-      description: Returns a single utmsp
-      operationId: getUtmspById
-      parameters:
-      - name: utmspId
-        in: path
-        description: ID of utmsp to return
-        required: true
-        schema:
-          type: string
-          format: uuid
-      responses:
-        "200":
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Utmsp'
-        "400":
-          description: Invalid ID supplied
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Utmsp'
-        "404":
-          description: Utmsp not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Utmsp'
-      security:
-      - jwt: []
-    put:
-      tags:
-      - utmsps
-      - utmsp
-      summary: Updates a utmsp in the store
-      operationId: updateUtmsp
-      parameters:
-      - name: utmspId
-        in: path
-        description: ID of utmsp that needs to be updated
-        required: true
-        schema:
-          type: string
-          format: uuid
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Utmsp'
-        required: true
-      responses:
-        "405":
-          description: Invalid input
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Utmsp'
-      security:
-      - jwt: []
-    delete:
-      tags:
-      - utmsps
-      - utmsp
-      summary: Deletes a utmsp
-      operationId: deleteUtmsp
-      parameters:
-      - name: utmspId
-        in: path
-        description: Utmsp id to delete
-        required: true
-        schema:
-          type: string
-          format: uuid
-      responses:
-        "400":
-          description: Invalid utmsp value
-      security:
-      - jwt: []
   /api/v1/user/{username}:
     put:
       tags:
@@ -237,7 +156,7 @@ paths:
   /api/v1/uasType:
     put:
       tags:
-      - uas_types
+      - uasTypes
       summary: Update an existing uasType
       description: Update an existing uasType by Id
       operationId: updateUasType
@@ -276,7 +195,7 @@ paths:
       - jwt: []
     post:
       tags:
-      - uas_types
+      - uasTypes
       summary: Add a new uasType to the store
       description: Add a new uasType to the store
       operationId: addUasType
@@ -299,6 +218,155 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UasType'
+      security:
+      - jwt: []
+  /api/v1/sale:
+    put:
+      tags:
+      - ownership
+      summary: Update an existing sale
+      description: Update an existing sale by Id
+      operationId: updateSale
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sale'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+        "404":
+          description: Sale not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+        "405":
+          description: Validation exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+      security:
+      - jwt: []
+    post:
+      tags:
+      - ownership
+      summary: Add a new sale to the store
+      description: Add a new sale to the store
+      operationId: addSale
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sale'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+        "405":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+      security:
+      - jwt: []
+  /api/v1/repairAgency/{repairAgencyId}:
+    get:
+      tags:
+      - repairAgencies
+      summary: Find repairAgency by ID
+      description: Returns a single repairAgency
+      operationId: getRepairAgencyById
+      parameters:
+      - name: repairAgencyId
+        in: path
+        description: ID of repairAgency to return
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RepairAgency'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RepairAgency'
+        "404":
+          description: RepairAgency not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RepairAgency'
+      security:
+      - jwt: []
+    put:
+      tags:
+      - repairAgencies
+      summary: Updates a repairAgency in the store
+      operationId: updateRepairAgency
+      parameters:
+      - name: repairAgencyId
+        in: path
+        description: ID of repairAgency that needs to be updated
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RepairAgency'
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RepairAgency'
+      security:
+      - jwt: []
+    delete:
+      tags:
+      - repairAgencies
+      summary: Deletes a repairAgency
+      operationId: deleteRepairAgency
+      parameters:
+      - name: repairAgencyId
+        in: path
+        description: RepairAgency id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "400":
+          description: Invalid repairAgency value
       security:
       - jwt: []
   /api/v1/pilot/{pilotId}:
@@ -556,7 +624,7 @@ paths:
   /api/v1/legalEntity/{legalEntityId}:
     get:
       tags:
-      - legal_entity
+      - legalEntities
       summary: Find legalEntity by ID
       description: Returns a single legalEntity
       operationId: getLegalEntityById
@@ -591,7 +659,7 @@ paths:
       - jwt: []
     put:
       tags:
-      - legal_entity
+      - legalEntities
       summary: Updates a legalEntity in the store
       operationId: updateLegalEntity
       parameters:
@@ -619,7 +687,7 @@ paths:
       - jwt: []
     delete:
       tags:
-      - legal_entity
+      - legalEntities
       summary: Deletes a legalEntity
       operationId: deleteLegalEntity
       parameters:
@@ -633,6 +701,158 @@ paths:
       responses:
         "400":
           description: Invalid legalEntity value
+      security:
+      - jwt: []
+  /api/v1/lease:
+    put:
+      tags:
+      - ownership
+      summary: Update an existing lease
+      description: Update an existing lease by Id
+      operationId: updateLease
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lease'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lease'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lease'
+        "404":
+          description: Lease not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lease'
+        "405":
+          description: Validation exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lease'
+      security:
+      - jwt: []
+    post:
+      tags:
+      - ownership
+      summary: Add a new lease to the store
+      description: Add a new lease to the store
+      operationId: addLease
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lease'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lease'
+        "405":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lease'
+      security:
+      - jwt: []
+  /api/v1/digitalSkyServiceProvider/{digitalSkyServiceProviderId}:
+    get:
+      tags:
+      - digitalSkyServiceProviders
+      - digitalSkyServiceProvider
+      summary: Find digitalSkyServiceProvider by ID
+      description: Returns a single digitalSkyServiceProvider
+      operationId: getDigitalSkyServiceProviderById
+      parameters:
+      - name: digitalSkyServiceProviderId
+        in: path
+        description: ID of digitalSkyServiceProvider to return
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DigitalSkyServiceProvider'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DigitalSkyServiceProvider'
+        "404":
+          description: DigitalSkyServiceProvider not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DigitalSkyServiceProvider'
+      security:
+      - jwt: []
+    put:
+      tags:
+      - digitalSkyServiceProviders
+      - digitalSkyServiceProvider
+      summary: Updates a digitalSkyServiceProvider in the store
+      operationId: updateDigitalSkyServiceProvider
+      parameters:
+      - name: digitalSkyServiceProviderId
+        in: path
+        description: ID of digitalSkyServiceProvider that needs to be updated
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DigitalSkyServiceProvider'
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DigitalSkyServiceProvider'
+      security:
+      - jwt: []
+    delete:
+      tags:
+      - digitalSkyServiceProviders
+      - digitalSkyServiceProvider
+      summary: Deletes a digitalSkyServiceProvider
+      operationId: deleteDigitalSkyServiceProvider
+      parameters:
+      - name: digitalSkyServiceProviderId
+        in: path
+        description: DigitalSkyServiceProvider id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "400":
+          description: Invalid digitalSkyServiceProvider value
       security:
       - jwt: []
   /api/v1/civilAviationAuthority/{civilAviationAuthorityId}:
@@ -720,35 +940,6 @@ paths:
           description: Invalid civilAviationAuthority value
       security:
       - jwt: []
-  /api/v1/utmsp:
-    post:
-      tags:
-      - utmsps
-      - utmsp
-      summary: Add a new utmsp to the store
-      description: Add a new utmsp to the store
-      operationId: addUtmsp
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Utmsp'
-        required: true
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Utmsp'
-        "405":
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Utmsp'
-      security:
-      - jwt: []
   /api/v1/user:
     post:
       tags:
@@ -769,6 +960,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+      security:
+      - jwt: []
+  /api/v1/repairAgency:
+    post:
+      tags:
+      - repairAgencies
+      summary: Add a new repairAgency to the store
+      description: Add a new repairAgency to the store
+      operationId: addRepairAgency
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RepairAgency'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RepairAgency'
+        "405":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RepairAgency'
       security:
       - jwt: []
   /api/v1/pilot:
@@ -860,7 +1079,7 @@ paths:
   /api/v1/legalEntity:
     post:
       tags:
-      - legal_entity
+      - legalEntities
       summary: Add a new legalEntity to the store
       description: Add a new legalEntity to the store
       operationId: addLegalEntity
@@ -883,6 +1102,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LegalEntity'
+      security:
+      - jwt: []
+  /api/v1/digitalSkyServiceProvider:
+    post:
+      tags:
+      - digitalSkyServiceProviders
+      - digitalSkyServiceProvider
+      summary: Add a new digitalSkyServiceProvider to the store
+      description: Add a new digitalSkyServiceProvider to the store
+      operationId: addDigitalSkyServiceProvider
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DigitalSkyServiceProvider'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DigitalSkyServiceProvider'
+        "405":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DigitalSkyServiceProvider'
       security:
       - jwt: []
   /api/v1/civilAviationAuthority:
@@ -914,36 +1162,10 @@ paths:
                 $ref: '#/components/schemas/CivilAviationAuthority'
       security:
       - jwt: []
-  /api/v1/utmsp/find:
-    get:
-      tags:
-      - utmsps
-      - utmsp
-      summary: Finds Utmsps
-      operationId: findUtmsps
-      responses:
-        "200":
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Utmsp'
-        "400":
-          description: Invalid value
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Utmsp'
-      security:
-      - jwt: []
   /api/v1/uasType/{uasTypeId}:
     get:
       tags:
-      - uas_types
+      - uasTypes
       summary: Find uasType by ID
       description: Returns a single uasType
       operationId: getUasTypeById
@@ -978,7 +1200,7 @@ paths:
       - jwt: []
     delete:
       tags:
-      - uas_types
+      - uasTypes
       summary: Deletes a uasType
       operationId: deleteUasType
       parameters:
@@ -997,7 +1219,7 @@ paths:
   /api/v1/uasType/find:
     get:
       tags:
-      - uas_types
+      - uasTypes
       summary: Finds UasTypes
       operationId: findUasTypes
       responses:
@@ -1103,6 +1325,110 @@ paths:
                   $ref: '#/components/schemas/Uas'
       security:
       - jwt: []
+  /api/v1/sale/{saleId}:
+    get:
+      tags:
+      - ownership
+      summary: Find sale by ID
+      description: Returns a single sale
+      operationId: getSaleById
+      parameters:
+      - name: saleId
+        in: path
+        description: ID of sale to return
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+        "404":
+          description: Sale not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+      security:
+      - jwt: []
+    delete:
+      tags:
+      - ownership
+      summary: Deletes a sale
+      operationId: deleteSale
+      parameters:
+      - name: saleId
+        in: path
+        description: Sale id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "400":
+          description: Invalid sale value
+      security:
+      - jwt: []
+  /api/v1/sale/find:
+    get:
+      tags:
+      - ownership
+      summary: Finds Sales
+      operationId: findSales
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sale'
+        "400":
+          description: Invalid value
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sale'
+      security:
+      - jwt: []
+  /api/v1/repairAgency/find:
+    get:
+      tags:
+      - repairAgencies
+      summary: Finds RepairAgencies
+      operationId: findRepairAgencies
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RepairAgency'
+        "400":
+          description: Invalid value
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RepairAgency'
+      security:
+      - jwt: []
   /api/v1/pilot/find:
     get:
       tags:
@@ -1183,7 +1509,7 @@ paths:
   /api/v1/legalEntity/find:
     get:
       tags:
-      - legal_entity
+      - legalEntities
       summary: Finds LegalEntitys
       operationId: findLegalEntitys
       responses:
@@ -1203,6 +1529,111 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/LegalEntity'
+      security:
+      - jwt: []
+  /api/v1/lease/{leaseId}:
+    get:
+      tags:
+      - ownership
+      summary: Find lease by ID
+      description: Returns a single lease
+      operationId: getLeaseById
+      parameters:
+      - name: leaseId
+        in: path
+        description: ID of lease to return
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lease'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lease'
+        "404":
+          description: Lease not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lease'
+      security:
+      - jwt: []
+    delete:
+      tags:
+      - ownership
+      summary: Deletes a lease
+      operationId: deleteLease
+      parameters:
+      - name: leaseId
+        in: path
+        description: Lease id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "400":
+          description: Invalid lease value
+      security:
+      - jwt: []
+  /api/v1/lease/find:
+    get:
+      tags:
+      - ownership
+      summary: Finds Leases
+      operationId: findLeases
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lease'
+        "400":
+          description: Invalid value
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lease'
+      security:
+      - jwt: []
+  /api/v1/digitalSkyServiceProvider/find:
+    get:
+      tags:
+      - digitalSkyServiceProviders
+      - digitalSkyServiceProvider
+      summary: Finds DigitalSkyServiceProviders
+      operationId: findDigitalSkyServiceProviders
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DigitalSkyServiceProvider'
+        "400":
+          description: Invalid value
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DigitalSkyServiceProvider'
       security:
       - jwt: []
   /api/v1/civilAviationAuthority/find:
@@ -1308,32 +1739,6 @@ components:
           enum:
           - IND
           - USA
-    LegalEntity:
-      required:
-      - cin
-      - id
-      - name
-      - regdAddress
-      - timestamps
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        cin:
-          type: string
-          example: CIN00000
-        name:
-          type: string
-          example: Test Company Pvt Ltd
-        regdAddress:
-          $ref: '#/components/schemas/Address'
-        gstin:
-          type: string
-          example: GSTIN00000
-        timestamps:
-          $ref: '#/components/schemas/ObjectTimestamps'
     ObjectTimestamps:
       required:
       - created
@@ -1348,35 +1753,6 @@ components:
           type: string
           format: date-time
           readOnly: true
-    Utmsp:
-      required:
-      - id
-      - legalEntity
-      - timestamps
-      - validity
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        legalEntity:
-          $ref: '#/components/schemas/LegalEntity'
-        validity:
-          $ref: '#/components/schemas/Validity'
-        timestamps:
-          $ref: '#/components/schemas/ObjectTimestamps'
-    Validity:
-      required:
-      - from
-      type: object
-      properties:
-        from:
-          type: string
-          format: date-time
-        till:
-          type: string
-          format: date-time
     User:
       required:
       - email
@@ -1417,6 +1793,32 @@ components:
           enum:
           - ACTIVE
           - INACTIVE
+    LegalEntity:
+      required:
+      - cin
+      - id
+      - name
+      - regdAddress
+      - timestamps
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        cin:
+          type: string
+          example: CIN00000
+        name:
+          type: string
+          example: Test Company Pvt Ltd
+        regdAddress:
+          $ref: '#/components/schemas/Address'
+        gstin:
+          type: string
+          example: GSTIN00000
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
     Manufacturer:
       required:
       - id
@@ -1514,6 +1916,50 @@ components:
             - C3
         timestamps:
           $ref: '#/components/schemas/ObjectTimestamps'
+    Validity:
+      required:
+      - from
+      type: object
+      properties:
+        from:
+          type: string
+          format: date-time
+        till:
+          type: string
+          format: date-time
+    Sale:
+      required:
+      - id
+      - timestamps
+      - validity
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+        validity:
+          $ref: '#/components/schemas/Validity'
+    RepairAgency:
+      required:
+      - id
+      - legalEntity
+      - timestamps
+      - validity
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        legalEntity:
+          $ref: '#/components/schemas/LegalEntity'
+        validity:
+          $ref: '#/components/schemas/Validity'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
     Pilot:
       required:
       - id
@@ -1533,6 +1979,39 @@ components:
         validity:
           $ref: '#/components/schemas/Validity'
     Operator:
+      required:
+      - id
+      - legalEntity
+      - timestamps
+      - validity
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        legalEntity:
+          $ref: '#/components/schemas/LegalEntity'
+        validity:
+          $ref: '#/components/schemas/Validity'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+    Lease:
+      required:
+      - id
+      - timestamps
+      - validity
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+        validity:
+          $ref: '#/components/schemas/Validity'
+    DigitalSkyServiceProvider:
       required:
       - id
       - legalEntity
