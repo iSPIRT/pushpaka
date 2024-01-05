@@ -8,11 +8,8 @@ package in.ispirt.pushpaka.flightauthorisation.api;
 import in.ispirt.pushpaka.flightauthorisation.dao.Dao;
 import in.ispirt.pushpaka.flightauthorisation.dao.DaoInstance;
 import in.ispirt.pushpaka.flightauthorisation.models.FlightPlan;
-import in.ispirt.pushpaka.flightauthorisation.utils.DaoException;
-import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,22 +18,21 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.annotation.Generated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.multipart.MultipartFile;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
@@ -50,7 +46,7 @@ public interface FlightPlanApi {
   }
 
   /**
-   * POST /FlightPlan : Add a new FlightPlan to the store
+   * POST /flightPlan : Add a new FlightPlan to the store
    * Add a new FlightPlan to the store
    *
    * @param FlightPlan Create a new FlightPlan in the store (required)
@@ -61,7 +57,6 @@ public interface FlightPlanApi {
     operationId = "addFlightPlan",
     summary = "Add a new FlightPlan to the store",
     description = "Add a new FlightPlan to the store",
-    tags = { "FlightPlan" },
     responses = {
       @ApiResponse(
         responseCode = "200",
@@ -79,7 +74,7 @@ public interface FlightPlanApi {
   )
   @RequestMapping(
     method = RequestMethod.POST,
-    value = "/FlightPlan",
+    value = "/flightPlan",
     produces = { "application/json" },
     consumes = { "application/json" }
   )
@@ -110,7 +105,7 @@ public interface FlightPlanApi {
   }
 
   /**
-   * DELETE /FlightPlan/{FlightPlanId} : Deletes a FlightPlan
+   * DELETE /flightPlan/{FlightPlanId} : Deletes a FlightPlan
    *
    *
    * @param FlightPlanId FlightPlan id to delete (required)
@@ -120,13 +115,12 @@ public interface FlightPlanApi {
     operationId = "deleteFlightPlan",
     summary = "Deletes a FlightPlan",
     description = "",
-    tags = { "FlightPlan" },
     responses = {
       @ApiResponse(responseCode = "400", description = "Invalid FlightPlan value")
     },
     security = { @SecurityRequirement(name = "jwt") }
   )
-  @RequestMapping(method = RequestMethod.DELETE, value = "/FlightPlan/{FlightPlanId}")
+  @RequestMapping(method = RequestMethod.DELETE, value = "/flightPlan/{FlightPlanId}")
   default ResponseEntity<Void> deleteFlightPlan(
     @Parameter(
       name = "FlightPlanId",
@@ -141,7 +135,7 @@ public interface FlightPlanApi {
   }
 
   /**
-   * GET /FlightPlan/find : Finds flightPlans
+   * GET /flightPlan/find : Finds flightPlans
    *
    * @return successful operation (status code 200)
    *         or Invalid value (status code 400)
@@ -149,7 +143,6 @@ public interface FlightPlanApi {
   @Operation(
     operationId = "findflightPlans",
     summary = "Finds flightPlans",
-    tags = { "FlightPlan" },
     responses = {
       @ApiResponse(
         responseCode = "200",
@@ -167,7 +160,7 @@ public interface FlightPlanApi {
   )
   @RequestMapping(
     method = RequestMethod.GET,
-    value = "/FlightPlan/find",
+    value = "/flightPlan/find",
     produces = { "application/json" }
   )
   default ResponseEntity<List<FlightPlan>> findflightPlans() {
@@ -197,7 +190,7 @@ public interface FlightPlanApi {
   }
 
   /**
-   * GET /FlightPlan/{FlightPlanId} : Find FlightPlan by ID
+   * GET /flightPlan/{FlightPlanId} : Find FlightPlan by ID
    * Returns a single FlightPlan
    *
    * @param FlightPlanId ID of FlightPlan to return (required)
@@ -209,7 +202,6 @@ public interface FlightPlanApi {
     operationId = "getFlightPlanById",
     summary = "Find FlightPlan by ID",
     description = "Returns a single FlightPlan",
-    tags = { "FlightPlan" },
     responses = {
       @ApiResponse(
         responseCode = "200",
@@ -228,7 +220,7 @@ public interface FlightPlanApi {
   )
   @RequestMapping(
     method = RequestMethod.GET,
-    value = "/FlightPlan/{FlightPlanId}",
+    value = "/flightPlan/{FlightPlanId}",
     produces = { "application/json" }
   )
   default ResponseEntity<FlightPlan> getFlightPlanById(
@@ -264,7 +256,7 @@ public interface FlightPlanApi {
   }
 
   /**
-   * PUT /FlightPlan/{FlightPlanId} : Updates a FlightPlan in the store with form data
+   * PUT /flightPlan/{FlightPlanId} : Updates a FlightPlan in the store with form data
    *
    *
    * @param FlightPlanId ID of FlightPlan that needs to be updated (required)
@@ -276,11 +268,10 @@ public interface FlightPlanApi {
     operationId = "updateFlightPlan",
     summary = "Updates a FlightPlan in the store",
     description = "",
-    tags = { "FlightPlan" },
     responses = { @ApiResponse(responseCode = "405", description = "Invalid input") },
     security = { @SecurityRequirement(name = "jwt") }
   )
-  @RequestMapping(method = RequestMethod.PUT, value = "/FlightPlan/{FlightPlanId}")
+  @RequestMapping(method = RequestMethod.PUT, value = "/flightPlan/{FlightPlanId}")
   default ResponseEntity<FlightPlan> updateFlightPlan(
     @Parameter(
       name = "FlightPlanId",

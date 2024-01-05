@@ -1,23 +1,16 @@
 package in.ispirt.pushpaka.flightauthorisation.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import in.ispirt.pushpaka.flightauthorisation.dao.Dao;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.math.BigDecimal;
-import java.net.URI;
-import java.time.OffsetDateTime;
-import java.util.*;
 import java.util.Objects;
+import java.util.UUID;
 import javax.annotation.Generated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
-import org.openapitools.jackson.nullable.JsonNullable;
+import javax.validation.constraints.NotNull;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
@@ -27,6 +20,7 @@ public class AirspaceUsageToken {
   private UUID id;
   private UUID droneID;
   private UUID pilotID;
+  private UUID flightPlanId;
   private String issuerID;
   private String startTime;
   private String endTime;
@@ -45,6 +39,9 @@ public class AirspaceUsageToken {
     this.id = id;
   }
 
+  @NotNull
+  @Schema(name = "uasId", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("uasId")
   public UUID getDroneID() {
     return droneID;
   }
@@ -53,12 +50,26 @@ public class AirspaceUsageToken {
     this.droneID = droneID;
   }
 
+  @NotNull
+  @Schema(name = "pilotId", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("pilotId")
   public UUID getPilotID() {
     return pilotID;
   }
 
   public void setPilotID(UUID pilotID) {
     this.pilotID = pilotID;
+  }
+
+  @NotNull
+  @Schema(name = "flightPlanId", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("flightPlanId")
+  public UUID getFlightPlanID() {
+    return flightPlanId;
+  }
+
+  public void setFlightPlanID(UUID flightPlanID) {
+    this.flightPlanId = flightPlanID;
   }
 
   public String getIssuerID() {
@@ -140,13 +151,25 @@ public class AirspaceUsageToken {
     return (Objects.equals(this.id, x.id));
   }
 
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  }
+
   public static Dao.AirspaceUsageToken fromOa(AirspaceUsageToken a) {
     Dao.AirspaceUsageToken u = new Dao.AirspaceUsageToken(a.getId());
+    u.setUasId(a.getDroneID());
+    u.setPilotId(a.getPilotID());
+    u.setFlightPlanId(a.getFlightPlanID());
     return u;
   }
 
   public static AirspaceUsageToken toOa(Dao.AirspaceUsageToken x) {
     AirspaceUsageToken le = new AirspaceUsageToken(x.getId());
+    le.setId(x.getId());
+    le.setPilotID(x.getPilotId());
+    le.setDroneID(x.getUasId());
+    le.setFlightPlanID(x.getFlightPlanId());
     return le;
   }
 }

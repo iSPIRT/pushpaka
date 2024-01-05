@@ -1,8 +1,5 @@
 package in.ispirt.pushpaka.flightauthorisation.dao;
 
-import in.ispirt.pushpaka.flightauthorisation.dao.Dao;
-import java.math.BigDecimal;
-import java.util.function.Function;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -26,6 +23,7 @@ public class DaoInstance {
       new Configuration()
         .configure("hibernate.cfg.xml")
         .addAnnotatedClass(Dao.FlightPlan.class)
+        .addAnnotatedClass(Dao.AirspaceUsageToken.class)
         .buildSessionFactory();
     session = sessionFactory.openSession();
   }

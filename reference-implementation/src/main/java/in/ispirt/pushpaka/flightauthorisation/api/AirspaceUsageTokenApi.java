@@ -7,18 +7,10 @@ package in.ispirt.pushpaka.flightauthorisation.api;
 
 import in.ispirt.pushpaka.flightauthorisation.dao.Dao;
 import in.ispirt.pushpaka.flightauthorisation.dao.DaoInstance;
-import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageOperationType;
 import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageToken;
-import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageToken;
-import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageTokenAttenuations;
-import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageTokenState;
-import in.ispirt.pushpaka.flightauthorisation.models.GeocageData;
-import in.ispirt.pushpaka.flightauthorisation.models.GeospatialData;
-import in.ispirt.pushpaka.flightauthorisation.utils.DaoException;
-import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import in.ispirt.pushpaka.utils.Logging;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,34 +19,33 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.annotation.Generated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.multipart.MultipartFile;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
   date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]"
 )
 @Validated
-@Tag(name = "AirspaceUsageTokens", description = "AirspaceUsageTokens")
+@Tag(name = "airspaceUsageTokens", description = "AirspaceUsageTokens")
 public interface AirspaceUsageTokenApi {
   default Optional<NativeWebRequest> getRequest() {
     return Optional.empty();
   }
 
   /**
-   * POST /AirspaceUsageToken : Add a new AirspaceUsageToken to the store
+   * POST /airspaceUsageToken : Add a new AirspaceUsageToken to the store
    * Add a new AirspaceUsageToken to the store
    *
    * @param AirspaceUsageToken Create a new AirspaceUsageToken in the store (required)
@@ -65,7 +56,6 @@ public interface AirspaceUsageTokenApi {
     operationId = "addAirspaceUsageToken",
     summary = "Add a new AirspaceUsageToken to the store",
     description = "Add a new AirspaceUsageToken to the store",
-    tags = { "AirspaceUsageToken" },
     responses = {
       @ApiResponse(
         responseCode = "200",
@@ -83,7 +73,7 @@ public interface AirspaceUsageTokenApi {
   )
   @RequestMapping(
     method = RequestMethod.POST,
-    value = "/AirspaceUsageToken",
+    value = "/airspaceUsageToken",
     produces = { "application/json" },
     consumes = { "application/json" }
   )
@@ -92,13 +82,13 @@ public interface AirspaceUsageTokenApi {
       name = "AirspaceUsageToken",
       description = "Create a new AirspaceUsageToken in the store",
       required = true
-    ) @Valid @RequestBody AirspaceUsageToken AirspaceUsageToken
+    ) @Valid @RequestBody AirspaceUsageToken aut
   ) {
     try {
-      System.out.println("Create AirspaceUsageToken " + AirspaceUsageToken.toString());
+      Logging.info("Create AirspaceUsageToken " + aut.toString());
       Dao.AirspaceUsageToken mm = Dao.AirspaceUsageToken.create(
         DaoInstance.getInstance().getSession(),
-        AirspaceUsageToken.fromOa(AirspaceUsageToken)
+        AirspaceUsageToken.fromOa(aut)
       );
       return ResponseEntity.ok(AirspaceUsageToken.toOa(mm));
       // } catch (DaoException e) {
@@ -106,14 +96,14 @@ public interface AirspaceUsageTokenApi {
       //   e.printStackTrace(System.err);
       //   return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   /**
-   * DELETE /AirspaceUsageToken/{AirspaceUsageTokenId} : Deletes a AirspaceUsageToken
+   * DELETE /airspaceUsageToken/{AirspaceUsageTokenId} : Deletes a aut
    *
    *
    * @param AirspaceUsageTokenId AirspaceUsageToken id to delete (required)
@@ -123,7 +113,6 @@ public interface AirspaceUsageTokenApi {
     operationId = "deleteAirspaceUsageToken",
     summary = "Deletes a AirspaceUsageToken",
     description = "",
-    tags = { "AirspaceUsageToken" },
     responses = {
       @ApiResponse(responseCode = "400", description = "Invalid AirspaceUsageToken value")
     },
@@ -131,7 +120,7 @@ public interface AirspaceUsageTokenApi {
   )
   @RequestMapping(
     method = RequestMethod.DELETE,
-    value = "/AirspaceUsageToken/{AirspaceUsageTokenId}"
+    value = "/airspaceUsageToken/{AirspaceUsageTokenId}"
   )
   default ResponseEntity<Void> deleteAirspaceUsageToken(
     @Parameter(
@@ -150,7 +139,7 @@ public interface AirspaceUsageTokenApi {
   }
 
   /**
-   * GET /AirspaceUsageToken/find : Finds AirspaceUsageTokens
+   * GET /airspaceUsageToken/find : Finds AirspaceUsageTokens
    *
    * @return successful operation (status code 200)
    *         or Invalid value (status code 400)
@@ -158,7 +147,6 @@ public interface AirspaceUsageTokenApi {
   @Operation(
     operationId = "findAirspaceUsageTokens",
     summary = "Finds AirspaceUsageTokens",
-    tags = { "AirspaceUsageToken" },
     responses = {
       @ApiResponse(
         responseCode = "200",
@@ -178,7 +166,7 @@ public interface AirspaceUsageTokenApi {
   )
   @RequestMapping(
     method = RequestMethod.GET,
-    value = "/AirspaceUsageToken/find",
+    value = "/airspaceUsageToken/find",
     produces = { "application/json" }
   )
   default ResponseEntity<List<AirspaceUsageToken>> findAirspaceUsageTokens() {
@@ -208,7 +196,7 @@ public interface AirspaceUsageTokenApi {
   }
 
   /**
-   * GET /AirspaceUsageToken/{AirspaceUsageTokenId} : Find AirspaceUsageToken by ID
+   * GET /airspaceUsageToken/{AirspaceUsageTokenId} : Find AirspaceUsageToken by ID
    * Returns a single AirspaceUsageToken
    *
    * @param AirspaceUsageTokenId ID of AirspaceUsageToken to return (required)
@@ -220,7 +208,6 @@ public interface AirspaceUsageTokenApi {
     operationId = "getAirspaceUsageTokenById",
     summary = "Find AirspaceUsageToken by ID",
     description = "Returns a single AirspaceUsageToken",
-    tags = { "AirspaceUsageToken" },
     responses = {
       @ApiResponse(
         responseCode = "200",
@@ -239,7 +226,7 @@ public interface AirspaceUsageTokenApi {
   )
   @RequestMapping(
     method = RequestMethod.GET,
-    value = "/AirspaceUsageToken/{AirspaceUsageTokenId}",
+    value = "/airspaceUsageToken/{AirspaceUsageTokenId}",
     produces = { "application/json" }
   )
   default ResponseEntity<AirspaceUsageToken> getAirspaceUsageTokenById(
@@ -275,7 +262,7 @@ public interface AirspaceUsageTokenApi {
   }
 
   /**
-   * PUT /AirspaceUsageToken/{AirspaceUsageTokenId} : Updates a AirspaceUsageToken in the store with form data
+   * PUT /airspaceUsageToken/{AirspaceUsageTokenId} : Updates a AirspaceUsageToken in the store with form data
    *
    *
    * @param AirspaceUsageTokenId ID of AirspaceUsageToken that needs to be updated (required)
@@ -287,13 +274,12 @@ public interface AirspaceUsageTokenApi {
     operationId = "updateAirspaceUsageToken",
     summary = "Updates a AirspaceUsageToken in the store",
     description = "",
-    tags = { "AirspaceUsageToken" },
     responses = { @ApiResponse(responseCode = "405", description = "Invalid input") },
     security = { @SecurityRequirement(name = "jwt") }
   )
   @RequestMapping(
     method = RequestMethod.PUT,
-    value = "/AirspaceUsageToken/{AirspaceUsageTokenId}"
+    value = "/airspaceUsageToken/{AirspaceUsageTokenId}"
   )
   default ResponseEntity<AirspaceUsageToken> updateAirspaceUsageToken(
     @Parameter(

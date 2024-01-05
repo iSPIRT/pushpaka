@@ -1,28 +1,11 @@
 package in.ispirt.pushpaka.integration;
 
-import static org.junit.Assert.*;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jwt.SignedJWT;
 import in.ispirt.pushpaka.utils.Logging;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Date;
-import java.util.Map;
 import java.util.UUID;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -45,9 +28,9 @@ public class DemoScenario1 {
 
   @BeforeEach
   void cleanup() {
-    System.out.println("cleanup entities started");
+    // Logging.info("cleanup entities started");
     // in.ispirt.pushpaka.registry.dao.Dao.deleteAll(in.ispirt.pushpaka.registry.dao.DaoInstance.getInstance().getSession());
-    System.out.println("cleanup entities completed");
+    // Logging.info("cleanup entities completed");
   }
 
   // Scenario 1.a.1 Civil Aviation Authority
@@ -57,6 +40,7 @@ public class DemoScenario1 {
     String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
     UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
     String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
+    UUID uidCaaAdmin = TestUtils.userCreate(jwtCaaAdmin); // TODO: skip insertion
     try {
       SignedJWT jwtsCaaAdmin = TestUtils.parseJwt(jwtCaaAdmin);
       TestUtils.assertJwt(jwtsCaaAdmin);
@@ -75,19 +59,19 @@ public class DemoScenario1 {
   }
 
   // Scenario 1.a.2 Manufacturers
-  @Ignore
   @Test
   public void testScenario_1_a_2()
     throws ClientProtocolException, IOException, ParseException {
     String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
     UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
     String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
+    UUID uidCaaAdmin = TestUtils.userCreate(jwtCaaAdmin); // TODO: skip insertion
     String jwtManufacturerAdmin = TestUtils.loginManufacturerAdminUser();
+    UUID uidManufacturerAdmin = TestUtils.userCreate(jwtManufacturerAdmin); // TODO: skip insertion
     try {
       SignedJWT jwtsCaaAdmin = TestUtils.parseJwt(jwtCaaAdmin);
       TestUtils.assertJwt(jwtsCaaAdmin);
       UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
-      Logging.info("id Caa Admin: " + idCaaAdmin.toString());
       TestUtils.grantCaaAdmin(jwtPlatformAdmin, idCaaAdmin); // TODO: spicedb call
       UUID leid = TestUtils.legalEntityCreate(jwtManufacturerAdmin, UUID.randomUUID());
       UUID mid = TestUtils.manufacturerCreate(jwtManufacturerAdmin, leid);
@@ -96,70 +80,145 @@ public class DemoScenario1 {
       Logging.severe("JWT ParseException");
     }
   }
-  // // Scenario 1.a.3 Operators
-  // @Ignore
-  // @Test
-  // public void testScenario_1_a_3() throws ClientProtocolException, IOException {
-  //   String jwt = loginUser();
-  //   // create legal entity
-  //   UUID leid = legalEntityCreate(jwt);
-  //   // create manufacturer
-  //   UUID oid = operatorCreate(jwt, leid);
-  // }
+
+  // Scenario 1.a.3 Operators
+  @Test
+  public void testScenario_1_a_3()
+    throws ClientProtocolException, IOException, ParseException {
+    String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
+    UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
+    String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
+    UUID uidCaaAdmin = TestUtils.userCreate(jwtCaaAdmin); // TODO: skip insertion
+    String jwtOperatorAdmin = TestUtils.loginOperatorAdminUser();
+    UUID uidOperatorAdmin = TestUtils.userCreate(jwtOperatorAdmin); // TODO: skip insertion
+    try {
+      SignedJWT jwtsCaaAdmin = TestUtils.parseJwt(jwtCaaAdmin);
+      TestUtils.assertJwt(jwtsCaaAdmin);
+      UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
+      TestUtils.grantCaaAdmin(jwtPlatformAdmin, idCaaAdmin); // TODO: spicedb call
+      UUID leid = TestUtils.legalEntityCreate(jwtOperatorAdmin, UUID.randomUUID());
+      UUID oid = TestUtils.operatorCreate(jwtOperatorAdmin, leid);
+      TestUtils.approveOperator(jwtCaaAdmin, oid);
+    } catch (ParseException e) {
+      Logging.severe("JWT ParseException");
+    }
+  }
 
   // // Scenario 1.a.4 Pilots
-  // @Ignore
-  // @Test
-  // public void testScenario_1_a_4() throws ClientProtocolException, IOException {
-  //   String jwt = loginUser();
-  //   UUID pid = pilotCreate(jwt);
-  // }
+  @Test
+  public void testScenario_1_a_4()
+    throws ClientProtocolException, IOException, ParseException {
+    String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
+    UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
+    String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
+    UUID uidCaaAdmin = TestUtils.userCreate(jwtCaaAdmin); // TODO: skip insertion
+    String jwtPilot = TestUtils.loginPilotUser();
+    UUID uidPilot = TestUtils.userCreate(jwtPilot); // TODO: skip insertion
+    try {
+      SignedJWT jwtsCaaAdmin = TestUtils.parseJwt(jwtCaaAdmin);
+      TestUtils.assertJwt(jwtsCaaAdmin);
+      UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
+      SignedJWT jwtsPilot = TestUtils.parseJwt(jwtPilot);
+      UUID idPilot = UUID.fromString(jwtsPilot.getJWTClaimsSet().getSubject());
+      TestUtils.grantCaaAdmin(jwtPlatformAdmin, idCaaAdmin); // TODO: spicedb call
+      TestUtils.approvePilot(jwtCaaAdmin, idPilot);
+    } catch (ParseException e) {
+      Logging.severe("JWT ParseException");
+    }
+  }
 
   // // Scenario 1.a.5 DSSPs
-  // @Ignore
-  // @Test
-  // public void testScenario_1_a_5() throws ClientProtocolException, IOException {
-  //   String jwt = loginUser();
-  //   // create legal entity
-  //   UUID leid = legalEntityCreate(jwt);
-  //   // create dssp
-  //   UUID dsspid = dsspCreate(jwt, leid);
-  // }
+  @Test
+  public void testScenario_1_a_5()
+    throws ClientProtocolException, IOException, ParseException {
+    String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
+    UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
+    String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
+    UUID uidCaaAdmin = TestUtils.userCreate(jwtCaaAdmin); // TODO: skip insertion
+    String jwtDsspAdmin = TestUtils.loginDsspAdminUser();
+    UUID uidDsspAdmin = TestUtils.userCreate(jwtDsspAdmin); // TODO: skip insertion
+    try {
+      SignedJWT jwtsCaaAdmin = TestUtils.parseJwt(jwtCaaAdmin);
+      TestUtils.assertJwt(jwtsCaaAdmin);
+      UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
+      UUID leid = TestUtils.legalEntityCreate(jwtDsspAdmin, UUID.randomUUID());
+      UUID dsspid = TestUtils.dsspCreate(jwtDsspAdmin, leid);
+      TestUtils.grantCaaAdmin(jwtPlatformAdmin, idCaaAdmin); // TODO: spicedb call
+      TestUtils.approveDssp(jwtCaaAdmin, dsspid);
+    } catch (ParseException e) {
+      Logging.severe("JWT ParseException");
+    }
+  }
 
-  // // Scenario 1.a.6 Repair Agencies
-  // @Ignore
-  // @Test
-  // public void testScenario_1_a_6() throws ClientProtocolException, IOException {
-  //   String jwt = loginUser();
-  //   // create legal entity
-  //   UUID leid = legalEntityCreate(jwt);
-  //   // create repair agency
-  //   UUID mid = repairAgencyCreate(jwt, leid);
-  // }
+  // Scenario 1.a.6 Repair Agencies
+  @Test
+  public void testScenario_1_a_6()
+    throws ClientProtocolException, IOException, ParseException {
+    String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
+    UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
+    String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
+    UUID uidCaaAdmin = TestUtils.userCreate(jwtCaaAdmin); // TODO: skip insertion
+    String jwtRepairAgencyAdmin = TestUtils.loginRepairAgencyAdminUser();
+    UUID uidRepairAgencyAdmin = TestUtils.userCreate(jwtRepairAgencyAdmin); // TODO: skip insertion
+    try {
+      SignedJWT jwtsCaaAdmin = TestUtils.parseJwt(jwtCaaAdmin);
+      TestUtils.assertJwt(jwtsCaaAdmin);
+      UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
+      UUID leid = TestUtils.legalEntityCreate(jwtRepairAgencyAdmin, UUID.randomUUID());
+      UUID repairAgencyid = TestUtils.repairAgencyCreate(jwtRepairAgencyAdmin, leid);
+      TestUtils.grantCaaAdmin(jwtPlatformAdmin, idCaaAdmin); // TODO: spicedb call
+      TestUtils.approveRepairAgency(jwtCaaAdmin, repairAgencyid);
+    } catch (ParseException e) {
+      Logging.severe("JWT ParseException");
+    }
+  }
 
-  // // Scenario 1.a.7 Trader
-  // @Ignore
-  // @Test
-  // public void testScenario_1_a_7() throws ClientProtocolException, IOException {
-  //   String jwt = loginUser();
-  //   // create legal entity
-  //   UUID leid = legalEntityCreate(jwt);
-  //   // create repair agency
-  //   UUID mid = traderCreate(jwt, leid);
-  // }
+  // Scenario 1.a.7 Trader
+  @Test
+  public void testScenario_1_a_7()
+    throws ClientProtocolException, IOException, ParseException {
+    String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
+    UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
+    String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
+    UUID uidCaaAdmin = TestUtils.userCreate(jwtCaaAdmin); // TODO: skip insertion
+    String jwtTraderAdmin = TestUtils.loginTraderAdminUser();
+    UUID uidTraderAdmin = TestUtils.userCreate(jwtTraderAdmin); // TODO: skip insertion
+    try {
+      SignedJWT jwtsCaaAdmin = TestUtils.parseJwt(jwtCaaAdmin);
+      TestUtils.assertJwt(jwtsCaaAdmin);
+      UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
+      UUID leid = TestUtils.legalEntityCreate(jwtTraderAdmin, UUID.randomUUID());
+      UUID traderid = TestUtils.traderCreate(jwtTraderAdmin, leid);
+      TestUtils.grantCaaAdmin(jwtPlatformAdmin, idCaaAdmin); // TODO: spicedb call
+      TestUtils.approveTrader(jwtCaaAdmin, traderid);
+    } catch (ParseException e) {
+      Logging.severe("JWT ParseException");
+    }
+  }
 
-  // // Scenario 1.a.8 UAS
-  // @Ignore
-  // @Test
-  // public void testScenario_1_a_8() throws ClientProtocolException, IOException {
-  //   String jwt = loginUser();
-  //   // create legal entity
-  //   UUID leid = legalEntityCreate(jwt);
-  //   // create manufacturer
-  //   UUID mid = manufacturerCreate(jwt, leid);
-  //   // create uas type
-  //   UUID utid = uasTypeCreate(jwt, mid);
-  //   // create uas
-  //   UUID uid = uasCreate(jwt, utid);
-  // }
+  // Scenario 1.a.8 UAS
+  @Test
+  public void testScenario_1_a_8()
+    throws ClientProtocolException, IOException, ParseException {
+    String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
+    UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
+    String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
+    UUID uidCaaAdmin = TestUtils.userCreate(jwtCaaAdmin); // TODO: skip insertion
+    String jwtManufacturerAdmin = TestUtils.loginManufacturerAdminUser();
+    UUID uidManufacturerAdmin = TestUtils.userCreate(jwtManufacturerAdmin); // TODO: skip insertion
+    try {
+      SignedJWT jwtsCaaAdmin = TestUtils.parseJwt(jwtCaaAdmin);
+      TestUtils.assertJwt(jwtsCaaAdmin);
+      UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
+      UUID leid = TestUtils.legalEntityCreate(jwtManufacturerAdmin, UUID.randomUUID());
+      UUID manufacturerid = TestUtils.manufacturerCreate(jwtManufacturerAdmin, leid);
+      TestUtils.grantCaaAdmin(jwtPlatformAdmin, idCaaAdmin); // TODO: spicedb call
+      TestUtils.approveManufacturer(jwtCaaAdmin, manufacturerid);
+      UUID uasTypeId = TestUtils.uasTypeCreate(jwtCaaAdmin, manufacturerid);
+      TestUtils.approveManufacturer(jwtCaaAdmin, manufacturerid);
+      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid);
+    } catch (ParseException e) {
+      Logging.severe("JWT ParseException");
+    }
+  }
 }

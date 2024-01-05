@@ -1,5 +1,3 @@
 package in.ispirt.pushpaka.unittests;
 
-public class AuthZTest {
-    
-}
+public class AuthZTest {}
