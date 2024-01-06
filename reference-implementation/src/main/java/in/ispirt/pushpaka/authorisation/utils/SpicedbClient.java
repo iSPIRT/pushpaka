@@ -22,27 +22,70 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 
-public class SpicedbUtils {
+public class SpicedbClient {
   static final Operation OPERATION_CREATE = RelationshipUpdate.Operation.OPERATION_CREATE;
   static final Operation OPERATION_TOUCH = RelationshipUpdate.Operation.OPERATION_TOUCH;
   static final Operation OPERATION_DELETE = RelationshipUpdate.Operation.OPERATION_DELETE;
-  static final String target = "localhost:50051";
-  static final String token = "somerandomkeyhere";
 
-  private static ManagedChannel channel = ManagedChannelBuilder
+  public static final String SPICEDDB_TARGET = "localhost:50051";
+  public static final String SPICEDB_TOKEN = "somerandomkeyhere";
+  public static final String SPICEDDB_PERMISSION_FILE = "spicedb_permissions.txt";
+  
+  ManagedChannel channel;
+  PermissionsServiceGrpc.PermissionsServiceBlockingStub permissionsService;
+  SchemaServiceGrpc.SchemaServiceBlockingStub schemaService;
+
+  public ManagedChannel getChannel() {
+    return channel;
+  }
+
+  public void setChannel(ManagedChannel channel) {
+    this.channel = channel;
+  }
+ 
+  public PermissionsServiceGrpc.PermissionsServiceBlockingStub getPermissionsService() {
+    return permissionsService;
+  }
+
+  public void setPermissionsService(PermissionsServiceGrpc.PermissionsServiceBlockingStub permissionsService) {
+    this.permissionsService = permissionsService;
+  }
+
+  
+  public SchemaServiceGrpc.SchemaServiceBlockingStub getSchemaService() {
+    return schemaService;
+  }
+
+  public void setSchemaService(SchemaServiceGrpc.SchemaServiceBlockingStub schemaService) {
+    this.schemaService = schemaService;
+  }
+
+  private static SpicedbClient instance;
+
+  private SpicedbClient(String target , String token){
+    channel = ManagedChannelBuilder
     .forTarget(target)
     .usePlaintext() // if not using TLS, replace with .usePlaintext()
     .build();
 
-  private static final PermissionsServiceGrpc.PermissionsServiceBlockingStub permissionsService = PermissionsServiceGrpc
+    permissionsService = PermissionsServiceGrpc
     .newBlockingStub(channel)
     .withCallCredentials(new BearerToken(token));
 
-  private static final SchemaServiceGrpc.SchemaServiceBlockingStub schemaService = SchemaServiceGrpc
+    schemaService = SchemaServiceGrpc
     .newBlockingStub(channel)
     .withCallCredentials(new BearerToken(token));
 
-  public static String writeRelationship(
+  }
+
+  public static synchronized SpicedbClient getInstance(String target,String token) {
+      if (instance == null) {
+          instance = new SpicedbClient(target,token);
+      }
+      return instance;
+  }
+
+  public String writeRelationship(
     RelationshipType relationType,
     String resourceID,
     ResourceType resourceType,
@@ -96,7 +139,7 @@ public class SpicedbUtils {
     return response.getWrittenAt().getToken();
   }
 
-  public static boolean checkPermission(
+  public boolean checkPermission(
     Permission permission,
     ResourceType resourceType,
     String resourceID,
@@ -151,7 +194,7 @@ public class SpicedbUtils {
     }
   }
 
-  public static void writeSchema(String filename) {
+  public void writeSchema(String filename) {
     try {
       Path p = Path.of(filename);
       String schema = Files.readString(p);
@@ -162,11 +205,11 @@ public class SpicedbUtils {
     }
   }
 
-  public static void shutdownChannel() {
+  public void shutdownChannel() throws InterruptedException{
     try {
       channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
     } catch (InterruptedException exception) {
-      // Uh oh!
+      exception.printStackTrace();
     }
   }
 }

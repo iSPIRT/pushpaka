@@ -6,10 +6,13 @@ import in.ispirt.pushpaka.authorisation.ResourceType;
 import in.ispirt.pushpaka.authorisation.SubjectType;
 
 public class AuthZUtils {
-  public static final String PLATFORM_ID = "digital-sky-platform";
-  public static final String CAA_RESOURCE_ID = "caa-authority";
-  public static final String DEFAULT_PILOT_GROUP = "default-pilot-group";
+ 
+  public static final SpicedbClient spicedbClient;
 
+  static{
+    spicedbClient = SpicedbClient.getInstance(SpicedbClient.SPICEDDB_TARGET, SpicedbClient.SPICEDB_TOKEN);
+  }
+ 
   /**This method is used to create a platform admin with a buil-in seed for the platform
    * This method also has a built-in seed for a resource type CAA that implies that
    * the platform admin has access to resource type CAA and administer it
@@ -18,19 +21,19 @@ public class AuthZUtils {
     //create relation of administrator
     //create relation with resource type
 
-    SpicedbUtils.writeRelationship(
+    spicedbClient.writeRelationship(
       RelationshipType.ADMINISTRATOR,
-      PLATFORM_ID,
+      AuthZConstants.PLATFORM_ID,
       ResourceType.PLATFORM,
       subjectID,
       SubjectType.USER
     );
 
-    SpicedbUtils.writeRelationship(
+    spicedbClient.writeRelationship(
       RelationshipType.OWNER,
       ResourceType.CAA.getResourceType(),
       ResourceType.PLATFORM_RESOURCETYPE,
-      PLATFORM_ID,
+      AuthZConstants.PLATFORM_ID,
       SubjectType.PLATFORM
     );
     //platform digital-sky administrator user<input/>
@@ -49,7 +52,7 @@ public class AuthZUtils {
     String platformAdminID
   ) {
     //check permission and then create admin for the given resourceID
-    boolean isPlatformAdmin = SpicedbUtils.checkPermission(
+    boolean isPlatformAdmin = spicedbClient.checkPermission(
       Permission.SUPER_ADMIN,
       ResourceType.PLATFORM_RESOURCETYPE,
       resourceType.getResourceType(),
@@ -59,7 +62,7 @@ public class AuthZUtils {
 
     //create admin for the provided resource
     if (isPlatformAdmin) {
-      SpicedbUtils.writeRelationship(
+      spicedbClient.writeRelationship(
         RelationshipType.ADMINISTRATOR,
         resourceID,
         resourceType,
@@ -73,7 +76,7 @@ public class AuthZUtils {
   /** Thois method is used to get CAA resource ID*/
   public static String getCAAResourceID() {
     //return the ID of the CCA resource in the system
-    return CAA_RESOURCE_ID;
+    return AuthZConstants.CAA_RESOURCE_ID;
   }
 
   /**This method is used to created resource type admin when creating the resource */
@@ -82,7 +85,7 @@ public class AuthZUtils {
     String resourceID,
     String resourceAdminID
   ) {
-    SpicedbUtils.writeRelationship(
+    spicedbClient.writeRelationship(
       RelationshipType.ADMINISTRATOR,
       resourceID,
       resourceType,
@@ -91,7 +94,7 @@ public class AuthZUtils {
     );
 
     if (ResourceType.OPERATOR.equals(resourceType)) {
-      SpicedbUtils.writeRelationship(
+      spicedbClient.writeRelationship(
         RelationshipType.REGULATOR,
         resourceID,
         resourceType,
@@ -99,7 +102,7 @@ public class AuthZUtils {
         SubjectType.CAA
       );
 
-      SpicedbUtils.writeRelationship(
+      spicedbClient.writeRelationship(
         RelationshipType.PILOT,
         resourceID,
         resourceType,
@@ -120,7 +123,7 @@ public class AuthZUtils {
   ) {
     /**Put additional checks for pre-condition on UAS*/
 
-    SpicedbUtils.writeRelationship(
+    spicedbClient.writeRelationship(
       RelationshipType.MANUFACTURER,
       UASID,
       ResourceType.UAS,
@@ -128,7 +131,7 @@ public class AuthZUtils {
       SubjectType.MANUFACTURER
     );
 
-    SpicedbUtils.writeRelationship(
+    spicedbClient.writeRelationship(
       RelationshipType.OWNER,
       UASID,
       ResourceType.UAS,
@@ -136,7 +139,7 @@ public class AuthZUtils {
       SubjectType.OPERATOR
     );
 
-    SpicedbUtils.writeRelationship(
+    spicedbClient.writeRelationship(
       RelationshipType.REGULATOR,
       UASID,
       ResourceType.UAS,
@@ -151,7 +154,7 @@ public class AuthZUtils {
 
   /** This method creates more than one realtionships for UASType */
   public static void createUASTypeRelationships(String UASTypeID, String manufacturerID) {
-    SpicedbUtils.writeRelationship(
+    spicedbClient.writeRelationship(
       RelationshipType.MANUFACTURER,
       UASTypeID,
       ResourceType.UASTYPE,
@@ -159,7 +162,7 @@ public class AuthZUtils {
       SubjectType.MANUFACTURER
     );
 
-    SpicedbUtils.writeRelationship(
+    spicedbClient.writeRelationship(
       RelationshipType.REGULATOR,
       UASTypeID,
       ResourceType.UASTYPE,
@@ -177,7 +180,7 @@ public class AuthZUtils {
   public static void createPilotFlightOperationsResourceTypeRelationships(
     String pilotGroupID
   ) {
-    SpicedbUtils.writeRelationship(
+    spicedbClient.writeRelationship(
       RelationshipType.OWNER,
       ResourceType.FLIGHTPLAN.getResourceType(),
       ResourceType.FLIGHTOPERATIONS_RESOURCETYPE,
@@ -185,7 +188,7 @@ public class AuthZUtils {
       SubjectType.PILOT
     );
 
-    SpicedbUtils.writeRelationship(
+    spicedbClient.writeRelationship(
       RelationshipType.OWNER,
       ResourceType.FLIGHTLOG.getResourceType(),
       ResourceType.FLIGHTOPERATIONS_RESOURCETYPE,
@@ -193,7 +196,7 @@ public class AuthZUtils {
       SubjectType.PILOT
     );
 
-    SpicedbUtils.writeRelationship(
+    spicedbClient.writeRelationship(
       RelationshipType.OWNER,
       ResourceType.INCIDENTREPORT.getResourceType(),
       ResourceType.FLIGHTOPERATIONS_RESOURCETYPE,
@@ -217,7 +220,7 @@ public class AuthZUtils {
     Permission permission,
     ResourceType resourceType
   ) {
-    boolean hasPermission = SpicedbUtils.checkPermission(
+    boolean hasPermission = spicedbClient.checkPermission(
       permission,
       resourceType,
       resourceType.getResourceType(),
@@ -231,9 +234,9 @@ public class AuthZUtils {
   /** This function is used to add pilot user to a pilto group */
   public static void addPilotUserToPilotGroup(String pilotUserID, String pilotGroupID) {
     if (pilotGroupID == null) {
-      pilotGroupID = DEFAULT_PILOT_GROUP;
+      pilotGroupID = AuthZConstants.DEFAULT_PILOT_GROUP;
     }
-    SpicedbUtils.writeRelationship(
+    spicedbClient.writeRelationship(
       RelationshipType.MEMBER,
       pilotGroupID,
       ResourceType.PILOT,
