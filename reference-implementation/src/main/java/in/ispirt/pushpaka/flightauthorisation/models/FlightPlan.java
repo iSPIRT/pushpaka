@@ -1,19 +1,13 @@
 package in.ispirt.pushpaka.flightauthorisation.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 import in.ispirt.pushpaka.flightauthorisation.dao.Dao;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
-import java.net.URI;
-import java.time.OffsetDateTime;
-import java.util.*;
 import java.util.Objects;
+import java.util.UUID;
 import javax.annotation.Generated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
-import org.openapitools.jackson.nullable.JsonNullable;
+import javax.validation.constraints.NotNull;
 
 /**
  * FlightPlan

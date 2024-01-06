@@ -1,40 +1,15 @@
 package in.ispirt.pushpaka.flightauthorisation.dao;
 
-import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageOperationType;
-import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageToken;
-import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageTokenAttenuations;
-import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageTokenState;
-import in.ispirt.pushpaka.flightauthorisation.models.FlightPlan;
-import in.ispirt.pushpaka.flightauthorisation.models.GeocageData;
-import in.ispirt.pushpaka.flightauthorisation.models.GeospatialData;
-import in.ispirt.pushpaka.flightauthorisation.utils.DaoException;
-import in.ispirt.pushpaka.flightauthorisation.utils.Utils;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-import java.util.function.Function;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import org.hibernate.JDBCException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 
 public class Dao implements Serializable {
   private static final Random RAND = new Random();
@@ -92,7 +67,7 @@ public class Dao implements Serializable {
     public static FlightPlan get(Session s, UUID id) {
       return s
         .createQuery("from FlightPlan where id= :id", FlightPlan.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
     }
 
@@ -100,7 +75,7 @@ public class Dao implements Serializable {
       Transaction t = s.beginTransaction();
       s
         .createQuery("delete from FlightPlan where id= :id")
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .executeUpdate();
       t.commit();
     }
@@ -108,7 +83,7 @@ public class Dao implements Serializable {
     public static FlightPlan update(Session s, UUID id, FlightPlan le) {
       FlightPlan leo = s
         .createQuery("from FlightPlan where id= :id", FlightPlan.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
       // ao.setCountry(a.getCountry());
       s.saveOrUpdate(leo);
@@ -147,6 +122,39 @@ public class Dao implements Serializable {
       this.id = id;
     }
 
+    @Column(name = "flight_plan_id")
+    public UUID flightPlanId;
+
+    public UUID getFlightPlanId() {
+      return flightPlanId;
+    }
+
+    public void setFlightPlanId(UUID flightPlanId) {
+      this.flightPlanId = flightPlanId;
+    }
+
+    @Column(name = "pilot_id")
+    public UUID pilotId;
+
+    public UUID getPilotId() {
+      return pilotId;
+    }
+
+    public void setPilotId(UUID pilotId) {
+      this.pilotId = pilotId;
+    }
+
+    @Column(name = "uas_id")
+    public UUID uasId;
+
+    public UUID getUasId() {
+      return uasId;
+    }
+
+    public void setUasId(UUID id) {
+      this.uasId = id;
+    }
+
     // Convenience constructor.
     // public AirspaceUsageToken(
     //   UUID id
@@ -177,7 +185,7 @@ public class Dao implements Serializable {
     public static AirspaceUsageToken get(Session s, UUID id) {
       return s
         .createQuery("from AirspaceUsageToken where id= :id", AirspaceUsageToken.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
     }
 
@@ -185,7 +193,7 @@ public class Dao implements Serializable {
       Transaction t = s.beginTransaction();
       s
         .createQuery("delete from AirspaceUsageToken where id= :id")
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .executeUpdate();
       t.commit();
     }
@@ -193,7 +201,7 @@ public class Dao implements Serializable {
     public static AirspaceUsageToken update(Session s, UUID id, AirspaceUsageToken le) {
       AirspaceUsageToken leo = s
         .createQuery("from AirspaceUsageToken where id= :id", AirspaceUsageToken.class)
-        .setString("id", id.toString())
+        .setParameter("id", id)
         .uniqueResult();
       // ao.setCountry(a.getCountry());
       s.saveOrUpdate(leo);
