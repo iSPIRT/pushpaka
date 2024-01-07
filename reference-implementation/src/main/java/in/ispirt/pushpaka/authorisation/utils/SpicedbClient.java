@@ -219,7 +219,7 @@ public class SpicedbClient {
       exception.printStackTrace();
     }
   }
-
+  
   public String readSchema(){
     String schemaText = null;
 
