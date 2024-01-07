@@ -44,47 +44,52 @@ public class SpicedbClient {
   public void setChannel(ManagedChannel channel) {
     this.channel = channel;
   }
- 
+
   public PermissionsServiceGrpc.PermissionsServiceBlockingStub getPermissionsService() {
     return permissionsService;
   }
 
-  public void setPermissionsService(PermissionsServiceGrpc.PermissionsServiceBlockingStub permissionsService) {
+  public void setPermissionsService(
+    PermissionsServiceGrpc.PermissionsServiceBlockingStub permissionsService
+  ) {
     this.permissionsService = permissionsService;
   }
 
-  
   public SchemaServiceGrpc.SchemaServiceBlockingStub getSchemaService() {
     return schemaService;
   }
 
-  public void setSchemaService(SchemaServiceGrpc.SchemaServiceBlockingStub schemaService) {
+  public void setSchemaService(
+    SchemaServiceGrpc.SchemaServiceBlockingStub schemaService
+  ) {
     this.schemaService = schemaService;
   }
 
   private static SpicedbClient instance;
 
-  private SpicedbClient(String target , String token){
-    channel = ManagedChannelBuilder
-    .forTarget(target)
-    .usePlaintext() // if not using TLS, replace with .usePlaintext()
-    .build();
+  private SpicedbClient(String target, String token) {
+    channel =
+      ManagedChannelBuilder
+        .forTarget(target)
+        .usePlaintext() // if not using TLS, replace with .usePlaintext()
+        .build();
 
-    permissionsService = PermissionsServiceGrpc
-    .newBlockingStub(channel)
-    .withCallCredentials(new BearerToken(token));
+    permissionsService =
+      PermissionsServiceGrpc
+        .newBlockingStub(channel)
+        .withCallCredentials(new BearerToken(token));
 
-    schemaService = SchemaServiceGrpc
-    .newBlockingStub(channel)
-    .withCallCredentials(new BearerToken(token));
-
+    schemaService =
+      SchemaServiceGrpc
+        .newBlockingStub(channel)
+        .withCallCredentials(new BearerToken(token));
   }
 
-  public static synchronized SpicedbClient getInstance(String target,String token) {
-      if (instance == null) {
-          instance = new SpicedbClient(target,token);
-      }
-      return instance;
+  public static synchronized SpicedbClient getInstance(String target, String token) {
+    if (instance == null) {
+      instance = new SpicedbClient(target, token);
+    }
+    return instance;
   }
 
   public String writeRelationship(
@@ -207,7 +212,7 @@ public class SpicedbClient {
     }
   }
 
-  public void shutdownChannel() throws InterruptedException{
+  public void shutdownChannel() throws InterruptedException {
     try {
       channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
     } catch (InterruptedException exception) {

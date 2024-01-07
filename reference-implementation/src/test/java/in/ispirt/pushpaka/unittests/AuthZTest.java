@@ -11,8 +11,7 @@ import in.ispirt.pushpaka.authorisation.utils.AuthZUtils;
 import in.ispirt.pushpaka.authorisation.utils.SpicedbClient;
 
 public class AuthZTest {
-
-	public static SpicedbClient spicedbClient;
+  public static SpicedbClient spicedbClient;
 
 	@BeforeClass
     public static void setup() {

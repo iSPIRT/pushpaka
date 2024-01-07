@@ -1,5 +1,7 @@
 package in.ispirt.pushpaka.integration;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.nimbusds.jwt.SignedJWT;
 import in.ispirt.pushpaka.utils.Logging;
 import java.io.IOException;
@@ -25,12 +27,16 @@ class DemoScenario2 {
     throws ClientProtocolException, IOException, java.text.ParseException {
     String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
     UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
+    assertNotNull(uidPlatformAdmin);
     String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
     UUID uidCaaAdmin = TestUtils.userCreate(jwtCaaAdmin); // TODO: skip insertion
+    assertNotNull(uidCaaAdmin);
     String jwtManufacturerAdmin = TestUtils.loginManufacturerAdminUser();
     UUID uidManufacturerAdmin = TestUtils.userCreate(jwtManufacturerAdmin); // TODO: skip insertion
+    assertNotNull(uidManufacturerAdmin);
     String jwtPilot = TestUtils.loginPilotUser();
     UUID uidPilot = TestUtils.userCreate(jwtPilot); // TODO: skip insertion
+    assertNotNull(uidPilot);
     try {
       SignedJWT jwtsCaaAdmin = TestUtils.parseJwt(jwtCaaAdmin);
       TestUtils.assertJwt(jwtsCaaAdmin);
@@ -43,6 +49,7 @@ class DemoScenario2 {
         UUID.randomUUID(),
         leidCaa
       );
+      assertNotNull(caaid);
       UUID leid = TestUtils.legalEntityCreate(jwtManufacturerAdmin, UUID.randomUUID());
       UUID mid = TestUtils.manufacturerCreate(jwtManufacturerAdmin, leid);
       TestUtils.approveManufacturer(jwtCaaAdmin, mid);
@@ -60,6 +67,7 @@ class DemoScenario2 {
         uasId,
         idPilot
       );
+      assertNotNull(flightAuthorisationId);
     } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }

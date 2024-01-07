@@ -360,6 +360,52 @@ public class TestUtils {
     return TestUtils.extractUuid(reb);
   }
 
+  public static UUID uasTypeC2Create(String jwt, UUID x)
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    StringEntity e = new StringEntity(
+      "{ \"modelNumber\": \"string\", \"manufacturer\": { \"id\": \"" +
+      x.toString() +
+      "\", \"legalEntity\": { \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN" +
+      x.toString().substring(0, 8) +
+      "\", \"timestamps\": {} }, \"validity\": { \"from\": \"2023-11-26T12:12:08.481Z\", \"till\": \"2023-11-26T12:12:08.481Z\" }, \"timestamps\": {} }, \"propulsionCategory\": \"VTOL\", \"weightCategory\": \"NANO\", \"mtow\": 0, \"photoUrl\": \"https://ispirt.github.io/pushpaka/\", \"supportedOperationCategories\": [ \"C1\", \"C2\" ], \"timestamps\": {} }",
+      ContentType.APPLICATION_JSON
+    );
+    HttpPost request = new HttpPost("http://localhost:8084/api/v1/uasType");
+    request.setEntity(e);
+    request.addHeader("Authorization", "Bearer " + jwt);
+
+    // When
+    HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+    assertEquals(httpResponse.getStatusLine().getStatusCode(), 200);
+    HttpEntity re = httpResponse.getEntity();
+    String reb = EntityUtils.toString(re);
+    EntityUtils.consume(re);
+    return TestUtils.extractUuid(reb);
+  }
+
+  public static UUID uasTypeC3Create(String jwt, UUID x)
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    StringEntity e = new StringEntity(
+      "{ \"modelNumber\": \"string\", \"manufacturer\": { \"id\": \"" +
+      x.toString() +
+      "\", \"legalEntity\": { \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN" +
+      x.toString().substring(0, 8) +
+      "\", \"timestamps\": {} }, \"validity\": { \"from\": \"2023-11-26T12:12:08.481Z\", \"till\": \"2023-11-26T12:12:08.481Z\" }, \"timestamps\": {} }, \"propulsionCategory\": \"VTOL\", \"weightCategory\": \"NANO\", \"mtow\": 0, \"photoUrl\": \"https://ispirt.github.io/pushpaka/\", \"supportedOperationCategories\": [ \"C1\", \"C2\", \"C3\" ], \"timestamps\": {} }",
+      ContentType.APPLICATION_JSON
+    );
+    HttpPost request = new HttpPost("http://localhost:8084/api/v1/uasType");
+    request.setEntity(e);
+    request.addHeader("Authorization", "Bearer " + jwt);
+
+    // When
+    HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+    assertEquals(httpResponse.getStatusLine().getStatusCode(), 200);
+    HttpEntity re = httpResponse.getEntity();
+    String reb = EntityUtils.toString(re);
+    EntityUtils.consume(re);
+    return TestUtils.extractUuid(reb);
+  }
+
   public static UUID uasCreate(String jwt, UUID uasTypeId, UUID leid)
     throws ClientProtocolException, IOException, JsonProcessingException, ParseException {
     StringEntity e = new StringEntity(
