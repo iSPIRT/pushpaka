@@ -1,27 +1,18 @@
 package in.ispirt.pushpaka.registry.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 import in.ispirt.pushpaka.registry.dao.Dao;
-import in.ispirt.pushpaka.registry.models.Manufacturer;
-import in.ispirt.pushpaka.registry.models.ObjectTimestamps;
-import in.ispirt.pushpaka.registry.models.OperationCategory;
-import in.ispirt.pushpaka.registry.models.UasPropulsionCategory;
-import in.ispirt.pushpaka.registry.models.UasWeightCategory;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.time.OffsetDateTime;
-import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import javax.annotation.Generated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
-import org.openapitools.jackson.nullable.JsonNullable;
+import javax.validation.constraints.NotNull;
 
 /**
  * UasType
@@ -386,7 +377,8 @@ public class UasType {
         u.mtow,
         n,
         n,
-        u.propulsionCategory
+        u.propulsionCategory,
+        u.supportedOperationCategories
       );
       return uu;
     } catch (MalformedURLException e) {
@@ -399,7 +391,8 @@ public class UasType {
         u.mtow,
         n,
         n,
-        u.propulsionCategory
+        u.propulsionCategory,
+        u.supportedOperationCategories
       );
       return uu;
     }

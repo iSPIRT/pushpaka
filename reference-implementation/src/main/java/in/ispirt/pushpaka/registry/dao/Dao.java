@@ -11,32 +11,25 @@ import in.ispirt.pushpaka.registry.utils.DaoException;
 import in.ispirt.pushpaka.registry.utils.Utils;
 import in.ispirt.pushpaka.utils.Logging;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-import java.util.function.Function;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotNull;
-import org.hibernate.JDBCException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 
 public class Dao implements Serializable {
   private static final Random RAND = new Random();
@@ -804,8 +797,13 @@ public class Dao implements Serializable {
       return Utils.toOpenApiWeightCategory(this.mtow);
     }
 
+    @Enumerated(EnumType.STRING)
+    @Column //(name = "supported_operation_categories")
+    @ElementCollection(targetClass = OperationCategory.class)
+    private List<OperationCategory> supportedOperationCategories;
+
     public List<OperationCategory> getSupportedOperationCategories() {
-      return new ArrayList<OperationCategory>();
+      return this.supportedOperationCategories;
     }
 
     // Convenience constructor.
@@ -817,7 +815,8 @@ public class Dao implements Serializable {
       Float mtow,
       OffsetDateTime tc,
       OffsetDateTime tu,
-      UasPropulsionCategory pc
+      UasPropulsionCategory pc,
+      List<OperationCategory> ocs
     ) {
       this.id = id;
       this.manufacturer = manufacturer;
@@ -827,6 +826,7 @@ public class Dao implements Serializable {
       this.timestampCreated = tc;
       this.timestampUpdated = tu;
       this.propulsionCategory = pc;
+      this.supportedOperationCategories = ocs;
     }
 
     // Hibernate needs a default (no-arg) constructor to create model objects.
