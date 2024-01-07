@@ -10,6 +10,8 @@ import com.authzed.api.v1.PermissionService;
 import com.authzed.api.v1.PermissionService.CheckPermissionResponse;
 import com.authzed.api.v1.PermissionsServiceGrpc;
 import com.authzed.api.v1.SchemaServiceGrpc;
+import com.authzed.api.v1.SchemaServiceOuterClass.ReadSchemaRequest;
+import com.authzed.api.v1.SchemaServiceOuterClass.ReadSchemaResponse;
 import com.authzed.api.v1.SchemaServiceOuterClass.WriteSchemaRequest;
 import com.authzed.grpcutil.BearerToken;
 import in.ispirt.pushpaka.authorisation.Permission;
@@ -30,7 +32,7 @@ public class SpicedbClient {
   public static final String SPICEDDB_TARGET = "localhost:50051";
   public static final String SPICEDB_TOKEN = "somerandomkeyhere";
   public static final String SPICEDDB_PERMISSION_FILE = "spicedb_permissions.txt";
-  
+
   ManagedChannel channel;
   PermissionsServiceGrpc.PermissionsServiceBlockingStub permissionsService;
   SchemaServiceGrpc.SchemaServiceBlockingStub schemaService;
@@ -211,5 +213,22 @@ public class SpicedbClient {
     } catch (InterruptedException exception) {
       exception.printStackTrace();
     }
+  }
+
+  public String readSchema(){
+    String schemaText = null;
+
+		ReadSchemaRequest readRequest = ReadSchemaRequest
+    .newBuilder()
+    .build();
+
+    ReadSchemaResponse readResponse = schemaService.readSchema(readRequest);
+
+    if(readResponse != null ){
+      schemaText = readResponse.getSchemaText();  
+    }
+
+    return schemaText;
+
   }
 }

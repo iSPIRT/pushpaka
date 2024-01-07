@@ -17,11 +17,11 @@ public class AuthZUtils {
    * This method also has a built-in seed for a resource type CAA that implies that
    * the platform admin has access to resource type CAA and administer it
    */
-  public static void createPlatformAdmin(String subjectID) {
+  public static boolean createPlatformAdmin(String subjectID) {
     //create relation of administrator
     //create relation with resource type
 
-    spicedbClient.writeRelationship(
+    String tokenValue_1 = spicedbClient.writeRelationship(
       RelationshipType.ADMINISTRATOR,
       AuthZConstants.PLATFORM_ID,
       ResourceType.PLATFORM,
@@ -29,13 +29,19 @@ public class AuthZUtils {
       SubjectType.USER
     );
 
-    spicedbClient.writeRelationship(
+    String tokenValue_2 = spicedbClient.writeRelationship(
       RelationshipType.OWNER,
       ResourceType.CAA.getResourceType(),
       ResourceType.PLATFORM_RESOURCETYPE,
       AuthZConstants.PLATFORM_ID,
       SubjectType.PLATFORM
     );
+
+    if (tokenValue_1 != null && tokenValue_2 != null) {
+      return true;
+    } else {
+      return false;
+    }
     //platform digital-sky administrator user<input/>
     //resource caa platform digital-sky
     //platform:digital-sky-platform#administrator@user:platform-user
@@ -45,12 +51,14 @@ public class AuthZUtils {
   /**This method allows for any resource type admin user to be created by a platform
    * admin
    */
-  public static void createResoureTypeAdminByPlatformUser(
+  public static boolean createResoureTypeAdminByPlatformUser(
     ResourceType resourceType,
     String resourceID,
     String resourceAdminID,
     String platformAdminID
   ) {
+    String tokenValue = null;
+
     //check permission and then create admin for the given resourceID
     boolean isPlatformAdmin = spicedbClient.checkPermission(
       Permission.SUPER_ADMIN,
@@ -62,13 +70,19 @@ public class AuthZUtils {
 
     //create admin for the provided resource
     if (isPlatformAdmin) {
-      spicedbClient.writeRelationship(
+      tokenValue = spicedbClient.writeRelationship(
         RelationshipType.ADMINISTRATOR,
         resourceID,
         resourceType,
         resourceAdminID,
         SubjectType.USER
       );
+    }
+
+    if(tokenValue != null){
+      return true;
+    } else {
+      return false;
     }
     //caa:caa-authority#administrator@user:caa-user
   }
@@ -79,13 +93,17 @@ public class AuthZUtils {
     return AuthZConstants.CAA_RESOURCE_ID;
   }
 
-  /**This method is used to created resource type admin when creating the resource */
-  public static void createResoureTypeAdmin(
+  /**This method is used to create resource type admin when creating the resource */
+  public static boolean createResoureTypeAdmin(
     ResourceType resourceType,
     String resourceID,
     String resourceAdminID
   ) {
-    spicedbClient.writeRelationship(
+    boolean isSuccess = false;
+    String tokenValue = null;
+    String operatorTokenValue = null;
+   
+    tokenValue = spicedbClient.writeRelationship(
       RelationshipType.ADMINISTRATOR,
       resourceID,
       resourceType,
@@ -93,8 +111,12 @@ public class AuthZUtils {
       SubjectType.USER
     );
 
+    if(tokenValue != null ){
+      isSuccess = true;
+    }
+
     if (ResourceType.OPERATOR.equals(resourceType)) {
-      spicedbClient.writeRelationship(
+      operatorTokenValue =spicedbClient.writeRelationship(
         RelationshipType.REGULATOR,
         resourceID,
         resourceType,
@@ -102,17 +124,30 @@ public class AuthZUtils {
         SubjectType.CAA
       );
 
-      spicedbClient.writeRelationship(
-        RelationshipType.PILOT,
-        resourceID,
-        resourceType,
-        resourceID + "-" + "pilot-group#member",
-        SubjectType.PILOT
-      );
+      if(tokenValue != null && operatorTokenValue !=null ){
+        isSuccess = true;
+      }
     }
     //operator:operator-1#administrator@user:operator-user
     //manufacturer:manufacturer-1#administrator@user:manufacturer-user
+   
+    return isSuccess;
+  }
 
+  public static boolean checkIsResourceAdmin(
+  ResourceType resourceType,
+  String resourceAdminID,
+  String userID
+  ){
+    boolean isResourceAdmin = spicedbClient.checkPermission(
+      Permission.SUPER_ADMIN,
+      resourceType,
+      resourceAdminID,
+      SubjectType.USER,
+      userID
+    );
+
+    return isResourceAdmin;
   }
 
   /**This methods created more than one relationships for UAS */
@@ -231,20 +266,61 @@ public class AuthZUtils {
     return hasPermission;
   }
 
-  /** This function is used to add pilot user to a pilto group */
-  public static void addPilotUserToPilotGroup(String pilotUserID, String pilotGroupID) {
-    if (pilotGroupID == null) {
-      pilotGroupID = AuthZConstants.DEFAULT_PILOT_GROUP;
-    }
-    spicedbClient.writeRelationship(
+  /** This function is used to add pilot user to a pilot group */
+  public static boolean addPilotUserToDefaultGroup(String pilotUserID) {
+    String pilotGroupID = AuthZConstants.DEFAULT_PILOT_GROUP;
+    boolean isSuccess = false;
+
+    String tokenValue = spicedbClient.writeRelationship(
       RelationshipType.MEMBER,
       pilotGroupID,
       ResourceType.PILOT,
       pilotUserID,
       SubjectType.USER
     );
-    //pilot:operator-1-pilot-group#member@user:pilot-user
+
+    if(tokenValue != null){
+      isSuccess = true;
+    }
+
+    return isSuccess;
     //pilot:default-pilot-group#member@user:pilot-user-2
+  }
+
+  /** This function is used to add pilot user to a pilot group */
+  public static boolean addPilotUserToPilotOperatorGroup(
+  String pilotUserID, 
+  String operatorResourceID,
+  String operatorUserID) {
+    String operatorPilotGroupID = operatorResourceID+"-pilot-group";
+    String tokenValue = null;
+    boolean isSuccess = false;
+
+    boolean addPilotUserToPilotGroup = spicedbClient.checkPermission(
+      Permission.ADD_PILOT,
+      ResourceType.OPERATOR,
+      operatorResourceID,
+      SubjectType.USER,
+      operatorUserID
+    );
+
+    if(addPilotUserToPilotGroup){
+      tokenValue = spicedbClient.writeRelationship(
+      RelationshipType.MEMBER,
+      operatorPilotGroupID,
+      ResourceType.PILOT,
+      pilotUserID,
+      SubjectType.USER
+      );
+    }
+
+    if(tokenValue != null){
+      isSuccess = true;
+    }
+  
+    return isSuccess;
+    //pilot:operator-1-pilot-group#member@user:pilot-user
+    
   }
 
   /** this function will be used to lookup the groups to which a pilot belongs to */
