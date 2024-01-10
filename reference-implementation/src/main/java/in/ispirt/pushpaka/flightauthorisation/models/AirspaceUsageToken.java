@@ -124,7 +124,7 @@ public class AirspaceUsageToken {
     this.attenuations = attenuations;
   }
 
-  public String toJson() {
+  public String toJsonString() {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     JsonElement jsonElement = gson.toJsonTree(this);
     JsonObject jsonObject = new JsonObject();
@@ -132,6 +132,12 @@ public class AirspaceUsageToken {
     String airspaceUsageTokenJson = gson.toJson(this);
 
     return airspaceUsageTokenJson;
+  }
+
+  public JsonObject toJsonObject() {
+    String airspaceUsageTokenJson = this.toJsonString();
+    JsonObject airspaceUsageTokenJObject = new Gson().fromJson(airspaceUsageTokenJson, JsonObject.class);
+    return airspaceUsageTokenJObject;
   }
 
   @Deprecated

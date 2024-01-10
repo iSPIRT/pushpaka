@@ -31,6 +31,8 @@ import org.jose4j.jwt.consumer.InvalidJwtException;
 import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 
+import com.google.gson.JsonObject;
+
 public class AirspaceUsageTokenUtils {
 
   //methods below are representative of manipulation of AUT at object level in SDK
@@ -119,7 +121,9 @@ public class AirspaceUsageTokenUtils {
     int validtionTimePeriod
   ) {
     String jwt = null;
-    String additionalClaim = airspaceUsageToken.toJson();
+    //String additionalClaimAsString = airspaceUsageToken.toJsonString();
+    JsonObject additionalClaimAsJsonObject = airspaceUsageToken.toJsonObject();
+
     try {
       RsaJsonWebKey rsaJsonWebKey = RsaJwkGenerator.generateJwk(2048);
       rsaJsonWebKey.setKeyId("k1");
@@ -132,7 +136,7 @@ public class AirspaceUsageTokenUtils {
       claims.setIssuedAtToNow(); // when the token was issued/created (now)
       claims.setNotBeforeMinutesInThePast(validtionTimePeriod); // time before which the token is not yet valid (2 minutes ago)
       claims.setSubject(subject); // the subject/principal is whom the token is about
-      claims.setClaim("payload", additionalClaim); // additional claims/attributes about the subject can be added
+      claims.setClaim("payload", additionalClaimAsJsonObject); // additional claims/attributes about the subject can be added
 
       JsonWebSignature jws = new JsonWebSignature();
       jws.setPayload(claims.toJson());
@@ -222,7 +226,7 @@ public class AirspaceUsageTokenUtils {
     airspaceUsageToken.setEndTime(endTime);
     airspaceUsageToken.setState(AirspaceUsageTokenState.CREATED);
 
-    return airspaceUsageToken.toJson();
+    return airspaceUsageToken.toJsonString();
   }
 
   public static void updateAirspaceUsageTokenAttenuations(

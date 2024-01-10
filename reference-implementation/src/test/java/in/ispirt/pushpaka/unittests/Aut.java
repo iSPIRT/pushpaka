@@ -58,7 +58,7 @@ public class Aut {
       airspaceUsageTokenAttenuations_VLOS
     );
 
-    System.out.println(airspaceUsageToken.toJson());
+    System.out.println(airspaceUsageToken.toJsonString());
 
     //signing the claim
     try {
@@ -126,7 +126,7 @@ public class Aut {
       airspaceUsageTokenAttenuations_BVLOS
     );
 
-    System.out.println(airspaceUsageToken.toJson());
+    System.out.println(airspaceUsageToken.toJsonString());
 
     try {
       String signedToken = AirspaceUsageTokenUtils.signAirspaceUsageTokenObjectJWT(
