@@ -30,6 +30,19 @@ public class Sale {
 
   private Validity validity;
 
+  private User sellerUser;
+
+  private LegalEntity sellerLegalEntity;
+
+  private User buyerUser;
+
+  private LegalEntity buyerLegalEntity;
+
+  private Uas uas;
+
+  // Identifies if a Trader is holding a UAS for sale.
+  private Boolean holding;
+
   /**
    * Default constructor
    * @deprecated Use {@link Sale#Sale(OffsetDateTime)}
@@ -39,10 +52,26 @@ public class Sale {
     super();
   }
 
-  public Sale(UUID id, ObjectTimestamps ts, Validity v) {
+  public Sale(
+    UUID id,
+    Uas uas,
+    ObjectTimestamps ts,
+    Validity v,
+    User su,
+    User bu,
+    LegalEntity sle,
+    LegalEntity ble,
+    Boolean h
+  ) {
     this.id = id;
     this.timestamps = ts;
     this.validity = v;
+    this.sellerUser = su;
+    this.buyerUser = bu;
+    this.sellerLegalEntity = sle;
+    this.buyerLegalEntity = ble;
+    this.holding = h;
+    this.uas = uas;
   }
 
   /**
@@ -101,6 +130,100 @@ public class Sale {
     this.validity = validity;
   }
 
+  /**
+   * Get holding
+   *
+   * @return holding
+   */
+  @NotNull
+  @Valid
+  @Schema(name = "holding", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("holding")
+  public Boolean getHolding() {
+    return holding;
+  }
+
+  public void setHolding(Boolean holding) {
+    this.holding = holding;
+  }
+
+  /**
+   * Get uas
+   *
+   * @return uas
+   */
+  @NotNull
+  @Valid
+  @Schema(name = "uas", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("uas")
+  public Uas getUas() {
+    return uas;
+  }
+
+  public void setUas(Uas uas) {
+    this.uas = uas;
+  }
+
+  /**
+   * Get sellerUser
+   * @return sellerUser
+   */
+  @Valid
+  @Schema(name = "seller_user", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("seller_user")
+  public User getSellerUser() {
+    return sellerUser;
+  }
+
+  public void setSellerUser(User sellerUser) {
+    this.sellerUser = sellerUser;
+  }
+
+  /**
+   * Get buyerUser
+   * @return buyerUser
+   */
+  @Valid
+  @Schema(name = "buyer_user", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("buyer_user")
+  public User getBuyerUser() {
+    return buyerUser;
+  }
+
+  public void setBuyerUser(User buyerUser) {
+    this.buyerUser = buyerUser;
+  }
+
+  /**
+   * Get sellerLegalEntity
+   * @return sellerLegalEntity
+   */
+  @Valid
+  @Schema(name = "seller_legal_entity", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("seller_legal_entity")
+  public LegalEntity getSellerLegalEntity() {
+    return sellerLegalEntity;
+  }
+
+  public void setSellerLegalEntity(LegalEntity sellerLegalEntity) {
+    this.sellerLegalEntity = sellerLegalEntity;
+  }
+
+  /**
+   * Get buyerLegalEntity
+   * @return buyerLegalEntity
+   */
+  @Valid
+  @Schema(name = "buyer_legal_entity", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("buyer_legal_entity")
+  public LegalEntity getBuyerLegalEntity() {
+    return buyerLegalEntity;
+  }
+
+  public void setBuyerLegalEntity(LegalEntity buyerLegalEntity) {
+    this.buyerLegalEntity = buyerLegalEntity;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -148,17 +271,33 @@ public class Sale {
       u.getTimestampCreated(),
       u.getTimestampUpdated()
     );
-    Sale uu = new Sale(u.getId(), ot, vt);
+    Sale uu = new Sale(
+      u.getId(),
+      Uas.toOa(u.getUas()),
+      ot,
+      vt,
+      User.toOa(u.getSellerUser()),
+      User.toOa(u.getBuyerUser()),
+      LegalEntity.toOa(u.getSellerLegalEntity()),
+      LegalEntity.toOa(u.getBuyerLegalEntity()),
+      u.getHolding()
+    );
     return uu;
   }
 
   public static Dao.Sale fromOa(Sale u) {
     Dao.Sale uu = new Dao.Sale(
       u.getId(),
+      Uas.fromOa(u.getUas()),
       u.getTimestamps().getCreated(),
       u.getTimestamps().getUpdated(),
       u.getValidity().getFrom(),
-      u.getValidity().getTill()
+      u.getValidity().getTill(),
+      User.fromOa(u.getSellerUser()),
+      User.fromOa(u.getBuyerUser()),
+      LegalEntity.fromOa(u.getSellerLegalEntity()),
+      LegalEntity.fromOa(u.getBuyerLegalEntity()),
+      u.getHolding()
     );
     return uu;
   }

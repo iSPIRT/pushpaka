@@ -155,6 +155,15 @@ public class TestUtils {
     return loginUser(u);
   }
 
+  public static String loginOwnerUser()
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    java.util.Map.Entry<String, String> u = new java.util.AbstractMap.SimpleEntry<>(
+      "test.uas.0.owner@test.com",
+      "test"
+    );
+    return loginUser(u);
+  }
+
   public static SignedJWT parseJwt(String jwt) throws ParseException {
     SignedJWT signedJWT = SignedJWT.parse(jwt);
     return signedJWT;
@@ -525,6 +534,36 @@ public class TestUtils {
       ContentType.APPLICATION_JSON
     );
     HttpPost request = new HttpPost("http://localhost:8084/api/v1/trader");
+    request.setEntity(e);
+    request.addHeader("Authorization", "Bearer " + jwt);
+
+    // When
+    HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+    assertEquals(httpResponse.getStatusLine().getStatusCode(), 200);
+    HttpEntity re = httpResponse.getEntity();
+    String reb = EntityUtils.toString(re);
+    EntityUtils.consume(re);
+    return TestUtils.extractUuid(reb);
+  }
+
+  public static UUID saleCreate(
+    String jwt,
+    UUID id,
+    UUID uasId,
+    Boolean holding,
+    UUID su,
+    UUID bu,
+    UUID sle,
+    UUID ble
+  )
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    StringEntity e = new StringEntity(
+      "{ \"id\": \"" +
+      id.toString() +
+      "\", \"timestamps\": {}, \"validity\": {\"from\": \"2024-01-07T13:48:25.723Z\", \"till\": \"2024-01-07T13:48:25.723Z\" }, \"seller_user\": {\"firstName\": \"John\", \"lastName\": \"James\", \"email\": \"john@email.com\", \"phone\": \"+919999999999\", \"aadharId\": \"+919999999999\", \"address\": {\"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"timestamps\": {}, \"status\": \"ACTIVE\" }, \"seller_legal_entity\": {\"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": {\"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"buyer_user\": {\"firstName\": \"John\", \"lastName\": \"James\", \"email\": \"john@email.com\", \"phone\": \"+919999999999\", \"aadharId\": \"+919999999999\", \"address\": {\"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"timestamps\": {}, \"status\": \"ACTIVE\" }, \"buyer_legal_entity\": {\"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": {\"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} } }",
+      ContentType.APPLICATION_JSON
+    );
+    HttpPost request = new HttpPost("http://localhost:8084/api/v1/ownership/sale");
     request.setEntity(e);
     request.addHeader("Authorization", "Bearer " + jwt);
 

@@ -43,6 +43,10 @@ public class Pilot {
     super();
   }
 
+  public Pilot(UUID id) {
+    this.id = id;
+  }
+
   /**
    * Constructor with only required parameters
    */

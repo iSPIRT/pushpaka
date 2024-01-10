@@ -2,8 +2,12 @@ package in.ispirt.pushpaka.flightauthorisation.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import in.ispirt.pushpaka.flightauthorisation.dao.Dao;
+import in.ispirt.pushpaka.registry.models.OperationCategory;
+import in.ispirt.pushpaka.registry.models.Pilot;
+import in.ispirt.pushpaka.registry.models.Uas;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.UUID;
 import javax.annotation.Generated;
@@ -19,6 +23,11 @@ import javax.validation.constraints.NotNull;
 )
 public class FlightPlan {
   private UUID id;
+  private Uas uas;
+  private Pilot pilot;
+  private OperationCategory operationCategory;
+  private OffsetDateTime startTime;
+  private OffsetDateTime endTime;
 
   /**
    * Default constructor
@@ -46,6 +55,77 @@ public class FlightPlan {
   @JsonProperty("id")
   public UUID getId() {
     return id;
+  }
+
+  @NotNull
+  @Schema(name = "uas", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("uas")
+  public Uas getUas() {
+    return uas;
+  }
+
+  public void setUas(Uas u) {
+    this.uas = u;
+  }
+
+  @NotNull
+  @Schema(name = "start_time", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("start_time")
+  public OffsetDateTime getStartTime() {
+    return this.startTime;
+  }
+
+  public void setStartTime(OffsetDateTime u) {
+    this.startTime = u;
+  }
+
+  @NotNull
+  @Schema(name = "end_time", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("end_time")
+  public OffsetDateTime getEndTime() {
+    return this.endTime;
+  }
+
+  public void setEndTime(OffsetDateTime u) {
+    this.endTime = u;
+  }
+
+  @NotNull
+  @Schema(name = "pilot", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("pilot")
+  public Pilot getPilot() {
+    return this.pilot;
+  }
+
+  public void setPilot(Pilot u) {
+    this.pilot = u;
+  }
+
+  @NotNull
+  @Schema(name = "operation_category", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("operation_category")
+  public OperationCategory getOperationCategory() {
+    return this.operationCategory;
+  }
+
+  public void setOperationCategory(OperationCategory u) {
+    this.operationCategory = u;
+  }
+
+  public FlightPlan(
+    UUID id,
+    Uas u,
+    Pilot p,
+    OffsetDateTime st,
+    OffsetDateTime et,
+    OperationCategory c
+  ) {
+    this.id = id;
+    this.uas = u;
+    this.pilot = p;
+    this.startTime = st;
+    this.endTime = et;
+    this.operationCategory = c;
   }
 
   @Override
@@ -86,12 +166,26 @@ public class FlightPlan {
   }
 
   public static Dao.FlightPlan fromOa(FlightPlan a) {
-    Dao.FlightPlan u = new Dao.FlightPlan(a.getId());
+    Dao.FlightPlan u = new Dao.FlightPlan(
+      a.getId(),
+      Uas.fromOa(a.getUas()),
+      Pilot.fromOa(a.getPilot()),
+      a.getStartTime(),
+      a.getEndTime(),
+      a.getOperationCategory()
+    );
     return u;
   }
 
   public static FlightPlan toOa(Dao.FlightPlan x) {
-    FlightPlan le = new FlightPlan(x.getId());
+    FlightPlan le = new FlightPlan(
+      x.getId(),
+      Uas.toOa(x.getUas()),
+      Pilot.toOa(x.getPilot()),
+      x.getStartTime(),
+      x.getEndTime(),
+      x.getOperationCategory()
+    );
     return le;
   }
 }

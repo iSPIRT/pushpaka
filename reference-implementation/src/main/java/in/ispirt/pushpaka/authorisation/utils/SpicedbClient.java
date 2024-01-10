@@ -219,21 +219,18 @@ public class SpicedbClient {
       exception.printStackTrace();
     }
   }
-  
-  public String readSchema(){
+
+  public String readSchema() {
     String schemaText = null;
 
-		ReadSchemaRequest readRequest = ReadSchemaRequest
-    .newBuilder()
-    .build();
+    ReadSchemaRequest readRequest = ReadSchemaRequest.newBuilder().build();
 
     ReadSchemaResponse readResponse = schemaService.readSchema(readRequest);
 
-    if(readResponse != null ){
-      schemaText = readResponse.getSchemaText();  
+    if (readResponse != null) {
+      schemaText = readResponse.getSchemaText();
     }
 
     return schemaText;
-
   }
 }

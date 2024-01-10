@@ -25,6 +25,7 @@ public class DaoInstance {
         .addAnnotatedClass(Dao.LegalEntity.class)
         .addAnnotatedClass(Dao.Manufacturer.class)
         .addAnnotatedClass(Dao.UasType.class)
+        .addAnnotatedClass(Dao.Sale.class)
         .addAnnotatedClass(Dao.Uas.class)
         .addAnnotatedClass(Dao.Users.class)
         .addAnnotatedClass(Dao.Pilot.class)

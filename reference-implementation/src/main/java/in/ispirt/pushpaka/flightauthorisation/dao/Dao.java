@@ -1,21 +1,25 @@
 package in.ispirt.pushpaka.flightauthorisation.dao;
 
+import in.ispirt.pushpaka.registry.dao.Dao.Pilot;
+import in.ispirt.pushpaka.registry.dao.Dao.Uas;
+import in.ispirt.pushpaka.registry.models.OperationCategory;
 import java.io.Serializable;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 public class Dao implements Serializable {
-  private static final Random RAND = new Random();
-  private static final boolean FORCE_RETRY = false;
-  private static final String RETRY_SQL_STATE = "40001";
-  private static final int MAX_ATTEMPT_COUNT = 6;
+  private static final long serialVersionUID = 1L;
 
   // FlightPlan is our model, which corresponds to the "FlightPlanes" database table.
   @Entity(name = FlightPlan.PERSISTENCE_NAME)
@@ -39,12 +43,88 @@ public class Dao implements Serializable {
       this.id = id;
     }
 
+    @NotNull
+    @Column(name = "operation_category")
+    // @Column(name = "pilot_id")
+    public OperationCategory operationCategory;
+
+    public OperationCategory getOperationCategory() {
+      return operationCategory;
+    }
+
+    public void setOperationCategory(OperationCategory operationCategory) {
+      this.operationCategory = operationCategory;
+    }
+
+    @NotNull
+    @Column(name = "start_time")
+    // @Column(name = "uas_id")
+    public OffsetDateTime startTime;
+
+    public OffsetDateTime getStartTime() {
+      return startTime;
+    }
+
+    public void setStartTime(OffsetDateTime id) {
+      this.startTime = id;
+    }
+
+    @NotNull
+    @Column(name = "end_time")
+    // @Column(name = "uas_id")
+    public OffsetDateTime endTime;
+
+    public OffsetDateTime getEndTime() {
+      return endTime;
+    }
+
+    public void setEndTime(OffsetDateTime id) {
+      this.endTime = id;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "FK_pilot")
+    // @Column(name = "pilot_id")
+    public Pilot pilot;
+
+    public Pilot getPilot() {
+      return pilot;
+    }
+
+    public void setPilot(Pilot pilot) {
+      this.pilot = pilot;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "FK_uas")
+    // @Column(name = "uas_id")
+    public Uas uas;
+
+    public Uas getUas() {
+      return uas;
+    }
+
+    public void setUas(Uas id) {
+      this.uas = id;
+    }
+
+    //
     // Convenience constructor.
-    // public FlightPlan(
-    //   UUID id
-    // ) {
-    //   this.id = id;
-    // }
+    public FlightPlan(
+      UUID id,
+      Uas u,
+      Pilot p,
+      OffsetDateTime st,
+      OffsetDateTime et,
+      OperationCategory c
+    ) {
+      this.id = id;
+      this.uas = u;
+      this.pilot = p;
+      this.startTime = st;
+      this.endTime = et;
+      this.operationCategory = c;
+    }
 
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public FlightPlan() {}
@@ -122,37 +202,43 @@ public class Dao implements Serializable {
       this.id = id;
     }
 
-    @Column(name = "flight_plan_id")
-    public UUID flightPlanId;
+    @ManyToOne
+    @JoinColumn(name = "FK_flight_plan")
+    // @Column(name = "flight_plan_id")
+    public FlightPlan flightPlan;
 
-    public UUID getFlightPlanId() {
-      return flightPlanId;
+    public FlightPlan getFlightPlan() {
+      return flightPlan;
     }
 
-    public void setFlightPlanId(UUID flightPlanId) {
-      this.flightPlanId = flightPlanId;
+    public void setFlightPlan(FlightPlan flightPlan) {
+      this.flightPlan = flightPlan;
     }
 
-    @Column(name = "pilot_id")
-    public UUID pilotId;
+    @ManyToOne
+    @JoinColumn(name = "FK_pilot")
+    // @Column(name = "pilot_id")
+    public Pilot pilot;
 
-    public UUID getPilotId() {
-      return pilotId;
+    public Pilot getPilot() {
+      return pilot;
     }
 
-    public void setPilotId(UUID pilotId) {
-      this.pilotId = pilotId;
+    public void setPilot(Pilot pilot) {
+      this.pilot = pilot;
     }
 
-    @Column(name = "uas_id")
-    public UUID uasId;
+    @ManyToOne
+    @JoinColumn(name = "FK_uas")
+    // @Column(name = "uas_id")
+    public Uas uas;
 
-    public UUID getUasId() {
-      return uasId;
+    public Uas getUas() {
+      return uas;
     }
 
-    public void setUasId(UUID id) {
-      this.uasId = id;
+    public void setUas(Uas id) {
+      this.uas = id;
     }
 
     // Convenience constructor.

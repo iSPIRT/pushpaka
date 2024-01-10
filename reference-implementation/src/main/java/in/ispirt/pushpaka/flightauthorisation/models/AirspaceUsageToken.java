@@ -6,7 +6,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import in.ispirt.pushpaka.flightauthorisation.dao.Dao;
+import in.ispirt.pushpaka.registry.models.OperationCategory;
+import in.ispirt.pushpaka.registry.models.Pilot;
+import in.ispirt.pushpaka.registry.models.Uas;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.UUID;
 import javax.annotation.Generated;
@@ -18,14 +22,14 @@ import javax.validation.constraints.NotNull;
 )
 public class AirspaceUsageToken {
   private UUID id;
-  private UUID droneID;
-  private UUID pilotID;
-  private UUID flightPlanId;
+  private Uas uas;
+  private Pilot pilot;
+  private FlightPlan flightPlan;
   private String issuerID;
-  private String startTime;
-  private String endTime;
+  private OffsetDateTime startTime;
+  private OffsetDateTime endTime;
   private AirspaceUsageTokenState state;
-  private AirspaceUsageOperationType operationType;
+  private OperationCategory operationType;
   private AirspaceUsageTokenAttenuations attenuations;
 
   @NotNull
@@ -40,36 +44,36 @@ public class AirspaceUsageToken {
   }
 
   @NotNull
-  @Schema(name = "uasId", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("uasId")
-  public UUID getDroneID() {
-    return droneID;
+  @Schema(name = "uas", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("uas")
+  public Uas getUas() {
+    return uas;
   }
 
-  public void setDroneID(UUID droneID) {
-    this.droneID = droneID;
-  }
-
-  @NotNull
-  @Schema(name = "pilotId", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("pilotId")
-  public UUID getPilotID() {
-    return pilotID;
-  }
-
-  public void setPilotID(UUID pilotID) {
-    this.pilotID = pilotID;
+  public void setUas(Uas uas) {
+    this.uas = uas;
   }
 
   @NotNull
-  @Schema(name = "flightPlanId", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("flightPlanId")
-  public UUID getFlightPlanID() {
-    return flightPlanId;
+  @Schema(name = "pilot", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("pilot")
+  public Pilot getPilot() {
+    return pilot;
   }
 
-  public void setFlightPlanID(UUID flightPlanID) {
-    this.flightPlanId = flightPlanID;
+  public void setPilot(Pilot pilot) {
+    this.pilot = pilot;
+  }
+
+  @NotNull
+  @Schema(name = "flight_plan", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("flight_plan")
+  public FlightPlan getFlightPlan() {
+    return flightPlan;
+  }
+
+  public void setFlightPlan(FlightPlan flightPlan) {
+    this.flightPlan = flightPlan;
   }
 
   public String getIssuerID() {
@@ -80,19 +84,19 @@ public class AirspaceUsageToken {
     this.issuerID = issuerID;
   }
 
-  public String getStartTime() {
+  public OffsetDateTime getStartTime() {
     return startTime;
   }
 
-  public void setStartTime(String startTime) {
+  public void setStartTime(OffsetDateTime startTime) {
     this.startTime = startTime;
   }
 
-  public String getEndTime() {
+  public OffsetDateTime getEndTime() {
     return endTime;
   }
 
-  public void setEndTime(String endTime) {
+  public void setEndTime(OffsetDateTime endTime) {
     this.endTime = endTime;
   }
 
@@ -104,11 +108,11 @@ public class AirspaceUsageToken {
     this.state = state;
   }
 
-  public AirspaceUsageOperationType getOperationType() {
+  public OperationCategory getOperationCategory() {
     return operationType;
   }
 
-  public void setOperationType(AirspaceUsageOperationType operationType) {
+  public void setOperationCategory(OperationCategory operationType) {
     this.operationType = operationType;
   }
 
@@ -158,18 +162,18 @@ public class AirspaceUsageToken {
 
   public static Dao.AirspaceUsageToken fromOa(AirspaceUsageToken a) {
     Dao.AirspaceUsageToken u = new Dao.AirspaceUsageToken(a.getId());
-    u.setUasId(a.getDroneID());
-    u.setPilotId(a.getPilotID());
-    u.setFlightPlanId(a.getFlightPlanID());
+    u.setUas(Uas.fromOa(a.getUas()));
+    u.setPilot(Pilot.fromOa(a.getPilot()));
+    u.setFlightPlan(FlightPlan.fromOa(a.getFlightPlan()));
     return u;
   }
 
   public static AirspaceUsageToken toOa(Dao.AirspaceUsageToken x) {
     AirspaceUsageToken le = new AirspaceUsageToken(x.getId());
     le.setId(x.getId());
-    le.setPilotID(x.getPilotId());
-    le.setDroneID(x.getUasId());
-    le.setFlightPlanID(x.getFlightPlanId());
+    le.setPilot(Pilot.toOa(x.getPilot()));
+    le.setUas(Uas.toOa(x.getUas()));
+    le.setFlightPlan(FlightPlan.toOa(x.getFlightPlan()));
     return le;
   }
 }

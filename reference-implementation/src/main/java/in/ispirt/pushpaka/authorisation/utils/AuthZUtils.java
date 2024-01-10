@@ -73,16 +73,17 @@ public class AuthZUtils {
 
     //create admin for the provided resource
     if (isPlatformAdmin) {
-      tokenValue = spicedbClient.writeRelationship(
-        RelationshipType.ADMINISTRATOR,
-        resourceID,
-        resourceType,
-        resourceAdminID,
-        SubjectType.USER
-      );
+      tokenValue =
+        spicedbClient.writeRelationship(
+          RelationshipType.ADMINISTRATOR,
+          resourceID,
+          resourceType,
+          resourceAdminID,
+          SubjectType.USER
+        );
     }
 
-    if(tokenValue != null){
+    if (tokenValue != null) {
       return true;
     } else {
       return false;
@@ -105,43 +106,45 @@ public class AuthZUtils {
     boolean isSuccess = false;
     String tokenValue = null;
     String operatorTokenValue = null;
-   
-    tokenValue = spicedbClient.writeRelationship(
-      RelationshipType.ADMINISTRATOR,
-      resourceID,
-      resourceType,
-      resourceAdminID,
-      SubjectType.USER
-    );
 
-    if(tokenValue != null ){
+    tokenValue =
+      spicedbClient.writeRelationship(
+        RelationshipType.ADMINISTRATOR,
+        resourceID,
+        resourceType,
+        resourceAdminID,
+        SubjectType.USER
+      );
+
+    if (tokenValue != null) {
       isSuccess = true;
     }
 
     if (ResourceType.OPERATOR.equals(resourceType)) {
-      operatorTokenValue =spicedbClient.writeRelationship(
-        RelationshipType.REGULATOR,
-        resourceID,
-        resourceType,
-        getCAAResourceID(),
-        SubjectType.CAA
-      );
+      operatorTokenValue =
+        spicedbClient.writeRelationship(
+          RelationshipType.REGULATOR,
+          resourceID,
+          resourceType,
+          getCAAResourceID(),
+          SubjectType.CAA
+        );
 
-      if(tokenValue != null && operatorTokenValue !=null ){
+      if (tokenValue != null && operatorTokenValue != null) {
         isSuccess = true;
       }
     }
     //operator:operator-1#administrator@user:operator-user
     //manufacturer:manufacturer-1#administrator@user:manufacturer-user
-   
+
     return isSuccess;
   }
 
   public static boolean checkIsResourceAdmin(
-  ResourceType resourceType,
-  String resourceAdminID,
-  String userID
-  ){
+    ResourceType resourceType,
+    String resourceAdminID,
+    String userID
+  ) {
     boolean isResourceAdmin = spicedbClient.checkPermission(
       Permission.SUPER_ADMIN,
       resourceType,
@@ -282,7 +285,7 @@ public class AuthZUtils {
       SubjectType.USER
     );
 
-    if(tokenValue != null){
+    if (tokenValue != null) {
       isSuccess = true;
     }
 
@@ -292,10 +295,11 @@ public class AuthZUtils {
 
   /** This function is used to add pilot user to a pilot group */
   public static boolean addPilotUserToPilotOperatorGroup(
-  String pilotUserID, 
-  String operatorResourceID,
-  String operatorUserID) {
-    String operatorPilotGroupID = operatorResourceID+"-pilot-group";
+    String pilotUserID,
+    String operatorResourceID,
+    String operatorUserID
+  ) {
+    String operatorPilotGroupID = operatorResourceID + "-pilot-group";
     String tokenValue = null;
     boolean isSuccess = false;
 
@@ -307,23 +311,24 @@ public class AuthZUtils {
       operatorUserID
     );
 
-    if(addPilotUserToPilotGroup){
-      tokenValue = spicedbClient.writeRelationship(
-      RelationshipType.MEMBER,
-      operatorPilotGroupID,
-      ResourceType.PILOT,
-      pilotUserID,
-      SubjectType.USER
-      );
+    if (addPilotUserToPilotGroup) {
+      tokenValue =
+        spicedbClient.writeRelationship(
+          RelationshipType.MEMBER,
+          operatorPilotGroupID,
+          ResourceType.PILOT,
+          pilotUserID,
+          SubjectType.USER
+        );
     }
 
-    if(tokenValue != null){
+    if (tokenValue != null) {
       isSuccess = true;
     }
-  
+
     return isSuccess;
     //pilot:operator-1-pilot-group#member@user:pilot-user
-    
+
   }
 
   /** this function will be used to lookup the groups to which a pilot belongs to */

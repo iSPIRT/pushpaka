@@ -46,6 +46,10 @@ public class Uas {
     super();
   }
 
+  public Uas(UUID id) {
+    this.id = id;
+  }
+
   /**
    * Constructor with only required parameters
    */

@@ -4,8 +4,12 @@ import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageOperationType;
 import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageToken;
 import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageTokenAttenuations;
 import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageTokenState;
+import in.ispirt.pushpaka.flightauthorisation.models.FlightPlan;
 import in.ispirt.pushpaka.flightauthorisation.models.GeocageData;
 import in.ispirt.pushpaka.flightauthorisation.models.GeospatialData;
+import in.ispirt.pushpaka.registry.models.OperationCategory;
+import in.ispirt.pushpaka.registry.models.Pilot;
+import in.ispirt.pushpaka.registry.models.Uas;
 import java.io.FileInputStream;
 import java.security.Key;
 import java.security.KeyStore;
@@ -14,6 +18,7 @@ import java.security.PublicKey;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 import org.jose4j.jwa.AlgorithmConstraints.ConstraintType;
 import org.jose4j.jwk.RsaJsonWebKey;
@@ -30,20 +35,22 @@ public class AirspaceUsageTokenUtils {
 
   //methods below are representative of manipulation of AUT at object level in SDK
   public static AirspaceUsageToken createAirspaceUsageTokenObject(
-    UUID droneID,
-    UUID pilotID,
-    AirspaceUsageOperationType airspaceUsageOperationType,
-    String startTime,
-    String endTime
+    Uas uas,
+    Pilot pilot,
+    FlightPlan flightPlan,
+    OperationCategory operationCategory,
+    OffsetDateTime startTime,
+    OffsetDateTime endTime
   ) {
     //Create AUT for VLOS
     AirspaceUsageToken airspaceUsageToken = new AirspaceUsageToken();
     UUID uuid = UUID.randomUUID();
 
     airspaceUsageToken.setId(uuid);
-    airspaceUsageToken.setDroneID(droneID);
-    airspaceUsageToken.setPilotID(pilotID);
-    airspaceUsageToken.setOperationType(airspaceUsageOperationType);
+    airspaceUsageToken.setUas(uas);
+    airspaceUsageToken.setPilot(pilot);
+    airspaceUsageToken.setFlightPlan(flightPlan);
+    airspaceUsageToken.setOperationCategory(operationCategory);
     airspaceUsageToken.setStartTime(startTime);
     airspaceUsageToken.setEndTime(endTime);
     airspaceUsageToken.setState(AirspaceUsageTokenState.CREATED);
@@ -197,20 +204,20 @@ public class AirspaceUsageTokenUtils {
 
   //methods below are representative of service end points for AUT
   public static String generateAirspaceUsageToken(
-    UUID droneID,
-    UUID pilotID,
-    AirspaceUsageOperationType airspaceUsageOperationType,
-    String startTime,
-    String endTime
+    Uas uas,
+    Pilot pilot,
+    OperationCategory operationCategory,
+    OffsetDateTime startTime,
+    OffsetDateTime endTime
   ) {
     //Create AUT for VLOS
     AirspaceUsageToken airspaceUsageToken = new AirspaceUsageToken();
     UUID uuid = UUID.randomUUID();
 
     airspaceUsageToken.setId(uuid);
-    airspaceUsageToken.setDroneID(droneID);
-    airspaceUsageToken.setPilotID(pilotID);
-    airspaceUsageToken.setOperationType(airspaceUsageOperationType);
+    airspaceUsageToken.setUas(uas);
+    airspaceUsageToken.setPilot(pilot);
+    airspaceUsageToken.setOperationCategory(operationCategory);
     airspaceUsageToken.setStartTime(startTime);
     airspaceUsageToken.setEndTime(endTime);
     airspaceUsageToken.setState(AirspaceUsageTokenState.CREATED);

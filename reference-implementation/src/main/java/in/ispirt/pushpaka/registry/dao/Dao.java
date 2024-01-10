@@ -32,10 +32,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 public class Dao implements Serializable {
-  private static final Random RAND = new Random();
-  private static final boolean FORCE_RETRY = false;
-  private static final String RETRY_SQL_STATE = "40001";
-  private static final int MAX_ATTEMPT_COUNT = 6;
+  private static final long serialVersionUID = 1L;
 
   // LegalEntity is our model, which corresponds to the "legal_entities" database table.
   @Entity(name = LegalEntity.PERSISTENCE_NAME)
@@ -183,7 +180,7 @@ public class Dao implements Serializable {
         .uniqueResult();
       s
         .createQuery("delete from Address where id= :id")
-        .setString("id", le.getAddress().getId().toString())
+        .setParameter("id", le.getAddress().getId())
         .executeUpdate();
       s
         .createQuery("delete from LegalEntity where id= :id")
@@ -2128,19 +2125,107 @@ public class Dao implements Serializable {
       this.validityEnd = a;
     }
 
+    @Column(name = "holding")
+    public Boolean holding;
+
+    public Boolean getHolding() {
+      return holding;
+    }
+
+    public void setHolding(Boolean a) {
+      this.holding = a;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "FK_uas")
+    // @Column(name = "uas")
+    public Uas uas;
+
+    public Uas getUas() {
+      return uas;
+    }
+
+    public void setUas(Uas a) {
+      this.uas = a;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "FK_seller_user")
+    // @Column(name = "seller_user")
+    public Users sellerUser;
+
+    public Users getSellerUser() {
+      return sellerUser;
+    }
+
+    public void setSellerUser(Users a) {
+      this.sellerUser = a;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "FK_buyer_user")
+    // @Column(name = "buyer_user")
+    public Users buyerUser;
+
+    public Users getBuyerUser() {
+      return buyerUser;
+    }
+
+    public void setBuyerUser(Users a) {
+      this.buyerUser = a;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "FK_seller_legal_entity")
+    // @Column(name = "seller_legal_entity")
+    public LegalEntity sellerLegalEntity;
+
+    public LegalEntity getSellerLegalEntity() {
+      return sellerLegalEntity;
+    }
+
+    public void setSellerLegalEntity(LegalEntity a) {
+      this.sellerLegalEntity = a;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "FK_buyer_legal_entity")
+    // @Column(name = "buyer_legal_entity")
+    public LegalEntity buyerLegalEntity;
+
+    public LegalEntity getBuyerLegalEntity() {
+      return buyerLegalEntity;
+    }
+
+    public void setBuyerLegalEntity(LegalEntity a) {
+      this.buyerLegalEntity = a;
+    }
+
     // Convenience constructor.
     public Sale(
       UUID id,
+      Uas uas,
       OffsetDateTime tc,
       OffsetDateTime tu,
       OffsetDateTime vs,
-      OffsetDateTime ve
+      OffsetDateTime ve,
+      Users su,
+      Users bu,
+      LegalEntity sle,
+      LegalEntity ble,
+      Boolean h
     ) {
       this.id = id;
+      this.uas = uas;
       this.timestampCreated = tc;
       this.timestampUpdated = tu;
       this.validityStart = vs;
       this.validityEnd = ve;
+      this.sellerUser = su;
+      this.buyerUser = bu;
+      this.sellerLegalEntity = sle;
+      this.buyerLegalEntity = ble;
+      this.holding = h;
     }
 
     // Hibernate needs a default (no-arg) constructor to create model objects.

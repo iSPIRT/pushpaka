@@ -221,4 +221,62 @@ public class DemoScenario1 {
       Logging.severe("JWT ParseException");
     }
   }
+
+  // Scenario 2 UAS Sale
+  @Test
+  public void testScenario_2()
+    throws ClientProtocolException, IOException, ParseException {
+    String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
+    UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
+    String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
+    UUID uidCaaAdmin = TestUtils.userCreate(jwtCaaAdmin); // TODO: skip insertion
+    String jwtManufacturerAdmin = TestUtils.loginManufacturerAdminUser();
+    UUID uidManufacturerAdmin = TestUtils.userCreate(jwtManufacturerAdmin); // TODO: skip insertion
+    String jwtOwner = TestUtils.loginOwnerUser();
+    UUID uidOwner = TestUtils.userCreate(jwtOwner); // TODO: skip insertion
+    String jwtTraderAdmin = TestUtils.loginTraderAdminUser();
+    UUID uidTraderAdmin = TestUtils.userCreate(jwtTraderAdmin); // TODO: skip insertion
+    String jwtOperatorAdmin = TestUtils.loginOperatorAdminUser();
+    UUID uidOperatorAdmin = TestUtils.userCreate(jwtOperatorAdmin); // TODO: skip insertion
+    try {
+      SignedJWT jwtsCaaAdmin = TestUtils.parseJwt(jwtCaaAdmin);
+      TestUtils.assertJwt(jwtsCaaAdmin);
+      UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
+      UUID leid = TestUtils.legalEntityCreate(jwtManufacturerAdmin, UUID.randomUUID());
+      UUID manufacturerid = TestUtils.manufacturerCreate(jwtManufacturerAdmin, leid);
+      TestUtils.grantCaaAdmin(jwtPlatformAdmin, idCaaAdmin); // TODO: spicedb call
+      TestUtils.approveManufacturer(jwtCaaAdmin, manufacturerid);
+      UUID uasTypeId = TestUtils.uasTypeCreate(jwtCaaAdmin, manufacturerid);
+      TestUtils.approveManufacturer(jwtCaaAdmin, manufacturerid);
+      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid);
+      UUID traderLeid = TestUtils.legalEntityCreate(jwtTraderAdmin, UUID.randomUUID());
+      UUID traderId = TestUtils.manufacturerCreate(jwtTraderAdmin, traderLeid);
+      TestUtils.approveTrader(jwtCaaAdmin, traderId);
+      UUID operatorLeid = TestUtils.legalEntityCreate(jwtTraderAdmin, UUID.randomUUID());
+      UUID operatorId = TestUtils.operatorCreate(jwtTraderAdmin, operatorLeid);
+      TestUtils.approveOperator(jwtCaaAdmin, operatorId);
+      UUID saleId0 = TestUtils.saleCreate(
+        jwtCaaAdmin,
+        UUID.randomUUID(),
+        uasId,
+        true,
+        null,
+        null,
+        manufacturerid,
+        traderId
+      );
+      UUID saleId1 = TestUtils.saleCreate(
+        jwtCaaAdmin,
+        UUID.randomUUID(),
+        uasId,
+        false,
+        null,
+        null,
+        traderId,
+        operatorId
+      );
+    } catch (ParseException e) {
+      Logging.severe("JWT ParseException");
+    }
+  }
 }
