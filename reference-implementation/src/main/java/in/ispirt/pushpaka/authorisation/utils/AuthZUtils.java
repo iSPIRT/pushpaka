@@ -300,7 +300,7 @@ public class AuthZUtils {
     String tokenValue = null;
     boolean isSuccess = false;
 
-    boolean addPilotUserToPilotGroup = spicedbClient.checkPermission(
+    boolean addPilotToOperator = spicedbClient.checkPermission(
       Permission.ADD_PILOT,
       ResourceType.OPERATOR,
       operatorResourceID,
@@ -308,7 +308,7 @@ public class AuthZUtils {
       operatorUserID
     );
 
-    if (addPilotUserToPilotGroup) {
+    if (addPilotToOperator) {
       tokenValue =
         spicedbClient.writeRelationship(
           RelationshipType.PILOT,

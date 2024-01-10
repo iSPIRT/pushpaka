@@ -8,12 +8,15 @@ import com.authzed.api.v1.Core.RelationshipUpdate.Operation;
 import com.authzed.api.v1.Core.SubjectReference;
 import com.authzed.api.v1.PermissionService;
 import com.authzed.api.v1.PermissionService.CheckPermissionResponse;
+import com.authzed.api.v1.PermissionService.LookupResourcesResponse;
 import com.authzed.api.v1.PermissionsServiceGrpc;
 import com.authzed.api.v1.SchemaServiceGrpc;
 import com.authzed.api.v1.SchemaServiceOuterClass.ReadSchemaRequest;
 import com.authzed.api.v1.SchemaServiceOuterClass.ReadSchemaResponse;
 import com.authzed.api.v1.SchemaServiceOuterClass.WriteSchemaRequest;
 import com.authzed.grpcutil.BearerToken;
+import com.google.common.collect.Iterables;
+
 import in.ispirt.pushpaka.authorisation.Permission;
 import in.ispirt.pushpaka.authorisation.RelationshipType;
 import in.ispirt.pushpaka.authorisation.ResourceType;
@@ -22,6 +25,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
 public class SpicedbClient {
@@ -233,4 +237,43 @@ public class SpicedbClient {
 
     return schemaText;
   }
+
+  public int lookupResources(Permission permission,
+  ResourceType resourceType,
+  SubjectType subjectType,
+  String subjectID){
+    int size = 0;
+    PermissionService.LookupResourcesRequest request = PermissionService
+      .LookupResourcesRequest.newBuilder()
+      .setConsistency(
+        PermissionService.Consistency.newBuilder().setMinimizeLatency(true).build()
+      )
+      .setResourceObjectType(resourceType.getResourceType())
+      .setPermission(permission.getPermission())
+      .setSubject(
+        Core
+          .SubjectReference.newBuilder()
+          .setObject(
+            Core
+              .ObjectReference.newBuilder()
+              .setObjectType(subjectType.getSubjectType())
+              .setObjectId(subjectID)
+              .build()
+          )
+          .build()
+      )
+      .build();
+
+      try {
+        Iterator<LookupResourcesResponse> response = permissionsService.lookupResources(
+        request);
+        size = Iterables.size((Iterable<?>) response);
+        System.out.println("result: " + size);
+      } catch ( Exception exception){
+        exception.printStackTrace();
+      }
+
+      return size;
+  }
 }
+
