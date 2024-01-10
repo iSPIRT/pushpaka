@@ -168,30 +168,35 @@ public class AuthZUtils {
     String tokenValueRegulator = null;
 
     boolean checkIsManufacturerAdmin = checkIsResourceAdmin(
-      ResourceType.MANUFACTURER, manufacturerID, manufacturerUserID);
+      ResourceType.MANUFACTURER,
+      manufacturerID,
+      manufacturerUserID
+    );
 
-    if(!checkIsManufacturerAdmin){
+    if (!checkIsManufacturerAdmin) {
       return isSuccess;
     }
-    
-    tokenValueManufacturer = spicedbClient.writeRelationship(
-      RelationshipType.MANUFACTURER,
-      UASID,
-      ResourceType.UAS,
-      manufacturerID,
-      SubjectType.MANUFACTURER
-    );
 
-    tokenValueRegulator = spicedbClient.writeRelationship(
-      RelationshipType.REGULATOR,
-      UASID,
-      ResourceType.UAS,
-      getCAAResourceID(),
-      SubjectType.CAA
-    );
+    tokenValueManufacturer =
+      spicedbClient.writeRelationship(
+        RelationshipType.MANUFACTURER,
+        UASID,
+        ResourceType.UAS,
+        manufacturerID,
+        SubjectType.MANUFACTURER
+      );
 
-    if(tokenValueManufacturer != null && tokenValueRegulator != null){
-      isSuccess = true ;
+    tokenValueRegulator =
+      spicedbClient.writeRelationship(
+        RelationshipType.REGULATOR,
+        UASID,
+        ResourceType.UAS,
+        getCAAResourceID(),
+        SubjectType.CAA
+      );
+
+    if (tokenValueManufacturer != null && tokenValueRegulator != null) {
+      isSuccess = true;
     }
 
     return isSuccess;
@@ -209,24 +214,28 @@ public class AuthZUtils {
     /**Put additional checks for pre-condition on UAS*/
     boolean isSuccess = false;
     String tokenValueOperator = null;
-   
-    boolean checkIsOperatorAdmin = checkIsResourceAdmin(
-      ResourceType.MANUFACTURER, operatorID, operatorUserID);
 
-    if(!checkIsOperatorAdmin){
+    boolean checkIsOperatorAdmin = checkIsResourceAdmin(
+      ResourceType.MANUFACTURER,
+      operatorID,
+      operatorUserID
+    );
+
+    if (!checkIsOperatorAdmin) {
       return isSuccess;
     }
 
-    tokenValueOperator = spicedbClient.writeRelationship(
-      RelationshipType.OWNER,
-      UASID,
-      ResourceType.UAS,
-      operatorID,
-      SubjectType.OPERATOR
-    );
+    tokenValueOperator =
+      spicedbClient.writeRelationship(
+        RelationshipType.OWNER,
+        UASID,
+        ResourceType.UAS,
+        operatorID,
+        SubjectType.OPERATOR
+      );
 
-    if(tokenValueOperator!= null ){
-      isSuccess = true ;
+    if (tokenValueOperator != null) {
+      isSuccess = true;
     }
 
     return isSuccess;
@@ -235,16 +244,19 @@ public class AuthZUtils {
 
   /** This method creates more than one realtionships for UASType */
   public static boolean createUASTypeRelationships(
-    String UASTypeID, 
+    String UASTypeID,
     String manufacturerID,
     String manufacturerUserID
-    ) {
+  ) {
     boolean isSuccess = false;
-    
-    boolean checkIsManufacturerAdmin = checkIsResourceAdmin(
-      ResourceType.MANUFACTURER, manufacturerID, manufacturerUserID);
 
-    if(!checkIsManufacturerAdmin){
+    boolean checkIsManufacturerAdmin = checkIsResourceAdmin(
+      ResourceType.MANUFACTURER,
+      manufacturerID,
+      manufacturerUserID
+    );
+
+    if (!checkIsManufacturerAdmin) {
       return isSuccess;
     }
 
@@ -264,8 +276,8 @@ public class AuthZUtils {
       SubjectType.CAA
     );
 
-    if(tokenValueManufacturer!=null && tokenValueRgulator != null ){
-      isSuccess = true ;
+    if (tokenValueManufacturer != null && tokenValueRgulator != null) {
+      isSuccess = true;
     }
 
     return isSuccess;

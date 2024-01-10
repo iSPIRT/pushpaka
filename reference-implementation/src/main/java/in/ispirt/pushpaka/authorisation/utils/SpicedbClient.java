@@ -16,7 +16,6 @@ import com.authzed.api.v1.SchemaServiceOuterClass.ReadSchemaResponse;
 import com.authzed.api.v1.SchemaServiceOuterClass.WriteSchemaRequest;
 import com.authzed.grpcutil.BearerToken;
 import com.google.common.collect.Iterables;
-
 import in.ispirt.pushpaka.authorisation.Permission;
 import in.ispirt.pushpaka.authorisation.RelationshipType;
 import in.ispirt.pushpaka.authorisation.ResourceType;
@@ -238,10 +237,12 @@ public class SpicedbClient {
     return schemaText;
   }
 
-  public int lookupResources(Permission permission,
-  ResourceType resourceType,
-  SubjectType subjectType,
-  String subjectID){
+  public int lookupResources(
+    Permission permission,
+    ResourceType resourceType,
+    SubjectType subjectType,
+    String subjectID
+  ) {
     int size = 0;
     PermissionService.LookupResourcesRequest request = PermissionService
       .LookupResourcesRequest.newBuilder()
@@ -264,16 +265,16 @@ public class SpicedbClient {
       )
       .build();
 
-      try {
-        Iterator<LookupResourcesResponse> response = permissionsService.lookupResources(
-        request);
-        size = Iterables.size((Iterable<?>) response);
-        System.out.println("result: " + size);
-      } catch ( Exception exception){
-        exception.printStackTrace();
-      }
+    try {
+      Iterator<LookupResourcesResponse> response = permissionsService.lookupResources(
+        request
+      );
+      size = Iterables.size((Iterable<?>) response);
+      System.out.println("result: " + size);
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    }
 
-      return size;
+    return size;
   }
 }
-

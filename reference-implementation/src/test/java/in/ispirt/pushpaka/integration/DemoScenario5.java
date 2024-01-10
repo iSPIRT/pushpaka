@@ -63,7 +63,15 @@ class DemoScenario5 {
       UUID uasTypeId = TestUtils.uasTypeC3Create(jwtCaaAdmin, mid);
       UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid);
       // Flight Authorisation
-      UUID flightPlanId = TestUtils.flightPlanCreate(jwtPilot, uasTypeId);
+      UUID flightPlanId = TestUtils.flightPlanCreate(
+        jwtPilot,
+        UUID.randomUUID(),
+        uasId,
+        uasTypeId,
+        mid,
+        leid,
+        idPilot
+      );
       UUID flightAuthorisationId = TestUtils.flightAuthorisationCreate(
         jwtPilot,
         UUID.randomUUID(),
@@ -115,7 +123,15 @@ class DemoScenario5 {
       UUID uasTypeId = TestUtils.uasTypeC3Create(jwtCaaAdmin, mid);
       UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid);
       // Flight Authorisation
-      UUID flightPlanId = TestUtils.flightPlanCreate(jwtPilot, uasTypeId);
+      UUID flightPlanId = TestUtils.flightPlanCreate(
+        jwtPilot,
+        UUID.randomUUID(),
+        uasId,
+        uasTypeId,
+        mid,
+        leid,
+        idPilot
+      );
       UUID flightAuthorisationId = TestUtils.flightAuthorisationCreate(
         jwtPilot,
         UUID.randomUUID(),
@@ -167,7 +183,15 @@ class DemoScenario5 {
       UUID uasTypeId = TestUtils.uasTypeC3Create(jwtCaaAdmin, mid);
       UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid);
       // Flight Authorisation
-      UUID flightPlanId = TestUtils.flightPlanCreate(jwtPilot, uasTypeId);
+      UUID flightPlanId = TestUtils.flightPlanCreate(
+        jwtPilot,
+        UUID.randomUUID(),
+        uasId,
+        uasTypeId,
+        mid,
+        leid,
+        idPilot
+      );
       UUID flightAuthorisationId = TestUtils.flightAuthorisationCreate(
         jwtPilot,
         UUID.randomUUID(),
@@ -219,7 +243,15 @@ class DemoScenario5 {
       UUID uasTypeId = TestUtils.uasTypeC3Create(jwtCaaAdmin, mid);
       UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid);
       // Flight Authorisation
-      UUID flightPlanId = TestUtils.flightPlanCreate(jwtPilot, uasTypeId);
+      UUID flightPlanId = TestUtils.flightPlanCreate(
+        jwtPilot,
+        UUID.randomUUID(),
+        uasId,
+        uasTypeId,
+        mid,
+        leid,
+        idPilot
+      );
       UUID flightAuthorisationId = TestUtils.flightAuthorisationCreate(
         jwtPilot,
         UUID.randomUUID(),
@@ -271,7 +303,15 @@ class DemoScenario5 {
       UUID uasTypeId = TestUtils.uasTypeC3Create(jwtCaaAdmin, mid);
       UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid);
       // Flight Authorisation
-      UUID flightPlanId = TestUtils.flightPlanCreate(jwtPilot, uasTypeId);
+      UUID flightPlanId = TestUtils.flightPlanCreate(
+        jwtPilot,
+        UUID.randomUUID(),
+        uasId,
+        uasTypeId,
+        mid,
+        leid,
+        idPilot
+      );
       UUID flightAuthorisationId = TestUtils.flightAuthorisationCreate(
         jwtPilot,
         UUID.randomUUID(),

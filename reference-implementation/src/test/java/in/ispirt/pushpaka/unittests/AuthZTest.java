@@ -8,7 +8,7 @@ import in.ispirt.pushpaka.authorisation.utils.AuthZUtils;
 import in.ispirt.pushpaka.authorisation.utils.SpicedbClient;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class AuthZTest {
   public static SpicedbClient spicedbClient;
@@ -101,10 +101,8 @@ public class AuthZTest {
     assertTrue(isSuccess);
   }
 
-  
   @Test
   public void testIsResourceAdministrator() {
-
     String operatorResourceID = "operator-1";
     String operatorAdminUserID = "operator-user";
 
@@ -117,9 +115,8 @@ public class AuthZTest {
     assertTrue(isSuccess);
   }
 
-   @Test
+  @Test
   public void testIsResourceAdministratorNegative() {
-
     String operatorResourceID = "operator-1";
     String operatorAdminUserID = "operator-user-1";
 
@@ -164,12 +161,11 @@ public class AuthZTest {
     assertFalse(isSuccess);
   }
 
-
   @Test
   public void testFlightOperationsAdmin() {
     String pilotUserID = "pilot-user-1";
     String operatorResourceID = "operator-1";
-    
+
     boolean isSuccess = AuthZUtils.isFlightOperationsAdmin(
       pilotUserID,
       operatorResourceID
@@ -182,7 +178,7 @@ public class AuthZTest {
   public void testFlightOperationsAdminNegative() {
     String pilotUserID = "pilot-user-2";
     String operatorResourceID = "operator-1";
-    
+
     boolean isSuccess = AuthZUtils.isFlightOperationsAdmin(
       pilotUserID,
       operatorResourceID
@@ -193,36 +189,40 @@ public class AuthZTest {
 
   @Test
   public void testCreateUASRelationships() {
-    String UASID = "uas-1" ;
+    String UASID = "uas-1";
     String manufacturerResourceID = "manufacturer-1";
     String manufacturerAdminUserID = "manufacturer-user";
 
     String operatorResourceID = "operator-1";
     String operatorAdminUserID = "operator-user-1";
-    
-    boolean isSuccess = AuthZUtils.createUASManufacturerRelationships(
-      UASID, 
-      manufacturerResourceID, 
-      manufacturerAdminUserID);
 
-    isSuccess = AuthZUtils.createUASOperatorRelationships(
-      UASID, 
-      operatorResourceID, 
-      operatorAdminUserID);
+    boolean isSuccess = AuthZUtils.createUASManufacturerRelationships(
+      UASID,
+      manufacturerResourceID,
+      manufacturerAdminUserID
+    );
+
+    isSuccess =
+      AuthZUtils.createUASOperatorRelationships(
+        UASID,
+        operatorResourceID,
+        operatorAdminUserID
+      );
 
     assertTrue(isSuccess);
   }
 
   @Test
   public void testCreateUASTypeRelationships() {
-    String UASTypeID = "uastype-1" ;
+    String UASTypeID = "uastype-1";
     String manufacturerResourceID = "manufacturer-1";
     String manufacturerAdminUserID = "manufacturer-user";
-    
+
     boolean isSuccess = AuthZUtils.createUASTypeRelationships(
-      UASTypeID, 
+      UASTypeID,
       manufacturerResourceID,
-      manufacturerAdminUserID);
+      manufacturerAdminUserID
+    );
 
     assertTrue(isSuccess);
   }

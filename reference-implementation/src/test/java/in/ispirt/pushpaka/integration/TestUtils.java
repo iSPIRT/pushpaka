@@ -467,10 +467,30 @@ public class TestUtils {
     return TestUtils.extractUuid(reb);
   }
 
-  public static UUID flightPlanCreate(String jwt, UUID x)
+  public static UUID flightPlanCreate(
+    String jwt,
+    UUID id,
+    UUID uasId,
+    UUID uasTypeId,
+    UUID mId,
+    UUID leId,
+    UUID pilotId
+  )
     throws ClientProtocolException, IOException, JsonProcessingException {
     StringEntity e = new StringEntity(
-      "{ \"id\": \"" + x.toString() + "\" }",
+      "{ \"id\": \"" +
+      id.toString() +
+      "\", \"uas\": { \"id\": \"" +
+      uasId.toString() +
+      "\", \"type\": { \"id\": \"" +
+      uasTypeId.toString() +
+      "\", \"modelNumber\": \"string\", \"manufacturer\": { \"id\": \"" +
+      mId.toString() +
+      "\", \"legalEntity\": { \"id\": \"" +
+      leId.toString() +
+      "\", \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": { \"from\": \"2024-01-10T07:32:43.564Z\", \"till\": \"2024-01-10T07:32:43.564Z\" }, \"timestamps\": {} }, \"propulsionCategory\": \"VTOL\", \"weightCategory\": \"NANO\", \"mtow\": 0, \"photoUrl\": \"https://ispirt.github.io/pushpaka/\", \"supportedOperationCategories\": [ \"C1\" ], \"timestamps\": {} }, \"oemSerialNumber\": \"string\", \"timestamps\": {}, \"status\": \"REGISTERED\" }, \"pilot\": { \"user\": { \"id\": \"" +
+      pilotId.toString() +
+      "\", \"firstName\": \"John\", \"lastName\": \"James\", \"email\": \"john@email.com\", \"phone\": \"+919999999999\", \"aadharId\": \"+919999999999\", \"address\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"timestamps\": {}, \"status\": \"ACTIVE\" }, \"timestamps\": {}, \"validity\": { \"from\": \"2024-01-10T07:32:43.564Z\", \"till\": \"2024-01-10T07:32:43.564Z\" } }, \"operation_category\": \"C1\", \"start_time\": \"2024-01-10T07:32:43.564Z\", \"end_time\": \"2024-01-10T07:32:43.564Z\" }",
       ContentType.APPLICATION_JSON
     );
     HttpPost request = new HttpPost("http://localhost:8083/api/v1/flightPlan");
