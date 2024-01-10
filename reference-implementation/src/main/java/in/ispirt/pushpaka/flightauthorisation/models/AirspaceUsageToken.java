@@ -11,6 +11,7 @@ import in.ispirt.pushpaka.registry.models.Pilot;
 import in.ispirt.pushpaka.registry.models.Uas;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.OffsetDateTime;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import javax.annotation.Generated;
@@ -134,13 +135,12 @@ public class AirspaceUsageToken {
     return airspaceUsageTokenJson;
   }
 
-  public JsonObject toJsonObject() {
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    JsonElement jsonElement = gson.toJsonTree(this);
-    JsonObject jsonObject = new JsonObject();
-    jsonObject.add("payload", jsonElement);
+  public Map toJsonObject() {
+    String jsonString = this.toJsonString();
+    Gson gson = new Gson();
+    Map map = gson.fromJson(jsonString, Map.class);
 
-    return jsonObject;
+    return map;
   }
 
   @Deprecated

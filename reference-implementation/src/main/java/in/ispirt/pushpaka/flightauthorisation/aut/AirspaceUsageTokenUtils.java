@@ -19,6 +19,7 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.time.OffsetDateTime;
+import java.util.Map;
 import java.util.UUID;
 import org.jose4j.jwa.AlgorithmConstraints.ConstraintType;
 import org.jose4j.jwk.RsaJsonWebKey;
@@ -122,7 +123,7 @@ public class AirspaceUsageTokenUtils {
   ) {
     String jwt = null;
     //String additionalClaimAsString = airspaceUsageToken.toJsonString();
-    JsonObject additionalClaimAsJsonObject = airspaceUsageToken.toJsonObject();
+    Map additionalClaimAsJsonObject = airspaceUsageToken.toJsonObject();
 
     try {
       RsaJsonWebKey rsaJsonWebKey = RsaJwkGenerator.generateJwk(2048);
