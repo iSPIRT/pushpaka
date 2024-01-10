@@ -135,9 +135,12 @@ public class AirspaceUsageToken {
   }
 
   public JsonObject toJsonObject() {
-    String airspaceUsageTokenJson = this.toJsonString();
-    JsonObject airspaceUsageTokenJObject = new Gson().fromJson(airspaceUsageTokenJson, JsonObject.class);
-    return airspaceUsageTokenJObject;
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    JsonElement jsonElement = gson.toJsonTree(this);
+    JsonObject jsonObject = new JsonObject();
+    jsonObject.add("payload", jsonElement);
+
+    return jsonObject;
   }
 
   @Deprecated
