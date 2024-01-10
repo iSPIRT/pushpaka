@@ -1,4 +1,4 @@
-schema: |-
+schema: |
   /** user represents a user */
   definition user {}
 
@@ -13,24 +13,6 @@ schema: |-
   definition platform_resource_type {
   	relation owner: platform
   	permission super_admin = owner->super_admin
-  }
-
-  /** pilot group that can operate flight operations */
-  definition pilot_group {
-  	relation member: user
-  	permission flight_operations_admin = member
-  	permission file_flightplan = flight_operations_admin
-  	permission submit_incidentreport = flight_operations_admin
-  	permission submit_flightlog = flight_operations_admin
-  }
-
-  definition flightoperations_resource_type {
-  	relation owner: pilot_group#member | operator#pilot
-  	permission update_flightplan = owner->flight_operations_admin
-  	permission delete_flightplan = owner->flight_operations_admin
-  	permission execute_flightplan = owner->flight_operations_admin
-  	permission submit_flightlog = owner->flight_operations_admin
-  	permission submit_incidentreport = owner->flight_operations_admin
   }
 
   /** a regulator in permission architecture . This can only be one */
@@ -51,11 +33,16 @@ schema: |-
   definition operator {
   	relation administrator: user
   	relation regulator: caa
-  	relation pilot: pilot_group#member
+  	relation pilot: user
   	permission super_admin = administrator
-  	permission add_pilot = super_admin
-  	permission flight_operations_admin = pilot->flight_operations_admin
+  	permission flight_operations_admin = pilot
   	permission approve_operator = regulator->super_admin
+  	permission add_pilot = super_admin
+  	permission update_flightplan = flight_operations_admin
+  	permission delete_flightplan = flight_operations_admin
+  	permission execute_flightplan = flight_operations_admin
+  	permission submit_flightlog = flight_operations_admin
+  	permission submit_incidentreport = flight_operations_admin
   }
 
   /**
@@ -77,46 +64,18 @@ schema: |-
   	permission discontinue_uastype = manufacturer->super_admin + regulator->super_admin
   	permission approve_uastype = regulator->super_admin
   }
-
-  /** flightplan resource */
-  definition flightplan {
-  	relation owner: pilot_group#member | operator#pilot
-  	permission update_flightplan = owner->flight_operations_admin
-  	permission delete_flightplan = owner->flight_operations_admin
-  	permission execute_flightplan = owner->flight_operations_admin
-  }
-
-  /** flightlog resource */
-  definition flightlog {
-  	relation owner: pilot_group#member | operator#pilot
-  	permission submit_flightlog = owner->flight_operations_admin
-  }
-
-  /** incidentreport resource */
-  definition incidentreport {
-  	relation owner: pilot_group#member | operator#pilot
-  	permission submit_incidentreport = owner->flight_operations_admin
-  }
 relationships: |-
   platform:digital-sky-platform#administrator@user:platform-user
   platform_resource_type:caa#owner@platform:digital-sky-platform
   caa:caa-authority#administrator@user:caa-user
-  pilot_group:operator-1-pilot-group#member@user:pilot-user
   operator:operator-1#administrator@user:operator-user
   operator:operator-1#regulator@caa:caa-authority
   manufacturer:manufacturer-1#administrator@user:manufacturer-user
-  flightoperations_resource_type:flightplan#owner@pilot_group:operator-1-pilot-group#member
-  flightoperations_resource_type:flightlog#owner@pilot_group:operator-1-pilot-group#member
-  flightoperations_resource_type:incidentreport#owner@pilot_group:operator-1-pilot-group#member
   uas:uas-1#owner@operator:operator-1
   uas:uas-1#manufacturer@manufacturer:manufacturer-1
   uas:uas-1#regulator@caa:caa-authority
   uastype:uastype-1#manufacturer@manufacturer:manufacturer-1
   uastype:uastype-1#regulator@caa:caa-authority
-  pilot:default-pilot-group#member@user:pilot-user-2
-  operator:operator-1#pilot@pilot_group:operator-1-pilot-group#member
-  flightoperations_resource_type:flightplan#owner@pilot_group:default-pilot-group#member
-  flightoperations_resource_type:flightlog#owner@pilot_group:operator-1-pilot-group#member
-  flightoperations_resource_type:incidentreport#owner@pilot_group:operator-1-pilot-group#member
+  operator:operator-1#pilot@user:pilot-1
 assertions: null
 validation: null

@@ -1,5 +1,6 @@
 package in.ispirt.pushpaka.unittests;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import in.ispirt.pushpaka.authorisation.ResourceType;
@@ -100,28 +101,128 @@ public class AuthZTest {
     assertTrue(isSuccess);
   }
 
+  
   @Test
-  public void testAddPilotToDefaultGroup() {
-    //pilot_group:operator-1-pilot-group#member@user:pilot-user-1
-    String pilotUserID = "pilot-user-1";
+  public void testIsResourceAdministrator() {
 
-    boolean isSuccess = AuthZUtils.addPilotUserToDefaultGroup(pilotUserID);
+    String operatorResourceID = "operator-1";
+    String operatorAdminUserID = "operator-user";
+
+    boolean isSuccess = AuthZUtils.checkIsResourceAdmin(
+      ResourceType.OPERATOR,
+      operatorResourceID,
+      operatorAdminUserID
+    );
+
+    assertTrue(isSuccess);
+  }
+
+   @Test
+  public void testIsResourceAdministratorNegative() {
+
+    String operatorResourceID = "operator-1";
+    String operatorAdminUserID = "operator-user-1";
+
+    boolean isSuccess = AuthZUtils.checkIsResourceAdmin(
+      ResourceType.OPERATOR,
+      operatorResourceID,
+      operatorAdminUserID
+    );
 
     assertTrue(isSuccess);
   }
 
   @Test
-  public void testAddPilotToOperatorGroup() {
+  public void testAddPilotToOperator() {
     //pilot:default-pilot-group#member@user:pilot-user-2
-    String pilotUserID = "pilot-user-2";
+    String pilotUserID = "pilot-user-1";
     String operatorResourceID = "operator-1";
-    String operatorUserID = "operator-user";
+    String operatorAdminUserID = "operator-user";
 
-    boolean isSuccess = AuthZUtils.addPilotUserToPilotOperatorGroup(
+    boolean isSuccess = AuthZUtils.addPilotToOperator(
       pilotUserID,
       operatorResourceID,
-      operatorUserID
+      operatorAdminUserID
     );
+
+    assertTrue(isSuccess);
+  }
+
+  @Test
+  public void testAddPilotToOperatoNegative() {
+    //pilot:default-pilot-group#member@user:pilot-user-2
+    String pilotUserID = "pilot-user-1";
+    String operatorResourceID = "operator-1";
+    String operatorAdminUserID = "operator-user-1";
+
+    boolean isSuccess = AuthZUtils.addPilotToOperator(
+      pilotUserID,
+      operatorResourceID,
+      operatorAdminUserID
+    );
+
+    assertFalse(isSuccess);
+  }
+
+
+  @Test
+  public void testFlightOperationsAdmin() {
+    String pilotUserID = "pilot-user-1";
+    String operatorResourceID = "operator-1";
+    
+    boolean isSuccess = AuthZUtils.isFlightOperationsAdmin(
+      pilotUserID,
+      operatorResourceID
+    );
+
+    assertTrue(isSuccess);
+  }
+
+  @Test
+  public void testFlightOperationsAdminNegative() {
+    String pilotUserID = "pilot-user-2";
+    String operatorResourceID = "operator-1";
+    
+    boolean isSuccess = AuthZUtils.isFlightOperationsAdmin(
+      pilotUserID,
+      operatorResourceID
+    );
+
+    assertFalse(isSuccess);
+  }
+
+  @Test
+  public void testCreateUASRelationships() {
+    String UASID = "uas-1" ;
+    String manufacturerResourceID = "manufacturer-1";
+    String manufacturerAdminUserID = "manufacturer-user";
+
+    String operatorResourceID = "operator-1";
+    String operatorAdminUserID = "operator-user-1";
+    
+    boolean isSuccess = AuthZUtils.createUASManufacturerRelationships(
+      UASID, 
+      manufacturerResourceID, 
+      manufacturerAdminUserID);
+
+    isSuccess = AuthZUtils.createUASOperatorRelationships(
+      UASID, 
+      operatorResourceID, 
+      operatorAdminUserID);
+
+    assertTrue(isSuccess);
+  }
+
+  @Test
+  public void testCreateUASTypeRelationships() {
+    String UASTypeID = "uastype-1" ;
+    String manufacturerResourceID = "manufacturer-1";
+    String manufacturerAdminUserID = "manufacturer-user";
+    
+    boolean isSuccess = AuthZUtils.createUASTypeRelationships(
+      UASTypeID, 
+      manufacturerResourceID,
+      manufacturerAdminUserID);
 
     assertTrue(isSuccess);
   }

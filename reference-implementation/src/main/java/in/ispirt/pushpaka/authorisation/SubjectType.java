@@ -2,7 +2,6 @@ package in.ispirt.pushpaka.authorisation;
 
 public enum SubjectType {
   USER,
-  PILOT,
   OPERATOR,
   PLATFORM,
   MANUFACTURER,
@@ -12,8 +11,6 @@ public enum SubjectType {
     switch (this) {
       case USER:
         return "user";
-      case PILOT:
-        return "pilot";
       case OPERATOR:
         return "operator";
       case PLATFORM:

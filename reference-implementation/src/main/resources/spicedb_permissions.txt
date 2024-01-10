@@ -1,99 +1,66 @@
-/** user represents a user */
-definition user {}
 
-/** legal entity */
-definition legal_entity {}
+  /** user represents a user */
+  definition user {}
 
-definition platform {
-relation administrator: user
-permission super_admin = administrator
-}
+  /** legal entity */
+  definition legal_entity {}
 
-definition platform_resource_type {
-relation owner: platform
-permission super_admin = owner->super_admin
-}
+  definition platform {
+  	relation administrator: user
+  	permission super_admin = administrator
+  }
 
-/** pilot group that can operate flight operations */
-definition pilot_group {
-relation member: user
-permission flight_operations_admin = member
-permission file_flightplan = flight_operations_admin
-permission submit_incidentreport = flight_operations_admin
-permission submit_flightlog = flight_operations_admin
-}
+  definition platform_resource_type {
+  	relation owner: platform
+  	permission super_admin = owner->super_admin
+  }
 
-definition flightoperations_resource_type {
-relation owner: pilot_group#member | operator#pilot
-permission update_flightplan = owner->flight_operations_admin
-permission delete_flightplan = owner->flight_operations_admin
-permission execute_flightplan = owner->flight_operations_admin
-permission submit_flightlog = owner->flight_operations_admin
-permission submit_incidentreport = owner->flight_operations_admin
-}
+  /** a regulator in permission architecture . This can only be one */
+  definition caa {
+  	relation administrator: user
+  	permission super_admin = administrator
+  }
 
-/** a regulator in permission architecture . This can only be one */
-definition caa {
-relation administrator: user
-permission super_admin = administrator
-}
+  /** producer of uas and uas types */
+  definition manufacturer {
+  	relation administrator: user
+  	permission super_admin = administrator
+  	permission commission_uas = super_admin
+  	permission register_uastype = super_admin
+  }
 
-/** producer of uas and uas types */
-definition manufacturer {
-relation administrator: user
-permission super_admin = administrator
-permission commission_uas = super_admin
-permission register_uastype = super_admin
-}
+  /** operator who can operate multiple uas */
+  definition operator {
+  	relation administrator: user
+  	relation regulator: caa
+  	relation pilot: user
+  	permission super_admin = administrator
+  	permission flight_operations_admin = pilot
+  	permission approve_operator = regulator->super_admin
+  	permission add_pilot = super_admin
+  	permission update_flightplan = flight_operations_admin
+  	permission delete_flightplan = flight_operations_admin
+  	permission execute_flightplan = flight_operations_admin
+  	permission submit_flightlog = flight_operations_admin
+  	permission submit_incidentreport = flight_operations_admin
+  }
 
-/** operator who can operate multiple uas */
-definition operator {
-relation administrator: user
-relation regulator: caa
-relation pilot: pilot_group#member
-permission super_admin = administrator
-permission add_pilot = super_admin
-permission flight_operations_admin = pilot->flight_operations_admin
-permission approve_operator = regulator->super_admin
-}
+  /**
+   * defines relationships of uas with regulator , manufacturer and who can own it
+   */
+  definition uas {
+  	relation manufacturer: manufacturer
+  	relation regulator: caa
+  	relation owner: operator
+  	permission read_uas = manufacturer->super_admin + regulator->super_admin + owner->super_admin
+  	permission decommision_uas = manufacturer->super_admin + regulator->super_admin + owner->super_admin
+  }
 
-/**
-* defines relationships of uas with regulator , manufacturer and who can own it
-*/
-definition uas {
-relation manufacturer: manufacturer
-relation regulator: caa
-relation owner: operator
-permission read_uas = manufacturer->super_admin + regulator->super_admin + owner->super_admin
-permission decommision_uas = manufacturer->super_admin + regulator->super_admin + owner->super_admin
-}
-
-/** defines relationships of uastype with regulator and manufacturer */
-definition uastype {
-relation manufacturer: manufacturer
-relation regulator: caa
-permission read_uastype = manufacturer->super_admin + regulator->super_admin
-permission discontinue_uastype = manufacturer->super_admin + regulator->super_admin
-permission approve_uastype = regulator->super_admin
-}
-
-/** flightplan resource */
-definition flightplan {
-relation owner: pilot_group#member | operator#pilot
-permission update_flightplan = owner->flight_operations_admin
-permission delete_flightplan = owner->flight_operations_admin
-permission execute_flightplan = owner->flight_operations_admin
-}
-
-/** flightlog resource */
-definition flightlog {
-relation owner: pilot_group#member | operator#pilot
-permission submit_flightlog = owner->flight_operations_admin
-}
-
-/** incidentreport resource */
-definition incidentreport {
-relation owner: pilot_group#member | operator#pilot
-permission submit_incidentreport = owner->flight_operations_admin
-}
-
+  /** defines relationships of uastype with regulator and manufacturer */
+  definition uastype {
+  	relation manufacturer: manufacturer
+  	relation regulator: caa
+  	permission read_uastype = manufacturer->super_admin + regulator->super_admin
+  	permission discontinue_uastype = manufacturer->super_admin + regulator->super_admin
+  	permission approve_uastype = regulator->super_admin
+  }
