@@ -6,25 +6,33 @@ import static org.junit.Assert.assertTrue;
 import in.ispirt.pushpaka.authorisation.ResourceType;
 import in.ispirt.pushpaka.authorisation.utils.AuthZUtils;
 import in.ispirt.pushpaka.authorisation.utils.SpicedbClient;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-//import org.junit.Test;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class AuthZTest {
   public static SpicedbClient spicedbClient;
 
-  @BeforeClass
+  @BeforeAll
   public static void setup() {
+
+    ManagedChannel channel = ManagedChannelBuilder
+        .forTarget(SpicedbClient.SPICEDDB_TARGET)
+        .usePlaintext() // if not using TLS, replace with .usePlaintext()
+        .build();
     spicedbClient = SpicedbClient.getInstance(
-        SpicedbClient.SPICEDDB_TARGET,
+        channel,
         SpicedbClient.SPICEDB_TOKEN);
   }
 
-  @AfterClass
+  @AfterAll
   public static void tearDown() {
     try {
       spicedbClient.shutdownChannel();
+
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
@@ -97,7 +105,6 @@ public class AuthZTest {
     assertTrue(isSuccess);
   }
 
-
   @Test
   public void testIsResourceAdministrator() {
     String operatorResourceID = "operator-1";
@@ -159,7 +166,6 @@ public class AuthZTest {
     String pilotUserID = "pilot-user-1";
     String operatorResourceID = "operator-1";
 
-
     boolean isSuccess = AuthZUtils.isFlightOperationsAdmin(
         pilotUserID,
         operatorResourceID);
@@ -171,7 +177,6 @@ public class AuthZTest {
   public void testFlightOperationsAdminNegative() {
     String pilotUserID = "pilot-user-2";
     String operatorResourceID = "operator-1";
-
 
     boolean isSuccess = AuthZUtils.isFlightOperationsAdmin(
         pilotUserID,
@@ -188,7 +193,6 @@ public class AuthZTest {
 
     String operatorResourceID = "operator-1";
     String operatorAdminUserID = "operator-user-1";
-
 
     boolean isSuccess = AuthZUtils.createUASManufacturerRelationships(
         UASID,
@@ -208,7 +212,6 @@ public class AuthZTest {
     String UASTypeID = "uastype-1";
     String manufacturerResourceID = "manufacturer-1";
     String manufacturerAdminUserID = "manufacturer-user";
-
 
     boolean isSuccess = AuthZUtils.createUASTypeRelationships(
         UASTypeID,

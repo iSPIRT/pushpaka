@@ -4,13 +4,19 @@ import in.ispirt.pushpaka.authorisation.Permission;
 import in.ispirt.pushpaka.authorisation.RelationshipType;
 import in.ispirt.pushpaka.authorisation.ResourceType;
 import in.ispirt.pushpaka.authorisation.SubjectType;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 
 public class AuthZUtils {
   public static final SpicedbClient spicedbClient;
 
   static {
+    ManagedChannel channel = ManagedChannelBuilder
+        .forTarget(SpicedbClient.SPICEDDB_TARGET)
+        .useTransportSecurity() // if not using TLS, replace with .usePlaintext()
+        .build();
     spicedbClient = SpicedbClient.getInstance(
-        SpicedbClient.SPICEDDB_TARGET,
+        channel,
         SpicedbClient.SPICEDB_TOKEN);
   }
 
@@ -194,11 +200,10 @@ public class AuthZUtils {
       String UASID,
       String operatorID,
       String operatorUserID) {
-    
-        /** Put additional checks for pre-condition on UAS */
+
+    /** Put additional checks for pre-condition on UAS */
     boolean isSuccess = false;
     String tokenValueOperator = null;
-
 
     boolean checkIsOperatorAdmin = checkIsResourceAdmin(
         ResourceType.MANUFACTURER, operatorID, operatorUserID);
@@ -228,7 +233,6 @@ public class AuthZUtils {
       String manufacturerID,
       String manufacturerUserID) {
     boolean isSuccess = false;
-
 
     boolean checkIsManufacturerAdmin = checkIsResourceAdmin(
         ResourceType.MANUFACTURER, manufacturerID, manufacturerUserID);
@@ -326,4 +330,5 @@ public class AuthZUtils {
    */
   public static void lookupUASResource(String UASResourceID) {
   }
+
 }
