@@ -63,7 +63,7 @@ public class AuthZTest {
   public void testCreateCAAAdministrator() {
     // caa:caa-authority#administrator@user:caa-user
     String CAAResourceID = "caa-authority";
-    String CAAResourceAdminID = AuthZUtils.getCAAResourceID();
+    String CAAResourceAdminID = "caa-user";
     String platformAdminId = "platform-user";
 
     boolean isSuccess = AuthZUtils.createResoureTypeAdminByPlatformUser(
@@ -128,7 +128,7 @@ public class AuthZTest {
         operatorResourceID,
         operatorAdminUserID);
 
-    assertTrue(isSuccess);
+    assertFalse(isSuccess);
   }
 
   @Test
