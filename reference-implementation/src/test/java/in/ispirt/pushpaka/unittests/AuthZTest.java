@@ -8,8 +8,6 @@ import in.ispirt.pushpaka.authorisation.utils.AuthZUtils;
 import in.ispirt.pushpaka.authorisation.utils.SpicedbClient;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -198,7 +196,7 @@ public class AuthZTest {
     String manufacturerAdminUserID = "manufacturer-user";
 
     String operatorResourceID = "operator-1";
-    String operatorAdminUserID = "operator-user-1";
+    String operatorAdminUserID = "operator-user";
 
     boolean isSuccess = AuthZUtils.createUASManufacturerRelationships(
       UASID,

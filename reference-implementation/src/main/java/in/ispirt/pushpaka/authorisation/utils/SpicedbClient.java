@@ -112,7 +112,7 @@ public class SpicedbClient {
       .addUpdates(
         RelationshipUpdate
           .newBuilder()
-          .setOperation(OPERATION_CREATE)
+          .setOperation(OPERATION_TOUCH)
           .setRelationship(
             Relationship
               .newBuilder()

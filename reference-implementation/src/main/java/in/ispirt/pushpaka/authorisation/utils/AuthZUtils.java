@@ -225,7 +225,7 @@ public class AuthZUtils {
     String tokenValueOperator = null;
 
     boolean checkIsOperatorAdmin = checkIsResourceAdmin(
-      ResourceType.MANUFACTURER,
+      ResourceType.OPERATOR,
       operatorID,
       operatorUserID
     );
