@@ -5,9 +5,9 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.registry.dao.Dao;
-import in.ispirt.pushpaka.registry.dao.DaoInstance;
-import in.ispirt.pushpaka.registry.models.LegalEntity;
+import in.ispirt.pushpaka.dao.Dao;
+import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.models.LegalEntity;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -201,7 +201,7 @@ public interface LegalEntityApi {
     );
     List<LegalEntity> leso = les
       .stream()
-      .map(x -> in.ispirt.pushpaka.registry.models.LegalEntity.toOa(x))
+      .map(x -> in.ispirt.pushpaka.models.LegalEntity.toOa(x))
       .collect(Collectors.toList());
     return ResponseEntity.ok(leso);
   }
@@ -268,7 +268,7 @@ public interface LegalEntityApi {
       DaoInstance.getInstance().getSession(),
       legalEntityId
     );
-    return ResponseEntity.ok(in.ispirt.pushpaka.registry.models.LegalEntity.toOa(le));
+    return ResponseEntity.ok(in.ispirt.pushpaka.models.LegalEntity.toOa(le));
   }
 
   /**

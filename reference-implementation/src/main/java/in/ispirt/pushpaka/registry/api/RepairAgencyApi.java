@@ -5,9 +5,9 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.registry.dao.Dao;
-import in.ispirt.pushpaka.registry.dao.DaoInstance;
-import in.ispirt.pushpaka.registry.models.RepairAgency;
+import in.ispirt.pushpaka.dao.Dao;
+import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.models.RepairAgency;
 import in.ispirt.pushpaka.registry.utils.DaoException;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -185,7 +185,7 @@ public interface RepairAgencyApi {
     );
     List<RepairAgency> leso = les
       .stream()
-      .map(x -> in.ispirt.pushpaka.registry.models.RepairAgency.toOa(x))
+      .map(x -> in.ispirt.pushpaka.models.RepairAgency.toOa(x))
       .collect(Collectors.toList());
     return ResponseEntity.ok(leso);
   }
@@ -251,7 +251,7 @@ public interface RepairAgencyApi {
       DaoInstance.getInstance().getSession(),
       repairAgencyId
     );
-    return ResponseEntity.ok(in.ispirt.pushpaka.registry.models.RepairAgency.toOa(le));
+    return ResponseEntity.ok(in.ispirt.pushpaka.models.RepairAgency.toOa(le));
   }
 
   /**
@@ -289,7 +289,7 @@ public interface RepairAgencyApi {
       repairAgencyId,
       RepairAgency.fromOa(repairAgency)
     );
-    return ResponseEntity.ok(in.ispirt.pushpaka.registry.models.RepairAgency.toOa(le));
+    return ResponseEntity.ok(in.ispirt.pushpaka.models.RepairAgency.toOa(le));
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }

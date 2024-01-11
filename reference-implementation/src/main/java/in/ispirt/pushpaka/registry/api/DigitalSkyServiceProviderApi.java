@@ -5,9 +5,9 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.registry.dao.Dao;
-import in.ispirt.pushpaka.registry.dao.DaoInstance;
-import in.ispirt.pushpaka.registry.models.DigitalSkyServiceProvider;
+import in.ispirt.pushpaka.dao.Dao;
+import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.models.DigitalSkyServiceProvider;
 import in.ispirt.pushpaka.registry.utils.DaoException;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -201,7 +201,7 @@ public interface DigitalSkyServiceProviderApi {
     );
     List<DigitalSkyServiceProvider> leso = les
       .stream()
-      .map(x -> in.ispirt.pushpaka.registry.models.DigitalSkyServiceProvider.toOa(x))
+      .map(x -> in.ispirt.pushpaka.models.DigitalSkyServiceProvider.toOa(x))
       .collect(Collectors.toList());
     return ResponseEntity.ok(leso);
   }
@@ -272,7 +272,7 @@ public interface DigitalSkyServiceProviderApi {
       digitalSkyServiceProviderId
     );
     return ResponseEntity.ok(
-      in.ispirt.pushpaka.registry.models.DigitalSkyServiceProvider.toOa(le)
+      in.ispirt.pushpaka.models.DigitalSkyServiceProvider.toOa(le)
     );
   }
 
@@ -316,7 +316,7 @@ public interface DigitalSkyServiceProviderApi {
       DigitalSkyServiceProvider.fromOa(digitalSkyServiceProvider)
     );
     return ResponseEntity.ok(
-      in.ispirt.pushpaka.registry.models.DigitalSkyServiceProvider.toOa(le)
+      in.ispirt.pushpaka.models.DigitalSkyServiceProvider.toOa(le)
     );
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }

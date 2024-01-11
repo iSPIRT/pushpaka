@@ -1,6 +1,6 @@
 package in.ispirt.pushpaka.registry.utils;
 
-import in.ispirt.pushpaka.registry.models.UasWeightCategory;
+import in.ispirt.pushpaka.models.UasWeightCategory;
 
 public class Utils {
 

@@ -5,9 +5,9 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.registry.dao.Dao;
-import in.ispirt.pushpaka.registry.dao.DaoInstance;
-import in.ispirt.pushpaka.registry.models.Operator;
+import in.ispirt.pushpaka.dao.Dao;
+import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.models.Operator;
 import in.ispirt.pushpaka.registry.utils.DaoException;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -186,7 +186,7 @@ public interface OperatorApi {
     List<Dao.Operator> les = Dao.Operator.getAll(DaoInstance.getInstance().getSession());
     List<Operator> leso = les
       .stream()
-      .map(x -> in.ispirt.pushpaka.registry.models.Operator.toOa(x))
+      .map(x -> in.ispirt.pushpaka.models.Operator.toOa(x))
       .collect(Collectors.toList());
     return ResponseEntity.ok(leso);
   }
@@ -253,7 +253,7 @@ public interface OperatorApi {
       DaoInstance.getInstance().getSession(),
       operatorId
     );
-    return ResponseEntity.ok(in.ispirt.pushpaka.registry.models.Operator.toOa(le));
+    return ResponseEntity.ok(in.ispirt.pushpaka.models.Operator.toOa(le));
   }
 
   /**
@@ -292,7 +292,7 @@ public interface OperatorApi {
       operatorId,
       Operator.fromOa(operator)
     );
-    return ResponseEntity.ok(in.ispirt.pushpaka.registry.models.Operator.toOa(le));
+    return ResponseEntity.ok(in.ispirt.pushpaka.models.Operator.toOa(le));
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }
