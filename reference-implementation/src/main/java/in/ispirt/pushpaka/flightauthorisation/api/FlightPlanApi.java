@@ -5,9 +5,9 @@
  */
 package in.ispirt.pushpaka.flightauthorisation.api;
 
-import in.ispirt.pushpaka.flightauthorisation.dao.Dao;
-import in.ispirt.pushpaka.flightauthorisation.dao.DaoInstance;
-import in.ispirt.pushpaka.flightauthorisation.models.FlightPlan;
+import in.ispirt.pushpaka.dao.Dao;
+import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.models.FlightPlan;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -184,7 +184,7 @@ public interface FlightPlanApi {
     );
     List<FlightPlan> leso = les
       .stream()
-      .map(x -> in.ispirt.pushpaka.flightauthorisation.models.FlightPlan.toOa(x))
+      .map(x -> in.ispirt.pushpaka.models.FlightPlan.toOa(x))
       .collect(Collectors.toList());
     return ResponseEntity.ok(leso);
   }
@@ -250,9 +250,7 @@ public interface FlightPlanApi {
       DaoInstance.getInstance().getSession(),
       FlightPlanId
     );
-    return ResponseEntity.ok(
-      in.ispirt.pushpaka.flightauthorisation.models.FlightPlan.toOa(le)
-    );
+    return ResponseEntity.ok(in.ispirt.pushpaka.models.FlightPlan.toOa(le));
   }
 
   /**
@@ -290,9 +288,7 @@ public interface FlightPlanApi {
       FlightPlanId,
       FlightPlan.fromOa(FlightPlan)
     );
-    return ResponseEntity.ok(
-      in.ispirt.pushpaka.flightauthorisation.models.FlightPlan.toOa(le)
-    );
+    return ResponseEntity.ok(in.ispirt.pushpaka.models.FlightPlan.toOa(le));
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }

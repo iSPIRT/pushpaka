@@ -5,11 +5,11 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.registry.dao.Dao;
-import in.ispirt.pushpaka.registry.dao.DaoInstance;
-import in.ispirt.pushpaka.registry.models.Lease;
-import in.ispirt.pushpaka.registry.models.ModelApiResponse;
-import in.ispirt.pushpaka.registry.models.Sale;
+import in.ispirt.pushpaka.dao.Dao;
+import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.models.Lease;
+import in.ispirt.pushpaka.models.ModelApiResponse;
+import in.ispirt.pushpaka.models.Sale;
 import in.ispirt.pushpaka.registry.utils.DaoException;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -170,7 +170,7 @@ public interface OwnershipApi {
     List<Dao.Lease> les = Dao.Lease.getAll(DaoInstance.getInstance().getSession());
     List<Lease> leso = les
       .stream()
-      .map(x -> in.ispirt.pushpaka.registry.models.Lease.toOa(x))
+      .map(x -> in.ispirt.pushpaka.models.Lease.toOa(x))
       .collect(Collectors.toList());
     return ResponseEntity.ok(leso);
   }
@@ -218,7 +218,7 @@ public interface OwnershipApi {
     ) @PathVariable("leaseId") UUID leaseId
   ) {
     Dao.Lease le = Dao.Lease.get(DaoInstance.getInstance().getSession(), leaseId);
-    return ResponseEntity.ok(in.ispirt.pushpaka.registry.models.Lease.toOa(le));
+    return ResponseEntity.ok(in.ispirt.pushpaka.models.Lease.toOa(le));
   }
 
   /**
@@ -404,7 +404,7 @@ public interface OwnershipApi {
     List<Dao.Sale> les = Dao.Sale.getAll(DaoInstance.getInstance().getSession());
     List<Sale> leso = les
       .stream()
-      .map(x -> in.ispirt.pushpaka.registry.models.Sale.toOa(x))
+      .map(x -> in.ispirt.pushpaka.models.Sale.toOa(x))
       .collect(Collectors.toList());
     return ResponseEntity.ok(leso);
   }
@@ -452,7 +452,7 @@ public interface OwnershipApi {
     ) @PathVariable("saleId") UUID saleId
   ) {
     Dao.Sale le = Dao.Sale.get(DaoInstance.getInstance().getSession(), saleId);
-    return ResponseEntity.ok(in.ispirt.pushpaka.registry.models.Sale.toOa(le));
+    return ResponseEntity.ok(in.ispirt.pushpaka.models.Sale.toOa(le));
   }
 
   /**

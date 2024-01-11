@@ -1,6 +1,6 @@
 package in.ispirt.pushpaka.flightauthorisation.api;
 
-import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageToken;
+import in.ispirt.pushpaka.models.AirspaceUsageToken;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

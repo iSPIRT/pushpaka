@@ -1,6 +1,6 @@
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.registry.models.User;
+import in.ispirt.pushpaka.models.User;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.List;

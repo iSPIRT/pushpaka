@@ -33,7 +33,8 @@ public class SpicedbClient {
 
   public static final String SPICEDDB_TARGET = "localhost:50051";
   public static final String SPICEDB_TOKEN = "somerandomkeyhere";
-  public static final String SPICEDDB_PERMISSION_FILE = "C:\\GitHub\\pushpaka\\reference-implementation\\src\\main\\resources\\spicedb_permissions.txt";
+  public static final String SPICEDDB_PERMISSION_FILE =
+    "src/main/resources/spicedb_permissions.txt";
 
   ManagedChannel channel;
 
@@ -53,7 +54,8 @@ public class SpicedbClient {
   }
 
   public void setPermissionsService(
-      PermissionsServiceGrpc.PermissionsServiceBlockingStub permissionsService) {
+    PermissionsServiceGrpc.PermissionsServiceBlockingStub permissionsService
+  ) {
     this.permissionsService = permissionsService;
   }
 
@@ -62,7 +64,8 @@ public class SpicedbClient {
   }
 
   public void setSchemaService(
-      SchemaServiceGrpc.SchemaServiceBlockingStub schemaService) {
+    SchemaServiceGrpc.SchemaServiceBlockingStub schemaService
+  ) {
     this.schemaService = schemaService;
   }
 
@@ -71,21 +74,25 @@ public class SpicedbClient {
   private SpicedbClient(ManagedChannel channel, String token) {
     setChannel(channel);
 
-    permissionsService = PermissionsServiceGrpc
+    permissionsService =
+      PermissionsServiceGrpc
         .newBlockingStub(channel)
         .withCallCredentials(new BearerToken(token));
 
     setPermissionsService(permissionsService);
 
-    schemaService = SchemaServiceGrpc
+    schemaService =
+      SchemaServiceGrpc
         .newBlockingStub(channel)
         .withCallCredentials(new BearerToken(token));
 
     setSchemaService(schemaService);
-
   }
 
-  public static synchronized SpicedbClient getInstance(ManagedChannel channel, String token) {
+  public static synchronized SpicedbClient getInstance(
+    ManagedChannel channel,
+    String token
+  ) {
     if (instance == null) {
       instance = new SpicedbClient(channel, token);
     }
@@ -93,40 +100,47 @@ public class SpicedbClient {
   }
 
   public String writeRelationship(
-      RelationshipType relationType,
-      String resourceID,
-      ResourceType resourceType,
-      String subjectID,
-      SubjectType subjectType) {
+    RelationshipType relationType,
+    String resourceID,
+    ResourceType resourceType,
+    String subjectID,
+    SubjectType subjectType
+  ) {
     // Write relationship
-    PermissionService.WriteRelationshipsRequest relRequest = PermissionService.WriteRelationshipsRequest.newBuilder()
-        .addUpdates(
-            RelationshipUpdate
-                .newBuilder()
-                .setOperation(OPERATION_CREATE)
-                .setRelationship(
-                    Relationship
-                        .newBuilder()
-                        .setResource(
-                            ObjectReference
-                                .newBuilder()
-                                .setObjectType(resourceType.getResourceType())
-                                .setObjectId(resourceID)
-                                .build())
-                        .setRelation(relationType.getRelationshipType())
-                        .setSubject(
-                            SubjectReference
-                                .newBuilder()
-                                .setObject(
-                                    ObjectReference
-                                        .newBuilder()
-                                        .setObjectType(subjectType.getSubjectType())
-                                        .setObjectId(subjectID)
-                                        .build())
-                                .build())
-                        .build())
-                .build())
-        .build();
+    PermissionService.WriteRelationshipsRequest relRequest = PermissionService
+      .WriteRelationshipsRequest.newBuilder()
+      .addUpdates(
+        RelationshipUpdate
+          .newBuilder()
+          .setOperation(OPERATION_CREATE)
+          .setRelationship(
+            Relationship
+              .newBuilder()
+              .setResource(
+                ObjectReference
+                  .newBuilder()
+                  .setObjectType(resourceType.getResourceType())
+                  .setObjectId(resourceID)
+                  .build()
+              )
+              .setRelation(relationType.getRelationshipType())
+              .setSubject(
+                SubjectReference
+                  .newBuilder()
+                  .setObject(
+                    ObjectReference
+                      .newBuilder()
+                      .setObjectType(subjectType.getSubjectType())
+                      .setObjectId(subjectID)
+                      .build()
+                  )
+                  .build()
+              )
+              .build()
+          )
+          .build()
+      )
+      .build();
 
     PermissionService.WriteRelationshipsResponse response;
 
@@ -140,38 +154,50 @@ public class SpicedbClient {
   }
 
   public boolean checkPermission(
-      Permission permission,
-      ResourceType resourceType,
-      String resourceID,
-      SubjectType subjectType,
-      String subjectID) {
-    PermissionService.CheckPermissionRequest request = PermissionService.CheckPermissionRequest.newBuilder()
-        .setConsistency(
-            PermissionService.Consistency.newBuilder().setMinimizeLatency(true).build())
-        .setResource(
-            Core.ObjectReference.newBuilder()
-                .setObjectType(resourceType.getResourceType())
-                .setObjectId(resourceID)
-                .build())
-        .setSubject(
-            Core.SubjectReference.newBuilder()
-                .setObject(
-                    Core.ObjectReference.newBuilder()
-                        .setObjectType(subjectType.getSubjectType())
-                        .setObjectId(subjectID)
-                        .build())
-                .build())
-        .setPermission(permission.getPermission())
-        .build();
+    Permission permission,
+    ResourceType resourceType,
+    String resourceID,
+    SubjectType subjectType,
+    String subjectID
+  ) {
+    PermissionService.CheckPermissionRequest request = PermissionService
+      .CheckPermissionRequest.newBuilder()
+      .setConsistency(
+        PermissionService.Consistency.newBuilder().setMinimizeLatency(true).build()
+      )
+      .setResource(
+        Core
+          .ObjectReference.newBuilder()
+          .setObjectType(resourceType.getResourceType())
+          .setObjectId(resourceID)
+          .build()
+      )
+      .setSubject(
+        Core
+          .SubjectReference.newBuilder()
+          .setObject(
+            Core
+              .ObjectReference.newBuilder()
+              .setObjectType(subjectType.getSubjectType())
+              .setObjectId(subjectID)
+              .build()
+          )
+          .build()
+      )
+      .setPermission(permission.getPermission())
+      .build();
 
     try {
-      PermissionService.CheckPermissionResponse response = this.getPermissionsService().checkPermission(
-          request);
+      PermissionService.CheckPermissionResponse response =
+        this.getPermissionsService().checkPermission(request);
       System.out.println(
-          "result: " + response.getPermissionship().getValueDescriptor().getName());
+        "result: " + response.getPermissionship().getValueDescriptor().getName()
+      );
 
-      if (CheckPermissionResponse.Permissionship.PERMISSIONSHIP_HAS_PERMISSION
-          .getNumber() == (response.getPermissionship().getNumber())) {
+      if (
+        CheckPermissionResponse.Permissionship.PERMISSIONSHIP_HAS_PERMISSION.getNumber() ==
+        (response.getPermissionship().getNumber())
+      ) {
         return true;
       } else {
         return false;
@@ -223,29 +249,36 @@ public class SpicedbClient {
   }
 
   public int lookupResources(
-      Permission permission,
-      ResourceType resourceType,
-      SubjectType subjectType,
-      String subjectID) {
+    Permission permission,
+    ResourceType resourceType,
+    SubjectType subjectType,
+    String subjectID
+  ) {
     int size = 0;
-    PermissionService.LookupResourcesRequest request = PermissionService.LookupResourcesRequest.newBuilder()
-        .setConsistency(
-            PermissionService.Consistency.newBuilder().setMinimizeLatency(true).build())
-        .setResourceObjectType(resourceType.getResourceType())
-        .setPermission(permission.getPermission())
-        .setSubject(
-            Core.SubjectReference.newBuilder()
-                .setObject(
-                    Core.ObjectReference.newBuilder()
-                        .setObjectType(subjectType.getSubjectType())
-                        .setObjectId(subjectID)
-                        .build())
-                .build())
-        .build();
+    PermissionService.LookupResourcesRequest request = PermissionService
+      .LookupResourcesRequest.newBuilder()
+      .setConsistency(
+        PermissionService.Consistency.newBuilder().setMinimizeLatency(true).build()
+      )
+      .setResourceObjectType(resourceType.getResourceType())
+      .setPermission(permission.getPermission())
+      .setSubject(
+        Core
+          .SubjectReference.newBuilder()
+          .setObject(
+            Core
+              .ObjectReference.newBuilder()
+              .setObjectType(subjectType.getSubjectType())
+              .setObjectId(subjectID)
+              .build()
+          )
+          .build()
+      )
+      .build();
 
     try {
-      Iterator<LookupResourcesResponse> response = this.getPermissionsService().lookupResources(
-          request);
+      Iterator<LookupResourcesResponse> response =
+        this.getPermissionsService().lookupResources(request);
       size = Iterables.size((Iterable<?>) response);
       System.out.println("result: " + size);
     } catch (Exception exception) {

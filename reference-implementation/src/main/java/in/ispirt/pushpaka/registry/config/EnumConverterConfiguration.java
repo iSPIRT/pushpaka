@@ -1,11 +1,11 @@
 package in.ispirt.pushpaka.registry.config;
 
-import in.ispirt.pushpaka.registry.models.OperationCategory;
-import in.ispirt.pushpaka.registry.models.PilotStatus;
-import in.ispirt.pushpaka.registry.models.State;
-import in.ispirt.pushpaka.registry.models.UasPropulsionCategory;
-import in.ispirt.pushpaka.registry.models.UasStatus;
-import in.ispirt.pushpaka.registry.models.UasWeightCategory;
+import in.ispirt.pushpaka.models.OperationCategory;
+import in.ispirt.pushpaka.models.PilotStatus;
+import in.ispirt.pushpaka.models.State;
+import in.ispirt.pushpaka.models.UasPropulsionCategory;
+import in.ispirt.pushpaka.models.UasStatus;
+import in.ispirt.pushpaka.models.UasWeightCategory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;

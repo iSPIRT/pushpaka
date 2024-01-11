@@ -1,6 +1,6 @@
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.registry.models.DigitalSkyServiceProvider;
+import in.ispirt.pushpaka.models.DigitalSkyServiceProvider;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

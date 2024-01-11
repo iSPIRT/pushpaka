@@ -5,9 +5,9 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.registry.dao.Dao;
-import in.ispirt.pushpaka.registry.dao.DaoInstance;
-import in.ispirt.pushpaka.registry.models.Trader;
+import in.ispirt.pushpaka.dao.Dao;
+import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.models.Trader;
 import in.ispirt.pushpaka.registry.utils.DaoException;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -183,7 +183,7 @@ public interface TraderApi {
     List<Dao.Trader> les = Dao.Trader.getAll(DaoInstance.getInstance().getSession());
     List<Trader> leso = les
       .stream()
-      .map(x -> in.ispirt.pushpaka.registry.models.Trader.toOa(x))
+      .map(x -> in.ispirt.pushpaka.models.Trader.toOa(x))
       .collect(Collectors.toList());
     return ResponseEntity.ok(leso);
   }
@@ -246,7 +246,7 @@ public interface TraderApi {
     //     }
     //   );
     Dao.Trader le = Dao.Trader.get(DaoInstance.getInstance().getSession(), traderId);
-    return ResponseEntity.ok(in.ispirt.pushpaka.registry.models.Trader.toOa(le));
+    return ResponseEntity.ok(in.ispirt.pushpaka.models.Trader.toOa(le));
   }
 
   /**
@@ -284,7 +284,7 @@ public interface TraderApi {
       traderId,
       Trader.fromOa(trader)
     );
-    return ResponseEntity.ok(in.ispirt.pushpaka.registry.models.Trader.toOa(le));
+    return ResponseEntity.ok(in.ispirt.pushpaka.models.Trader.toOa(le));
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }

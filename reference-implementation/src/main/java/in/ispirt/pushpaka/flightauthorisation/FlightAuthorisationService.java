@@ -1,7 +1,7 @@
 package in.ispirt.pushpaka.flightauthorisation;
 
 import com.fasterxml.jackson.databind.Module;
-import in.ispirt.pushpaka.flightauthorisation.dao.DaoInstance;
+import in.ispirt.pushpaka.dao.DaoInstance;
 import org.openapitools.jackson.nullable.JsonNullableModule;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

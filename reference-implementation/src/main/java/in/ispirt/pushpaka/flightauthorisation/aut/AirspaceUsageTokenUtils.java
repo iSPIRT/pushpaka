@@ -1,16 +1,16 @@
 package in.ispirt.pushpaka.flightauthorisation.aut;
 
 import com.google.gson.JsonObject;
-import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageOperationType;
-import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageToken;
-import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageTokenAttenuations;
-import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageTokenState;
-import in.ispirt.pushpaka.flightauthorisation.models.FlightPlan;
-import in.ispirt.pushpaka.flightauthorisation.models.GeocageData;
-import in.ispirt.pushpaka.flightauthorisation.models.GeospatialData;
-import in.ispirt.pushpaka.registry.models.OperationCategory;
-import in.ispirt.pushpaka.registry.models.Pilot;
-import in.ispirt.pushpaka.registry.models.Uas;
+import in.ispirt.pushpaka.models.AirspaceUsageOperationType;
+import in.ispirt.pushpaka.models.AirspaceUsageToken;
+import in.ispirt.pushpaka.models.AirspaceUsageTokenAttenuations;
+import in.ispirt.pushpaka.models.AirspaceUsageTokenState;
+import in.ispirt.pushpaka.models.FlightPlan;
+import in.ispirt.pushpaka.models.GeocageData;
+import in.ispirt.pushpaka.models.GeospatialData;
+import in.ispirt.pushpaka.models.OperationCategory;
+import in.ispirt.pushpaka.models.Pilot;
+import in.ispirt.pushpaka.models.Uas;
 import java.io.FileInputStream;
 import java.security.Key;
 import java.security.KeyStore;

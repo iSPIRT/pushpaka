@@ -1,6 +1,6 @@
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.registry.models.Manufacturer;
+import in.ispirt.pushpaka.models.Manufacturer;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

@@ -5,9 +5,9 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.registry.dao.Dao;
-import in.ispirt.pushpaka.registry.dao.DaoInstance;
-import in.ispirt.pushpaka.registry.models.CivilAviationAuthority;
+import in.ispirt.pushpaka.dao.Dao;
+import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.models.CivilAviationAuthority;
 import in.ispirt.pushpaka.registry.utils.DaoException;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -201,7 +201,7 @@ public interface CivilAviationAuthorityApi {
     );
     List<CivilAviationAuthority> leso = les
       .stream()
-      .map(x -> in.ispirt.pushpaka.registry.models.CivilAviationAuthority.toOa(x))
+      .map(x -> in.ispirt.pushpaka.models.CivilAviationAuthority.toOa(x))
       .collect(Collectors.toList());
     return ResponseEntity.ok(leso);
   }
@@ -268,9 +268,7 @@ public interface CivilAviationAuthorityApi {
       DaoInstance.getInstance().getSession(),
       civilAviationAuthorityId
     );
-    return ResponseEntity.ok(
-      in.ispirt.pushpaka.registry.models.CivilAviationAuthority.toOa(le)
-    );
+    return ResponseEntity.ok(in.ispirt.pushpaka.models.CivilAviationAuthority.toOa(le));
   }
 
   /**
@@ -312,9 +310,7 @@ public interface CivilAviationAuthorityApi {
       civilAviationAuthorityId,
       CivilAviationAuthority.fromOa(civilAviationAuthority)
     );
-    return ResponseEntity.ok(
-      in.ispirt.pushpaka.registry.models.CivilAviationAuthority.toOa(le)
-    );
+    return ResponseEntity.ok(in.ispirt.pushpaka.models.CivilAviationAuthority.toOa(le));
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }

@@ -5,9 +5,9 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.registry.dao.Dao;
-import in.ispirt.pushpaka.registry.dao.DaoInstance;
-import in.ispirt.pushpaka.registry.models.Pilot;
+import in.ispirt.pushpaka.dao.Dao;
+import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.models.Pilot;
 import in.ispirt.pushpaka.registry.utils.DaoException;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -186,7 +186,7 @@ public interface PilotApi {
     List<Dao.Pilot> les = Dao.Pilot.getAll(DaoInstance.getInstance().getSession());
     List<Pilot> leso = les
       .stream()
-      .map(x -> in.ispirt.pushpaka.registry.models.Pilot.toOa(x))
+      .map(x -> in.ispirt.pushpaka.models.Pilot.toOa(x))
       .collect(Collectors.toList());
     return ResponseEntity.ok(leso);
   }
@@ -250,7 +250,7 @@ public interface PilotApi {
     //     }
     //   );
     Dao.Pilot le = Dao.Pilot.get(DaoInstance.getInstance().getSession(), pilotId);
-    return ResponseEntity.ok(in.ispirt.pushpaka.registry.models.Pilot.toOa(le));
+    return ResponseEntity.ok(in.ispirt.pushpaka.models.Pilot.toOa(le));
   }
 
   /**
@@ -289,7 +289,7 @@ public interface PilotApi {
       pilotId,
       Pilot.fromOa(pilot)
     );
-    return ResponseEntity.ok(in.ispirt.pushpaka.registry.models.Pilot.toOa(le));
+    return ResponseEntity.ok(in.ispirt.pushpaka.models.Pilot.toOa(le));
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }

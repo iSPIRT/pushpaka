@@ -5,9 +5,9 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.registry.dao.Dao;
-import in.ispirt.pushpaka.registry.dao.DaoInstance;
-import in.ispirt.pushpaka.registry.models.Manufacturer;
+import in.ispirt.pushpaka.dao.Dao;
+import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.models.Manufacturer;
 import in.ispirt.pushpaka.registry.utils.DaoException;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -188,7 +188,7 @@ public interface ManufacturerApi {
     );
     List<Manufacturer> leso = les
       .stream()
-      .map(x -> in.ispirt.pushpaka.registry.models.Manufacturer.toOa(x))
+      .map(x -> in.ispirt.pushpaka.models.Manufacturer.toOa(x))
       .collect(Collectors.toList());
     return ResponseEntity.ok(leso);
   }
@@ -255,7 +255,7 @@ public interface ManufacturerApi {
       DaoInstance.getInstance().getSession(),
       manufacturerId
     );
-    return ResponseEntity.ok(in.ispirt.pushpaka.registry.models.Manufacturer.toOa(le));
+    return ResponseEntity.ok(in.ispirt.pushpaka.models.Manufacturer.toOa(le));
   }
 
   /**
@@ -294,7 +294,7 @@ public interface ManufacturerApi {
       manufacturerId,
       Manufacturer.fromOa(manufacturer)
     );
-    return ResponseEntity.ok(in.ispirt.pushpaka.registry.models.Manufacturer.toOa(le));
+    return ResponseEntity.ok(in.ispirt.pushpaka.models.Manufacturer.toOa(le));
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }

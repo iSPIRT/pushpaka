@@ -8,7 +8,8 @@ import in.ispirt.pushpaka.authorisation.utils.AuthZUtils;
 import in.ispirt.pushpaka.authorisation.utils.SpicedbClient;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -18,21 +19,17 @@ public class AuthZTest {
 
   @BeforeAll
   public static void setup() {
-
     ManagedChannel channel = ManagedChannelBuilder
-        .forTarget(SpicedbClient.SPICEDDB_TARGET)
-        .usePlaintext() // if not using TLS, replace with .usePlaintext()
-        .build();
-    spicedbClient = SpicedbClient.getInstance(
-        channel,
-        SpicedbClient.SPICEDB_TOKEN);
+      .forTarget(SpicedbClient.SPICEDDB_TARGET)
+      .usePlaintext() // if not using TLS, replace with .usePlaintext()
+      .build();
+    spicedbClient = SpicedbClient.getInstance(channel, SpicedbClient.SPICEDB_TOKEN);
   }
 
   @AfterAll
   public static void tearDown() {
     try {
       spicedbClient.shutdownChannel();
-
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
@@ -67,10 +64,11 @@ public class AuthZTest {
     String platformAdminId = "platform-user";
 
     boolean isSuccess = AuthZUtils.createResoureTypeAdminByPlatformUser(
-        ResourceType.CAA,
-        CAAResourceID,
-        CAAResourceAdminID,
-        platformAdminId);
+      ResourceType.CAA,
+      CAAResourceID,
+      CAAResourceAdminID,
+      platformAdminId
+    );
 
     assertTrue(isSuccess);
   }
@@ -82,9 +80,10 @@ public class AuthZTest {
     String manufacturerAdminUserID = "manufacturer-user";
 
     boolean isSuccess = AuthZUtils.createResoureTypeAdmin(
-        ResourceType.MANUFACTURER,
-        manufacturerResourceID,
-        manufacturerAdminUserID);
+      ResourceType.MANUFACTURER,
+      manufacturerResourceID,
+      manufacturerAdminUserID
+    );
 
     assertTrue(isSuccess);
   }
@@ -98,9 +97,10 @@ public class AuthZTest {
     String operatorAdminUserID = "operator-user";
 
     boolean isSuccess = AuthZUtils.createResoureTypeAdmin(
-        ResourceType.OPERATOR,
-        operatorResourceID,
-        operatorAdminUserID);
+      ResourceType.OPERATOR,
+      operatorResourceID,
+      operatorAdminUserID
+    );
 
     assertTrue(isSuccess);
   }
@@ -111,9 +111,10 @@ public class AuthZTest {
     String operatorAdminUserID = "operator-user";
 
     boolean isSuccess = AuthZUtils.checkIsResourceAdmin(
-        ResourceType.OPERATOR,
-        operatorResourceID,
-        operatorAdminUserID);
+      ResourceType.OPERATOR,
+      operatorResourceID,
+      operatorAdminUserID
+    );
 
     assertTrue(isSuccess);
   }
@@ -124,9 +125,10 @@ public class AuthZTest {
     String operatorAdminUserID = "operator-user-1";
 
     boolean isSuccess = AuthZUtils.checkIsResourceAdmin(
-        ResourceType.OPERATOR,
-        operatorResourceID,
-        operatorAdminUserID);
+      ResourceType.OPERATOR,
+      operatorResourceID,
+      operatorAdminUserID
+    );
 
     assertFalse(isSuccess);
   }
@@ -139,9 +141,10 @@ public class AuthZTest {
     String operatorAdminUserID = "operator-user";
 
     boolean isSuccess = AuthZUtils.addPilotToOperator(
-        pilotUserID,
-        operatorResourceID,
-        operatorAdminUserID);
+      pilotUserID,
+      operatorResourceID,
+      operatorAdminUserID
+    );
 
     assertTrue(isSuccess);
   }
@@ -154,9 +157,10 @@ public class AuthZTest {
     String operatorAdminUserID = "operator-user-1";
 
     boolean isSuccess = AuthZUtils.addPilotToOperator(
-        pilotUserID,
-        operatorResourceID,
-        operatorAdminUserID);
+      pilotUserID,
+      operatorResourceID,
+      operatorAdminUserID
+    );
 
     assertFalse(isSuccess);
   }
@@ -167,8 +171,9 @@ public class AuthZTest {
     String operatorResourceID = "operator-1";
 
     boolean isSuccess = AuthZUtils.isFlightOperationsAdmin(
-        pilotUserID,
-        operatorResourceID);
+      pilotUserID,
+      operatorResourceID
+    );
 
     assertTrue(isSuccess);
   }
@@ -179,8 +184,9 @@ public class AuthZTest {
     String operatorResourceID = "operator-1";
 
     boolean isSuccess = AuthZUtils.isFlightOperationsAdmin(
-        pilotUserID,
-        operatorResourceID);
+      pilotUserID,
+      operatorResourceID
+    );
 
     assertFalse(isSuccess);
   }
@@ -195,14 +201,17 @@ public class AuthZTest {
     String operatorAdminUserID = "operator-user-1";
 
     boolean isSuccess = AuthZUtils.createUASManufacturerRelationships(
-        UASID,
-        manufacturerResourceID,
-        manufacturerAdminUserID);
+      UASID,
+      manufacturerResourceID,
+      manufacturerAdminUserID
+    );
 
-    isSuccess = AuthZUtils.createUASOperatorRelationships(
+    isSuccess =
+      AuthZUtils.createUASOperatorRelationships(
         UASID,
         operatorResourceID,
-        operatorAdminUserID);
+        operatorAdminUserID
+      );
 
     assertTrue(isSuccess);
   }
@@ -214,9 +223,10 @@ public class AuthZTest {
     String manufacturerAdminUserID = "manufacturer-user";
 
     boolean isSuccess = AuthZUtils.createUASTypeRelationships(
-        UASTypeID,
-        manufacturerResourceID,
-        manufacturerAdminUserID);
+      UASTypeID,
+      manufacturerResourceID,
+      manufacturerAdminUserID
+    );
 
     assertTrue(isSuccess);
   }

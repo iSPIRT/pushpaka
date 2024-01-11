@@ -5,9 +5,9 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.registry.dao.Dao;
-import in.ispirt.pushpaka.registry.dao.DaoInstance;
-import in.ispirt.pushpaka.registry.models.Uas;
+import in.ispirt.pushpaka.dao.Dao;
+import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.models.Uas;
 import in.ispirt.pushpaka.registry.utils.DaoException;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -176,7 +176,7 @@ public interface UasApi {
     List<Dao.Uas> les = Dao.Uas.getAll(DaoInstance.getInstance().getSession());
     List<Uas> leso = les
       .stream()
-      .map(x -> in.ispirt.pushpaka.registry.models.Uas.toOa(x))
+      .map(x -> in.ispirt.pushpaka.models.Uas.toOa(x))
       .collect(Collectors.toList());
     return ResponseEntity.ok(leso);
   }
@@ -225,7 +225,7 @@ public interface UasApi {
     ) @PathVariable("uasId") UUID uasId
   ) {
     Dao.Uas le = Dao.Uas.get(DaoInstance.getInstance().getSession(), uasId);
-    return ResponseEntity.ok(in.ispirt.pushpaka.registry.models.Uas.toOa(le));
+    return ResponseEntity.ok(in.ispirt.pushpaka.models.Uas.toOa(le));
   }
 
   /**

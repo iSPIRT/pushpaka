@@ -5,9 +5,9 @@
  */
 package in.ispirt.pushpaka.flightauthorisation.api;
 
-import in.ispirt.pushpaka.flightauthorisation.dao.Dao;
-import in.ispirt.pushpaka.flightauthorisation.dao.DaoInstance;
-import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageToken;
+import in.ispirt.pushpaka.dao.Dao;
+import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.models.AirspaceUsageToken;
 import in.ispirt.pushpaka.utils.Logging;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -190,7 +190,7 @@ public interface AirspaceUsageTokenApi {
     );
     List<AirspaceUsageToken> leso = les
       .stream()
-      .map(x -> in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageToken.toOa(x))
+      .map(x -> in.ispirt.pushpaka.models.AirspaceUsageToken.toOa(x))
       .collect(Collectors.toList());
     return ResponseEntity.ok(leso);
   }
@@ -256,9 +256,7 @@ public interface AirspaceUsageTokenApi {
       DaoInstance.getInstance().getSession(),
       AirspaceUsageTokenId
     );
-    return ResponseEntity.ok(
-      in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageToken.toOa(le)
-    );
+    return ResponseEntity.ok(in.ispirt.pushpaka.models.AirspaceUsageToken.toOa(le));
   }
 
   /**
@@ -299,9 +297,7 @@ public interface AirspaceUsageTokenApi {
       AirspaceUsageTokenId,
       AirspaceUsageToken.fromOa(AirspaceUsageToken)
     );
-    return ResponseEntity.ok(
-      in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageToken.toOa(le)
-    );
+    return ResponseEntity.ok(in.ispirt.pushpaka.models.AirspaceUsageToken.toOa(le));
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }

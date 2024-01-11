@@ -1,6 +1,6 @@
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.registry.models.LegalEntity;
+import in.ispirt.pushpaka.models.LegalEntity;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

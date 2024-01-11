@@ -1,7 +1,7 @@
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.registry.models.ModelApiResponse;
-import in.ispirt.pushpaka.registry.models.UasType;
+import in.ispirt.pushpaka.models.ModelApiResponse;
+import in.ispirt.pushpaka.models.UasType;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
