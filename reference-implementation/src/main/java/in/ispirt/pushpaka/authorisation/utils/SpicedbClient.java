@@ -21,7 +21,6 @@ import in.ispirt.pushpaka.authorisation.RelationshipType;
 import in.ispirt.pushpaka.authorisation.ResourceType;
 import in.ispirt.pushpaka.authorisation.SubjectType;
 import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
@@ -34,11 +33,10 @@ public class SpicedbClient {
 
   public static final String SPICEDDB_TARGET = "localhost:50051";
   public static final String SPICEDB_TOKEN = "somerandomkeyhere";
-  public static final String SPICEDDB_PERMISSION_FILE = "spicedb_permissions.txt";
+  public static final String SPICEDDB_PERMISSION_FILE =
+    "src/main/resources/spicedb_permissions.txt";
 
   ManagedChannel channel;
-  PermissionsServiceGrpc.PermissionsServiceBlockingStub permissionsService;
-  SchemaServiceGrpc.SchemaServiceBlockingStub schemaService;
 
   public ManagedChannel getChannel() {
     return channel;
@@ -47,6 +45,9 @@ public class SpicedbClient {
   public void setChannel(ManagedChannel channel) {
     this.channel = channel;
   }
+
+  PermissionsServiceGrpc.PermissionsServiceBlockingStub permissionsService;
+  SchemaServiceGrpc.SchemaServiceBlockingStub schemaService;
 
   public PermissionsServiceGrpc.PermissionsServiceBlockingStub getPermissionsService() {
     return permissionsService;
@@ -70,27 +71,30 @@ public class SpicedbClient {
 
   private static SpicedbClient instance;
 
-  private SpicedbClient(String target, String token) {
-    channel =
-      ManagedChannelBuilder
-        .forTarget(target)
-        .usePlaintext() // if not using TLS, replace with .usePlaintext()
-        .build();
+  private SpicedbClient(ManagedChannel channel, String token) {
+    setChannel(channel);
 
     permissionsService =
       PermissionsServiceGrpc
         .newBlockingStub(channel)
         .withCallCredentials(new BearerToken(token));
 
+    setPermissionsService(permissionsService);
+
     schemaService =
       SchemaServiceGrpc
         .newBlockingStub(channel)
         .withCallCredentials(new BearerToken(token));
+
+    setSchemaService(schemaService);
   }
 
-  public static synchronized SpicedbClient getInstance(String target, String token) {
+  public static synchronized SpicedbClient getInstance(
+    ManagedChannel channel,
+    String token
+  ) {
     if (instance == null) {
-      instance = new SpicedbClient(target, token);
+      instance = new SpicedbClient(channel, token);
     }
     return instance;
   }
@@ -141,7 +145,7 @@ public class SpicedbClient {
     PermissionService.WriteRelationshipsResponse response;
 
     try {
-      response = permissionsService.writeRelationships(relRequest);
+      response = this.getPermissionsService().writeRelationships(relRequest);
     } catch (Exception e) {
       return "";
     }
@@ -184,9 +188,8 @@ public class SpicedbClient {
       .build();
 
     try {
-      PermissionService.CheckPermissionResponse response = permissionsService.checkPermission(
-        request
-      );
+      PermissionService.CheckPermissionResponse response =
+        this.getPermissionsService().checkPermission(request);
       System.out.println(
         "result: " + response.getPermissionship().getValueDescriptor().getName()
       );
@@ -209,13 +212,21 @@ public class SpicedbClient {
       Path p = Path.of(filename);
       String schema = Files.readString(p);
       WriteSchemaRequest wsr = WriteSchemaRequest.newBuilder().setSchema(schema).build();
-      schemaService.writeSchema(wsr);
+      this.getSchemaService().writeSchema(wsr);
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
   public void shutdownChannel() throws InterruptedException {
+    try {
+      this.getChannel().shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
+    } catch (InterruptedException exception) {
+      exception.printStackTrace();
+    }
+  }
+
+  public void shutdownChannel(ManagedChannel channel) throws InterruptedException {
     try {
       channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
     } catch (InterruptedException exception) {
@@ -228,7 +239,7 @@ public class SpicedbClient {
 
     ReadSchemaRequest readRequest = ReadSchemaRequest.newBuilder().build();
 
-    ReadSchemaResponse readResponse = schemaService.readSchema(readRequest);
+    ReadSchemaResponse readResponse = this.getSchemaService().readSchema(readRequest);
 
     if (readResponse != null) {
       schemaText = readResponse.getSchemaText();
@@ -266,9 +277,8 @@ public class SpicedbClient {
       .build();
 
     try {
-      Iterator<LookupResourcesResponse> response = permissionsService.lookupResources(
-        request
-      );
+      Iterator<LookupResourcesResponse> response =
+        this.getPermissionsService().lookupResources(request);
       size = Iterables.size((Iterable<?>) response);
       System.out.println("result: " + size);
     } catch (Exception exception) {

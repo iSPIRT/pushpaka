@@ -4,16 +4,18 @@ import in.ispirt.pushpaka.authorisation.Permission;
 import in.ispirt.pushpaka.authorisation.RelationshipType;
 import in.ispirt.pushpaka.authorisation.ResourceType;
 import in.ispirt.pushpaka.authorisation.SubjectType;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 
 public class AuthZUtils {
   public static final SpicedbClient spicedbClient;
 
   static {
-    spicedbClient =
-      SpicedbClient.getInstance(
-        SpicedbClient.SPICEDDB_TARGET,
-        SpicedbClient.SPICEDB_TOKEN
-      );
+    ManagedChannel channel = ManagedChannelBuilder
+      .forTarget(SpicedbClient.SPICEDDB_TARGET)
+      .useTransportSecurity() // if not using TLS, replace with .usePlaintext()
+      .build();
+    spicedbClient = SpicedbClient.getInstance(channel, SpicedbClient.SPICEDB_TOKEN);
   }
 
   /**

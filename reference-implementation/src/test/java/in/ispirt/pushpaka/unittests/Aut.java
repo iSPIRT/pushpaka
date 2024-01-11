@@ -1,8 +1,5 @@
 package in.ispirt.pushpaka.unittests;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import com.nimbusds.jwt.SignedJWT;
 import in.ispirt.pushpaka.flightauthorisation.aut.AirspaceUsageTokenUtils;
 import in.ispirt.pushpaka.models.AirspaceUsageOperationType;
 import in.ispirt.pushpaka.models.AirspaceUsageToken;
@@ -19,17 +16,14 @@ import java.text.ParseException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
-import java.util.UUID;
-import org.apache.http.client.ClientProtocolException;
 import org.jose4j.jwt.JwtClaims;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class Aut {
 
   @Test
   public void testAutGeneration() {
-    //generate & patch attenuations VLOS
+    // generate & patch attenuations VLOS
     AirspaceUsageToken airspaceUsageToken = AirspaceUsageTokenUtils.createAirspaceUsageTokenObject(
       new Uas(UUID.randomUUID()),
       new Pilot(UUID.randomUUID()),
@@ -60,7 +54,7 @@ public class Aut {
 
     System.out.println(airspaceUsageToken.toJsonString());
 
-    //signing the claim
+    // signing the claim
     try {
       String signedToken = AirspaceUsageTokenUtils.signAirspaceUsageTokenObjectJWT(
         AirspaceUsageTokenUtils.getDigitalSkyPrivateKey("digitalsky.jks"),
@@ -95,7 +89,7 @@ public class Aut {
       e.printStackTrace();
     }
 
-    //generate and patch attenuations for BVLOS
+    // generate and patch attenuations for BVLOS
     airspaceUsageToken =
       AirspaceUsageTokenUtils.createAirspaceUsageTokenObject(
         new Uas(UUID.randomUUID()),

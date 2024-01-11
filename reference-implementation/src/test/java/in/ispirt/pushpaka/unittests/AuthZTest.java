@@ -6,23 +6,27 @@ import static org.junit.Assert.assertTrue;
 import in.ispirt.pushpaka.authorisation.ResourceType;
 import in.ispirt.pushpaka.authorisation.utils.AuthZUtils;
 import in.ispirt.pushpaka.authorisation.utils.SpicedbClient;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class AuthZTest {
   public static SpicedbClient spicedbClient;
 
-  @BeforeClass
+  @BeforeAll
   public static void setup() {
-    spicedbClient =
-      SpicedbClient.getInstance(
-        SpicedbClient.SPICEDDB_TARGET,
-        SpicedbClient.SPICEDB_TOKEN
-      );
+    ManagedChannel channel = ManagedChannelBuilder
+      .forTarget(SpicedbClient.SPICEDDB_TARGET)
+      .usePlaintext() // if not using TLS, replace with .usePlaintext()
+      .build();
+    spicedbClient = SpicedbClient.getInstance(channel, SpicedbClient.SPICEDB_TOKEN);
   }
 
-  @AfterClass
+  @AfterAll
   public static void tearDown() {
     try {
       spicedbClient.shutdownChannel();

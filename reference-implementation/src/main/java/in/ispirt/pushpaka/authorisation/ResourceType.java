@@ -32,7 +32,7 @@ public enum ResourceType {
       case PLATFORM:
         return "platform";
       case PLATFORM_RESOURCETYPE:
-        return "resource";
+        return "platform_resource_type";
       case FLIGHTOPERATIONS_RESOURCETYPE:
         return "flightoperations_resource_type";
       case OPERATOR:
