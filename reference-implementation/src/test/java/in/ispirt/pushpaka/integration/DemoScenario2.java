@@ -36,6 +36,9 @@ class DemoScenario2 {
     assertNotNull(uidManufacturerAdmin);
     String jwtPilot = TestUtils.loginPilotUser();
     UUID uidPilot = TestUtils.userCreate(jwtPilot); // TODO: skip insertion
+    Logging.info("id Pilot : " + uidPilot.toString());
+    UUID uidPilot2 = TestUtils.pilotCreate(jwtPilot);
+    Logging.info("id Pilot : " + uidPilot2.toString());
     assertNotNull(uidPilot);
     try {
       SignedJWT jwtsCaaAdmin = TestUtils.parseJwt(jwtCaaAdmin);
@@ -66,14 +69,14 @@ class DemoScenario2 {
         uasTypeId,
         mid,
         leid,
-        idPilot
+        uidPilot2
       );
       UUID flightAuthorisationId = TestUtils.flightAuthorisationCreate(
         jwtPilot,
         UUID.randomUUID(),
         flightPlanId,
         uasId,
-        idPilot
+        uidPilot2
       );
       assertNotNull(flightAuthorisationId);
     } catch (ParseException e) {

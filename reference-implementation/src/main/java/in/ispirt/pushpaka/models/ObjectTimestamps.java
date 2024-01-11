@@ -56,11 +56,7 @@ public class ObjectTimestamps {
    * @return created
    */
   @Valid
-  @Schema(
-    name = "created",
-    accessMode = Schema.AccessMode.READ_ONLY,
-    requiredMode = Schema.RequiredMode.REQUIRED
-  )
+  @Schema(name = "created", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("created")
   public OffsetDateTime getCreated() {
     return created;
@@ -80,11 +76,7 @@ public class ObjectTimestamps {
    * @return updated
    */
   @Valid
-  @Schema(
-    name = "updated",
-    accessMode = Schema.AccessMode.READ_ONLY,
-    requiredMode = Schema.RequiredMode.REQUIRED
-  )
+  @Schema(name = "updated", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("updated")
   public OffsetDateTime getUpdated() {
     return updated;
