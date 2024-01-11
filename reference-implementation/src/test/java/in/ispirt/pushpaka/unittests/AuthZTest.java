@@ -112,7 +112,6 @@ public class AuthZTest {
   }
 
   @Test
-  @Test
   public void testIsResourceAdministratorNegative() {
     String operatorResourceID = "operator-1";
     String operatorAdminUserID = "operator-user-1";
@@ -184,7 +183,6 @@ public class AuthZTest {
   @Test
   public void testCreateUASRelationships() {
     String UASID = "uas-1";
-    String UASID = "uas-1";
     String manufacturerResourceID = "manufacturer-1";
     String manufacturerAdminUserID = "manufacturer-user";
 
@@ -207,7 +205,6 @@ public class AuthZTest {
 
   @Test
   public void testCreateUASTypeRelationships() {
-    String UASTypeID = "uastype-1";
     String UASTypeID = "uastype-1";
     String manufacturerResourceID = "manufacturer-1";
     String manufacturerAdminUserID = "manufacturer-user";
