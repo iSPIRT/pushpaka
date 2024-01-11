@@ -1,5 +1,6 @@
 package in.ispirt.pushpaka.flightauthorisation.aut;
 
+import com.google.gson.JsonObject;
 import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageOperationType;
 import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageToken;
 import in.ispirt.pushpaka.flightauthorisation.models.AirspaceUsageTokenAttenuations;
@@ -31,8 +32,6 @@ import org.jose4j.jwt.consumer.ErrorCodes;
 import org.jose4j.jwt.consumer.InvalidJwtException;
 import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
-
-import com.google.gson.JsonObject;
 
 public class AirspaceUsageTokenUtils {
 

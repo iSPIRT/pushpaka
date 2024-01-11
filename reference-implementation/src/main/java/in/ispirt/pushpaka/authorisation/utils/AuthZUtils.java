@@ -162,6 +162,7 @@ public class AuthZUtils {
         ResourceType.MANUFACTURER, manufacturerID, manufacturerUserID);
 
     if (!checkIsManufacturerAdmin) {
+    if (!checkIsManufacturerAdmin) {
       return isSuccess;
     }
 
@@ -181,6 +182,8 @@ public class AuthZUtils {
 
     if (tokenValueManufacturer != null && tokenValueRegulator != null) {
       isSuccess = true;
+    if (tokenValueManufacturer != null && tokenValueRegulator != null) {
+      isSuccess = true;
     }
 
     return isSuccess;
@@ -198,9 +201,11 @@ public class AuthZUtils {
     boolean isSuccess = false;
     String tokenValueOperator = null;
 
+
     boolean checkIsOperatorAdmin = checkIsResourceAdmin(
         ResourceType.MANUFACTURER, operatorID, operatorUserID);
 
+    if (!checkIsOperatorAdmin) {
     if (!checkIsOperatorAdmin) {
       return isSuccess;
     }
@@ -212,6 +217,8 @@ public class AuthZUtils {
         operatorID,
         SubjectType.OPERATOR);
 
+    if (tokenValueOperator != null) {
+      isSuccess = true;
     if (tokenValueOperator != null) {
       isSuccess = true;
     }
@@ -227,9 +234,11 @@ public class AuthZUtils {
       String manufacturerUserID) {
     boolean isSuccess = false;
 
+
     boolean checkIsManufacturerAdmin = checkIsResourceAdmin(
         ResourceType.MANUFACTURER, manufacturerID, manufacturerUserID);
 
+    if (!checkIsManufacturerAdmin) {
     if (!checkIsManufacturerAdmin) {
       return isSuccess;
     }
@@ -248,6 +257,8 @@ public class AuthZUtils {
         getCAAResourceID(),
         SubjectType.CAA);
 
+    if (tokenValueManufacturer != null && tokenValueRgulator != null) {
+      isSuccess = true;
     if (tokenValueManufacturer != null && tokenValueRgulator != null) {
       isSuccess = true;
     }

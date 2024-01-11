@@ -130,9 +130,11 @@ public class Dao implements Serializable {
     public FlightPlan() {}
 
     public static FlightPlan create(Session s, FlightPlan a) {
+      Pilot pilot = Pilot.get(s, a.getPilot().getId());
+      Uas uas = Uas.get(s, a.getUas().getId());
       Transaction t = s.beginTransaction();
-      UUID aid = UUID.randomUUID();
-      a.setId(aid);
+      a.setPilot(pilot);
+      a.setUas(uas);
       s.save(a);
       s.flush();
       t.commit();
