@@ -5,8 +5,6 @@ import com.nimbusds.jwt.SignedJWT;
 import in.ispirt.pushpaka.authorisation.utils.AuthZ;
 import in.ispirt.pushpaka.authorisation.utils.SpicedbClient;
 import in.ispirt.pushpaka.utils.Logging;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 
 import java.io.IOException;
 import java.text.ParseException;
