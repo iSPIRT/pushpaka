@@ -266,6 +266,15 @@ public class Sale {
   }
 
   public static Sale toOa(Dao.Sale u) {
+    User su = null;
+    User bu = null;
+    LegalEntity sle = null;
+    LegalEntity ble = null;
+    if (u.getSellerUser() != null) su = User.toOa(u.getSellerUser());
+    if (u.getBuyerUser() != null) bu = User.toOa(u.getBuyerUser());
+    if (u.getSellerLegalEntity() != null) sle =
+      LegalEntity.toOa(u.getSellerLegalEntity());
+    if (u.getBuyerLegalEntity() != null) ble = LegalEntity.toOa(u.getBuyerLegalEntity());
     Validity vt = new Validity(u.getValidityStart(), u.getValidityEnd());
     ObjectTimestamps ot = new ObjectTimestamps(
       u.getTimestampCreated(),
@@ -276,16 +285,26 @@ public class Sale {
       Uas.toOa(u.getUas()),
       ot,
       vt,
-      User.toOa(u.getSellerUser()),
-      User.toOa(u.getBuyerUser()),
-      LegalEntity.toOa(u.getSellerLegalEntity()),
-      LegalEntity.toOa(u.getBuyerLegalEntity()),
+      su,
+      bu,
+      sle,
+      ble,
       u.getHolding()
     );
     return uu;
   }
 
   public static Dao.Sale fromOa(Sale u) {
+    Dao.Users su = null;
+    Dao.Users bu = null;
+    Dao.LegalEntity sle = null;
+    Dao.LegalEntity ble = null;
+    if (u.getSellerUser() != null) su = User.fromOa(u.getSellerUser());
+    if (u.getBuyerUser() != null) bu = User.fromOa(u.getBuyerUser());
+    if (u.getSellerLegalEntity() != null) sle =
+      LegalEntity.fromOa(u.getSellerLegalEntity());
+    if (u.getBuyerLegalEntity() != null) ble =
+      LegalEntity.fromOa(u.getBuyerLegalEntity());
     Dao.Sale uu = new Dao.Sale(
       u.getId(),
       Uas.fromOa(u.getUas()),
@@ -293,10 +312,10 @@ public class Sale {
       u.getTimestamps().getUpdated(),
       u.getValidity().getFrom(),
       u.getValidity().getTill(),
-      User.fromOa(u.getSellerUser()),
-      User.fromOa(u.getBuyerUser()),
-      LegalEntity.fromOa(u.getSellerLegalEntity()),
-      LegalEntity.fromOa(u.getBuyerLegalEntity()),
+      su,
+      bu,
+      sle,
+      ble,
       u.getHolding()
     );
     return uu;

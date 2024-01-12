@@ -1,9 +1,6 @@
 package in.ispirt.pushpaka.dao;
 
-import in.ispirt.pushpaka.dao.Dao.Pilot;
-import in.ispirt.pushpaka.dao.Dao.Uas;
 import in.ispirt.pushpaka.models.Country;
-import in.ispirt.pushpaka.models.OperationCategory;
 import in.ispirt.pushpaka.models.OperationCategory;
 import in.ispirt.pushpaka.models.State;
 import in.ispirt.pushpaka.models.UasPropulsionCategory;
@@ -14,38 +11,23 @@ import in.ispirt.pushpaka.registry.utils.DaoException;
 import in.ispirt.pushpaka.registry.utils.Utils;
 import in.ispirt.pushpaka.utils.Logging;
 import java.io.Serializable;
-import java.io.Serializable;
 import java.net.URL;
 import java.time.OffsetDateTime;
-import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.List;
-import java.util.Random;
-import java.util.Random;
 import java.util.UUID;
-import java.util.UUID;
-import javax.persistence.Column;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Table;
 import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.NotNull;
 import org.hibernate.Session;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.Transaction;
 
 public class Dao implements Serializable {
@@ -900,9 +882,11 @@ public class Dao implements Serializable {
   }
 
   // UasType is our model, which corresponds to the "uas_types" database table.
-  @Entity
-  @Table(name = "uass")
+  @Entity(name = Uas.PERSISTENCE_NAME)
+  @Table(name = Uas.PERSISTENCE_NAME)
   public static class Uas {
+    static final String PERSISTENCE_NAME = "Uas";
+
     @Id
     @Column(name = "id")
     public UUID id;
@@ -2250,9 +2234,36 @@ public class Dao implements Serializable {
 
     public static Sale create(Session s, Sale m)
       throws DaoException, ConstraintViolationException {
+      if (m.getTimestampCreated() != null) Logging.info(
+        "Timestamps " + m.getTimestampCreated().toString()
+      );
+      if (m.getTimestampUpdated() != null) Logging.info(
+        "Timestamps " + m.getTimestampUpdated().toString()
+      );
       Transaction t = s.beginTransaction();
       OffsetDateTime n = OffsetDateTime.now();
       m.setId(UUID.randomUUID());
+      //
+      Uas uas = Uas.get(s, m.getUas().getId());
+      if (m.getBuyerUser() != null) {
+        Users bu = Users.get(s, m.getBuyerUser().getId());
+        m.setBuyerUser(bu);
+      }
+      if (m.getSellerUser() != null) {
+        Users su = Users.get(s, m.getSellerUser().getId());
+        m.setSellerUser(su);
+      }
+      if (m.getBuyerLegalEntity() != null) {
+        LegalEntity ble = LegalEntity.get(s, m.getBuyerLegalEntity().getId());
+        m.setBuyerLegalEntity(ble);
+      }
+      if (m.getSellerLegalEntity() != null) {
+        LegalEntity sle = LegalEntity.get(s, m.getSellerLegalEntity().getId());
+        m.setSellerLegalEntity(sle);
+      }
+      ///
+
+      ///
       s.save(m);
       s.flush();
       t.commit();
@@ -2453,7 +2464,6 @@ public class Dao implements Serializable {
 
     @NotNull
     @Column(name = "operation_category")
-    // @Column(name = "pilot_id")
     public OperationCategory operationCategory;
 
     public OperationCategory getOperationCategory() {
@@ -2651,6 +2661,18 @@ public class Dao implements Serializable {
       this.uas = id;
     }
 
+    @NotNull
+    @Column(name = "operation_category")
+    public OperationCategory operationCategory;
+
+    public OperationCategory getOperationCategory() {
+      return operationCategory;
+    }
+
+    public void setOperationCategory(OperationCategory operationCategory) {
+      this.operationCategory = operationCategory;
+    }
+
     // Convenience constructor.
     // public AirspaceUsageToken(
     //   UUID id
@@ -2662,13 +2684,30 @@ public class Dao implements Serializable {
     public AirspaceUsageToken() {}
 
     public static AirspaceUsageToken create(Session s, AirspaceUsageToken a) {
-      Transaction t = s.beginTransaction();
-      UUID aid = UUID.randomUUID();
-      a.setId(aid);
-      s.save(a);
-      s.flush();
-      t.commit();
-      s.refresh(a);
+      Logging.info("AUT CREATE OperationCategory: " + a.getOperationCategory());
+      // TODO remove this?
+      if (a.getOperationCategory() == null) a.setOperationCategory(OperationCategory.C1);
+      if (a.getOperationCategory() == OperationCategory.C3) {
+        FlightPlan fp = FlightPlan.get(s, a.getFlightPlan().getId());
+        Transaction t = s.beginTransaction();
+        a.setFlightPlan(fp);
+        s.save(a);
+        s.flush();
+        t.commit();
+        s.refresh(a);
+      } else {
+        Logging.info("AUT CREATE Pilot " + a.getPilot().getId());
+        Logging.info("AUT CREATE Uas " + a.getUas().getId());
+        Pilot pilot = Pilot.get(s, a.getPilot().getId());
+        Uas uas = Uas.get(s, a.getUas().getId());
+        Transaction t = s.beginTransaction();
+        a.setPilot(pilot);
+        a.setUas(uas);
+        s.save(a);
+        s.flush();
+        t.commit();
+        s.refresh(a);
+      }
       return a;
     }
 

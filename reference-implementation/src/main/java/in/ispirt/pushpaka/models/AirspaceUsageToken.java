@@ -6,9 +6,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import in.ispirt.pushpaka.dao.Dao;
-import in.ispirt.pushpaka.models.OperationCategory;
-import in.ispirt.pushpaka.models.Pilot;
-import in.ispirt.pushpaka.models.Uas;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -44,7 +41,6 @@ public class AirspaceUsageToken {
     this.id = id;
   }
 
-  @NotNull
   @Schema(name = "uas", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("uas")
   public Uas getUas() {
@@ -55,7 +51,6 @@ public class AirspaceUsageToken {
     this.uas = uas;
   }
 
-  @NotNull
   @Schema(name = "pilot", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("pilot")
   public Pilot getPilot() {
@@ -66,7 +61,6 @@ public class AirspaceUsageToken {
     this.pilot = pilot;
   }
 
-  @NotNull
   @Schema(name = "flight_plan", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("flight_plan")
   public FlightPlan getFlightPlan() {
@@ -77,6 +71,8 @@ public class AirspaceUsageToken {
     this.flightPlan = flightPlan;
   }
 
+  @Schema(name = "issuer", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("issuer")
   public String getIssuerID() {
     return issuerID;
   }
@@ -85,6 +81,8 @@ public class AirspaceUsageToken {
     this.issuerID = issuerID;
   }
 
+  @Schema(name = "start_time", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("start_time")
   public OffsetDateTime getStartTime() {
     return startTime;
   }
@@ -93,6 +91,8 @@ public class AirspaceUsageToken {
     this.startTime = startTime;
   }
 
+  @Schema(name = "end_time", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("end_time")
   public OffsetDateTime getEndTime() {
     return endTime;
   }
@@ -101,6 +101,8 @@ public class AirspaceUsageToken {
     this.endTime = endTime;
   }
 
+  @Schema(name = "state", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("state")
   public AirspaceUsageTokenState getState() {
     return state;
   }
@@ -109,6 +111,8 @@ public class AirspaceUsageToken {
     this.state = state;
   }
 
+  @Schema(name = "operation_category", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("operation_category")
   public OperationCategory getOperationCategory() {
     return operationType;
   }
@@ -117,6 +121,8 @@ public class AirspaceUsageToken {
     this.operationType = operationType;
   }
 
+  @Schema(name = "attentuations", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("attentuations")
   public AirspaceUsageTokenAttenuations getAttenuations() {
     return attenuations;
   }
@@ -171,18 +177,24 @@ public class AirspaceUsageToken {
 
   public static Dao.AirspaceUsageToken fromOa(AirspaceUsageToken a) {
     Dao.AirspaceUsageToken u = new Dao.AirspaceUsageToken(a.getId());
-    u.setUas(Uas.fromOa(a.getUas()));
-    u.setPilot(Pilot.fromOa(a.getPilot()));
-    u.setFlightPlan(FlightPlan.fromOa(a.getFlightPlan()));
+    if (a.getOperationCategory() != OperationCategory.C3) {
+      u.setUas(Uas.fromOa(a.getUas()));
+      u.setPilot(Pilot.fromOa(a.getPilot()));
+    } else {
+      u.setFlightPlan(FlightPlan.fromOa(a.getFlightPlan()));
+    }
     return u;
   }
 
   public static AirspaceUsageToken toOa(Dao.AirspaceUsageToken x) {
     AirspaceUsageToken le = new AirspaceUsageToken(x.getId());
-    le.setId(x.getId());
-    le.setPilot(Pilot.toOa(x.getPilot()));
-    le.setUas(Uas.toOa(x.getUas()));
-    le.setFlightPlan(FlightPlan.toOa(x.getFlightPlan()));
+    if (x.getOperationCategory() != OperationCategory.C3) {
+      le.setId(x.getId());
+      le.setPilot(Pilot.toOa(x.getPilot()));
+      le.setUas(Uas.toOa(x.getUas()));
+    } else {
+      le.setFlightPlan(FlightPlan.toOa(x.getFlightPlan()));
+    }
     return le;
   }
 }
