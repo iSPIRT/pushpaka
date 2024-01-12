@@ -79,8 +79,8 @@ public class DemoScenario1 {
        * 
        */
       // TestUtils.grantCaaAdmin(jwtPlatformAdmin, idCaaAdmin);
-      boolean platformGrantCreated = TestUtils.grantPlatformAdmin(authZ,uidPlatformAdmin);
-      boolean caaAdminGrantCreated = TestUtils.grantCAAAdmin(authZ,mid, uidPlatformAdmin, idCaaAdmin);
+      boolean platformGrantCreated = TestUtils.grantPlatformAdmin(authZ, uidPlatformAdmin);
+      boolean caaAdminGrantCreated = TestUtils.grantCAAAdmin(authZ, mid, uidPlatformAdmin, idCaaAdmin);
 
       Logging.info("platform grant created : " + platformGrantCreated);
       Logging.info("CAA adin grant created : " + caaAdminGrantCreated);
