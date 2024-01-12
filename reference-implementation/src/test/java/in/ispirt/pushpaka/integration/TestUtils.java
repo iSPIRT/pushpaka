@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.rpc.context.AttributeContext.Auth;
+
 import com.nimbusds.jwt.SignedJWT;
 
 import in.ispirt.pushpaka.authorisation.ResourceType;
