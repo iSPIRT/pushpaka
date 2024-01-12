@@ -36,7 +36,10 @@ public class SpicedbClient {
   public static final String SPICEDDB_PERMISSION_FILE =
     "src/main/resources/spicedb_permissions.txt";
 
+  private static SpicedbClient instance;
   ManagedChannel channel;
+  PermissionsServiceGrpc.PermissionsServiceBlockingStub permissionsService;
+  SchemaServiceGrpc.SchemaServiceBlockingStub schemaService;
 
   public ManagedChannel getChannel() {
     return channel;
@@ -45,9 +48,6 @@ public class SpicedbClient {
   public void setChannel(ManagedChannel channel) {
     this.channel = channel;
   }
-
-  PermissionsServiceGrpc.PermissionsServiceBlockingStub permissionsService;
-  SchemaServiceGrpc.SchemaServiceBlockingStub schemaService;
 
   public PermissionsServiceGrpc.PermissionsServiceBlockingStub getPermissionsService() {
     return permissionsService;
@@ -68,8 +68,6 @@ public class SpicedbClient {
   ) {
     this.schemaService = schemaService;
   }
-
-  private static SpicedbClient instance;
 
   private SpicedbClient(ManagedChannel channel, String token) {
     setChannel(channel);

@@ -1,25 +1,20 @@
 package in.ispirt.pushpaka.unittests;
 
 import in.ispirt.pushpaka.flightauthorisation.aut.AirspaceUsageTokenUtils;
-import in.ispirt.pushpaka.models.AirspaceUsageOperationType;
 import in.ispirt.pushpaka.models.AirspaceUsageToken;
 import in.ispirt.pushpaka.models.AirspaceUsageTokenAttenuations;
-import in.ispirt.pushpaka.models.AirspaceUsageTokenState;
 import in.ispirt.pushpaka.models.GeocageData;
 import in.ispirt.pushpaka.models.GeospatialData;
 import in.ispirt.pushpaka.models.OperationCategory;
 import in.ispirt.pushpaka.models.Pilot;
 import in.ispirt.pushpaka.models.Uas;
-import in.ispirt.pushpaka.utils.Logging;
-import java.io.IOException;
-import java.text.ParseException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 import org.jose4j.jwt.JwtClaims;
 import org.junit.jupiter.api.Test;
 
-public class Aut {
+public class AutTest {
 
   @Test
   public void testAutGeneration() {

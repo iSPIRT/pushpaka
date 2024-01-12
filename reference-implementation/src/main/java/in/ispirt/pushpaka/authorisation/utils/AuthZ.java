@@ -7,14 +7,19 @@ import in.ispirt.pushpaka.authorisation.SubjectType;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
-public class AuthZUtils {
-  public static final SpicedbClient spicedbClient;
+public class AuthZ {
 
-  static {
+  public SpicedbClient spicedbClient;
+  
+  public SpicedbClient getSpicedbClient() {
+    return spicedbClient;
+  }
+
+  public AuthZ() {
     ManagedChannel channel = ManagedChannelBuilder
-      .forTarget(SpicedbClient.SPICEDDB_TARGET)
-      .useTransportSecurity() // if not using TLS, replace with .usePlaintext()
-      .build();
+        .forTarget(SpicedbClient.SPICEDDB_TARGET)
+        .usePlaintext() // if not using TLS, replace with .usePlaintext()
+        .build();
     spicedbClient = SpicedbClient.getInstance(channel, SpicedbClient.SPICEDB_TOKEN);
   }
 
@@ -25,25 +30,23 @@ public class AuthZUtils {
    * that
    * the platform admin has access to resource type CAA and administer it
    */
-  public static boolean createPlatformAdmin(String subjectID) {
+  public boolean createPlatformAdmin(String subjectID) {
     // create relation of administrator
     // create relation with resource type
 
     String tokenValue_1 = spicedbClient.writeRelationship(
-      RelationshipType.ADMINISTRATOR,
-      AuthZConstants.PLATFORM_ID,
-      ResourceType.PLATFORM,
-      subjectID,
-      SubjectType.USER
-    );
+        RelationshipType.ADMINISTRATOR,
+        AuthZConstants.PLATFORM_ID,
+        ResourceType.PLATFORM,
+        subjectID,
+        SubjectType.USER);
 
     String tokenValue_2 = spicedbClient.writeRelationship(
-      RelationshipType.OWNER,
-      ResourceType.CAA.getResourceType(),
-      ResourceType.PLATFORM_RESOURCETYPE,
-      AuthZConstants.PLATFORM_ID,
-      SubjectType.PLATFORM
-    );
+        RelationshipType.OWNER,
+        ResourceType.CAA.getResourceType(),
+        ResourceType.PLATFORM_RESOURCETYPE,
+        AuthZConstants.PLATFORM_ID,
+        SubjectType.PLATFORM);
 
     if (tokenValue_1 != null && tokenValue_2 != null) {
       return true;
@@ -61,33 +64,29 @@ public class AuthZUtils {
    * platform
    * admin
    */
-  public static boolean createResoureTypeAdminByPlatformUser(
-    ResourceType resourceType,
-    String resourceID,
-    String resourceAdminID,
-    String platformAdminID
-  ) {
+  public boolean createResoureTypeAdminByPlatformUser(
+      ResourceType resourceType,
+      String resourceID,
+      String resourceAdminID,
+      String platformAdminID) {
     String tokenValue = null;
 
     // check permission and then create admin for the given resourceID
     boolean isPlatformAdmin = spicedbClient.checkPermission(
-      Permission.SUPER_ADMIN,
-      ResourceType.PLATFORM_RESOURCETYPE,
-      resourceType.getResourceType(),
-      SubjectType.USER,
-      platformAdminID
-    );
+        Permission.SUPER_ADMIN,
+        ResourceType.PLATFORM_RESOURCETYPE,
+        resourceType.getResourceType(),
+        SubjectType.USER,
+        platformAdminID);
 
     // create admin for the provided resource
     if (isPlatformAdmin) {
-      tokenValue =
-        spicedbClient.writeRelationship(
+      tokenValue = spicedbClient.writeRelationship(
           RelationshipType.ADMINISTRATOR,
           resourceID,
           resourceType,
           resourceAdminID,
-          SubjectType.USER
-        );
+          SubjectType.USER);
     }
 
     if (tokenValue != null) {
@@ -101,43 +100,38 @@ public class AuthZUtils {
   /** Thois method is used to get CAA resource ID */
   public static String getCAAResourceID() {
     // return the ID of the CCA resource in the system
-    return AuthZConstants.CAA_RESOURCE_ID;
+    return AuthZConstants.TEST_CAA_RESOURCE_ID;
   }
 
   /**
    * This method is used to create resource type admin when creating the resource
    */
-  public static boolean createResoureTypeAdmin(
-    ResourceType resourceType,
-    String resourceID,
-    String resourceAdminID
-  ) {
+  public boolean createResoureTypeAdmin(
+      ResourceType resourceType,
+      String resourceID,
+      String resourceAdminID) {
     boolean isSuccess = false;
     String tokenValue = null;
     String operatorTokenValue = null;
 
-    tokenValue =
-      spicedbClient.writeRelationship(
+    tokenValue = spicedbClient.writeRelationship(
         RelationshipType.ADMINISTRATOR,
         resourceID,
         resourceType,
         resourceAdminID,
-        SubjectType.USER
-      );
+        SubjectType.USER);
 
     if (tokenValue != null) {
       isSuccess = true;
     }
 
     if (ResourceType.OPERATOR.equals(resourceType)) {
-      operatorTokenValue =
-        spicedbClient.writeRelationship(
+      operatorTokenValue = spicedbClient.writeRelationship(
           RelationshipType.REGULATOR,
           resourceID,
           resourceType,
           getCAAResourceID(),
-          SubjectType.CAA
-        );
+          SubjectType.CAA);
 
       if (tokenValue != null && operatorTokenValue != null) {
         isSuccess = true;
@@ -149,60 +143,52 @@ public class AuthZUtils {
     return isSuccess;
   }
 
-  public static boolean checkIsResourceAdmin(
-    ResourceType resourceType,
-    String resourceID,
-    String userID
-  ) {
+  public boolean checkIsResourceAdmin(
+      ResourceType resourceType,
+      String resourceID,
+      String userID) {
     boolean isResourceAdmin = spicedbClient.checkPermission(
-      Permission.SUPER_ADMIN,
-      resourceType,
-      resourceID,
-      SubjectType.USER,
-      userID
-    );
+        Permission.SUPER_ADMIN,
+        resourceType,
+        resourceID,
+        SubjectType.USER,
+        userID);
 
     return isResourceAdmin;
   }
 
   /** This methods creates more than one relationships for UAS */
-  public static boolean createUASManufacturerRelationships(
-    String UASID,
-    String manufacturerID,
-    String manufacturerUserID
-  ) {
+  public boolean createUASManufacturerRelationships(
+      String UASID,
+      String manufacturerID,
+      String manufacturerUserID) {
     /** Put additional checks for pre-condition on UAS */
     boolean isSuccess = false;
     String tokenValueManufacturer = null;
     String tokenValueRegulator = null;
 
     boolean checkIsManufacturerAdmin = checkIsResourceAdmin(
-      ResourceType.MANUFACTURER,
-      manufacturerID,
-      manufacturerUserID
-    );
+        ResourceType.MANUFACTURER,
+        manufacturerID,
+        manufacturerUserID);
 
     if (!checkIsManufacturerAdmin) {
       return isSuccess;
     }
 
-    tokenValueManufacturer =
-      spicedbClient.writeRelationship(
+    tokenValueManufacturer = spicedbClient.writeRelationship(
         RelationshipType.MANUFACTURER,
         UASID,
         ResourceType.UAS,
         manufacturerID,
-        SubjectType.MANUFACTURER
-      );
+        SubjectType.MANUFACTURER);
 
-    tokenValueRegulator =
-      spicedbClient.writeRelationship(
+    tokenValueRegulator = spicedbClient.writeRelationship(
         RelationshipType.REGULATOR,
         UASID,
         ResourceType.UAS,
         getCAAResourceID(),
-        SubjectType.CAA
-      );
+        SubjectType.CAA);
 
     if (tokenValueManufacturer != null && tokenValueRegulator != null) {
       isSuccess = true;
@@ -215,33 +201,29 @@ public class AuthZUtils {
   }
 
   /** This methods creates more than one relationships for UAS */
-  public static boolean createUASOperatorRelationships(
-    String UASID,
-    String operatorID,
-    String operatorUserID
-  ) {
+  public boolean createUASOperatorRelationships(
+      String UASID,
+      String operatorID,
+      String operatorUserID) {
     /** Put additional checks for pre-condition on UAS */
     boolean isSuccess = false;
     String tokenValueOperator = null;
 
     boolean checkIsOperatorAdmin = checkIsResourceAdmin(
-      ResourceType.OPERATOR,
-      operatorID,
-      operatorUserID
-    );
+        ResourceType.OPERATOR,
+        operatorID,
+        operatorUserID);
 
     if (!checkIsOperatorAdmin) {
       return isSuccess;
     }
 
-    tokenValueOperator =
-      spicedbClient.writeRelationship(
+    tokenValueOperator = spicedbClient.writeRelationship(
         RelationshipType.OWNER,
         UASID,
         ResourceType.UAS,
         operatorID,
-        SubjectType.OPERATOR
-      );
+        SubjectType.OPERATOR);
 
     if (tokenValueOperator != null) {
       isSuccess = true;
@@ -252,38 +234,34 @@ public class AuthZUtils {
   }
 
   /** This method creates more than one realtionships for UASType */
-  public static boolean createUASTypeRelationships(
-    String UASTypeID,
-    String manufacturerID,
-    String manufacturerUserID
-  ) {
+  public boolean createUASTypeRelationships(
+      String UASTypeID,
+      String manufacturerID,
+      String manufacturerUserID) {
     boolean isSuccess = false;
 
     boolean checkIsManufacturerAdmin = checkIsResourceAdmin(
-      ResourceType.MANUFACTURER,
-      manufacturerID,
-      manufacturerUserID
-    );
+        ResourceType.MANUFACTURER,
+        manufacturerID,
+        manufacturerUserID);
 
     if (!checkIsManufacturerAdmin) {
       return isSuccess;
     }
 
     String tokenValueManufacturer = spicedbClient.writeRelationship(
-      RelationshipType.MANUFACTURER,
-      UASTypeID,
-      ResourceType.UASTYPE,
-      manufacturerID,
-      SubjectType.MANUFACTURER
-    );
+        RelationshipType.MANUFACTURER,
+        UASTypeID,
+        ResourceType.UASTYPE,
+        manufacturerID,
+        SubjectType.MANUFACTURER);
 
     String tokenValueRgulator = spicedbClient.writeRelationship(
-      RelationshipType.REGULATOR,
-      UASTypeID,
-      ResourceType.UASTYPE,
-      getCAAResourceID(),
-      SubjectType.CAA
-    );
+        RelationshipType.REGULATOR,
+        UASTypeID,
+        ResourceType.UASTYPE,
+        getCAAResourceID(),
+        SubjectType.CAA);
 
     if (tokenValueManufacturer != null && tokenValueRgulator != null) {
       isSuccess = true;
@@ -298,47 +276,41 @@ public class AuthZUtils {
   /**
    * Check if the pilot is a flight operations admin
    */
-  public static boolean isFlightOperationsAdmin(
-    String pilotUserID,
-    String operatorResourceID
-  ) {
+  public boolean isFlightOperationsAdmin(
+      String pilotUserID,
+      String operatorResourceID) {
     boolean hasPermission = spicedbClient.checkPermission(
-      Permission.FLIGHT_OPERATIONS_ADMIN,
-      ResourceType.OPERATOR,
-      operatorResourceID,
-      SubjectType.USER,
-      pilotUserID
-    );
+        Permission.FLIGHT_OPERATIONS_ADMIN,
+        ResourceType.OPERATOR,
+        operatorResourceID,
+        SubjectType.USER,
+        pilotUserID);
 
     return hasPermission;
   }
 
   /** This function is used to add pilot user to operator */
-  public static boolean addPilotToOperator(
-    String pilotUserID,
-    String operatorResourceID,
-    String operatorUserID
-  ) {
+  public boolean addPilotToOperator(
+      String pilotUserID,
+      String operatorResourceID,
+      String operatorUserID) {
     String tokenValue = null;
     boolean isSuccess = false;
 
     boolean addPilotToOperator = spicedbClient.checkPermission(
-      Permission.ADD_PILOT,
-      ResourceType.OPERATOR,
-      operatorResourceID,
-      SubjectType.USER,
-      operatorUserID
-    );
+        Permission.ADD_PILOT,
+        ResourceType.OPERATOR,
+        operatorResourceID,
+        SubjectType.USER,
+        operatorUserID);
 
     if (addPilotToOperator) {
-      tokenValue =
-        spicedbClient.writeRelationship(
+      tokenValue = spicedbClient.writeRelationship(
           RelationshipType.PILOT,
           operatorResourceID,
           ResourceType.OPERATOR,
           pilotUserID,
-          SubjectType.USER
-        );
+          SubjectType.USER);
     }
 
     if (tokenValue != null) {
@@ -364,5 +336,14 @@ public class AuthZUtils {
    * This function will be used to lookup the UAS resource association with
    * operators
    */
-  public static void lookupUASResource(String UASResourceID) {}
+  public static void lookupUASResource(String UASResourceID) {
+  }
+
+  public void shutdownChannel() {
+    try {
+      this.spicedbClient.shutdownChannel();
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
 }
