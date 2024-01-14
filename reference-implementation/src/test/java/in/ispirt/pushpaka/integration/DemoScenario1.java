@@ -98,7 +98,7 @@ public class DemoScenario1 {
     throws ClientProtocolException, IOException, ParseException {
     String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
     String jwtManufacturerAdmin = TestUtils.loginManufacturerAdminUser();
-    UUID uidManufacturerAdmin = TestUtils.userCreate(jwtManufacturerAdmin); 
+    UUID uidManufacturerAdmin = TestUtils.userCreate(jwtManufacturerAdmin);
     try {
       SignedJWT jwtsCaaAdmin = TestUtils.parseJwt(jwtCaaAdmin);
       TestUtils.assertJwt(jwtsCaaAdmin);
@@ -106,12 +106,19 @@ public class DemoScenario1 {
       UUID leid = TestUtils.legalEntityCreate(jwtManufacturerAdmin, UUID.randomUUID());
       UUID mid = TestUtils.manufacturerCreate(jwtManufacturerAdmin, leid);
 
-      boolean isManufacturerAdminGranted = TestUtils.grantManufacturerAdmin(authZ,mid,uidManufacturerAdmin);
-      boolean isManufacturerApproved = TestUtils.approveManufacturer(authZ, uidManufacturerAdmin, idCaaAdmin);
+      boolean isManufacturerAdminGranted = TestUtils.grantManufacturerAdmin(
+        authZ,
+        mid,
+        uidManufacturerAdmin
+      );
+      boolean isManufacturerApproved = TestUtils.approveManufacturer(
+        authZ,
+        uidManufacturerAdmin,
+        idCaaAdmin
+      );
 
       Logging.info("manufacturer admin granted : " + isManufacturerAdminGranted);
-       Logging.info("manufacturer approved : " + isManufacturerApproved);
-
+      Logging.info("manufacturer approved : " + isManufacturerApproved);
     } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }
@@ -121,19 +128,24 @@ public class DemoScenario1 {
   @Test
   public void testScenario_1_a_3()
     throws ClientProtocolException, IOException, ParseException {
-    String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
-    UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
     String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
-    UUID uidCaaAdmin = TestUtils.userCreate(jwtCaaAdmin); // TODO: skip insertion
     String jwtOperatorAdmin = TestUtils.loginOperatorAdminUser();
-    UUID uidOperatorAdmin = TestUtils.userCreate(jwtOperatorAdmin); // TODO: skip insertion
     try {
       SignedJWT jwtsCaaAdmin = TestUtils.parseJwt(jwtCaaAdmin);
       TestUtils.assertJwt(jwtsCaaAdmin);
       UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
       UUID leid = TestUtils.legalEntityCreate(jwtOperatorAdmin, UUID.randomUUID());
       UUID oid = TestUtils.operatorCreate(jwtOperatorAdmin, leid);
-      TestUtils.approveOperator(jwtCaaAdmin, oid);
+
+      boolean isOperatorAdminGranted = TestUtils.grantOperatorAdmin(
+        authZ,
+        oid,
+        idCaaAdmin
+      );
+      boolean isOperatorApproved = TestUtils.approveManufacturer(authZ, oid, idCaaAdmin);
+
+      Logging.info("operator admin granted : " + isOperatorAdminGranted);
+      Logging.info("operator approved : " + isOperatorApproved);
     } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }

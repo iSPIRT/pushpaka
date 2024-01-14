@@ -237,4 +237,18 @@ public class AuthZTest {
 
     assertTrue(isApprover);
   }
+
+  @Test
+  public void testApproveOperator() {
+    String operatorResourceID = "operator-1";
+    String caaResourceAdminID = "caa-user";
+
+    boolean isApprover = authZ.approveResourceByRegulator(
+      ResourceType.OPERATOR,
+      operatorResourceID,
+      caaResourceAdminID
+    );
+
+    assertTrue(isApprover);
+  }
 }

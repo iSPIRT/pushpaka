@@ -685,6 +685,23 @@ public class TestUtils {
     return isSuccess;
   }
 
+  public static boolean grantOperatorAdmin(
+    AuthZ authZ,
+    UUID opertorID,
+    UUID opertorAdminID
+  ) {
+    boolean isSuccess = false;
+
+    isSuccess =
+      authZ.createResoureTypeAdmin(
+        ResourceType.MANUFACTURER,
+        opertorID.toString(),
+        opertorAdminID.toString()
+      );
+
+    return isSuccess;
+  }
+
   public static boolean approveManufacturer(
     AuthZ authZ,
     UUID manufacturerUUID,
@@ -696,6 +713,23 @@ public class TestUtils {
       authZ.approveResourceByRegulator(
         ResourceType.MANUFACTURER,
         manufacturerUUID.toString(),
+        CAAAdminUserID.toString()
+      );
+
+    return isSuccess;
+  }
+
+  public static boolean approveOperator(
+    AuthZ authZ,
+    UUID operatorUUID,
+    UUID CAAAdminUserID
+  ) {
+    boolean isSuccess = false;
+
+    isSuccess =
+      authZ.approveResourceByRegulator(
+        ResourceType.OPERATOR,
+        operatorUUID.toString(),
         CAAAdminUserID.toString()
       );
 
