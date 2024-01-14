@@ -7,7 +7,7 @@ public enum Permission {
   COMMISION_UAS,
   REGISTER_UASTYPE,
   FLIGHT_OPERATIONS_ADMIN,
-  APPROVE_OPERATOR,
+  APPROVE,
   READ_UAS,
   DECOMMISION_UAS,
   READ_UASTYPE,
@@ -33,8 +33,8 @@ public enum Permission {
         return "register_uastype";
       case FLIGHT_OPERATIONS_ADMIN:
         return "flight_operations_admin";
-      case APPROVE_OPERATOR:
-        return "approve_operator";
+      case APPROVE:
+        return "approve";
       case READ_UAS:
         return "read_uas";
       case DECOMMISION_UAS:

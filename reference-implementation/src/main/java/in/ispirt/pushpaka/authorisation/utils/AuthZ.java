@@ -26,67 +26,65 @@ public class AuthZ {
   /**
    * This method is used to create a platform admin with a buil-in seed for the
    * platform
-   * This method also has a built-in seed for a resource type CAA that implies
-   * that
-   * the platform admin has access to resource type CAA and administer it
+   * 
    */
-  public boolean createPlatformAdmin(String subjectID) {
-    // create relation of administrator
-    // create relation with resource type
+  public boolean createPlatformAdmin(String platformUserID) {
+    String tokenValue = null;
 
-    String tokenValue_1 = spicedbClient.writeRelationship(
+    tokenValue = spicedbClient.writeRelationship(
         RelationshipType.ADMINISTRATOR,
         AuthZConstants.PLATFORM_ID,
         ResourceType.PLATFORM,
-        subjectID,
+        platformUserID,
         SubjectType.USER);
 
-    String tokenValue_2 = spicedbClient.writeRelationship(
-        RelationshipType.OWNER,
-        ResourceType.CAA.getResourceType(),
-        ResourceType.PLATFORM_RESOURCETYPE,
-        AuthZConstants.PLATFORM_ID,
-        SubjectType.PLATFORM);
-
-    if (tokenValue_1 != null && tokenValue_2 != null) {
+    if (tokenValue != null) {
       return true;
     } else {
       return false;
     }
-    // platform digital-sky administrator user<input/>
-    // resource caa platform digital-sky
     // platform:digital-sky-platform#administrator@user:platform-user
-    // platform_resource_type:caa#owner@platform:digital-sky-platform
+  }
+
+  public boolean associateCAAToPlatform(String caaResourceID) {
+    String tokenValue = null;
+
+    tokenValue = spicedbClient.writeRelationship(
+        RelationshipType.PLATFORM,
+        caaResourceID,
+        ResourceType.CAA,
+        AuthZConstants.PLATFORM_ID,
+        SubjectType.PLATFORM);
+
+    if (tokenValue != null) {
+      return true;
+    } else {
+      return false;
+    }
+    // caa:caa-authority#platform@platform:digital-sky-platform
   }
 
   /**
-   * This method allows for any resource type admin user to be created by a
+   * This method is used to create a platform admin with a buil-in seed for the
    * platform
-   * admin
+   * 
    */
-  public boolean createResoureTypeAdminByPlatformUser(
-      ResourceType resourceType,
-      String resourceID,
-      String resourceAdminID,
-      String platformAdminID) {
+  public boolean createCAAAdmin(String caaResourceID , String caaUserAdminID , String platformUserID) {
     String tokenValue = null;
 
-    // check permission and then create admin for the given resourceID
-    boolean isPlatformAdmin = spicedbClient.checkPermission(
-        Permission.SUPER_ADMIN,
-        ResourceType.PLATFORM_RESOURCETYPE,
-        resourceType.getResourceType(),
-        SubjectType.USER,
-        platformAdminID);
-
-    // create admin for the provided resource
-    if (isPlatformAdmin) {
+    boolean isCAAAdmin = spicedbClient.checkPermission(Permission.SUPER_ADMIN, 
+    ResourceType.CAA, 
+    caaResourceID , 
+    SubjectType.USER, 
+    platformUserID);
+    
+    if(isCAAAdmin){
       tokenValue = spicedbClient.writeRelationship(
-          RelationshipType.ADMINISTRATOR,
-          resourceID,
-          resourceType,
-          resourceAdminID,
-          SubjectType.USER);
+        RelationshipType.ADMINISTRATOR,
+        caaResourceID,
+        ResourceType.CAA,
+        caaUserAdminID,
+        SubjectType.USER);
     }
 
     if (tokenValue != null) {

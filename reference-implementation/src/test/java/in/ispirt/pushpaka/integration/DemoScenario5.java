@@ -46,7 +46,6 @@ class DemoScenario5 {
       TestUtils.assertJwt(jwtsCaaAdmin);
       UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
       Logging.info("id Caa Admin: " + idCaaAdmin.toString());
-      TestUtils.grantCaaAdmin(jwtPlatformAdmin, idCaaAdmin); // TODO: spicedb call
       UUID leidCaa = TestUtils.legalEntityCreate(jwtCaaAdmin, UUID.randomUUID());
       UUID caaid = TestUtils.civilAviationAuthorityCreate(
         jwtCaaAdmin,
@@ -106,7 +105,6 @@ class DemoScenario5 {
       TestUtils.assertJwt(jwtsCaaAdmin);
       UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
       Logging.info("id Caa Admin: " + idCaaAdmin.toString());
-      TestUtils.grantCaaAdmin(jwtPlatformAdmin, idCaaAdmin); // TODO: spicedb call
       UUID leidCaa = TestUtils.legalEntityCreate(jwtCaaAdmin, UUID.randomUUID());
       UUID caaid = TestUtils.civilAviationAuthorityCreate(
         jwtCaaAdmin,
@@ -166,7 +164,6 @@ class DemoScenario5 {
       TestUtils.assertJwt(jwtsCaaAdmin);
       UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
       Logging.info("id Caa Admin: " + idCaaAdmin.toString());
-      TestUtils.grantCaaAdmin(jwtPlatformAdmin, idCaaAdmin); // TODO: spicedb call
       UUID leidCaa = TestUtils.legalEntityCreate(jwtCaaAdmin, UUID.randomUUID());
       UUID caaid = TestUtils.civilAviationAuthorityCreate(
         jwtCaaAdmin,
@@ -226,7 +223,6 @@ class DemoScenario5 {
       TestUtils.assertJwt(jwtsCaaAdmin);
       UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
       Logging.info("id Caa Admin: " + idCaaAdmin.toString());
-      TestUtils.grantCaaAdmin(jwtPlatformAdmin, idCaaAdmin); // TODO: spicedb call
       UUID leidCaa = TestUtils.legalEntityCreate(jwtCaaAdmin, UUID.randomUUID());
       UUID caaid = TestUtils.civilAviationAuthorityCreate(
         jwtCaaAdmin,
@@ -286,7 +282,6 @@ class DemoScenario5 {
       TestUtils.assertJwt(jwtsCaaAdmin);
       UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
       Logging.info("id Caa Admin: " + idCaaAdmin.toString());
-      TestUtils.grantCaaAdmin(jwtPlatformAdmin, idCaaAdmin); // TODO: spicedb call
       UUID leidCaa = TestUtils.legalEntityCreate(jwtCaaAdmin, UUID.randomUUID());
       UUID caaid = TestUtils.civilAviationAuthorityCreate(
         jwtCaaAdmin,

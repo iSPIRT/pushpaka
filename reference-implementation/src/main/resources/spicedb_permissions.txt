@@ -10,21 +10,20 @@
   	permission super_admin = administrator
   }
 
-  definition platform_resource_type {
-  	relation owner: platform
-  	permission super_admin = owner->super_admin
-  }
-
   /** a regulator in permission architecture . This can only be one */
   definition caa {
+  	relation platform: platform
   	relation administrator: user
-  	permission super_admin = administrator
+  	permission super_admin = administrator + platform->super_admin
   }
+
 
   /** producer of uas and uas types */
   definition manufacturer {
   	relation administrator: user
+  	relation regulator: caa
   	permission super_admin = administrator
+  	permission approve = regulator->super_admin
   	permission commission_uas = super_admin
   	permission register_uastype = super_admin
   }
@@ -36,7 +35,7 @@
   	relation pilot: user
   	permission super_admin = administrator
   	permission flight_operations_admin = pilot
-  	permission approve_operator = regulator->super_admin
+  	permission approve = regulator->super_admin
   	permission add_pilot = super_admin
   	permission update_flightplan = flight_operations_admin
   	permission delete_flightplan = flight_operations_admin
@@ -62,5 +61,5 @@
   	relation regulator: caa
   	permission read_uastype = manufacturer->super_admin + regulator->super_admin
   	permission discontinue_uastype = manufacturer->super_admin + regulator->super_admin
-  	permission approve_uastype = regulator->super_admin
+  	permission approve = regulator->super_admin
   }

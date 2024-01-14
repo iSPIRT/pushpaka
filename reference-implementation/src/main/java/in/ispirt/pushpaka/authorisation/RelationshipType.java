@@ -6,6 +6,7 @@ public enum RelationshipType {
   REGULATOR,
   PILOT,
   MANUFACTURER,
+  PLATFORM,
   OWNER;
 
   public String getRelationshipType() {
@@ -22,6 +23,8 @@ public enum RelationshipType {
         return "manufacturer";
       case OWNER:
         return "owner";
+      case PLATFORM:
+        return "platform";
       default:
         return null;
     }

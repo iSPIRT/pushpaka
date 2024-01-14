@@ -1,10 +1,16 @@
 package in.ispirt.pushpaka.authorisation.utils;
 
 import com.authzed.api.v1.Core;
+import com.authzed.api.v1.ExperimentalServiceGrpc;
+import com.authzed.api.v1.ExperimentalServiceOuterClass;
 import com.authzed.api.v1.Core.ObjectReference;
 import com.authzed.api.v1.Core.Relationship;
 import com.authzed.api.v1.Core.RelationshipUpdate;
 import com.authzed.api.v1.Core.RelationshipUpdate.Operation;
+import com.authzed.api.v1.ExperimentalServiceGrpc.ExperimentalServiceBlockingStub;
+import com.authzed.api.v1.ExperimentalServiceGrpc.ExperimentalServiceFutureStub;
+import com.authzed.api.v1.ExperimentalServiceGrpc.ExperimentalServiceImplBase;
+import com.authzed.api.v1.ExperimentalServiceOuterClass.BulkExportRelationshipsRequest;
 import com.authzed.api.v1.Core.SubjectReference;
 import com.authzed.api.v1.PermissionService;
 import com.authzed.api.v1.PermissionService.CheckPermissionResponse;
@@ -205,15 +211,23 @@ public class SpicedbClient {
     }
   }
 
-  public void writeSchema(String filename) {
+  public boolean writeSchema(String filename) {
+    boolean isSuccess = false;
     try {
+     
+
       Path p = Path.of(filename);
       String schema = Files.readString(p);
       WriteSchemaRequest wsr = WriteSchemaRequest.newBuilder().setSchema(schema).build();
       this.getSchemaService().writeSchema(wsr);
+
+      isSuccess = true;
+
     } catch (Exception e) {
       e.printStackTrace();
     }
+
+    return isSuccess;
   }
 
   public void shutdownChannel() throws InterruptedException {
@@ -285,4 +299,5 @@ public class SpicedbClient {
 
     return size;
   }
+
 }

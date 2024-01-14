@@ -1,4 +1,5 @@
 schema: |
+
   /** user represents a user */
   definition user {}
 
@@ -10,21 +11,20 @@ schema: |
   	permission super_admin = administrator
   }
 
-  definition platform_resource_type {
-  	relation owner: platform
-  	permission super_admin = owner->super_admin
-  }
-
   /** a regulator in permission architecture . This can only be one */
   definition caa {
+  	relation platform: platform
   	relation administrator: user
-  	permission super_admin = administrator
+  	permission super_admin = administrator + platform->super_admin
   }
+
 
   /** producer of uas and uas types */
   definition manufacturer {
   	relation administrator: user
+  	relation regulator: caa
   	permission super_admin = administrator
+  	permission approve = regulator->super_admin
   	permission commission_uas = super_admin
   	permission register_uastype = super_admin
   }
@@ -36,7 +36,7 @@ schema: |
   	relation pilot: user
   	permission super_admin = administrator
   	permission flight_operations_admin = pilot
-  	permission approve_operator = regulator->super_admin
+  	permission approve = regulator->super_admin
   	permission add_pilot = super_admin
   	permission update_flightplan = flight_operations_admin
   	permission delete_flightplan = flight_operations_admin
@@ -62,11 +62,10 @@ schema: |
   	relation regulator: caa
   	permission read_uastype = manufacturer->super_admin + regulator->super_admin
   	permission discontinue_uastype = manufacturer->super_admin + regulator->super_admin
-  	permission approve_uastype = regulator->super_admin
+  	permission approve = regulator->super_admin
   }
 relationships: |-
   platform:digital-sky-platform#administrator@user:platform-user
-  platform_resource_type:caa#owner@platform:digital-sky-platform
   caa:caa-authority#administrator@user:caa-user
   operator:operator-1#administrator@user:operator-user
   operator:operator-1#regulator@caa:caa-authority
@@ -77,5 +76,3 @@ relationships: |-
   uastype:uastype-1#manufacturer@manufacturer:manufacturer-1
   uastype:uastype-1#regulator@caa:caa-authority
   operator:operator-1#pilot@user:pilot-1
-assertions: null
-validation: null
