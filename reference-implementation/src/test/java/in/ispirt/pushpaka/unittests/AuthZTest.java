@@ -223,4 +223,18 @@ public class AuthZTest {
 
     assertTrue(isSuccess);
   }
+
+  @Test
+  public void testApproveManufacturer() {
+    String manufacturerResourceID = "manufacturer-1";
+    String caaResourceAdminID = "caa-user";
+
+    boolean isApprover = authZ.approveResourceByRegulator(
+      ResourceType.MANUFACTURER,
+      manufacturerResourceID,
+      caaResourceAdminID
+    );
+
+    assertTrue(isApprover);
+  }
 }

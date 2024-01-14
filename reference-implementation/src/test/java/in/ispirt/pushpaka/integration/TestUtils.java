@@ -6,7 +6,9 @@ import static org.junit.Assert.assertTrue;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.rpc.context.AttributeContext.Auth;
 import com.nimbusds.jwt.SignedJWT;
+import in.ispirt.pushpaka.authorisation.ResourceType;
 import in.ispirt.pushpaka.authorisation.utils.AuthZ;
 import in.ispirt.pushpaka.utils.Logging;
 import java.io.IOException;
@@ -663,6 +665,40 @@ public class TestUtils {
         CAAAdminUserID.toString(),
         platformAdminUserID.toString()
       );
+    return isSuccess;
+  }
+
+  public static boolean grantManufacturerAdmin(
+    AuthZ authZ,
+    UUID manufacturerID,
+    UUID manufacturerAdminID
+  ) {
+    boolean isSuccess = false;
+
+    isSuccess =
+      authZ.createResoureTypeAdmin(
+        ResourceType.MANUFACTURER,
+        manufacturerID.toString(),
+        manufacturerAdminID.toString()
+      );
+
+    return isSuccess;
+  }
+
+  public static boolean approveManufacturer(
+    AuthZ authZ,
+    UUID manufacturerUUID,
+    UUID CAAAdminUserID
+  ) {
+    boolean isSuccess = false;
+
+    isSuccess =
+      authZ.approveResourceByRegulator(
+        ResourceType.MANUFACTURER,
+        manufacturerUUID.toString(),
+        CAAAdminUserID.toString()
+      );
+
     return isSuccess;
   }
 

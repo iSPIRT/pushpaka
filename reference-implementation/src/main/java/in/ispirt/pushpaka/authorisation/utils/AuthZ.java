@@ -137,7 +137,10 @@ public class AuthZ {
       isSuccess = true;
     }
 
-    if (ResourceType.OPERATOR.equals(resourceType)) {
+    if (
+      ResourceType.OPERATOR.equals(resourceType) ||
+      ResourceType.MANUFACTURER.equals(resourceType)
+    ) {
       operatorTokenValue =
         spicedbClient.writeRelationship(
           RelationshipType.REGULATOR,
@@ -358,7 +361,7 @@ public class AuthZ {
   /**
    * this function will be used to lookup the groups to which a pilot belongs to
    */
-  public static void lookupPilotToOperators(String pilotUserID) {
+  public void lookupPilotToOperators(String pilotUserID) {
     /**
      * this function will help in looking up pilot
      * across multiple groups
@@ -369,7 +372,7 @@ public class AuthZ {
    * This function will be used to lookup the UAS resource association with
    * operators
    */
-  public static void lookupUASResource(String UASResourceID) {}
+  public void lookupUASResource(String UASResourceID) {}
 
   public void shutdownChannel() {
     try {
@@ -377,5 +380,21 @@ public class AuthZ {
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
+  }
+
+  public boolean approveResourceByRegulator(
+    ResourceType resourceType,
+    String resourceID,
+    String caaAdminUserID
+  ) {
+    boolean isApprover = spicedbClient.checkPermission(
+      Permission.APPROVE,
+      resourceType,
+      resourceID,
+      SubjectType.USER,
+      caaAdminUserID
+    );
+
+    return isApprover;
   }
 }

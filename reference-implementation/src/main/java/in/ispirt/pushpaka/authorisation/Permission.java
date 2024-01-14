@@ -12,7 +12,6 @@ public enum Permission {
   DECOMMISION_UAS,
   READ_UASTYPE,
   DISCONTINUE_UASTYPE,
-  APPROVE_UASTYPE,
   UPDATE_FLIGHTPLAN,
   DELETE_FLIGHTPLAN,
   EXECUTE_FLIGHTPLAN,
@@ -43,8 +42,6 @@ public enum Permission {
         return "read_usatype";
       case DISCONTINUE_UASTYPE:
         return "discontinue_uastype";
-      case APPROVE_UASTYPE:
-        return "approve_usatype";
       case UPDATE_FLIGHTPLAN:
         return "update_flightplan";
       case DELETE_FLIGHTPLAN:

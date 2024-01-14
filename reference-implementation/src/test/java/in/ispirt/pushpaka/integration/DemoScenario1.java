@@ -85,8 +85,8 @@ public class DemoScenario1 {
         idCaaAdmin
       );
 
-      Logging.info("CAA adin grant created : " + associateCAAToPlatform);
-      Logging.info("CAA adin grant created : " + caaAdminGrantCreated);
+      Logging.info("association with platform created : " + associateCAAToPlatform);
+      Logging.info("CAA admin grant created : " + caaAdminGrantCreated);
     } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }
@@ -96,19 +96,22 @@ public class DemoScenario1 {
   @Test
   public void testScenario_1_a_2()
     throws ClientProtocolException, IOException, ParseException {
-    String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
-    UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
     String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
-    UUID uidCaaAdmin = TestUtils.userCreate(jwtCaaAdmin); // TODO: skip insertion
     String jwtManufacturerAdmin = TestUtils.loginManufacturerAdminUser();
-    UUID uidManufacturerAdmin = TestUtils.userCreate(jwtManufacturerAdmin); // TODO: skip insertion
+    UUID uidManufacturerAdmin = TestUtils.userCreate(jwtManufacturerAdmin); 
     try {
       SignedJWT jwtsCaaAdmin = TestUtils.parseJwt(jwtCaaAdmin);
       TestUtils.assertJwt(jwtsCaaAdmin);
       UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
       UUID leid = TestUtils.legalEntityCreate(jwtManufacturerAdmin, UUID.randomUUID());
       UUID mid = TestUtils.manufacturerCreate(jwtManufacturerAdmin, leid);
-      TestUtils.approveManufacturer(jwtCaaAdmin, mid);
+
+      boolean isManufacturerAdminGranted = TestUtils.grantManufacturerAdmin(authZ,mid,uidManufacturerAdmin);
+      boolean isManufacturerApproved = TestUtils.approveManufacturer(authZ, uidManufacturerAdmin, idCaaAdmin);
+
+      Logging.info("manufacturer admin granted : " + isManufacturerAdminGranted);
+       Logging.info("manufacturer approved : " + isManufacturerApproved);
+
     } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }
