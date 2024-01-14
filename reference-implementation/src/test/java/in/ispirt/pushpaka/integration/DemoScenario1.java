@@ -63,7 +63,7 @@ public class DemoScenario1 {
     Logging.info("platform grant created : " + platformGrantCreated);
 
     String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
-    
+
     try {
       SignedJWT jwtsCaaAdmin = TestUtils.parseJwt(jwtCaaAdmin);
       TestUtils.assertJwt(jwtsCaaAdmin);
@@ -76,13 +76,17 @@ public class DemoScenario1 {
         UUID.randomUUID(),
         leid
       );
-      
+
       boolean associateCAAToPlatform = TestUtils.associateCAAToPlatform(authZ, leid);
-      boolean caaAdminGrantCreated = TestUtils.grantCAAAdmin(authZ,mid,uidPlatformAdmin,idCaaAdmin);
+      boolean caaAdminGrantCreated = TestUtils.grantCAAAdmin(
+        authZ,
+        mid,
+        uidPlatformAdmin,
+        idCaaAdmin
+      );
 
       Logging.info("CAA adin grant created : " + associateCAAToPlatform);
       Logging.info("CAA adin grant created : " + caaAdminGrantCreated);
-
     } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }

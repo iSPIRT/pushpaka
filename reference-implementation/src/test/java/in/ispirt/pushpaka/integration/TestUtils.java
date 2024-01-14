@@ -643,7 +643,7 @@ public class TestUtils {
     return isSuccess;
   }
 
-   public static boolean associateCAAToPlatform(AuthZ authZ, UUID CAAResourceID) {
+  public static boolean associateCAAToPlatform(AuthZ authZ, UUID CAAResourceID) {
     boolean isSuccess = false;
     isSuccess = authZ.associateCAAToPlatform(CAAResourceID.toString());
 
@@ -658,7 +658,11 @@ public class TestUtils {
   ) {
     boolean isSuccess = false;
     isSuccess =
-      authZ.createCAAAdmin(CAAResourceID.toString(),CAAAdminUserID.toString() , platformAdminUserID.toString());
+      authZ.createCAAAdmin(
+        CAAResourceID.toString(),
+        CAAAdminUserID.toString(),
+        platformAdminUserID.toString()
+      );
     return isSuccess;
   }
 

@@ -30,7 +30,7 @@ public class AuthZTest {
     boolean isSuccess = spicedbClient.writeSchema(SpicedbClient.SPICEDDB_PERMISSION_FILE);
     String schemaText = spicedbClient.readSchema();
 
-    if (schemaText == null || !(isSuccess) ){
+    if (schemaText == null || !(isSuccess)) {
       assertTrue(false);
     } else {
       assertTrue(schemaText.indexOf("platform") > 0);
@@ -46,13 +46,13 @@ public class AuthZTest {
   }
 
   @Test
-  public void testAssociateCAAToPlatform(){
+  public void testAssociateCAAToPlatform() {
     // caa:caa-authority#platform@platform:digital-sky-platform
 
-     String CAAResourceID = "caa-authority";
-     boolean isSuccess = authZ.associateCAAToPlatform(CAAResourceID);
+    String CAAResourceID = "caa-authority";
+    boolean isSuccess = authZ.associateCAAToPlatform(CAAResourceID);
 
-     assertTrue(isSuccess);
+    assertTrue(isSuccess);
   }
 
   @Test
@@ -68,7 +68,7 @@ public class AuthZTest {
       caaResourceAdminID,
       platformAdminId
     );
-     
+
     assertTrue(isSuccess);
   }
 
