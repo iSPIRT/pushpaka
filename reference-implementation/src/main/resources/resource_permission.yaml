@@ -70,6 +70,30 @@ schema: |-
   	permission discontinue_uastype = manufacturer->super_admin + regulator->super_admin
   	permission approve = regulator->super_admin
   }
+
+  /** dssp */
+  definition dssp {
+  	relation administrator: user
+  	relation regulator: caa
+  	permission super_admin = administrator
+  	permission approve = regulator->super_admin
+  }
+
+  /** trader */
+  definition trader {
+  	relation administrator: user
+  	relation regulator: caa
+  	permission super_admin = administrator
+  	permission approve = regulator->super_admin
+  }
+
+  /** repair agencies */
+  definition repairagences {
+  	relation administrator: user
+  	relation regulator: caa
+  	permission super_admin = administrator
+  	permission approve = regulator->super_admin
+  }
 relationships: |-
   platform:digital-sky-platform#administrator@user:platform-user
   caa:caa-authority#administrator@user:caa-user

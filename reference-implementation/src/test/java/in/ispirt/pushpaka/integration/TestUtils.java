@@ -638,48 +638,48 @@ public class TestUtils {
     return TestUtils.extractUuid(reb);
   }
 
-  public static boolean grantPlatformAdmin(AuthZ authZ, UUID platformAdminUserID) {
+  public static boolean grantPlatformAdmin(AuthZ authZ, UUID platformAdminUserUUID) {
     boolean isSuccess = false;
-    isSuccess = authZ.createPlatformAdmin(platformAdminUserID.toString());
+    isSuccess = authZ.createPlatformAdmin(platformAdminUserUUID.toString());
 
     return isSuccess;
   }
 
-  public static boolean associateCAAToPlatform(AuthZ authZ, UUID CAAResourceID) {
+  public static boolean associateCAAToPlatform(AuthZ authZ, UUID CAAResourceUUID) {
     boolean isSuccess = false;
-    isSuccess = authZ.associateCAAToPlatform(CAAResourceID.toString());
+    isSuccess = authZ.associateCAAToPlatform(CAAResourceUUID.toString());
 
     return isSuccess;
   }
 
   public static boolean grantCAAAdmin(
     AuthZ authZ,
-    UUID CAAResourceID,
-    UUID platformAdminUserID,
-    UUID CAAAdminUserID
+    UUID CAAResourceUUID,
+    UUID platformAdminUserUUID,
+    UUID CAAAdminUserUUID
   ) {
     boolean isSuccess = false;
     isSuccess =
       authZ.createCAAAdmin(
-        CAAResourceID.toString(),
-        CAAAdminUserID.toString(),
-        platformAdminUserID.toString()
+        CAAResourceUUID.toString(),
+        CAAAdminUserUUID.toString(),
+        platformAdminUserUUID.toString()
       );
     return isSuccess;
   }
 
   public static boolean grantManufacturerAdmin(
     AuthZ authZ,
-    UUID manufacturerID,
-    UUID manufacturerAdminID
+    UUID manufacturerUUID,
+    UUID manufacturerAdminUUID
   ) {
     boolean isSuccess = false;
 
     isSuccess =
       authZ.createResoureTypeAdmin(
         ResourceType.MANUFACTURER,
-        manufacturerID.toString(),
-        manufacturerAdminID.toString()
+        manufacturerUUID.toString(),
+        manufacturerAdminUUID.toString()
       );
 
     return isSuccess;
@@ -687,17 +687,30 @@ public class TestUtils {
 
   public static boolean grantOperatorAdmin(
     AuthZ authZ,
-    UUID opertorID,
-    UUID opertorAdminID
+    UUID opertorUUID,
+    UUID opertorAdminUUID
   ) {
     boolean isSuccess = false;
 
     isSuccess =
       authZ.createResoureTypeAdmin(
         ResourceType.MANUFACTURER,
-        opertorID.toString(),
-        opertorAdminID.toString()
+        opertorUUID.toString(),
+        opertorAdminUUID.toString()
       );
+
+    return isSuccess;
+  }
+
+  public static boolean associatePilotToRegulator(
+    AuthZ authZ,
+    UUID pilotUUID,
+    UUID regulatorUUID
+  ) {
+    boolean isSuccess = false;
+
+    isSuccess =
+      authZ.addPilot(pilotUUID.toString(), regulatorUUID.toString());
 
     return isSuccess;
   }
@@ -730,6 +743,23 @@ public class TestUtils {
       authZ.approveResourceByRegulator(
         ResourceType.OPERATOR,
         operatorUUID.toString(),
+        CAAAdminUserID.toString()
+      );
+
+    return isSuccess;
+  }
+
+  public static boolean approvePilot(
+    AuthZ authZ,
+    UUID pilotUUID,
+    UUID CAAAdminUserID
+  ) {
+    boolean isSuccess = false;
+
+    isSuccess =
+      authZ.approveResourceByRegulator(
+        ResourceType.OPERATOR,
+        pilotUUID.toString(),
         CAAAdminUserID.toString()
       );
 

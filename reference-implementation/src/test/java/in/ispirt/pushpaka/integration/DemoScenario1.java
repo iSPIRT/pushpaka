@@ -155,19 +155,27 @@ public class DemoScenario1 {
   @Test
   public void testScenario_1_a_4()
     throws ClientProtocolException, IOException, ParseException {
-    String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
-    UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
     String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
-    UUID uidCaaAdmin = TestUtils.userCreate(jwtCaaAdmin); // TODO: skip insertion
     String jwtPilot = TestUtils.loginPilotUser();
-    UUID uidPilot = TestUtils.userCreate(jwtPilot); // TODO: skip insertion
     try {
       SignedJWT jwtsCaaAdmin = TestUtils.parseJwt(jwtCaaAdmin);
       TestUtils.assertJwt(jwtsCaaAdmin);
       UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
       SignedJWT jwtsPilot = TestUtils.parseJwt(jwtPilot);
       UUID idPilot = UUID.fromString(jwtsPilot.getJWTClaimsSet().getSubject());
-      TestUtils.approvePilot(jwtCaaAdmin, idPilot);
+
+      //To-Do Need to get the Civial Aviation Authority
+      UUID regulatorUUID = null;
+
+      boolean associatePilotToRegulator = TestUtils.associatePilotToRegulator(
+        authZ,idPilot,regulatorUUID);
+
+      boolean isPilotApproved = TestUtils.approvePilot(authZ,
+      idCaaAdmin, idPilot);
+
+      Logging.info("pilot association crated : " + associatePilotToRegulator);
+      Logging.info("pilot approved : " + isPilotApproved);
+
     } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }
