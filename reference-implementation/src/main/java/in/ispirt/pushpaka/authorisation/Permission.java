@@ -16,6 +16,7 @@ public enum Permission {
   DELETE_FLIGHTPLAN,
   EXECUTE_FLIGHTPLAN,
   ADD_PILOT,
+  REMOVE_PILOT,
   SUPER_ADMIN;
 
   public String getPermission() {
@@ -51,6 +52,8 @@ public enum Permission {
       case SUPER_ADMIN:
         return "super_admin";
       case ADD_PILOT:
+        return "add_pilot";
+      case REMOVE_PILOT:
         return "add_pilot";
       default:
         return null;

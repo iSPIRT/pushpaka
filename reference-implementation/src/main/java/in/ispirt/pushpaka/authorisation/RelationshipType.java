@@ -7,6 +7,7 @@ public enum RelationshipType {
   PILOT,
   MANUFACTURER,
   PLATFORM,
+  FLIGHTPLAN_OPERATOR,
   OWNER;
 
   public String getRelationshipType() {
@@ -25,6 +26,8 @@ public enum RelationshipType {
         return "owner";
       case PLATFORM:
         return "platform";
+      case FLIGHTPLAN_OPERATOR:
+        return "flightplan_operator";
       default:
         return null;
     }

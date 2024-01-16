@@ -8,6 +8,7 @@ public enum ResourceType {
   INCIDENTREPORT,
   CAA,
   MANUFACTURER,
+  PILOT,
   PLATFORM,
   OPERATOR;
 
@@ -31,6 +32,8 @@ public enum ResourceType {
         return "platform";
       case OPERATOR:
         return "operator";
+      case PILOT:
+        return "pilot";
       default:
         return null;
     }

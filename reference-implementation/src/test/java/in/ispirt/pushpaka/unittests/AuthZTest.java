@@ -149,6 +149,22 @@ public class AuthZTest {
   }
 
   @Test
+  public void testRemovePilotToOperator() {
+    // pilot:default-pilot-group#member@user:pilot-user-2
+    String pilotUserID = "pilot-user-1";
+    String operatorResourceID = "operator-1";
+    String operatorAdminUserID = "operator-user";
+
+    boolean isSuccess = authZ.removePilotFromOperator(
+      pilotUserID,
+      operatorResourceID,
+      operatorAdminUserID
+    );
+
+    assertTrue(isSuccess);
+  }
+
+  @Test
   public void testAddPilotToOperatoNegative() {
     // pilot:default-pilot-group#member@user:pilot-user-2
     String pilotUserID = "pilot-user-1";

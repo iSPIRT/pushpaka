@@ -1,22 +1,27 @@
-
   /** user represents a user */
   definition user {}
 
   /** legal entity */
   definition legal_entity {}
 
+  /** platform entity */
   definition platform {
   	relation administrator: user
   	permission super_admin = administrator
   }
 
-  /** a regulator in permission architecture . This can only be one */
+  /** regulator */
   definition caa {
   	relation platform: platform
   	relation administrator: user
   	permission super_admin = administrator + platform->super_admin
   }
 
+  /** pilot */
+  definition pilot {
+  	relation regulator: caa
+  	permission approve = regulator->super_admin
+  }
 
   /** producer of uas and uas types */
   definition manufacturer {
@@ -32,11 +37,12 @@
   definition operator {
   	relation administrator: user
   	relation regulator: caa
-  	relation pilot: user
+  	relation pilot: pilot
   	permission super_admin = administrator
-  	permission flight_operations_admin = pilot
+  	permission flight_operations_admin = pilot->flight_operations_admin
   	permission approve = regulator->super_admin
   	permission add_pilot = super_admin
+  	permission remove_pilot = super_admin
   	permission update_flightplan = flight_operations_admin
   	permission delete_flightplan = flight_operations_admin
   	permission execute_flightplan = flight_operations_admin

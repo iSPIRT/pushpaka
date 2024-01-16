@@ -122,7 +122,7 @@ public class AuthZ {
   ) {
     boolean isSuccess = false;
     String tokenValue = null;
-    String operatorTokenValue = null;
+    String regulatorTokenValue = null;
 
     tokenValue =
       spicedbClient.writeRelationship(
@@ -141,7 +141,7 @@ public class AuthZ {
       ResourceType.OPERATOR.equals(resourceType) ||
       ResourceType.MANUFACTURER.equals(resourceType)
     ) {
-      operatorTokenValue =
+      regulatorTokenValue =
         spicedbClient.writeRelationship(
           RelationshipType.REGULATOR,
           resourceID,
@@ -150,7 +150,7 @@ public class AuthZ {
           SubjectType.CAA
         );
 
-      if (tokenValue != null && operatorTokenValue != null) {
+      if (tokenValue != null && regulatorTokenValue != null) {
         isSuccess = true;
       }
     }
@@ -356,6 +356,63 @@ public class AuthZ {
     return isSuccess;
     // operator:operator-1#pilot@user:pilot-1
 
+  }
+
+  /** This function is used to add pilot user to operator */
+  public boolean removePilotFromOperator(
+    String pilotUserID,
+    String operatorResourceID,
+    String operatorUserID
+  ) {
+    String tokenValue = null;
+    boolean isSuccess = false;
+    boolean removePilotToOperator = true;
+
+    removePilotToOperator =
+      spicedbClient.checkPermission(
+        Permission.REMOVE_PILOT,
+        ResourceType.OPERATOR,
+        operatorResourceID,
+        SubjectType.USER,
+        operatorUserID
+      );
+
+    if (removePilotToOperator) {
+      tokenValue =
+        spicedbClient.deleteRelationship(
+          RelationshipType.PILOT,
+          operatorResourceID,
+          ResourceType.OPERATOR,
+          pilotUserID,
+          SubjectType.USER
+        );
+    }
+
+    if (tokenValue != null) {
+      isSuccess = true;
+    }
+
+    return isSuccess;
+  }
+
+  public boolean addPilot(String pilotUserID, String caaResourceID) {
+    boolean isSuccess = false;
+    String tokenValue = null;
+
+    tokenValue =
+      spicedbClient.writeRelationship(
+        RelationshipType.REGULATOR,
+        caaResourceID,
+        ResourceType.CAA,
+        pilotUserID,
+        SubjectType.PILOT
+      );
+
+    if (tokenValue != null) {
+      isSuccess = true;
+    }
+
+    return isSuccess;
   }
 
   /**

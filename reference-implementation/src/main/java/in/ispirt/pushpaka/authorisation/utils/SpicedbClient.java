@@ -157,6 +157,60 @@ public class SpicedbClient {
     return response.getWrittenAt().getToken();
   }
 
+  public String deleteRelationship(
+    RelationshipType relationType,
+    String resourceID,
+    ResourceType resourceType,
+    String subjectID,
+    SubjectType subjectType
+  ) {
+    // Write relationship
+    PermissionService.WriteRelationshipsRequest relRequest = PermissionService
+      .WriteRelationshipsRequest.newBuilder()
+      .addUpdates(
+        RelationshipUpdate
+          .newBuilder()
+          .setOperation(OPERATION_DELETE)
+          .setRelationship(
+            Relationship
+              .newBuilder()
+              .setResource(
+                ObjectReference
+                  .newBuilder()
+                  .setObjectType(resourceType.getResourceType())
+                  .setObjectId(resourceID)
+                  .build()
+              )
+              .setRelation(relationType.getRelationshipType())
+              .setSubject(
+                SubjectReference
+                  .newBuilder()
+                  .setObject(
+                    ObjectReference
+                      .newBuilder()
+                      .setObjectType(subjectType.getSubjectType())
+                      .setObjectId(subjectID)
+                      .build()
+                  )
+                  .build()
+              )
+              .build()
+          )
+          .build()
+      )
+      .build();
+
+    PermissionService.WriteRelationshipsResponse response;
+
+    try {
+      response = this.getPermissionsService().writeRelationships(relRequest);
+    } catch (Exception e) {
+      return "";
+    }
+
+    return response.getWrittenAt().getToken();
+  }
+
   public boolean checkPermission(
     Permission permission,
     ResourceType resourceType,
@@ -295,5 +349,17 @@ public class SpicedbClient {
     }
 
     return size;
+  }
+
+  public void exportRelationships() {
+    ExperimentalServiceOuterClass.BulkExportRelationshipsRequest request = ExperimentalServiceOuterClass
+      .BulkExportRelationshipsRequest.newBuilder()
+      .build();
+
+    try {
+      //ExperimentalServiceOuterClass.BulkExportRelationshipsResponse response = m
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    }
   }
 }
