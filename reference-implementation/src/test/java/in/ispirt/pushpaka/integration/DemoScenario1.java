@@ -143,7 +143,7 @@ public class DemoScenario1 {
         oid,
         uidOperatorAdmin
       );
-      boolean isOperatorApproved = TestUtils.approveOperator(authZ,oid,idCaaAdmin);
+      boolean isOperatorApproved = TestUtils.approveOperator(authZ, oid, idCaaAdmin);
 
       Logging.info("operator admin granted : " + isOperatorAdminGranted);
       Logging.info("operator approved : " + isOperatorApproved);
@@ -169,14 +169,15 @@ public class DemoScenario1 {
       UUID regulatorUUID = null;
 
       boolean associatePilotToRegulator = TestUtils.associatePilotToRegulator(
-        authZ,idPilot,regulatorUUID);
+        authZ,
+        idPilot,
+        regulatorUUID
+      );
 
-      boolean isPilotApproved = TestUtils.approvePilot(authZ,
-      idCaaAdmin, idPilot);
+      boolean isPilotApproved = TestUtils.approvePilot(authZ, idCaaAdmin, idPilot);
 
       Logging.info("pilot association crated : " + associatePilotToRegulator);
       Logging.info("pilot approved : " + isPilotApproved);
-
     } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }
@@ -195,7 +196,7 @@ public class DemoScenario1 {
       UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
       UUID leid = TestUtils.legalEntityCreate(jwtDsspAdmin, UUID.randomUUID());
       UUID dsspid = TestUtils.dsspCreate(jwtDsspAdmin, leid);
-      
+
       boolean isDSSPAdminGranted = TestUtils.grantOperatorAdmin(
         authZ,
         dsspid,
@@ -225,15 +226,18 @@ public class DemoScenario1 {
       UUID repairAgencyid = TestUtils.repairAgencyCreate(jwtRepairAgencyAdmin, leid);
 
       boolean isRepairAgencyAdminGranted = TestUtils.grantRepairAgencyAdmin(
-      authZ,
-      repairAgencyid,
-      uidRepairAgencyAdmin
+        authZ,
+        repairAgencyid,
+        uidRepairAgencyAdmin
       );
-      boolean isRepairAgencyApproved = TestUtils.approveOperator(authZ, repairAgencyid, idCaaAdmin);
+      boolean isRepairAgencyApproved = TestUtils.approveOperator(
+        authZ,
+        repairAgencyid,
+        idCaaAdmin
+      );
 
       Logging.info("repair agency admin granted : " + isRepairAgencyAdminGranted);
       Logging.info("repair agency approved : " + isRepairAgencyApproved);
-    
     } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }
@@ -254,15 +258,18 @@ public class DemoScenario1 {
       UUID traderid = TestUtils.traderCreate(jwtTraderAdmin, leid);
 
       boolean isTraderAgencyAdminGranted = TestUtils.grantTraderAdmin(
-      authZ,
-      traderid,
-      uidTraderAdmin
+        authZ,
+        traderid,
+        uidTraderAdmin
       );
-      boolean isTraderAgencyApproved = TestUtils.approveOperator(authZ, traderid, idCaaAdmin);
+      boolean isTraderAgencyApproved = TestUtils.approveOperator(
+        authZ,
+        traderid,
+        idCaaAdmin
+      );
 
       Logging.info("trader admin granted : " + isTraderAgencyAdminGranted);
       Logging.info("trader agency approved : " + isTraderAgencyApproved);
-   
     } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }

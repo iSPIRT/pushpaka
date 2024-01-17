@@ -313,7 +313,7 @@ public class AuthZTest {
     assertTrue(isApprover);
   }
 
-   @Test
+  @Test
   public void testApproveDSSP() {
     String dsspResourceID = "dssp-1";
     String caaResourceAdminID = "caa-user";
@@ -327,7 +327,7 @@ public class AuthZTest {
     assertTrue(isApprover);
   }
 
-   @Test
+  @Test
   public void testApproveTrader() {
     String traderResourceID = "trader-1";
     String caaResourceAdminID = "caa-user";
@@ -341,7 +341,7 @@ public class AuthZTest {
     assertTrue(isApprover);
   }
 
-   @Test
+  @Test
   public void testApproveRepairAgency() {
     String repairAgencyResourceID = "repairagency-1";
     String caaResourceAdminID = "caa-user";
@@ -354,5 +354,4 @@ public class AuthZTest {
 
     assertTrue(isApprover);
   }
-
 }

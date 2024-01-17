@@ -702,11 +702,7 @@ public class TestUtils {
     return isSuccess;
   }
 
-  public static boolean grantDSSPAdmin(
-    AuthZ authZ,
-    UUID dsspUUID,
-    UUID dsspAdminUUID
-  ) {
+  public static boolean grantDSSPAdmin(AuthZ authZ, UUID dsspUUID, UUID dsspAdminUUID) {
     boolean isSuccess = false;
 
     isSuccess =
@@ -753,7 +749,6 @@ public class TestUtils {
     return isSuccess;
   }
 
-
   public static boolean associatePilotToRegulator(
     AuthZ authZ,
     UUID pilotUUID,
@@ -761,8 +756,7 @@ public class TestUtils {
   ) {
     boolean isSuccess = false;
 
-    isSuccess =
-      authZ.addPilot(pilotUUID.toString(), regulatorUUID.toString());
+    isSuccess = authZ.addPilot(pilotUUID.toString(), regulatorUUID.toString());
 
     return isSuccess;
   }
@@ -801,11 +795,7 @@ public class TestUtils {
     return isSuccess;
   }
 
-  public static boolean approveDssp(
-    AuthZ authZ,
-    UUID dsspUUID,
-    UUID CAAAdminUserID
-  ) {
+  public static boolean approveDssp(AuthZ authZ, UUID dsspUUID, UUID CAAAdminUserID) {
     boolean isSuccess = false;
 
     isSuccess =
@@ -818,11 +808,7 @@ public class TestUtils {
     return isSuccess;
   }
 
-  public static boolean approveTrader(
-    AuthZ authZ,
-    UUID traderUUID,
-    UUID CAAAdminUserID
-  ) {
+  public static boolean approveTrader(AuthZ authZ, UUID traderUUID, UUID CAAAdminUserID) {
     boolean isSuccess = false;
 
     isSuccess =
@@ -852,11 +838,7 @@ public class TestUtils {
     return isSuccess;
   }
 
-  public static boolean approvePilot(
-    AuthZ authZ,
-    UUID pilotUUID,
-    UUID CAAAdminUserID
-  ) {
+  public static boolean approvePilot(AuthZ authZ, UUID pilotUUID, UUID CAAAdminUserID) {
     boolean isSuccess = false;
 
     isSuccess =
