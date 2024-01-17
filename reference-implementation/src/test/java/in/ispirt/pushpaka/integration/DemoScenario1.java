@@ -257,19 +257,15 @@ public class DemoScenario1 {
       UUID leid = TestUtils.legalEntityCreate(jwtTraderAdmin, UUID.randomUUID());
       UUID traderid = TestUtils.traderCreate(jwtTraderAdmin, leid);
 
-      boolean isTraderAgencyAdminGranted = TestUtils.grantTraderAdmin(
+      boolean isTraderAdminGranted = TestUtils.grantTraderAdmin(
         authZ,
         traderid,
         uidTraderAdmin
       );
-      boolean isTraderAgencyApproved = TestUtils.approveOperator(
-        authZ,
-        traderid,
-        idCaaAdmin
-      );
+      boolean isTraderApproved = TestUtils.approveOperator(authZ, traderid, idCaaAdmin);
 
-      Logging.info("trader admin granted : " + isTraderAgencyAdminGranted);
-      Logging.info("trader agency approved : " + isTraderAgencyApproved);
+      Logging.info("trader admin granted : " + isTraderAdminGranted);
+      Logging.info("trader agency approved : " + isTraderApproved);
     } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }
