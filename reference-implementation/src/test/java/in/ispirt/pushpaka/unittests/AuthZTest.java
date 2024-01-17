@@ -88,6 +88,51 @@ public class AuthZTest {
   }
 
   @Test
+  public void testCreateTraderAdministrator() {
+    // manufacturer:manufacturer-1#administrator@user:manufacturer-user
+    String traderResourceID = "trader-1";
+    String traderAdminUserID = "trader-user";
+
+    boolean isSuccess = authZ.createResoureTypeAdmin(
+      ResourceType.TRADER,
+      traderResourceID,
+      traderAdminUserID
+    );
+
+    assertTrue(isSuccess);
+  }
+
+  @Test
+  public void testCreateDSSPAdministrator() {
+    // manufacturer:manufacturer-1#administrator@user:manufacturer-user
+    String dsspResourceID = "dssp-1";
+    String dsspAdminUserID = "dssp-user";
+
+    boolean isSuccess = authZ.createResoureTypeAdmin(
+      ResourceType.DSSP,
+      dsspResourceID,
+      dsspAdminUserID
+    );
+
+    assertTrue(isSuccess);
+  }
+
+  @Test
+  public void testCreateRepairAgencyAdministrator() {
+    // manufacturer:manufacturer-1#administrator@user:manufacturer-user
+    String repairAgencyResourceID = "repairagency-1";
+    String repairAgencyAdminUserID = "repairagency-user";
+
+    boolean isSuccess = authZ.createResoureTypeAdmin(
+      ResourceType.REPAIRAGENCY,
+      repairAgencyResourceID,
+      repairAgencyAdminUserID
+    );
+
+    assertTrue(isSuccess);
+  }
+
+  @Test
   public void testCreateOperatorAdministrator() {
     // operator:operator-1#administrator@user:operator-user
     // operator:operator-1#regulator@caa:caa-authority
@@ -267,4 +312,47 @@ public class AuthZTest {
 
     assertTrue(isApprover);
   }
+
+   @Test
+  public void testApproveDSSP() {
+    String dsspResourceID = "dssp-1";
+    String caaResourceAdminID = "caa-user";
+
+    boolean isApprover = authZ.approveResourceByRegulator(
+      ResourceType.DSSP,
+      dsspResourceID,
+      caaResourceAdminID
+    );
+
+    assertTrue(isApprover);
+  }
+
+   @Test
+  public void testApproveTrader() {
+    String traderResourceID = "trader-1";
+    String caaResourceAdminID = "caa-user";
+
+    boolean isApprover = authZ.approveResourceByRegulator(
+      ResourceType.TRADER,
+      traderResourceID,
+      caaResourceAdminID
+    );
+
+    assertTrue(isApprover);
+  }
+
+   @Test
+  public void testApproveRepairAgency() {
+    String repairAgencyResourceID = "repairagency-1";
+    String caaResourceAdminID = "caa-user";
+
+    boolean isApprover = authZ.approveResourceByRegulator(
+      ResourceType.REPAIRAGENCY,
+      repairAgencyResourceID,
+      caaResourceAdminID
+    );
+
+    assertTrue(isApprover);
+  }
+
 }

@@ -139,8 +139,10 @@ public class AuthZ {
 
     if (
       ResourceType.OPERATOR.equals(resourceType) ||
-      ResourceType.MANUFACTURER.equals(resourceType)
-    ) {
+      ResourceType.MANUFACTURER.equals(resourceType) ||
+      ResourceType.DSSP.equals(resourceType) ||
+      ResourceType.TRADER.equals(resourceType) ||
+      ResourceType.REPAIRAGENCY.equals(resourceType)) {
       regulatorTokenValue =
         spicedbClient.writeRelationship(
           RelationshipType.REGULATOR,

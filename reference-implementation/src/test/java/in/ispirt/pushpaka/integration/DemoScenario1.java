@@ -130,6 +130,7 @@ public class DemoScenario1 {
     throws ClientProtocolException, IOException, ParseException {
     String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
     String jwtOperatorAdmin = TestUtils.loginOperatorAdminUser();
+    UUID uidOperatorAdmin = TestUtils.userCreate(jwtOperatorAdmin);
     try {
       SignedJWT jwtsCaaAdmin = TestUtils.parseJwt(jwtCaaAdmin);
       TestUtils.assertJwt(jwtsCaaAdmin);
@@ -140,9 +141,9 @@ public class DemoScenario1 {
       boolean isOperatorAdminGranted = TestUtils.grantOperatorAdmin(
         authZ,
         oid,
-        idCaaAdmin
+        uidOperatorAdmin
       );
-      boolean isOperatorApproved = TestUtils.approveManufacturer(authZ, oid, idCaaAdmin);
+      boolean isOperatorApproved = TestUtils.approveOperator(authZ,oid,idCaaAdmin);
 
       Logging.info("operator admin granted : " + isOperatorAdminGranted);
       Logging.info("operator approved : " + isOperatorApproved);
@@ -185,10 +186,7 @@ public class DemoScenario1 {
   @Test
   public void testScenario_1_a_5()
     throws ClientProtocolException, IOException, ParseException {
-    String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
-    UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
     String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
-    UUID uidCaaAdmin = TestUtils.userCreate(jwtCaaAdmin); // TODO: skip insertion
     String jwtDsspAdmin = TestUtils.loginDsspAdminUser();
     UUID uidDsspAdmin = TestUtils.userCreate(jwtDsspAdmin); // TODO: skip insertion
     try {
@@ -197,7 +195,16 @@ public class DemoScenario1 {
       UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
       UUID leid = TestUtils.legalEntityCreate(jwtDsspAdmin, UUID.randomUUID());
       UUID dsspid = TestUtils.dsspCreate(jwtDsspAdmin, leid);
-      TestUtils.approveDssp(jwtCaaAdmin, dsspid);
+      
+      boolean isDSSPAdminGranted = TestUtils.grantOperatorAdmin(
+        authZ,
+        dsspid,
+        uidDsspAdmin
+      );
+      boolean isDSSPApproved = TestUtils.approveOperator(authZ, dsspid, idCaaAdmin);
+
+      Logging.info("dssp admin granted : " + isDSSPAdminGranted);
+      Logging.info("dssp approved : " + isDSSPApproved);
     } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }
@@ -207,10 +214,7 @@ public class DemoScenario1 {
   @Test
   public void testScenario_1_a_6()
     throws ClientProtocolException, IOException, ParseException {
-    String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
-    UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
     String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
-    UUID uidCaaAdmin = TestUtils.userCreate(jwtCaaAdmin); // TODO: skip insertion
     String jwtRepairAgencyAdmin = TestUtils.loginRepairAgencyAdminUser();
     UUID uidRepairAgencyAdmin = TestUtils.userCreate(jwtRepairAgencyAdmin); // TODO: skip insertion
     try {
@@ -219,7 +223,17 @@ public class DemoScenario1 {
       UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
       UUID leid = TestUtils.legalEntityCreate(jwtRepairAgencyAdmin, UUID.randomUUID());
       UUID repairAgencyid = TestUtils.repairAgencyCreate(jwtRepairAgencyAdmin, leid);
-      TestUtils.approveRepairAgency(jwtCaaAdmin, repairAgencyid);
+
+      boolean isRepairAgencyAdminGranted = TestUtils.grantRepairAgencyAdmin(
+      authZ,
+      repairAgencyid,
+      uidRepairAgencyAdmin
+      );
+      boolean isRepairAgencyApproved = TestUtils.approveOperator(authZ, repairAgencyid, idCaaAdmin);
+
+      Logging.info("repair agency admin granted : " + isRepairAgencyAdminGranted);
+      Logging.info("repair agency approved : " + isRepairAgencyApproved);
+    
     } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }
@@ -229,10 +243,7 @@ public class DemoScenario1 {
   @Test
   public void testScenario_1_a_7()
     throws ClientProtocolException, IOException, ParseException {
-    String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
-    UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
     String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
-    UUID uidCaaAdmin = TestUtils.userCreate(jwtCaaAdmin); // TODO: skip insertion
     String jwtTraderAdmin = TestUtils.loginTraderAdminUser();
     UUID uidTraderAdmin = TestUtils.userCreate(jwtTraderAdmin); // TODO: skip insertion
     try {
@@ -241,7 +252,17 @@ public class DemoScenario1 {
       UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
       UUID leid = TestUtils.legalEntityCreate(jwtTraderAdmin, UUID.randomUUID());
       UUID traderid = TestUtils.traderCreate(jwtTraderAdmin, leid);
-      TestUtils.approveTrader(jwtCaaAdmin, traderid);
+
+      boolean isTraderAgencyAdminGranted = TestUtils.grantTraderAdmin(
+      authZ,
+      traderid,
+      uidTraderAdmin
+      );
+      boolean isTraderAgencyApproved = TestUtils.approveOperator(authZ, traderid, idCaaAdmin);
+
+      Logging.info("trader admin granted : " + isTraderAgencyAdminGranted);
+      Logging.info("trader agency approved : " + isTraderAgencyApproved);
+   
     } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }

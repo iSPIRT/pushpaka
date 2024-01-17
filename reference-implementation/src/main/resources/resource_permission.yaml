@@ -88,7 +88,7 @@ schema: |-
   }
 
   /** repair agencies */
-  definition repairagences {
+  definition repairagency {
   	relation administrator: user
   	relation regulator: caa
   	permission super_admin = administrator

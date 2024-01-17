@@ -10,6 +10,9 @@ public enum ResourceType {
   MANUFACTURER,
   PILOT,
   PLATFORM,
+  DSSP,
+  TRADER,
+  REPAIRAGENCY,
   OPERATOR;
 
   public String getResourceType() {
@@ -34,6 +37,12 @@ public enum ResourceType {
         return "operator";
       case PILOT:
         return "pilot";
+      case TRADER:
+        return "trader";
+      case DSSP:
+        return "dssp";
+      case REPAIRAGENCY:
+        return "repairagency";
       default:
         return null;
     }

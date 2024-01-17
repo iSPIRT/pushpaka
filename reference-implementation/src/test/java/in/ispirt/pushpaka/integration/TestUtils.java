@@ -702,6 +702,58 @@ public class TestUtils {
     return isSuccess;
   }
 
+  public static boolean grantDSSPAdmin(
+    AuthZ authZ,
+    UUID dsspUUID,
+    UUID dsspAdminUUID
+  ) {
+    boolean isSuccess = false;
+
+    isSuccess =
+      authZ.createResoureTypeAdmin(
+        ResourceType.DSSP,
+        dsspUUID.toString(),
+        dsspAdminUUID.toString()
+      );
+
+    return isSuccess;
+  }
+
+  public static boolean grantRepairAgencyAdmin(
+    AuthZ authZ,
+    UUID repairAgencyUUID,
+    UUID repairAgencyAdminUUID
+  ) {
+    boolean isSuccess = false;
+
+    isSuccess =
+      authZ.createResoureTypeAdmin(
+        ResourceType.REPAIRAGENCY,
+        repairAgencyUUID.toString(),
+        repairAgencyUUID.toString()
+      );
+
+    return isSuccess;
+  }
+
+  public static boolean grantTraderAdmin(
+    AuthZ authZ,
+    UUID traderUUID,
+    UUID traderdminUUID
+  ) {
+    boolean isSuccess = false;
+
+    isSuccess =
+      authZ.createResoureTypeAdmin(
+        ResourceType.TRADER,
+        traderUUID.toString(),
+        traderdminUUID.toString()
+      );
+
+    return isSuccess;
+  }
+
+
   public static boolean associatePilotToRegulator(
     AuthZ authZ,
     UUID pilotUUID,
@@ -743,6 +795,57 @@ public class TestUtils {
       authZ.approveResourceByRegulator(
         ResourceType.OPERATOR,
         operatorUUID.toString(),
+        CAAAdminUserID.toString()
+      );
+
+    return isSuccess;
+  }
+
+  public static boolean approveDssp(
+    AuthZ authZ,
+    UUID dsspUUID,
+    UUID CAAAdminUserID
+  ) {
+    boolean isSuccess = false;
+
+    isSuccess =
+      authZ.approveResourceByRegulator(
+        ResourceType.DSSP,
+        dsspUUID.toString(),
+        CAAAdminUserID.toString()
+      );
+
+    return isSuccess;
+  }
+
+  public static boolean approveTrader(
+    AuthZ authZ,
+    UUID traderUUID,
+    UUID CAAAdminUserID
+  ) {
+    boolean isSuccess = false;
+
+    isSuccess =
+      authZ.approveResourceByRegulator(
+        ResourceType.TRADER,
+        traderUUID.toString(),
+        CAAAdminUserID.toString()
+      );
+
+    return isSuccess;
+  }
+
+  public static boolean approveRepairAgency(
+    AuthZ authZ,
+    UUID repairAgencyUUID,
+    UUID CAAAdminUserID
+  ) {
+    boolean isSuccess = false;
+
+    isSuccess =
+      authZ.approveResourceByRegulator(
+        ResourceType.TRADER,
+        repairAgencyUUID.toString(),
         CAAAdminUserID.toString()
       );
 
