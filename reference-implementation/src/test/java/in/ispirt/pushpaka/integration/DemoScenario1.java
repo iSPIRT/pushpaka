@@ -1,5 +1,7 @@
 package in.ispirt.pushpaka.integration;
 
+import static org.mockito.ArgumentMatchers.booleanThat;
+
 import com.nimbusds.jwt.SignedJWT;
 import in.ispirt.pushpaka.authorisation.utils.AuthZ;
 import in.ispirt.pushpaka.authorisation.utils.SpicedbClient;
@@ -197,12 +199,8 @@ public class DemoScenario1 {
       UUID leid = TestUtils.legalEntityCreate(jwtDsspAdmin, UUID.randomUUID());
       UUID dsspid = TestUtils.dsspCreate(jwtDsspAdmin, leid);
 
-      boolean isDSSPAdminGranted = TestUtils.grantOperatorAdmin(
-        authZ,
-        dsspid,
-        uidDsspAdmin
-      );
-      boolean isDSSPApproved = TestUtils.approveOperator(authZ, dsspid, idCaaAdmin);
+      boolean isDSSPAdminGranted = TestUtils.grantDSSPAdmin(authZ, dsspid, uidDsspAdmin);
+      boolean isDSSPApproved = TestUtils.approveDssp(authZ, dsspid, idCaaAdmin);
 
       Logging.info("dssp admin granted : " + isDSSPAdminGranted);
       Logging.info("dssp approved : " + isDSSPApproved);
@@ -230,7 +228,7 @@ public class DemoScenario1 {
         repairAgencyid,
         uidRepairAgencyAdmin
       );
-      boolean isRepairAgencyApproved = TestUtils.approveOperator(
+      boolean isRepairAgencyApproved = TestUtils.approveRepairAgency(
         authZ,
         repairAgencyid,
         idCaaAdmin
@@ -262,7 +260,8 @@ public class DemoScenario1 {
         traderid,
         uidTraderAdmin
       );
-      boolean isTraderApproved = TestUtils.approveOperator(authZ, traderid, idCaaAdmin);
+
+      boolean isTraderApproved = TestUtils.approveTrader(authZ, traderid, idCaaAdmin);
 
       Logging.info("trader admin granted : " + isTraderAdminGranted);
       Logging.info("trader agency approved : " + isTraderApproved);
@@ -275,10 +274,7 @@ public class DemoScenario1 {
   @Test
   public void testScenario_1_a_8()
     throws ClientProtocolException, IOException, ParseException {
-    String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
-    UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
     String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
-    UUID uidCaaAdmin = TestUtils.userCreate(jwtCaaAdmin); // TODO: skip insertion
     String jwtManufacturerAdmin = TestUtils.loginManufacturerAdminUser();
     UUID uidManufacturerAdmin = TestUtils.userCreate(jwtManufacturerAdmin); // TODO: skip insertion
     try {
@@ -287,10 +283,42 @@ public class DemoScenario1 {
       UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
       UUID leid = TestUtils.legalEntityCreate(jwtManufacturerAdmin, UUID.randomUUID());
       UUID manufacturerid = TestUtils.manufacturerCreate(jwtManufacturerAdmin, leid);
-      TestUtils.approveManufacturer(jwtCaaAdmin, manufacturerid);
+
+      boolean isManufacturerAdminGranted = TestUtils.grantManufacturerAdmin(
+        authZ,
+        manufacturerid,
+        uidManufacturerAdmin
+      );
+      boolean isManufacturerApproved = TestUtils.approveManufacturer(
+        authZ,
+        uidManufacturerAdmin,
+        idCaaAdmin
+      );
+
+      Logging.info("manufacturer admin granted : " + isManufacturerAdminGranted);
+      Logging.info("manufacturer approved : " + isManufacturerApproved);
+
       UUID uasTypeId = TestUtils.uasTypeCreate(jwtCaaAdmin, manufacturerid);
-      TestUtils.approveManufacturer(jwtCaaAdmin, manufacturerid);
+
+      boolean isUASTypeAssociationSuccess = TestUtils.associateUASTypeToManufacturer(
+        authZ,
+        uasTypeId,
+        manufacturerid,
+        uidManufacturerAdmin
+      );
+
+      Logging.info("UAS Type associated : " + isUASTypeAssociationSuccess);
+
       UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid);
+
+      boolean isUASAssociationSuccess = TestUtils.associateUASToManufacturer(
+        authZ,
+        uasId,
+        manufacturerid,
+        uidManufacturerAdmin
+      );
+
+      Logging.info("uas association created : " + isUASAssociationSuccess);
     } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }

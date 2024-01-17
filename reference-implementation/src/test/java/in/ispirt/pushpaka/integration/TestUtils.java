@@ -761,6 +761,36 @@ public class TestUtils {
     return isSuccess;
   }
 
+  public static boolean associateUASTypeToManufacturer(
+    AuthZ authZ,
+    UUID uasTypeUUID,
+    UUID manufacturerUUID,
+    UUID manufacturerAdminUserUUID
+  ) {
+    boolean isSuccess = authZ.createUASTypeRelationships(
+      uasTypeUUID.toString(),
+      manufacturerUUID.toString(),
+      manufacturerAdminUserUUID.toString()
+    );
+
+    return isSuccess;
+  }
+
+  public static boolean associateUASToManufacturer(
+    AuthZ authZ,
+    UUID uasUUID,
+    UUID manufacturerUUID,
+    UUID manufacturerAdminUserUUID
+  ) {
+    boolean isSuccess = authZ.createUASManufacturerRelationships(
+      uasUUID.toString(),
+      manufacturerUUID.toString(),
+      manufacturerAdminUserUUID.toString()
+    );
+
+    return isSuccess;
+  }
+
   public static boolean approveManufacturer(
     AuthZ authZ,
     UUID manufacturerUUID,

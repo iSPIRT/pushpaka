@@ -421,7 +421,7 @@ public class AuthZ {
   /**
    * this function will be used to lookup the groups to which a pilot belongs to
    */
-  public void lookupPilotToOperators(String pilotUserID) {
+  public void lookupPilotResource(String pilotUserID) {
     /**
      * this function will help in looking up pilot
      * across multiple groups
