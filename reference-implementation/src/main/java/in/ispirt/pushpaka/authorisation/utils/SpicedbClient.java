@@ -6,12 +6,7 @@ import com.authzed.api.v1.Core.Relationship;
 import com.authzed.api.v1.Core.RelationshipUpdate;
 import com.authzed.api.v1.Core.RelationshipUpdate.Operation;
 import com.authzed.api.v1.Core.SubjectReference;
-import com.authzed.api.v1.ExperimentalServiceGrpc;
-import com.authzed.api.v1.ExperimentalServiceGrpc.ExperimentalServiceBlockingStub;
-import com.authzed.api.v1.ExperimentalServiceGrpc.ExperimentalServiceFutureStub;
-import com.authzed.api.v1.ExperimentalServiceGrpc.ExperimentalServiceImplBase;
 import com.authzed.api.v1.ExperimentalServiceOuterClass;
-import com.authzed.api.v1.ExperimentalServiceOuterClass.BulkExportRelationshipsRequest;
 import com.authzed.api.v1.PermissionService;
 import com.authzed.api.v1.PermissionService.CheckPermissionResponse;
 import com.authzed.api.v1.PermissionService.LookupResourcesResponse;
@@ -29,7 +24,9 @@ import in.ispirt.pushpaka.authorisation.SubjectType;
 import io.grpc.ManagedChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class SpicedbClient {
@@ -311,13 +308,13 @@ public class SpicedbClient {
     return schemaText;
   }
 
-  public int lookupResources(
+  public Set<String> lookupResources(
     Permission permission,
     ResourceType resourceType,
     SubjectType subjectType,
     String subjectID
   ) {
-    int size = 0;
+    Set<String> resources = new HashSet<>();
     PermissionService.LookupResourcesRequest request = PermissionService
       .LookupResourcesRequest.newBuilder()
       .setConsistency(
@@ -342,13 +339,61 @@ public class SpicedbClient {
     try {
       Iterator<LookupResourcesResponse> response =
         this.getPermissionsService().lookupResources(request);
-      size = Iterables.size((Iterable<?>) response);
-      System.out.println("result: " + size);
+      response.forEachRemaining(
+        lookupResourcesResponse -> {
+          resources.add(lookupResourcesResponse.getResourceObjectId());
+        }
+      );
     } catch (Exception exception) {
       exception.printStackTrace();
     }
 
-    return size;
+    return resources;
+  }
+
+  public Set<String> lookupResources(
+    RelationshipType relationshipType,
+    ResourceType resourceType,
+    SubjectType subjectType,
+    String subjectID
+  ) {
+    Set<String> resources = new HashSet<>();
+    PermissionService.LookupResourcesRequest request = PermissionService
+      .LookupResourcesRequest.newBuilder()
+      .setConsistency(
+        PermissionService.Consistency.newBuilder().setMinimizeLatency(true).build()
+      )
+      .setResourceObjectType(resourceType.getResourceType())
+      .setPermission(relationshipType.getRelationshipType())
+      .setSubject(
+        Core
+          .SubjectReference.newBuilder()
+          .setObject(
+            Core
+              .ObjectReference.newBuilder()
+              .setObjectType(subjectType.getSubjectType())
+              .setObjectId(subjectID)
+              .build()
+          )
+          .build()
+      )
+      .build();
+
+    try {
+      Iterator<LookupResourcesResponse> response = (Iterator<LookupResourcesResponse>) (
+        this.getPermissionsService().lookupResources(request)
+      );
+
+      response.forEachRemaining(
+        lookupResourcesResponse -> {
+          resources.add(lookupResourcesResponse.getResourceObjectId());
+        }
+      );
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    }
+
+    return resources;
   }
 
   public void exportRelationships() {

@@ -6,6 +6,7 @@ import in.ispirt.pushpaka.authorisation.ResourceType;
 import in.ispirt.pushpaka.authorisation.SubjectType;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import java.util.Set;
 
 public class AuthZ {
   public SpicedbClient spicedbClient;
@@ -185,10 +186,15 @@ public class AuthZ {
     String manufacturerID,
     String manufacturerUserID
   ) {
-    /** Put additional checks for pre-condition on UAS */
     boolean isSuccess = false;
     String tokenValueManufacturer = null;
     String tokenValueRegulator = null;
+
+    boolean isUASExist = lookupUASResourceOwnership(UASID, manufacturerUserID);
+
+    if (isUASExist) {
+      return isSuccess;
+    }
 
     boolean checkIsManufacturerAdmin = checkIsResourceAdmin(
       ResourceType.MANUFACTURER,
@@ -432,7 +438,21 @@ public class AuthZ {
    * This function will be used to lookup the UAS resource association with
    * operators
    */
-  public void lookupUASResource(String UASResourceID) {}
+  public boolean lookupUASResourceOwnership(
+    String UASResourceID,
+    String manufacturerResourceID
+  ) {
+    Set<String> uasResources = spicedbClient.lookupResources(
+      RelationshipType.MANUFACTURER,
+      ResourceType.UAS,
+      SubjectType.MANUFACTURER,
+      manufacturerResourceID
+    );
+
+    boolean isSuccess = uasResources.contains(UASResourceID);
+
+    return isSuccess;
+  }
 
   public void shutdownChannel() {
     try {

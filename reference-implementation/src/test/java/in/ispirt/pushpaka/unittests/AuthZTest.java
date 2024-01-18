@@ -354,4 +354,24 @@ public class AuthZTest {
 
     assertTrue(isApprover);
   }
+
+  @Test
+  public void testLookupUASResourceOwnership() {
+    String UASID = "uas-1";
+    String manufacturerResourceID = "manufacturer-1";
+
+    boolean isSuccess = authZ.lookupUASResourceOwnership(UASID, manufacturerResourceID);
+
+    assertTrue(isSuccess);
+  }
+
+  @Test
+  public void testLookupUASResourceOwnershipNegative() {
+    String UASID = "uas";
+    String manufacturerResourceID = "manufacturer-1";
+
+    boolean isSuccess = authZ.lookupUASResourceOwnership(UASID, manufacturerResourceID);
+
+    assertFalse(isSuccess);
+  }
 }
