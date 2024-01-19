@@ -6,7 +6,11 @@ import in.ispirt.pushpaka.authorisation.ResourceType;
 import in.ispirt.pushpaka.authorisation.SubjectType;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import org.apache.commons.lang3.text.translate.NumericEntityUnescaper.OPTION;
 
 public class AuthZ {
   public SpicedbClient spicedbClient;
@@ -427,11 +431,19 @@ public class AuthZ {
   /**
    * this function will be used to lookup the groups to which a pilot belongs to
    */
-  public void lookupPilotResource(String pilotUserID) {
+  public Set<String> lookupPilotResource(String pilotUserID) {
     /**
      * this function will help in looking up pilot
      * across multiple groups
      */
+    Set<String> pilotToOperators = spicedbClient.lookupResources(
+      RelationshipType.PILOT,
+      ResourceType.OPERATOR,
+      SubjectType.PILOT,
+      pilotUserID
+    );
+
+    return pilotToOperators;
   }
 
   /**
@@ -476,5 +488,34 @@ public class AuthZ {
     );
 
     return isApprover;
+  }
+
+  public List<ResourceType> lookupResourceTypeForRegulatorApproval() {
+    List<ResourceType> resourceTypeList = new ArrayList<ResourceType>();
+
+    resourceTypeList.add(ResourceType.OPERATOR);
+    resourceTypeList.add(ResourceType.MANUFACTURER);
+    resourceTypeList.add(ResourceType.DSSP);
+    resourceTypeList.add(ResourceType.TRADER);
+    resourceTypeList.add(ResourceType.REPAIRAGENCY);
+    resourceTypeList.add(ResourceType.PILOT);
+
+    return resourceTypeList;
+  }
+
+  public Set<String> lookupResourcesForRegulatorApproval(String caaAdminsUserID) {
+    List<ResourceType> resourceTypeList = lookupResourceTypeForRegulatorApproval();
+    Set<String> resourceIDSetForApproval = new HashSet<String>();
+    for (int counter = 0; counter < resourceTypeList.size(); counter++) {
+      Set<String> resourceSet = spicedbClient.lookupResources(
+        Permission.APPROVE,
+        resourceTypeList.get(counter),
+        SubjectType.USER,
+        caaAdminsUserID
+      );
+      resourceIDSetForApproval.addAll(resourceSet);
+    }
+
+    return resourceIDSetForApproval;
   }
 }

@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import in.ispirt.pushpaka.authorisation.ResourceType;
 import in.ispirt.pushpaka.authorisation.utils.AuthZ;
 import in.ispirt.pushpaka.authorisation.utils.SpicedbClient;
+import java.util.Set;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -373,5 +374,25 @@ public class AuthZTest {
     boolean isSuccess = authZ.lookupUASResourceOwnership(UASID, manufacturerResourceID);
 
     assertFalse(isSuccess);
+  }
+
+  @Test
+  public void testLookupResourcesForRegulatorApprovals() {
+    String caaResourceAdminID = "caa-user";
+
+    Set<String> resourceIdSetForApproval = authZ.lookupResourcesForRegulatorApproval(
+      caaResourceAdminID
+    );
+
+    assertTrue(resourceIdSetForApproval.size() > 0);
+  }
+
+  @Test
+  public void testPilotToOperators() {
+    String pilotUserID = "pilot-user-1";
+
+    Set<String> pilotToOperators = authZ.lookupPilotResource(pilotUserID);
+
+    assertTrue(pilotToOperators.size() > 0);
   }
 }
