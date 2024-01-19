@@ -362,7 +362,7 @@ public class AuthZ {
         );
     }
 
-    if (tokenValue != null && tokenValue.length() > 0 ) {
+    if (tokenValue != null && tokenValue.length() > 0) {
       isSuccess = true;
     }
 
