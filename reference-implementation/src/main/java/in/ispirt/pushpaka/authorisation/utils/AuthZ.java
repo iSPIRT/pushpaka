@@ -358,11 +358,11 @@ public class AuthZ {
           operatorResourceID,
           ResourceType.OPERATOR,
           pilotUserID,
-          SubjectType.USER
+          SubjectType.PILOT
         );
     }
 
-    if (tokenValue != null) {
+    if (tokenValue != null && tokenValue.length() > 0 ) {
       isSuccess = true;
     }
 

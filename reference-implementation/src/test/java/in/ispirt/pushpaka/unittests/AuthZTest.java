@@ -392,7 +392,7 @@ public class AuthZTest {
     String pilotUserID = "pilot-user-1";
 
     Set<String> pilotToOperators = authZ.lookupPilotResource(pilotUserID);
-
+    System.out.println(pilotToOperators);
     assertTrue(pilotToOperators.size() > 0);
   }
 }
