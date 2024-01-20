@@ -1,6 +1,6 @@
 package in.ispirt.pushpaka.integration;
 
-import static org.mockito.ArgumentMatchers.booleanThat;
+import static org.junit.Assert.assertTrue;
 
 import com.nimbusds.jwt.SignedJWT;
 import in.ispirt.pushpaka.authorisation.utils.AuthZ;
@@ -89,6 +89,8 @@ public class DemoScenario1 {
 
       Logging.info("association with platform created : " + associateCAAToPlatform);
       Logging.info("CAA admin grant created : " + caaAdminGrantCreated);
+
+      assertTrue(platformGrantCreated && associateCAAToPlatform && caaAdminGrantCreated);
     } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }

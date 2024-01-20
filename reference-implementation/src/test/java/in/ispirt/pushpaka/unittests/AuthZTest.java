@@ -361,7 +361,10 @@ public class AuthZTest {
     String UASID = "uas-1";
     String manufacturerResourceID = "manufacturer-1";
 
-    boolean isSuccess = authZ.lookupUASResourceOwnership(UASID, manufacturerResourceID);
+    boolean isSuccess = authZ.lookupUASResourceManufacturerOwnership(
+      UASID,
+      manufacturerResourceID
+    );
 
     assertTrue(isSuccess);
   }
@@ -371,7 +374,10 @@ public class AuthZTest {
     String UASID = "uas";
     String manufacturerResourceID = "manufacturer-1";
 
-    boolean isSuccess = authZ.lookupUASResourceOwnership(UASID, manufacturerResourceID);
+    boolean isSuccess = authZ.lookupUASResourceManufacturerOwnership(
+      UASID,
+      manufacturerResourceID
+    );
 
     assertFalse(isSuccess);
   }

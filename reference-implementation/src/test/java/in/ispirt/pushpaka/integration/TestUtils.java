@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.rpc.context.AttributeContext.Auth;
 import com.nimbusds.jwt.SignedJWT;
 import in.ispirt.pushpaka.authorisation.ResourceType;
 import in.ispirt.pushpaka.authorisation.utils.AuthZ;
@@ -66,7 +65,7 @@ public class TestUtils {
     List<NameValuePair> formparams = Arrays.asList(
       new BasicNameValuePair("client_id", "frontend"),
       new BasicNameValuePair("grant_type", "password"),
-      new BasicNameValuePair("client_secret", "FH598McXo0GugVaKqAZYuiM6RDm99QY3"),
+      new BasicNameValuePair("client_secret", "Gm236XNRzKTG04hOiXjhRIgZ59krCOFG"),
       new BasicNameValuePair("scope", "openid"),
       new BasicNameValuePair("username", user.getKey()),
       new BasicNameValuePair("password", user.getValue())

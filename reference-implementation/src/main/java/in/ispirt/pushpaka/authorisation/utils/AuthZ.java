@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.apache.commons.lang3.text.translate.NumericEntityUnescaper.OPTION;
 
 public class AuthZ {
   public SpicedbClient spicedbClient;
@@ -84,6 +83,8 @@ public class AuthZ {
   ) {
     String tokenValue = null;
 
+    boolean isAssociateCAAToPlatformSuccess = associateCAAToPlatform(caaResourceID);
+
     boolean isCAAAdmin = spicedbClient.checkPermission(
       Permission.SUPER_ADMIN,
       ResourceType.CAA,
@@ -92,7 +93,7 @@ public class AuthZ {
       platformUserID
     );
 
-    if (isCAAAdmin) {
+    if (isAssociateCAAToPlatformSuccess && isCAAAdmin) {
       tokenValue =
         spicedbClient.writeRelationship(
           RelationshipType.ADMINISTRATOR,
@@ -194,7 +195,10 @@ public class AuthZ {
     String tokenValueManufacturer = null;
     String tokenValueRegulator = null;
 
-    boolean isUASExist = lookupUASResourceOwnership(UASID, manufacturerUserID);
+    boolean isUASExist = lookupUASResourceManufacturerOwnership(
+      UASID,
+      manufacturerUserID
+    );
 
     if (isUASExist) {
       return isSuccess;
@@ -247,6 +251,12 @@ public class AuthZ {
     /** Put additional checks for pre-condition on UAS */
     boolean isSuccess = false;
     String tokenValueOperator = null;
+
+    boolean isUASExist = lookupUASResourceManufacturerOwnership(UASID, operatorUserID);
+
+    if (isUASExist) {
+      return isSuccess;
+    }
 
     boolean checkIsOperatorAdmin = checkIsResourceAdmin(
       ResourceType.OPERATOR,
@@ -450,7 +460,7 @@ public class AuthZ {
    * This function will be used to lookup the UAS resource association with
    * operators
    */
-  public boolean lookupUASResourceOwnership(
+  public boolean lookupUASResourceManufacturerOwnership(
     String UASResourceID,
     String manufacturerResourceID
   ) {
@@ -459,6 +469,22 @@ public class AuthZ {
       ResourceType.UAS,
       SubjectType.MANUFACTURER,
       manufacturerResourceID
+    );
+
+    boolean isSuccess = uasResources.contains(UASResourceID);
+
+    return isSuccess;
+  }
+
+  public boolean lookupUASResourceOperatorOwnership(
+    String UASResourceID,
+    String operatorResourceID
+  ) {
+    Set<String> uasResources = spicedbClient.lookupResources(
+      RelationshipType.OWNER,
+      ResourceType.UAS,
+      SubjectType.OPERATOR,
+      operatorResourceID
     );
 
     boolean isSuccess = uasResources.contains(UASResourceID);
