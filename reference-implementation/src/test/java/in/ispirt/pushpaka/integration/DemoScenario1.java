@@ -182,12 +182,14 @@ public class DemoScenario1 {
       UUID idPilot = UUID.fromString(jwtsPilot.getJWTClaimsSet().getSubject());
 
       //To-Do Need to get the Civial Aviation Authority
-      UUID regulatorUUID = null;
+      UUID civilAviationAuthorityUUID = UUID.fromString(
+        TestUtils.listCivilAviationAuthorities(authZ)
+      );
 
       boolean associatePilotToRegulator = TestUtils.associatePilotToRegulator(
         authZ,
         idPilot,
-        regulatorUUID
+        civilAviationAuthorityUUID
       );
 
       boolean isPilotApproved = TestUtils.approvePilot(authZ, idCaaAdmin, idPilot);
@@ -504,7 +506,7 @@ public class DemoScenario1 {
         saleId0.toString().length() > 0 &&
         saleId1.toString().length() > 0
       );
-    } catch(ParseException e) {
+    } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }
   }
