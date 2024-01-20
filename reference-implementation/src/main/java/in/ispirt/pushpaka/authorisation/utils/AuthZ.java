@@ -13,6 +13,15 @@ import java.util.Set;
 
 public class AuthZ {
   public SpicedbClient spicedbClient;
+  public String caaResourceID;
+
+  public String getCaaResourceID() {
+    return caaResourceID;
+  }
+
+  public void setCaaResourceID(String caaResourceID) {
+    this.caaResourceID = caaResourceID;
+  }
 
   public SpicedbClient getSpicedbClient() {
     return spicedbClient;
@@ -54,14 +63,18 @@ public class AuthZ {
   public boolean associateCAAToPlatform(String caaResourceID) {
     String tokenValue = null;
 
-    tokenValue =
-      spicedbClient.writeRelationship(
-        RelationshipType.PLATFORM,
-        caaResourceID,
-        ResourceType.CAA,
-        AuthZConstants.PLATFORM_ID,
-        SubjectType.PLATFORM
-      );
+    boolean removeRegulatorCheck = this.removeRegulator();
+
+    if (removeRegulatorCheck) {
+      tokenValue =
+        spicedbClient.writeRelationship(
+          RelationshipType.PLATFORM,
+          caaResourceID,
+          ResourceType.CAA,
+          AuthZConstants.PLATFORM_ID,
+          SubjectType.PLATFORM
+        );
+    }
 
     if (tokenValue != null) {
       return true;
@@ -112,19 +125,14 @@ public class AuthZ {
     // caa:caa-authority#administrator@user:caa-user
   }
 
-  /** Thois method is used to get CAA resource ID */
-  public static String getCAAResourceID() {
-    // return the ID of the CCA resource in the system
-    return AuthZConstants.TEST_CAA_RESOURCE_ID;
-  }
-
   /**
    * This method is used to create resource type admin when creating the resource
    */
   public boolean createResoureTypeAdmin(
     ResourceType resourceType,
     String resourceID,
-    String resourceAdminID
+    String resourceAdminID,
+    String caaResourceID
   ) {
     boolean isSuccess = false;
     String tokenValue = null;
@@ -155,7 +163,7 @@ public class AuthZ {
           RelationshipType.REGULATOR,
           resourceID,
           resourceType,
-          getCAAResourceID(),
+          caaResourceID,
           SubjectType.CAA
         );
 
@@ -189,7 +197,8 @@ public class AuthZ {
   public boolean createUASManufacturerRelationships(
     String UASID,
     String manufacturerID,
-    String manufacturerUserID
+    String manufacturerUserID,
+    String caaResourceID
   ) {
     boolean isSuccess = false;
     String tokenValueManufacturer = null;
@@ -228,7 +237,7 @@ public class AuthZ {
         RelationshipType.REGULATOR,
         UASID,
         ResourceType.UAS,
-        getCAAResourceID(),
+        caaResourceID,
         SubjectType.CAA
       );
 
@@ -289,7 +298,8 @@ public class AuthZ {
   public boolean createUASTypeRelationships(
     String UASTypeID,
     String manufacturerID,
-    String manufacturerUserID
+    String manufacturerUserID,
+    String caaResourceID
   ) {
     boolean isSuccess = false;
 
@@ -315,7 +325,7 @@ public class AuthZ {
       RelationshipType.REGULATOR,
       UASTypeID,
       ResourceType.UASTYPE,
-      getCAAResourceID(),
+      caaResourceID,
       SubjectType.CAA
     );
 
@@ -543,5 +553,49 @@ public class AuthZ {
     }
 
     return resourceIDSetForApproval;
+  }
+
+  public Set<String> lookupRegulator() {
+    Set<String> resourceSet = spicedbClient.lookupResources(
+      RelationshipType.PLATFORM,
+      ResourceType.CAA,
+      SubjectType.PLATFORM,
+      AuthZConstants.PLATFORM_ID
+    );
+
+    System.out.println(resourceSet);
+
+    return resourceSet;
+  }
+
+  public boolean removeRegulator() {
+    boolean isSuccess = false;
+
+    Set<String> regulatorSet = (HashSet<String>) this.lookupRegulator();
+    List<String> regulatorList = new ArrayList<String>(regulatorSet);
+
+    for (int counter = 0; counter < regulatorList.size(); counter++) {
+      System.out.print(regulatorList.get(counter));
+      String tokenValue = spicedbClient.deleteRelationship(
+        RelationshipType.PLATFORM,
+        regulatorList.get(counter),
+        ResourceType.CAA,
+        AuthZConstants.PLATFORM_ID,
+        SubjectType.PLATFORM
+      );
+      if (tokenValue != null) {
+        isSuccess = true;
+      } else {
+        isSuccess = false;
+      }
+    }
+
+    int modifiedRegulatorCount = ((HashSet<String>) this.lookupRegulator()).size();
+
+    if (modifiedRegulatorCount == 0) {
+      isSuccess = true;
+    }
+
+    return isSuccess;
   }
 }

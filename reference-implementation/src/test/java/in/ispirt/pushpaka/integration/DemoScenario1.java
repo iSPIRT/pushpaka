@@ -79,7 +79,6 @@ public class DemoScenario1 {
         leid
       );
 
-      boolean associateCAAToPlatform = TestUtils.associateCAAToPlatform(authZ, leid);
       boolean caaAdminGrantCreated = TestUtils.grantCAAAdmin(
         authZ,
         mid,
@@ -87,10 +86,9 @@ public class DemoScenario1 {
         idCaaAdmin
       );
 
-      Logging.info("association with platform created : " + associateCAAToPlatform);
       Logging.info("CAA admin grant created : " + caaAdminGrantCreated);
 
-      assertTrue(platformGrantCreated && associateCAAToPlatform && caaAdminGrantCreated);
+      assertTrue(platformGrantCreated && caaAdminGrantCreated);
     } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }
@@ -110,19 +108,26 @@ public class DemoScenario1 {
       UUID leid = TestUtils.legalEntityCreate(jwtManufacturerAdmin, UUID.randomUUID());
       UUID mid = TestUtils.manufacturerCreate(jwtManufacturerAdmin, leid);
 
+      UUID civilAviationAuthorityUUID = UUID.fromString(
+        TestUtils.listCivilAviationAuthorities(authZ)
+      );
+
       boolean isManufacturerAdminGranted = TestUtils.grantManufacturerAdmin(
         authZ,
         mid,
-        uidManufacturerAdmin
+        uidManufacturerAdmin,
+        civilAviationAuthorityUUID
       );
       boolean isManufacturerApproved = TestUtils.approveManufacturer(
         authZ,
-        uidManufacturerAdmin,
+        mid,
         idCaaAdmin
       );
 
       Logging.info("manufacturer admin granted : " + isManufacturerAdminGranted);
       Logging.info("manufacturer approved : " + isManufacturerApproved);
+
+      assertTrue(isManufacturerAdminGranted && isManufacturerApproved);
     } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }
@@ -142,15 +147,22 @@ public class DemoScenario1 {
       UUID leid = TestUtils.legalEntityCreate(jwtOperatorAdmin, UUID.randomUUID());
       UUID oid = TestUtils.operatorCreate(jwtOperatorAdmin, leid);
 
+      UUID civilAviationAuthorityUUID = UUID.fromString(
+        TestUtils.listCivilAviationAuthorities(authZ)
+      );
+
       boolean isOperatorAdminGranted = TestUtils.grantOperatorAdmin(
         authZ,
         oid,
-        uidOperatorAdmin
+        uidOperatorAdmin,
+        civilAviationAuthorityUUID
       );
       boolean isOperatorApproved = TestUtils.approveOperator(authZ, oid, idCaaAdmin);
 
       Logging.info("operator admin granted : " + isOperatorAdminGranted);
       Logging.info("operator approved : " + isOperatorApproved);
+
+      assertTrue(isOperatorAdminGranted && isOperatorApproved);
     } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }
@@ -182,6 +194,8 @@ public class DemoScenario1 {
 
       Logging.info("pilot association crated : " + associatePilotToRegulator);
       Logging.info("pilot approved : " + isPilotApproved);
+
+      assertTrue(associatePilotToRegulator && isPilotApproved);
     } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }
@@ -201,11 +215,22 @@ public class DemoScenario1 {
       UUID leid = TestUtils.legalEntityCreate(jwtDsspAdmin, UUID.randomUUID());
       UUID dsspid = TestUtils.dsspCreate(jwtDsspAdmin, leid);
 
-      boolean isDSSPAdminGranted = TestUtils.grantDSSPAdmin(authZ, dsspid, uidDsspAdmin);
+      UUID civilAviationAuthorityUUID = UUID.fromString(
+        TestUtils.listCivilAviationAuthorities(authZ)
+      );
+
+      boolean isDSSPAdminGranted = TestUtils.grantDSSPAdmin(
+        authZ,
+        dsspid,
+        uidDsspAdmin,
+        civilAviationAuthorityUUID
+      );
       boolean isDSSPApproved = TestUtils.approveDssp(authZ, dsspid, idCaaAdmin);
 
       Logging.info("dssp admin granted : " + isDSSPAdminGranted);
       Logging.info("dssp approved : " + isDSSPApproved);
+
+      assertTrue(isDSSPAdminGranted && isDSSPApproved);
     } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }
@@ -225,10 +250,15 @@ public class DemoScenario1 {
       UUID leid = TestUtils.legalEntityCreate(jwtRepairAgencyAdmin, UUID.randomUUID());
       UUID repairAgencyid = TestUtils.repairAgencyCreate(jwtRepairAgencyAdmin, leid);
 
+      UUID civilAviationAuthorityUUID = UUID.fromString(
+        TestUtils.listCivilAviationAuthorities(authZ)
+      );
+
       boolean isRepairAgencyAdminGranted = TestUtils.grantRepairAgencyAdmin(
         authZ,
         repairAgencyid,
-        uidRepairAgencyAdmin
+        uidRepairAgencyAdmin,
+        civilAviationAuthorityUUID
       );
       boolean isRepairAgencyApproved = TestUtils.approveRepairAgency(
         authZ,
@@ -238,6 +268,8 @@ public class DemoScenario1 {
 
       Logging.info("repair agency admin granted : " + isRepairAgencyAdminGranted);
       Logging.info("repair agency approved : " + isRepairAgencyApproved);
+
+      assertTrue(isRepairAgencyAdminGranted && isRepairAgencyApproved);
     } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }
@@ -257,16 +289,23 @@ public class DemoScenario1 {
       UUID leid = TestUtils.legalEntityCreate(jwtTraderAdmin, UUID.randomUUID());
       UUID traderid = TestUtils.traderCreate(jwtTraderAdmin, leid);
 
+      UUID civilAviationAuthorityUUID = UUID.fromString(
+        TestUtils.listCivilAviationAuthorities(authZ)
+      );
+
       boolean isTraderAdminGranted = TestUtils.grantTraderAdmin(
         authZ,
         traderid,
-        uidTraderAdmin
+        uidTraderAdmin,
+        civilAviationAuthorityUUID
       );
 
       boolean isTraderApproved = TestUtils.approveTrader(authZ, traderid, idCaaAdmin);
 
       Logging.info("trader admin granted : " + isTraderAdminGranted);
       Logging.info("trader agency approved : " + isTraderApproved);
+
+      assertTrue(isTraderAdminGranted && isTraderApproved);
     } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }
@@ -286,10 +325,15 @@ public class DemoScenario1 {
       UUID leid = TestUtils.legalEntityCreate(jwtManufacturerAdmin, UUID.randomUUID());
       UUID manufacturerid = TestUtils.manufacturerCreate(jwtManufacturerAdmin, leid);
 
+      UUID civilAviationAuthorityUUID = UUID.fromString(
+        TestUtils.listCivilAviationAuthorities(authZ)
+      );
+
       boolean isManufacturerAdminGranted = TestUtils.grantManufacturerAdmin(
         authZ,
         manufacturerid,
-        uidManufacturerAdmin
+        uidManufacturerAdmin,
+        civilAviationAuthorityUUID
       );
       boolean isManufacturerApproved = TestUtils.approveManufacturer(
         authZ,
@@ -306,7 +350,8 @@ public class DemoScenario1 {
         authZ,
         uasTypeId,
         manufacturerid,
-        uidManufacturerAdmin
+        uidManufacturerAdmin,
+        civilAviationAuthorityUUID
       );
 
       Logging.info("UAS Type associated : " + isUASTypeAssociationSuccess);
@@ -317,10 +362,18 @@ public class DemoScenario1 {
         authZ,
         uasId,
         manufacturerid,
-        uidManufacturerAdmin
+        uidManufacturerAdmin,
+        civilAviationAuthorityUUID
       );
 
       Logging.info("uas association created : " + isUASAssociationSuccess);
+
+      assertTrue(
+        isManufacturerAdminGranted &&
+        isManufacturerApproved &&
+        isUASTypeAssociationSuccess &&
+        isUASAssociationSuccess
+      );
     } catch (ParseException e) {
       Logging.severe("JWT ParseException");
     }
@@ -330,14 +383,9 @@ public class DemoScenario1 {
   @Test
   public void testScenario_2()
     throws ClientProtocolException, IOException, ParseException {
-    String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
-    UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
     String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
-    UUID uidCaaAdmin = TestUtils.userCreate(jwtCaaAdmin); // TODO: skip insertion
     String jwtManufacturerAdmin = TestUtils.loginManufacturerAdminUser();
     UUID uidManufacturerAdmin = TestUtils.userCreate(jwtManufacturerAdmin); // TODO: skip insertion
-    String jwtOwner = TestUtils.loginOwnerUser();
-    UUID uidOwner = TestUtils.userCreate(jwtOwner); // TODO: skip insertion
     String jwtTraderAdmin = TestUtils.loginTraderAdminUser();
     UUID uidTraderAdmin = TestUtils.userCreate(jwtTraderAdmin); // TODO: skip insertion
     String jwtOperatorAdmin = TestUtils.loginOperatorAdminUser();
@@ -348,16 +396,81 @@ public class DemoScenario1 {
       UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
       UUID leid = TestUtils.legalEntityCreate(jwtManufacturerAdmin, UUID.randomUUID());
       UUID manufacturerid = TestUtils.manufacturerCreate(jwtManufacturerAdmin, leid);
-      TestUtils.approveManufacturer(jwtCaaAdmin, manufacturerid);
+      UUID civilAviationAuthorityUUID = UUID.fromString(
+        TestUtils.listCivilAviationAuthorities(authZ)
+      );
+
+      boolean isManufacturerAdminGranted = TestUtils.grantManufacturerAdmin(
+        authZ,
+        manufacturerid,
+        uidManufacturerAdmin,
+        civilAviationAuthorityUUID
+      );
+      boolean isManufacturerApproved = TestUtils.approveManufacturer(
+        authZ,
+        manufacturerid,
+        idCaaAdmin
+      );
+
+      Logging.info("manufacturer admin granted : " + isManufacturerAdminGranted);
+      Logging.info("manufacturer approved : " + isManufacturerApproved);
+
       UUID uasTypeId = TestUtils.uasTypeCreate(jwtCaaAdmin, manufacturerid);
-      TestUtils.approveManufacturer(jwtCaaAdmin, manufacturerid);
+      boolean isUASTypeAssociationSuccess = TestUtils.associateUASTypeToManufacturer(
+        authZ,
+        uasTypeId,
+        manufacturerid,
+        uidManufacturerAdmin,
+        civilAviationAuthorityUUID
+      );
+
+      Logging.info("UAS Type associated : " + isUASTypeAssociationSuccess);
+
       UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid);
+      boolean isUASAssociationSuccess = TestUtils.associateUASToManufacturer(
+        authZ,
+        uasId,
+        manufacturerid,
+        uidManufacturerAdmin,
+        civilAviationAuthorityUUID
+      );
+
+      Logging.info("uas association created : " + isUASAssociationSuccess);
+
       UUID traderLeid = TestUtils.legalEntityCreate(jwtTraderAdmin, UUID.randomUUID());
       UUID traderId = TestUtils.manufacturerCreate(jwtTraderAdmin, traderLeid);
       TestUtils.approveTrader(jwtCaaAdmin, traderId);
+
+      boolean isTraderAdminGranted = TestUtils.grantTraderAdmin(
+        authZ,
+        traderId,
+        uidTraderAdmin,
+        civilAviationAuthorityUUID
+      );
+
+      boolean isTraderApproved = TestUtils.approveTrader(authZ, traderId, idCaaAdmin);
+
+      Logging.info("trader admin granted : " + isTraderAdminGranted);
+      Logging.info("trader agency approved : " + isTraderApproved);
+
       UUID operatorLeid = TestUtils.legalEntityCreate(jwtTraderAdmin, UUID.randomUUID());
       UUID operatorId = TestUtils.operatorCreate(jwtTraderAdmin, operatorLeid);
-      TestUtils.approveOperator(jwtCaaAdmin, operatorId);
+
+      boolean isOperatorAdminGranted = TestUtils.grantOperatorAdmin(
+        authZ,
+        operatorId,
+        uidOperatorAdmin,
+        civilAviationAuthorityUUID
+      );
+      boolean isOperatorApproved = TestUtils.approveOperator(
+        authZ,
+        operatorId,
+        idCaaAdmin
+      );
+
+      Logging.info("operator admin granted : " + isOperatorAdminGranted);
+      Logging.info("operator approved : " + isOperatorApproved);
+
       UUID saleId0 = TestUtils.saleCreate(
         jwtCaaAdmin,
         UUID.randomUUID(),
@@ -378,7 +491,20 @@ public class DemoScenario1 {
         traderId,
         operatorId
       );
-    } catch (ParseException e) {
+
+      assertTrue(
+        isManufacturerAdminGranted &&
+        isManufacturerApproved &&
+        isUASTypeAssociationSuccess &&
+        isUASAssociationSuccess &&
+        isTraderAdminGranted &&
+        isTraderApproved &&
+        isOperatorAdminGranted &&
+        isOperatorApproved &&
+        saleId0.toString().length() > 0 &&
+        saleId1.toString().length() > 0
+      );
+    } catch(ParseException e) {
       Logging.severe("JWT ParseException");
     }
   }

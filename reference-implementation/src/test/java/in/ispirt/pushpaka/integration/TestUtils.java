@@ -12,6 +12,7 @@ import in.ispirt.pushpaka.authorisation.utils.AuthZ;
 import in.ispirt.pushpaka.utils.Logging;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -297,6 +298,12 @@ public class TestUtils {
     String reb = EntityUtils.toString(re);
     EntityUtils.consume(re);
     return TestUtils.extractUuid(reb);
+  }
+
+  public static String listCivilAviationAuthorities(AuthZ authz) {
+    List<String> regulatorList = new ArrayList<String>(authz.lookupRegulator());
+
+    return regulatorList.get(0);
   }
 
   public static UUID operatorCreate(String jwt, UUID x)
@@ -670,7 +677,8 @@ public class TestUtils {
   public static boolean grantManufacturerAdmin(
     AuthZ authZ,
     UUID manufacturerUUID,
-    UUID manufacturerAdminUUID
+    UUID manufacturerAdminUUID,
+    UUID caaResourceUUID
   ) {
     boolean isSuccess = false;
 
@@ -678,7 +686,8 @@ public class TestUtils {
       authZ.createResoureTypeAdmin(
         ResourceType.MANUFACTURER,
         manufacturerUUID.toString(),
-        manufacturerAdminUUID.toString()
+        manufacturerAdminUUID.toString(),
+        caaResourceUUID.toString()
       );
 
     return isSuccess;
@@ -687,7 +696,8 @@ public class TestUtils {
   public static boolean grantOperatorAdmin(
     AuthZ authZ,
     UUID opertorUUID,
-    UUID opertorAdminUUID
+    UUID opertorAdminUUID,
+    UUID caaResourceUUID
   ) {
     boolean isSuccess = false;
 
@@ -695,20 +705,27 @@ public class TestUtils {
       authZ.createResoureTypeAdmin(
         ResourceType.MANUFACTURER,
         opertorUUID.toString(),
-        opertorAdminUUID.toString()
+        opertorAdminUUID.toString(),
+        caaResourceUUID.toString()
       );
 
     return isSuccess;
   }
 
-  public static boolean grantDSSPAdmin(AuthZ authZ, UUID dsspUUID, UUID dsspAdminUUID) {
+  public static boolean grantDSSPAdmin(
+    AuthZ authZ,
+    UUID dsspUUID,
+    UUID dsspAdminUUID,
+    UUID caaResourceUUID
+  ) {
     boolean isSuccess = false;
 
     isSuccess =
       authZ.createResoureTypeAdmin(
         ResourceType.DSSP,
         dsspUUID.toString(),
-        dsspAdminUUID.toString()
+        dsspAdminUUID.toString(),
+        caaResourceUUID.toString()
       );
 
     return isSuccess;
@@ -717,7 +734,8 @@ public class TestUtils {
   public static boolean grantRepairAgencyAdmin(
     AuthZ authZ,
     UUID repairAgencyUUID,
-    UUID repairAgencyAdminUUID
+    UUID repairAgencyAdminUUID,
+    UUID caaResourceUUID
   ) {
     boolean isSuccess = false;
 
@@ -725,7 +743,8 @@ public class TestUtils {
       authZ.createResoureTypeAdmin(
         ResourceType.REPAIRAGENCY,
         repairAgencyUUID.toString(),
-        repairAgencyUUID.toString()
+        repairAgencyUUID.toString(),
+        caaResourceUUID.toString()
       );
 
     return isSuccess;
@@ -734,7 +753,8 @@ public class TestUtils {
   public static boolean grantTraderAdmin(
     AuthZ authZ,
     UUID traderUUID,
-    UUID traderdminUUID
+    UUID traderdminUUID,
+    UUID caaResourceUUID
   ) {
     boolean isSuccess = false;
 
@@ -742,7 +762,8 @@ public class TestUtils {
       authZ.createResoureTypeAdmin(
         ResourceType.TRADER,
         traderUUID.toString(),
-        traderdminUUID.toString()
+        traderdminUUID.toString(),
+        caaResourceUUID.toString()
       );
 
     return isSuccess;
@@ -764,12 +785,14 @@ public class TestUtils {
     AuthZ authZ,
     UUID uasTypeUUID,
     UUID manufacturerUUID,
-    UUID manufacturerAdminUserUUID
+    UUID manufacturerAdminUserUUID,
+    UUID caaResourceUUID
   ) {
     boolean isSuccess = authZ.createUASTypeRelationships(
       uasTypeUUID.toString(),
       manufacturerUUID.toString(),
-      manufacturerAdminUserUUID.toString()
+      manufacturerAdminUserUUID.toString(),
+      caaResourceUUID.toString()
     );
 
     return isSuccess;
@@ -779,12 +802,14 @@ public class TestUtils {
     AuthZ authZ,
     UUID uasUUID,
     UUID manufacturerUUID,
-    UUID manufacturerAdminUserUUID
+    UUID manufacturerAdminUserUUID,
+    UUID caaResourceUUID
   ) {
     boolean isSuccess = authZ.createUASManufacturerRelationships(
       uasUUID.toString(),
       manufacturerUUID.toString(),
-      manufacturerAdminUserUUID.toString()
+      manufacturerAdminUserUUID.toString(),
+      caaResourceUUID.toString()
     );
 
     return isSuccess;
