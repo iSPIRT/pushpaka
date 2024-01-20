@@ -181,18 +181,21 @@ public class DemoScenario1 {
       SignedJWT jwtsPilot = TestUtils.parseJwt(jwtPilot);
       UUID idPilot = UUID.fromString(jwtsPilot.getJWTClaimsSet().getSubject());
 
-      //To-Do Need to get the Civial Aviation Authority
+      //To-Do - need legal entity definition
+      UUID legalPilotID = UUID.fromString("aca69ef3-0a6e-4e1a-ae71-986289bdaaa0");
+
       UUID civilAviationAuthorityUUID = UUID.fromString(
         TestUtils.listCivilAviationAuthorities(authZ)
       );
 
       boolean associatePilotToRegulator = TestUtils.associatePilotToRegulator(
         authZ,
+        legalPilotID,
         idPilot,
         civilAviationAuthorityUUID
       );
 
-      boolean isPilotApproved = TestUtils.approvePilot(authZ, idPilot, idCaaAdmin);
+      boolean isPilotApproved = TestUtils.approvePilot(authZ, legalPilotID, idCaaAdmin);
 
       Logging.info("pilot association crated : " + associatePilotToRegulator);
       Logging.info("pilot approved : " + isPilotApproved);

@@ -27,7 +27,7 @@ public enum RelationshipType {
       case PLATFORM:
         return "platform";
       case FLIGHTPLAN_OPERATOR:
-        return "flightplan_operator";
+        return "flight_operator";
       default:
         return null;
     }

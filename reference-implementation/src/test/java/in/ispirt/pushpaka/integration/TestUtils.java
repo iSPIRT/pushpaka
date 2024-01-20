@@ -7,7 +7,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jwt.SignedJWT;
+import in.ispirt.pushpaka.authorisation.RelationshipType;
 import in.ispirt.pushpaka.authorisation.ResourceType;
+import in.ispirt.pushpaka.authorisation.SubjectType;
 import in.ispirt.pushpaka.authorisation.utils.AuthZ;
 import in.ispirt.pushpaka.utils.Logging;
 import java.io.IOException;
@@ -695,7 +697,7 @@ public class TestUtils {
 
   public static boolean grantOperatorAdmin(
     AuthZ authZ,
-    UUID opertorUUID,
+    UUID operatorUUID,
     UUID opertorAdminUUID,
     UUID caaResourceUUID
   ) {
@@ -704,7 +706,7 @@ public class TestUtils {
     isSuccess =
       authZ.createResoureTypeAdmin(
         ResourceType.OPERATOR,
-        opertorUUID.toString(),
+        operatorUUID.toString(),
         opertorAdminUUID.toString(),
         caaResourceUUID.toString()
       );
@@ -771,12 +773,18 @@ public class TestUtils {
 
   public static boolean associatePilotToRegulator(
     AuthZ authZ,
+    UUID pilotResourceUUID,
     UUID pilotUUID,
     UUID regulatorUUID
   ) {
     boolean isSuccess = false;
 
-    isSuccess = authZ.addPilot(pilotUUID.toString(), regulatorUUID.toString());
+    isSuccess =
+      authZ.addPilot(
+        pilotResourceUUID.toString(),
+        pilotUUID.toString(),
+        regulatorUUID.toString()
+      );
 
     return isSuccess;
   }
@@ -892,13 +900,17 @@ public class TestUtils {
     return isSuccess;
   }
 
-  public static boolean approvePilot(AuthZ authZ, UUID pilotUUID, UUID CAAAdminUserID) {
+  public static boolean approvePilot(
+    AuthZ authZ,
+    UUID pilotResourceUUID,
+    UUID CAAAdminUserID
+  ) {
     boolean isSuccess = false;
 
     isSuccess =
       authZ.approveResourceByRegulator(
         ResourceType.PILOT,
-        pilotUUID.toString(),
+        pilotResourceUUID.toString(),
         CAAAdminUserID.toString()
       );
 

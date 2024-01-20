@@ -428,20 +428,39 @@ public class AuthZ {
     return isSuccess;
   }
 
-  public boolean addPilot(String pilotUserID, String caaResourceID) {
+  public boolean addPilot(
+    String pilotResourceID,
+    String pilotUserID,
+    String caaResourceID
+  ) {
     boolean isSuccess = false;
     String tokenValue = null;
+    String tokenValueAddRegulator = null;
 
     tokenValue =
       spicedbClient.writeRelationship(
-        RelationshipType.REGULATOR,
-        caaResourceID,
-        ResourceType.CAA,
+        RelationshipType.FLIGHTPLAN_OPERATOR,
+        pilotResourceID,
+        ResourceType.PILOT,
         pilotUserID,
-        SubjectType.PILOT
+        SubjectType.USER
       );
 
-    if (tokenValue != null) {
+    tokenValueAddRegulator =
+      spicedbClient.writeRelationship(
+        RelationshipType.REGULATOR,
+        pilotResourceID,
+        ResourceType.PILOT,
+        caaResourceID,
+        SubjectType.CAA
+      );
+
+    if (
+      tokenValue != null &&
+      tokenValue.length() > 0 &&
+      tokenValueAddRegulator != null &&
+      tokenValueAddRegulator.length() > 0
+    ) {
       isSuccess = true;
     }
 
