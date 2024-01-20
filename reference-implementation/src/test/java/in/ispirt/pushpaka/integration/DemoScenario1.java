@@ -192,7 +192,7 @@ public class DemoScenario1 {
         civilAviationAuthorityUUID
       );
 
-      boolean isPilotApproved = TestUtils.approvePilot(authZ, idCaaAdmin, idPilot);
+      boolean isPilotApproved = TestUtils.approvePilot(authZ, idPilot, idCaaAdmin);
 
       Logging.info("pilot association crated : " + associatePilotToRegulator);
       Logging.info("pilot approved : " + isPilotApproved);
@@ -339,7 +339,7 @@ public class DemoScenario1 {
       );
       boolean isManufacturerApproved = TestUtils.approveManufacturer(
         authZ,
-        uidManufacturerAdmin,
+        manufacturerid,
         idCaaAdmin
       );
 

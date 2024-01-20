@@ -897,7 +897,7 @@ public class TestUtils {
 
     isSuccess =
       authZ.approveResourceByRegulator(
-        ResourceType.OPERATOR,
+        ResourceType.PILOT,
         pilotUUID.toString(),
         CAAAdminUserID.toString()
       );

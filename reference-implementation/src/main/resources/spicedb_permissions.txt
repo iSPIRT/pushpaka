@@ -1,3 +1,4 @@
+
   /** user represents a user */
   definition user {}
 
@@ -39,7 +40,7 @@
   	relation regulator: caa
   	relation pilot: pilot
   	permission super_admin = administrator
-  	permission flight_operations_admin = pilot->flight_operations_admin
+  	permission flight_operations_admin = pilot
   	permission approve = regulator->super_admin
   	permission add_pilot = super_admin
   	permission remove_pilot = super_admin
@@ -93,4 +94,3 @@
   	permission super_admin = administrator
   	permission approve = regulator->super_admin
   }
-
