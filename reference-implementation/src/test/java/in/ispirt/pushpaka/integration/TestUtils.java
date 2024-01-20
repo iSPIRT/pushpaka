@@ -703,7 +703,7 @@ public class TestUtils {
 
     isSuccess =
       authZ.createResoureTypeAdmin(
-        ResourceType.MANUFACTURER,
+        ResourceType.OPERATOR,
         opertorUUID.toString(),
         opertorAdminUUID.toString(),
         caaResourceUUID.toString()
@@ -743,7 +743,7 @@ public class TestUtils {
       authZ.createResoureTypeAdmin(
         ResourceType.REPAIRAGENCY,
         repairAgencyUUID.toString(),
-        repairAgencyUUID.toString(),
+        repairAgencyAdminUUID.toString(),
         caaResourceUUID.toString()
       );
 
@@ -884,7 +884,7 @@ public class TestUtils {
 
     isSuccess =
       authZ.approveResourceByRegulator(
-        ResourceType.TRADER,
+        ResourceType.REPAIRAGENCY,
         repairAgencyUUID.toString(),
         CAAAdminUserID.toString()
       );
