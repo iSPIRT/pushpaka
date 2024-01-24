@@ -840,6 +840,23 @@ public class TestUtils {
     return isSuccess;
   }
 
+  public static boolean approveUASType(
+    AuthZ authZ,
+    UUID uasTypeUUID,
+    UUID CAAAdminUserID
+  ) {
+    boolean isSuccess = false;
+
+    isSuccess =
+      authZ.approveResourceByRegulator(
+        ResourceType.UASTYPE,
+        uasTypeUUID.toString(),
+        CAAAdminUserID.toString()
+      );
+
+    return isSuccess;
+  }
+
   public static boolean approveOperator(
     AuthZ authZ,
     UUID operatorUUID,

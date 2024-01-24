@@ -554,6 +554,7 @@ public class AuthZ {
     resourceTypeList.add(ResourceType.TRADER);
     resourceTypeList.add(ResourceType.REPAIRAGENCY);
     resourceTypeList.add(ResourceType.PILOT);
+    resourceTypeList.add(ResourceType.UASTYPE);
 
     return resourceTypeList;
   }

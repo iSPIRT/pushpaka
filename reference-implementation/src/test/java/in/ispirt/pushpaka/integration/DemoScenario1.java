@@ -359,7 +359,9 @@ public class DemoScenario1 {
         civilAviationAuthorityUUID
       );
 
-      Logging.info("UAS Type associated : " + isUASTypeAssociationSuccess);
+      boolean isUASTypeApproved = TestUtils.approveUASType(authZ, uasTypeId, idCaaAdmin);
+
+      Logging.info("UAS Type approved : " + isUASTypeApproved);
 
       UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid);
 
@@ -377,6 +379,7 @@ public class DemoScenario1 {
         isManufacturerAdminGranted &&
         isManufacturerApproved &&
         isUASTypeAssociationSuccess &&
+        isUASTypeApproved &&
         isUASAssociationSuccess
       );
     } catch (ParseException e) {
@@ -430,6 +433,10 @@ public class DemoScenario1 {
       );
 
       Logging.info("UAS Type associated : " + isUASTypeAssociationSuccess);
+
+      boolean isUASTypeApproved = TestUtils.approveUASType(authZ, uasTypeId, idCaaAdmin);
+
+      Logging.info("UAS Type approved : " + isUASTypeApproved);
 
       UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid);
       boolean isUASAssociationSuccess = TestUtils.associateUASToManufacturer(
@@ -502,6 +509,7 @@ public class DemoScenario1 {
         isManufacturerApproved &&
         isUASTypeAssociationSuccess &&
         isUASAssociationSuccess &&
+        isUASTypeApproved &&
         isTraderAdminGranted &&
         isTraderApproved &&
         isOperatorAdminGranted &&
