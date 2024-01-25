@@ -17,7 +17,7 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.17
 servers:
-- url: http://localhost:8083/
+- url: http://localhost:8084/
 tags:
 - name: civilAviationAuthorities
   description: CivilAviationAuthorities
@@ -27,6 +27,8 @@ tags:
   description: Pilots
 - name: legalEntities
   description: Legal Entity
+- name: traders
+  description: Traders
 - name: uasTypes
   description: the uas_types API
 - name: ownership
@@ -218,6 +220,88 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UasType'
+      security:
+      - jwt: []
+  /api/v1/trader/{traderId}:
+    get:
+      tags:
+      - traders
+      summary: Find trader by ID
+      description: Returns a single trader
+      operationId: getTraderById
+      parameters:
+      - name: traderId
+        in: path
+        description: ID of trader to return
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trader'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trader'
+        "404":
+          description: Trader not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trader'
+      security:
+      - jwt: []
+    put:
+      tags:
+      - traders
+      summary: Updates a trader in the store
+      operationId: updateTrader
+      parameters:
+      - name: traderId
+        in: path
+        description: ID of trader that needs to be updated
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Trader'
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Trader'
+      security:
+      - jwt: []
+    delete:
+      tags:
+      - traders
+      summary: Deletes a trader
+      operationId: deleteTrader
+      parameters:
+      - name: traderId
+        in: path
+        description: Trader id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "400":
+          description: Invalid trader value
       security:
       - jwt: []
   /api/v1/sale:
@@ -962,6 +1046,71 @@ paths:
                 $ref: '#/components/schemas/User'
       security:
       - jwt: []
+  /api/v1/uasType/approve/{uasTypeId}:
+    post:
+      tags:
+      - uasTypes
+      summary: Approve a new uasType to the store
+      description: Approve a new uasType to the store
+      operationId: approveUasType
+      parameters:
+      - name: uas_type_id
+        in: path
+        description: UasType ID for the new uasType in the store
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              description: Model Number assigned to new uasType in the store
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UasType'
+        "405":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UasType'
+      security:
+      - jwt: []
+  /api/v1/trader:
+    post:
+      tags:
+      - traders
+      summary: Add a new trader to the store
+      description: Add a new trader to the store
+      operationId: addTrader
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Trader'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trader'
+        "405":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trader'
+      security:
+      - jwt: []
   /api/v1/repairAgency:
     post:
       tags:
@@ -1325,6 +1474,31 @@ paths:
                   $ref: '#/components/schemas/Uas'
       security:
       - jwt: []
+  /api/v1/trader/find:
+    get:
+      tags:
+      - traders
+      summary: Finds Traders
+      operationId: findTraders
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Trader'
+        "400":
+          description: Invalid value
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Trader'
+      security:
+      - jwt: []
   /api/v1/sale/{saleId}:
     get:
       tags:
@@ -1379,12 +1553,20 @@ paths:
           description: Invalid sale value
       security:
       - jwt: []
-  /api/v1/sale/find:
+  /api/v1/sale/find/{uasId}:
     get:
       tags:
       - ownership
       summary: Finds Sales
       operationId: findSales
+      parameters:
+      - name: uasId
+        in: path
+        description: Uas id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
       responses:
         "200":
           description: successful operation
@@ -1748,11 +1930,9 @@ components:
         created:
           type: string
           format: date-time
-          readOnly: true
         updated:
           type: string
           format: date-time
-          readOnly: true
     User:
       required:
       - email
@@ -1840,19 +2020,21 @@ components:
     Uas:
       required:
       - id
-      - oemSerialNumber
+      - oem_serial_number
       - status
       - timestamps
       - type
       type: object
       properties:
+        humanReadableId:
+          $ref: '#/components/schemas/Uas'
         id:
           type: string
           format: uuid
           readOnly: true
         type:
           $ref: '#/components/schemas/UasType'
-        oemSerialNumber:
+        oem_serial_number:
           maxLength: 12
           minLength: 6
           type: string
@@ -1866,9 +2048,10 @@ components:
           - GROUNDED
     UasType:
       required:
+      - approved
       - id
       - manufacturer
-      - modelNumber
+      - model_number
       - mtow
       - propulsionCategory
       - supportedOperationCategories
@@ -1880,8 +2063,9 @@ components:
           type: string
           format: uuid
           readOnly: true
-        modelNumber:
+        model_number:
           type: string
+          readOnly: true
         manufacturer:
           $ref: '#/components/schemas/Manufacturer'
         propulsionCategory:
@@ -1906,6 +2090,9 @@ components:
           type: string
           format: uri
           example: https://ispirt.github.io/pushpaka/
+        approved:
+          type: boolean
+          readOnly: true
         supportedOperationCategories:
           type: array
           items:
@@ -1927,10 +2114,30 @@ components:
         till:
           type: string
           format: date-time
-    Sale:
+    Trader:
       required:
       - id
+      - legalEntity
       - timestamps
+      - validity
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        legalEntity:
+          $ref: '#/components/schemas/LegalEntity'
+        validity:
+          $ref: '#/components/schemas/Validity'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+    Sale:
+      required:
+      - holding
+      - id
+      - timestamps
+      - uas
       - validity
       type: object
       properties:
@@ -1942,6 +2149,18 @@ components:
           $ref: '#/components/schemas/ObjectTimestamps'
         validity:
           $ref: '#/components/schemas/Validity'
+        seller_user:
+          $ref: '#/components/schemas/User'
+        seller_legal_entity:
+          $ref: '#/components/schemas/LegalEntity'
+        buyer_user:
+          $ref: '#/components/schemas/User'
+        buyer_legal_entity:
+          $ref: '#/components/schemas/LegalEntity'
+        uas:
+          $ref: '#/components/schemas/Uas'
+        holding:
+          type: boolean
     RepairAgency:
       required:
       - id
@@ -2031,6 +2250,7 @@ components:
           $ref: '#/components/schemas/ObjectTimestamps'
     CivilAviationAuthority:
       required:
+      - country
       - id
       - legalEntity
       - timestamps
@@ -2047,6 +2267,11 @@ components:
           $ref: '#/components/schemas/Validity'
         timestamps:
           $ref: '#/components/schemas/ObjectTimestamps'
+        country:
+          type: string
+          enum:
+          - IND
+          - USA
   securitySchemes:
     jwt:
       type: http
