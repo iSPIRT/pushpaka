@@ -7,11 +7,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jwt.SignedJWT;
+import in.ispirt.pushpaka.authorisation.RelationshipType;
 import in.ispirt.pushpaka.authorisation.ResourceType;
+import in.ispirt.pushpaka.authorisation.SubjectType;
 import in.ispirt.pushpaka.authorisation.utils.AuthZ;
 import in.ispirt.pushpaka.utils.Logging;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -298,6 +301,12 @@ public class TestUtils {
     String reb = EntityUtils.toString(re);
     EntityUtils.consume(re);
     return TestUtils.extractUuid(reb);
+  }
+
+  public static String listCivilAviationAuthorities(AuthZ authz) {
+    List<String> regulatorList = new ArrayList<String>(authz.lookupRegulator());
+
+    return regulatorList.get(0);
   }
 
   public static UUID operatorCreate(String jwt, UUID x)
@@ -680,7 +689,8 @@ public class TestUtils {
   public static boolean grantManufacturerAdmin(
     AuthZ authZ,
     UUID manufacturerUUID,
-    UUID manufacturerAdminUUID
+    UUID manufacturerAdminUUID,
+    UUID caaResourceUUID
   ) {
     boolean isSuccess = false;
 
@@ -688,7 +698,8 @@ public class TestUtils {
       authZ.createResoureTypeAdmin(
         ResourceType.MANUFACTURER,
         manufacturerUUID.toString(),
-        manufacturerAdminUUID.toString()
+        manufacturerAdminUUID.toString(),
+        caaResourceUUID.toString()
       );
 
     return isSuccess;
@@ -696,29 +707,37 @@ public class TestUtils {
 
   public static boolean grantOperatorAdmin(
     AuthZ authZ,
-    UUID opertorUUID,
-    UUID opertorAdminUUID
+    UUID operatorUUID,
+    UUID opertorAdminUUID,
+    UUID caaResourceUUID
   ) {
     boolean isSuccess = false;
 
     isSuccess =
       authZ.createResoureTypeAdmin(
-        ResourceType.MANUFACTURER,
-        opertorUUID.toString(),
-        opertorAdminUUID.toString()
+        ResourceType.OPERATOR,
+        operatorUUID.toString(),
+        opertorAdminUUID.toString(),
+        caaResourceUUID.toString()
       );
 
     return isSuccess;
   }
 
-  public static boolean grantDSSPAdmin(AuthZ authZ, UUID dsspUUID, UUID dsspAdminUUID) {
+  public static boolean grantDSSPAdmin(
+    AuthZ authZ,
+    UUID dsspUUID,
+    UUID dsspAdminUUID,
+    UUID caaResourceUUID
+  ) {
     boolean isSuccess = false;
 
     isSuccess =
       authZ.createResoureTypeAdmin(
         ResourceType.DSSP,
         dsspUUID.toString(),
-        dsspAdminUUID.toString()
+        dsspAdminUUID.toString(),
+        caaResourceUUID.toString()
       );
 
     return isSuccess;
@@ -727,7 +746,8 @@ public class TestUtils {
   public static boolean grantRepairAgencyAdmin(
     AuthZ authZ,
     UUID repairAgencyUUID,
-    UUID repairAgencyAdminUUID
+    UUID repairAgencyAdminUUID,
+    UUID caaResourceUUID
   ) {
     boolean isSuccess = false;
 
@@ -735,7 +755,8 @@ public class TestUtils {
       authZ.createResoureTypeAdmin(
         ResourceType.REPAIRAGENCY,
         repairAgencyUUID.toString(),
-        repairAgencyUUID.toString()
+        repairAgencyAdminUUID.toString(),
+        caaResourceUUID.toString()
       );
 
     return isSuccess;
@@ -744,7 +765,8 @@ public class TestUtils {
   public static boolean grantTraderAdmin(
     AuthZ authZ,
     UUID traderUUID,
-    UUID traderdminUUID
+    UUID traderdminUUID,
+    UUID caaResourceUUID
   ) {
     boolean isSuccess = false;
 
@@ -752,7 +774,8 @@ public class TestUtils {
       authZ.createResoureTypeAdmin(
         ResourceType.TRADER,
         traderUUID.toString(),
-        traderdminUUID.toString()
+        traderdminUUID.toString(),
+        caaResourceUUID.toString()
       );
 
     return isSuccess;
@@ -760,12 +783,18 @@ public class TestUtils {
 
   public static boolean associatePilotToRegulator(
     AuthZ authZ,
+    UUID pilotResourceUUID,
     UUID pilotUUID,
     UUID regulatorUUID
   ) {
     boolean isSuccess = false;
 
-    isSuccess = authZ.addPilot(pilotUUID.toString(), regulatorUUID.toString());
+    isSuccess =
+      authZ.addPilot(
+        pilotResourceUUID.toString(),
+        pilotUUID.toString(),
+        regulatorUUID.toString()
+      );
 
     return isSuccess;
   }
@@ -774,12 +803,14 @@ public class TestUtils {
     AuthZ authZ,
     UUID uasTypeUUID,
     UUID manufacturerUUID,
-    UUID manufacturerAdminUserUUID
+    UUID manufacturerAdminUserUUID,
+    UUID caaResourceUUID
   ) {
     boolean isSuccess = authZ.createUASTypeRelationships(
       uasTypeUUID.toString(),
       manufacturerUUID.toString(),
-      manufacturerAdminUserUUID.toString()
+      manufacturerAdminUserUUID.toString(),
+      caaResourceUUID.toString()
     );
 
     return isSuccess;
@@ -789,12 +820,14 @@ public class TestUtils {
     AuthZ authZ,
     UUID uasUUID,
     UUID manufacturerUUID,
-    UUID manufacturerAdminUserUUID
+    UUID manufacturerAdminUserUUID,
+    UUID caaResourceUUID
   ) {
     boolean isSuccess = authZ.createUASManufacturerRelationships(
       uasUUID.toString(),
       manufacturerUUID.toString(),
-      manufacturerAdminUserUUID.toString()
+      manufacturerAdminUserUUID.toString(),
+      caaResourceUUID.toString()
     );
 
     return isSuccess;
@@ -811,6 +844,23 @@ public class TestUtils {
       authZ.approveResourceByRegulator(
         ResourceType.MANUFACTURER,
         manufacturerUUID.toString(),
+        CAAAdminUserID.toString()
+      );
+
+    return isSuccess;
+  }
+
+  public static boolean approveUASType(
+    AuthZ authZ,
+    UUID uasTypeUUID,
+    UUID CAAAdminUserID
+  ) {
+    boolean isSuccess = false;
+
+    isSuccess =
+      authZ.approveResourceByRegulator(
+        ResourceType.UASTYPE,
+        uasTypeUUID.toString(),
         CAAAdminUserID.toString()
       );
 
@@ -869,7 +919,7 @@ public class TestUtils {
 
     isSuccess =
       authZ.approveResourceByRegulator(
-        ResourceType.TRADER,
+        ResourceType.REPAIRAGENCY,
         repairAgencyUUID.toString(),
         CAAAdminUserID.toString()
       );
@@ -877,13 +927,17 @@ public class TestUtils {
     return isSuccess;
   }
 
-  public static boolean approvePilot(AuthZ authZ, UUID pilotUUID, UUID CAAAdminUserID) {
+  public static boolean approvePilot(
+    AuthZ authZ,
+    UUID pilotResourceUUID,
+    UUID CAAAdminUserID
+  ) {
     boolean isSuccess = false;
 
     isSuccess =
       authZ.approveResourceByRegulator(
-        ResourceType.OPERATOR,
-        pilotUUID.toString(),
+        ResourceType.PILOT,
+        pilotResourceUUID.toString(),
         CAAAdminUserID.toString()
       );
 
@@ -917,14 +971,17 @@ public class TestUtils {
   public static void approveUasType(String jwt, UUID id)
     throws ClientProtocolException, IOException, JsonProcessingException {
     StringEntity e = new StringEntity(
-      "{ \"model_number\": \"" +
-      UUID.randomUUID().toString() +
-      "\", \"uas_type_id\": \"" +
-      id.toString() +
-      "\"}",
+      id.toString(),
+      // "{ \"modelNumber\": \"" +
+      // UUID.randomUUID().toString() +
+      // "\", \"uasTypeId\": \"" +
+      // id.toString() +
+      // "\"}",
       ContentType.APPLICATION_JSON
     );
-    HttpPost request = new HttpPost("http://localhost:8084/api/v1/uasType/approve");
+    HttpPost request = new HttpPost(
+      "http://localhost:8084/api/v1/uasType/approve/" + id.toString()
+    );
     request.setEntity(e);
     request.addHeader("Authorization", "Bearer " + jwt);
 
@@ -932,6 +989,7 @@ public class TestUtils {
     HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
     HttpEntity re = httpResponse.getEntity();
     String reb = EntityUtils.toString(re);
+    Logging.info("UasType Approve Request : " + e.toString());
     Logging.info("UasType Approve Response: " + reb);
     assertEquals(httpResponse.getStatusLine().getStatusCode(), 200);
     EntityUtils.consume(re);

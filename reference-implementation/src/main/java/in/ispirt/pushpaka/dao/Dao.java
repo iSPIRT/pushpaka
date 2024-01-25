@@ -867,19 +867,31 @@ public class Dao implements Serializable {
       if (uu == null) {
         throw new DaoException(DaoException.Code.NOT_FOUND, "UasType");
       }
+      Transaction t = s.beginTransaction();
       uu.setApproved(true);
       s.save(uu);
-      uu.setApproved(true);
+      s.flush();
+      t.commit();
       s.refresh(uu);
       return uu;
     }
 
     public static UasType setModelNumber(Session s, UUID id, String modelNumber)
       throws DaoException {
-      return s
+      UasType uu = s
         .createQuery("from UasType where id= :id", UasType.class)
         .setParameter("id", id)
         .uniqueResult();
+      if (uu == null) {
+        throw new DaoException(DaoException.Code.NOT_FOUND, "UasType");
+      }
+      Transaction t = s.beginTransaction();
+      uu.setModelNumber(modelNumber);
+      s.save(uu);
+      s.flush();
+      t.commit();
+      s.refresh(uu);
+      return uu;
     }
 
     public static List<UasType> getAll(Session s) {
@@ -995,12 +1007,37 @@ public class Dao implements Serializable {
       this.timestampUpdated = a;
     }
 
+    @Column(name = "human_readable_id")
+    private String humanReadableId;
+
     public String getHumanReadableId() {
+      return humanReadableId;
+    }
+
+    public void setHumanReadableId(Session s) {
       StringBuilder sb = new StringBuilder();
       sb.append(this.uasType.getModelNumber());
-      sb.append("-");
+      sb.append("/");
       sb.append(this.getOemSerialNo());
-      return sb.toString();
+      sb.append("/");
+      sb.append("/");
+      List<Sale> sales = Dao.Sale.getAll(s, this.id);
+      Integer holdings = 0;
+      Integer nonholdings = 0;
+      for (Sale t : sales) {
+        Logging.info("Sale: " + s.toString());
+        if (t.getHolding()) {
+          holdings += 1;
+        } else {
+          nonholdings += 1;
+        }
+      }
+      if (nonholdings > 0) {
+        sb.append(nonholdings.toString());
+      } else {
+        sb.append("-" + holdings.toString());
+      }
+      this.humanReadableId = sb.toString();
     }
 
     // Convenience constructor.
@@ -1010,7 +1047,8 @@ public class Dao implements Serializable {
       String oemSerialNo,
       UasStatus s,
       OffsetDateTime tc,
-      OffsetDateTime tu
+      OffsetDateTime tu,
+      String hrid
     ) {
       this.id = id;
       this.uasType = ut;
@@ -1018,6 +1056,7 @@ public class Dao implements Serializable {
       this.status = s;
       this.timestampCreated = tc;
       this.timestampUpdated = tu;
+      this.humanReadableId = hrid;
     }
 
     // Hibernate needs a default (no-arg) constructor to create model objects.
@@ -1035,6 +1074,8 @@ public class Dao implements Serializable {
       m.setTimestampCreated(n);
       m.setTimestampUpdated(n);
       m.setUasType(le);
+      m.setHumanReadableId(s);
+      Logging.info("DAO UAS Create: " + m.getHumanReadableId());
       s.save(m);
       s.flush();
       t.commit();
@@ -2331,8 +2372,11 @@ public class Dao implements Serializable {
       return m;
     }
 
-    public static List<Sale> getAll(Session s) {
-      return s.createQuery("from Sale", Sale.class).getResultList();
+    public static List<Sale> getAll(Session s, UUID uasId) {
+      return s
+        .createQuery("from Sale where FK_uas= :id", Sale.class)
+        .setParameter("id", uasId)
+        .getResultList();
     }
 
     public static Sale get(Session s, UUID id) {

@@ -1,5 +1,6 @@
 package in.ispirt.pushpaka.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.utils.Logging;
@@ -9,6 +10,7 @@ import java.util.UUID;
 import javax.annotation.Generated;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
 /**
@@ -53,13 +55,15 @@ public class Uas {
     UasType type,
     String oemSerialNumber,
     ObjectTimestamps timestamps,
-    UasStatus status
+    UasStatus status,
+    String hrid
   ) {
     this.id = id;
     this.type = type;
     this.oemSerialNumber = oemSerialNumber;
     this.timestamps = timestamps;
     this.status = status;
+    this.humanReadableId = hrid;
   }
 
   public Uas id(UUID id) {
@@ -170,15 +174,15 @@ public class Uas {
     this.status = status;
   }
 
-  @Valid
+  @JsonIgnore
   @Schema(
     name = "human_readable_id",
     accessMode = Schema.AccessMode.READ_ONLY,
-    requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    requiredMode = Schema.RequiredMode.REQUIRED
   )
   @JsonProperty("human_readable_id")
   public String getHumanReadableId() {
-    return Uas.fromOa(this).getHumanReadableId();
+    return humanReadableId;
   }
 
   public Uas setHumanReadableId(String id) {
@@ -221,6 +225,7 @@ public class Uas {
       .append("\n");
     sb.append("    timestamps: ").append(toIndentedString(timestamps)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
+    sb.append("    hrid: ").append(toIndentedString(humanReadableId)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -246,7 +251,8 @@ public class Uas {
       UasType.toOa(u.getUasType()),
       u.getOemSerialNo(),
       ot,
-      u.getStatus()
+      u.getStatus(),
+      u.getHumanReadableId()
     );
     String hrid = u.getHumanReadableId();
     Logging.info("UAS hrid: " + hrid);
@@ -261,7 +267,8 @@ public class Uas {
       u.oemSerialNumber,
       u.status,
       u.getTimestamps().getCreated(),
-      u.getTimestamps().getUpdated()
+      u.getTimestamps().getUpdated(),
+      u.getHumanReadableId()
     );
     return uu;
   }

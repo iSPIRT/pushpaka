@@ -19,6 +19,7 @@ public class AuthZTest {
   public static void setup() {
     authZ = new AuthZ();
     spicedbClient = authZ.getSpicedbClient();
+    authZ.setCaaResourceID("caa-authority");
   }
 
   @AfterAll
@@ -82,7 +83,8 @@ public class AuthZTest {
     boolean isSuccess = authZ.createResoureTypeAdmin(
       ResourceType.MANUFACTURER,
       manufacturerResourceID,
-      manufacturerAdminUserID
+      manufacturerAdminUserID,
+      authZ.getCaaResourceID()
     );
 
     assertTrue(isSuccess);
@@ -97,7 +99,8 @@ public class AuthZTest {
     boolean isSuccess = authZ.createResoureTypeAdmin(
       ResourceType.TRADER,
       traderResourceID,
-      traderAdminUserID
+      traderAdminUserID,
+      authZ.getCaaResourceID()
     );
 
     assertTrue(isSuccess);
@@ -112,7 +115,8 @@ public class AuthZTest {
     boolean isSuccess = authZ.createResoureTypeAdmin(
       ResourceType.DSSP,
       dsspResourceID,
-      dsspAdminUserID
+      dsspAdminUserID,
+      authZ.getCaaResourceID()
     );
 
     assertTrue(isSuccess);
@@ -127,7 +131,8 @@ public class AuthZTest {
     boolean isSuccess = authZ.createResoureTypeAdmin(
       ResourceType.REPAIRAGENCY,
       repairAgencyResourceID,
-      repairAgencyAdminUserID
+      repairAgencyAdminUserID,
+      authZ.getCaaResourceID()
     );
 
     assertTrue(isSuccess);
@@ -144,7 +149,8 @@ public class AuthZTest {
     boolean isSuccess = authZ.createResoureTypeAdmin(
       ResourceType.OPERATOR,
       operatorResourceID,
-      operatorAdminUserID
+      operatorAdminUserID,
+      authZ.getCaaResourceID()
     );
 
     assertTrue(isSuccess);
@@ -258,7 +264,8 @@ public class AuthZTest {
     boolean isSuccess = authZ.createUASManufacturerRelationships(
       UASID,
       manufacturerResourceID,
-      manufacturerAdminUserID
+      manufacturerAdminUserID,
+      authZ.getCaaResourceID()
     );
 
     isSuccess =
@@ -280,7 +287,8 @@ public class AuthZTest {
     boolean isSuccess = authZ.createUASTypeRelationships(
       UASTypeID,
       manufacturerResourceID,
-      manufacturerAdminUserID
+      manufacturerAdminUserID,
+      authZ.getCaaResourceID()
     );
 
     assertTrue(isSuccess);
@@ -361,7 +369,10 @@ public class AuthZTest {
     String UASID = "uas-1";
     String manufacturerResourceID = "manufacturer-1";
 
-    boolean isSuccess = authZ.lookupUASResourceOwnership(UASID, manufacturerResourceID);
+    boolean isSuccess = authZ.lookupUASResourceManufacturerOwnership(
+      UASID,
+      manufacturerResourceID
+    );
 
     assertTrue(isSuccess);
   }
@@ -371,7 +382,10 @@ public class AuthZTest {
     String UASID = "uas";
     String manufacturerResourceID = "manufacturer-1";
 
-    boolean isSuccess = authZ.lookupUASResourceOwnership(UASID, manufacturerResourceID);
+    boolean isSuccess = authZ.lookupUASResourceManufacturerOwnership(
+      UASID,
+      manufacturerResourceID
+    );
 
     assertFalse(isSuccess);
   }
@@ -394,5 +408,18 @@ public class AuthZTest {
     Set<String> pilotToOperators = authZ.lookupPilotResource(pilotUserID);
     System.out.println(pilotToOperators);
     assertTrue(pilotToOperators.size() > 0);
+  }
+
+  @Test
+  public void testLookupRegulator() {
+    Set<String> regulator = authZ.lookupRegulator();
+
+    assertTrue(regulator.size() == 1);
+  }
+
+  @Test
+  void removeRegulator() {
+    boolean isSuccess = authZ.removeRegulator();
+    assertTrue(isSuccess);
   }
 }

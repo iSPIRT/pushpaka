@@ -397,11 +397,18 @@ public interface OwnershipApi {
   )
   @RequestMapping(
     method = RequestMethod.GET,
-    value = "/sale/find",
+    value = "/sale/find/{uasId}",
     produces = { "application/json" }
   )
-  default ResponseEntity<List<Sale>> findSales() {
-    List<Dao.Sale> les = Dao.Sale.getAll(DaoInstance.getInstance().getSession());
+  default ResponseEntity<List<Sale>> findSales(
+    @Parameter(
+      name = "uasId",
+      description = "Uas id to delete",
+      required = true,
+      in = ParameterIn.PATH
+    ) @PathVariable("uasId") UUID uasId
+  ) {
+    List<Dao.Sale> les = Dao.Sale.getAll(DaoInstance.getInstance().getSession(), uasId);
     List<Sale> leso = les
       .stream()
       .map(x -> in.ispirt.pushpaka.models.Sale.toOa(x))

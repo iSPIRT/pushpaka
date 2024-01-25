@@ -33,7 +33,7 @@ public class SpringDocConfiguration {
           )
           .version("1.0.17")
       )
-      .servers(Arrays.asList(new Server().url("http://localhost:8083/")))
+      .servers(Arrays.asList(new Server().url("http://localhost:8084/")))
       .components(
         new Components()
         .addSecuritySchemes(

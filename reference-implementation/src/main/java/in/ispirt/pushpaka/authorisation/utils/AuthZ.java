@@ -10,10 +10,18 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.apache.commons.lang3.text.translate.NumericEntityUnescaper.OPTION;
 
 public class AuthZ {
   public SpicedbClient spicedbClient;
+  public String caaResourceID;
+
+  public String getCaaResourceID() {
+    return caaResourceID;
+  }
+
+  public void setCaaResourceID(String caaResourceID) {
+    this.caaResourceID = caaResourceID;
+  }
 
   public SpicedbClient getSpicedbClient() {
     return spicedbClient;
@@ -55,14 +63,18 @@ public class AuthZ {
   public boolean associateCAAToPlatform(String caaResourceID) {
     String tokenValue = null;
 
-    tokenValue =
-      spicedbClient.writeRelationship(
-        RelationshipType.PLATFORM,
-        caaResourceID,
-        ResourceType.CAA,
-        AuthZConstants.PLATFORM_ID,
-        SubjectType.PLATFORM
-      );
+    boolean removeRegulatorCheck = this.removeRegulator();
+
+    if (removeRegulatorCheck) {
+      tokenValue =
+        spicedbClient.writeRelationship(
+          RelationshipType.PLATFORM,
+          caaResourceID,
+          ResourceType.CAA,
+          AuthZConstants.PLATFORM_ID,
+          SubjectType.PLATFORM
+        );
+    }
 
     if (tokenValue != null) {
       return true;
@@ -84,6 +96,8 @@ public class AuthZ {
   ) {
     String tokenValue = null;
 
+    boolean isAssociateCAAToPlatformSuccess = associateCAAToPlatform(caaResourceID);
+
     boolean isCAAAdmin = spicedbClient.checkPermission(
       Permission.SUPER_ADMIN,
       ResourceType.CAA,
@@ -92,7 +106,7 @@ public class AuthZ {
       platformUserID
     );
 
-    if (isCAAAdmin) {
+    if (isAssociateCAAToPlatformSuccess && isCAAAdmin) {
       tokenValue =
         spicedbClient.writeRelationship(
           RelationshipType.ADMINISTRATOR,
@@ -111,19 +125,14 @@ public class AuthZ {
     // caa:caa-authority#administrator@user:caa-user
   }
 
-  /** Thois method is used to get CAA resource ID */
-  public static String getCAAResourceID() {
-    // return the ID of the CCA resource in the system
-    return AuthZConstants.TEST_CAA_RESOURCE_ID;
-  }
-
   /**
    * This method is used to create resource type admin when creating the resource
    */
   public boolean createResoureTypeAdmin(
     ResourceType resourceType,
     String resourceID,
-    String resourceAdminID
+    String resourceAdminID,
+    String caaResourceID
   ) {
     boolean isSuccess = false;
     String tokenValue = null;
@@ -154,7 +163,7 @@ public class AuthZ {
           RelationshipType.REGULATOR,
           resourceID,
           resourceType,
-          getCAAResourceID(),
+          caaResourceID,
           SubjectType.CAA
         );
 
@@ -188,13 +197,17 @@ public class AuthZ {
   public boolean createUASManufacturerRelationships(
     String UASID,
     String manufacturerID,
-    String manufacturerUserID
+    String manufacturerUserID,
+    String caaResourceID
   ) {
     boolean isSuccess = false;
     String tokenValueManufacturer = null;
     String tokenValueRegulator = null;
 
-    boolean isUASExist = lookupUASResourceOwnership(UASID, manufacturerUserID);
+    boolean isUASExist = lookupUASResourceManufacturerOwnership(
+      UASID,
+      manufacturerUserID
+    );
 
     if (isUASExist) {
       return isSuccess;
@@ -224,7 +237,7 @@ public class AuthZ {
         RelationshipType.REGULATOR,
         UASID,
         ResourceType.UAS,
-        getCAAResourceID(),
+        caaResourceID,
         SubjectType.CAA
       );
 
@@ -247,6 +260,12 @@ public class AuthZ {
     /** Put additional checks for pre-condition on UAS */
     boolean isSuccess = false;
     String tokenValueOperator = null;
+
+    boolean isUASExist = lookupUASResourceManufacturerOwnership(UASID, operatorUserID);
+
+    if (isUASExist) {
+      return isSuccess;
+    }
 
     boolean checkIsOperatorAdmin = checkIsResourceAdmin(
       ResourceType.OPERATOR,
@@ -279,7 +298,8 @@ public class AuthZ {
   public boolean createUASTypeRelationships(
     String UASTypeID,
     String manufacturerID,
-    String manufacturerUserID
+    String manufacturerUserID,
+    String caaResourceID
   ) {
     boolean isSuccess = false;
 
@@ -305,7 +325,7 @@ public class AuthZ {
       RelationshipType.REGULATOR,
       UASTypeID,
       ResourceType.UASTYPE,
-      getCAAResourceID(),
+      caaResourceID,
       SubjectType.CAA
     );
 
@@ -408,20 +428,39 @@ public class AuthZ {
     return isSuccess;
   }
 
-  public boolean addPilot(String pilotUserID, String caaResourceID) {
+  public boolean addPilot(
+    String pilotResourceID,
+    String pilotUserID,
+    String caaResourceID
+  ) {
     boolean isSuccess = false;
     String tokenValue = null;
+    String tokenValueAddRegulator = null;
 
     tokenValue =
       spicedbClient.writeRelationship(
-        RelationshipType.REGULATOR,
-        caaResourceID,
-        ResourceType.CAA,
+        RelationshipType.FLIGHTPLAN_OPERATOR,
+        pilotResourceID,
+        ResourceType.PILOT,
         pilotUserID,
-        SubjectType.PILOT
+        SubjectType.USER
       );
 
-    if (tokenValue != null) {
+    tokenValueAddRegulator =
+      spicedbClient.writeRelationship(
+        RelationshipType.REGULATOR,
+        pilotResourceID,
+        ResourceType.PILOT,
+        caaResourceID,
+        SubjectType.CAA
+      );
+
+    if (
+      tokenValue != null &&
+      tokenValue.length() > 0 &&
+      tokenValueAddRegulator != null &&
+      tokenValueAddRegulator.length() > 0
+    ) {
       isSuccess = true;
     }
 
@@ -450,7 +489,7 @@ public class AuthZ {
    * This function will be used to lookup the UAS resource association with
    * operators
    */
-  public boolean lookupUASResourceOwnership(
+  public boolean lookupUASResourceManufacturerOwnership(
     String UASResourceID,
     String manufacturerResourceID
   ) {
@@ -459,6 +498,22 @@ public class AuthZ {
       ResourceType.UAS,
       SubjectType.MANUFACTURER,
       manufacturerResourceID
+    );
+
+    boolean isSuccess = uasResources.contains(UASResourceID);
+
+    return isSuccess;
+  }
+
+  public boolean lookupUASResourceOperatorOwnership(
+    String UASResourceID,
+    String operatorResourceID
+  ) {
+    Set<String> uasResources = spicedbClient.lookupResources(
+      RelationshipType.OWNER,
+      ResourceType.UAS,
+      SubjectType.OPERATOR,
+      operatorResourceID
     );
 
     boolean isSuccess = uasResources.contains(UASResourceID);
@@ -499,6 +554,7 @@ public class AuthZ {
     resourceTypeList.add(ResourceType.TRADER);
     resourceTypeList.add(ResourceType.REPAIRAGENCY);
     resourceTypeList.add(ResourceType.PILOT);
+    resourceTypeList.add(ResourceType.UASTYPE);
 
     return resourceTypeList;
   }
@@ -517,5 +573,49 @@ public class AuthZ {
     }
 
     return resourceIDSetForApproval;
+  }
+
+  public Set<String> lookupRegulator() {
+    Set<String> resourceSet = spicedbClient.lookupResources(
+      RelationshipType.PLATFORM,
+      ResourceType.CAA,
+      SubjectType.PLATFORM,
+      AuthZConstants.PLATFORM_ID
+    );
+
+    System.out.println(resourceSet);
+
+    return resourceSet;
+  }
+
+  public boolean removeRegulator() {
+    boolean isSuccess = false;
+
+    Set<String> regulatorSet = (HashSet<String>) this.lookupRegulator();
+    List<String> regulatorList = new ArrayList<String>(regulatorSet);
+
+    for (int counter = 0; counter < regulatorList.size(); counter++) {
+      System.out.print(regulatorList.get(counter));
+      String tokenValue = spicedbClient.deleteRelationship(
+        RelationshipType.PLATFORM,
+        regulatorList.get(counter),
+        ResourceType.CAA,
+        AuthZConstants.PLATFORM_ID,
+        SubjectType.PLATFORM
+      );
+      if (tokenValue != null) {
+        isSuccess = true;
+      } else {
+        isSuccess = false;
+      }
+    }
+
+    int modifiedRegulatorCount = ((HashSet<String>) this.lookupRegulator()).size();
+
+    if (modifiedRegulatorCount == 0) {
+      isSuccess = true;
+    }
+
+    return isSuccess;
   }
 }

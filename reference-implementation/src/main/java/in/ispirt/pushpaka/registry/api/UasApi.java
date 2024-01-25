@@ -9,6 +9,7 @@ import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
 import in.ispirt.pushpaka.models.Uas;
 import in.ispirt.pushpaka.registry.utils.DaoException;
+import in.ispirt.pushpaka.utils.Logging;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;

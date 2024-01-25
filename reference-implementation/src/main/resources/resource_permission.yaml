@@ -20,8 +20,10 @@ schema: |-
 
   /** pilot */
   definition pilot {
+  	relation flight_operator: user
   	relation regulator: caa
   	permission approve = regulator->super_admin
+  	permission flight_operations_admin = flight_operator
   }
 
   /** producer of uas and uas types */
