@@ -1,22 +1,15 @@
 package in.ispirt.pushpaka.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 import in.ispirt.pushpaka.dao.Dao;
-import in.ispirt.pushpaka.models.ObjectTimestamps;
-import in.ispirt.pushpaka.models.UasStatus;
-import in.ispirt.pushpaka.models.UasType;
+import in.ispirt.pushpaka.utils.Logging;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.net.URI;
-import java.time.OffsetDateTime;
-import java.util.*;
 import java.util.Objects;
 import java.util.UUID;
 import javax.annotation.Generated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
-import org.openapitools.jackson.nullable.JsonNullable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Uas
@@ -36,6 +29,8 @@ public class Uas {
   private ObjectTimestamps timestamps;
 
   private UasStatus status;
+
+  private String humanReadableId;
 
   /**
    * Default constructor
@@ -123,8 +118,8 @@ public class Uas {
    */
   @NotNull
   @Size(min = 6, max = 12)
-  @Schema(name = "oemSerialNumber", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("oemSerialNumber")
+  @Schema(name = "oem_serial_number", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("oem_serial_number")
   public String getOemSerialNumber() {
     return oemSerialNumber;
   }
@@ -173,6 +168,22 @@ public class Uas {
 
   public void setStatus(UasStatus status) {
     this.status = status;
+  }
+
+  @Valid
+  @Schema(
+    name = "human_readable_id",
+    accessMode = Schema.AccessMode.READ_ONLY,
+    requiredMode = Schema.RequiredMode.NOT_REQUIRED
+  )
+  @JsonProperty("human_readable_id")
+  public String getHumanReadableId() {
+    return Uas.fromOa(this).getHumanReadableId();
+  }
+
+  public Uas setHumanReadableId(String id) {
+    this.humanReadableId = id;
+    return this;
   }
 
   @Override
@@ -237,6 +248,9 @@ public class Uas {
       ot,
       u.getStatus()
     );
+    String hrid = u.getHumanReadableId();
+    Logging.info("UAS hrid: " + hrid);
+    uu.setHumanReadableId(hrid);
     return uu;
   }
 

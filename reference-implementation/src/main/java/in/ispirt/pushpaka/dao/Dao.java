@@ -744,7 +744,6 @@ public class Dao implements Serializable {
       this.timestampUpdated = a;
     }
 
-    @NotNull
     @Column(name = "model_number")
     public String modelNumber;
 
@@ -781,6 +780,18 @@ public class Dao implements Serializable {
     }
 
     @NotNull
+    @Column(name = "approved")
+    public Boolean approved;
+
+    public Boolean getApproved() {
+      return approved;
+    }
+
+    public void setApproved(Boolean c) {
+      this.approved = c;
+    }
+
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(length = 16, name = "propulsion_category")
     private UasPropulsionCategory propulsionCategory;
@@ -812,7 +823,8 @@ public class Dao implements Serializable {
       OffsetDateTime tc,
       OffsetDateTime tu,
       UasPropulsionCategory pc,
-      List<OperationCategory> ocs
+      List<OperationCategory> ocs,
+      Boolean approved
     ) {
       this.id = id;
       this.manufacturer = manufacturer;
@@ -823,6 +835,7 @@ public class Dao implements Serializable {
       this.timestampUpdated = tu;
       this.propulsionCategory = pc;
       this.supportedOperationCategories = ocs;
+      this.approved = approved;
     }
 
     // Hibernate needs a default (no-arg) constructor to create model objects.
@@ -838,11 +851,35 @@ public class Dao implements Serializable {
       OffsetDateTime n = OffsetDateTime.now();
       m.setId(UUID.randomUUID());
       m.setManufacturer(le);
+      m.setApproved(false);
       s.save(m);
       s.flush();
       t.commit();
       s.refresh(m);
       return m;
+    }
+
+    public static UasType approve(Session s, UUID id) throws DaoException {
+      UasType uu = s
+        .createQuery("from UasType where id= :id", UasType.class)
+        .setParameter("id", id)
+        .uniqueResult();
+      if (uu == null) {
+        throw new DaoException(DaoException.Code.NOT_FOUND, "UasType");
+      }
+      uu.setApproved(true);
+      s.save(uu);
+      uu.setApproved(true);
+      s.refresh(uu);
+      return uu;
+    }
+
+    public static UasType setModelNumber(Session s, UUID id, String modelNumber)
+      throws DaoException {
+      return s
+        .createQuery("from UasType where id= :id", UasType.class)
+        .setParameter("id", id)
+        .uniqueResult();
     }
 
     public static List<UasType> getAll(Session s) {
@@ -914,7 +951,7 @@ public class Dao implements Serializable {
     }
 
     @NotNull
-    @Column(name = "oem_serial_no")
+    @Column(name = "oem_serial_no", unique = true)
     public String oemSerialNo;
 
     public String getOemSerialNo() {
@@ -956,6 +993,14 @@ public class Dao implements Serializable {
 
     public void setTimestampUpdated(OffsetDateTime a) {
       this.timestampUpdated = a;
+    }
+
+    public String getHumanReadableId() {
+      StringBuilder sb = new StringBuilder();
+      sb.append(this.uasType.getModelNumber());
+      sb.append("-");
+      sb.append(this.getOemSerialNo());
+      return sb.toString();
     }
 
     // Convenience constructor.
@@ -1650,6 +1695,19 @@ public class Dao implements Serializable {
       this.validityEnd = a;
     }
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(length = 3, name = "country", unique = true)
+    public Country country;
+
+    public Country getCountry() {
+      return country;
+    }
+
+    public void setCountry(Country a) {
+      this.country = a;
+    }
+
     // Convenience constructor.
     public CivilAviationAuthority(
       UUID id,
@@ -1657,7 +1715,8 @@ public class Dao implements Serializable {
       OffsetDateTime tc,
       OffsetDateTime tu,
       OffsetDateTime vs,
-      OffsetDateTime ve
+      OffsetDateTime ve,
+      Country c
     ) {
       this.id = id;
       this.legalEntity = legalEntity;
@@ -1665,6 +1724,7 @@ public class Dao implements Serializable {
       this.timestampUpdated = tu;
       this.validityStart = vs;
       this.validityEnd = ve;
+      this.country = c;
     }
 
     // Hibernate needs a default (no-arg) constructor to create model objects.

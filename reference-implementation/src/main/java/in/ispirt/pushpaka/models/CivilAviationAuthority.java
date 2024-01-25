@@ -1,21 +1,14 @@
 package in.ispirt.pushpaka.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import in.ispirt.pushpaka.dao.Dao;
-import in.ispirt.pushpaka.models.LegalEntity;
-import in.ispirt.pushpaka.models.ObjectTimestamps;
-import in.ispirt.pushpaka.models.Validity;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.net.URI;
 import java.time.OffsetDateTime;
-import java.util.*;
 import java.util.Objects;
 import java.util.UUID;
 import javax.annotation.Generated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
-import org.openapitools.jackson.nullable.JsonNullable;
+import javax.validation.constraints.NotNull;
 
 /**
  * CivilAviationAuthority
@@ -34,6 +27,8 @@ public class CivilAviationAuthority {
 
   private ObjectTimestamps timestamps;
 
+  private Country country;
+
   /**
    * Default constructor
    * @deprecated Use {@link CivilAviationAuthority#CivilAviationAuthority(UUID, LegalEntity, Validity, ObjectTimestamps)}
@@ -50,12 +45,14 @@ public class CivilAviationAuthority {
     UUID id,
     LegalEntity legalEntity,
     Validity validity,
-    ObjectTimestamps timestamps
+    ObjectTimestamps timestamps,
+    Country c
   ) {
     this.id = id;
     this.legalEntity = legalEntity;
     this.validity = validity;
     this.timestamps = timestamps;
+    this.country = c;
   }
 
   public CivilAviationAuthority id(UUID id) {
@@ -145,6 +142,22 @@ public class CivilAviationAuthority {
     this.timestamps = timestamps;
   }
 
+  /**
+   * Get country
+   * @return country
+   */
+  @NotNull
+  @Valid
+  @Schema(name = "country", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("country")
+  public Country getCountry() {
+    return country;
+  }
+
+  public void setCountry(Country country) {
+    this.country = country;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -202,7 +215,8 @@ public class CivilAviationAuthority {
       x.getId(),
       LegalEntity.toOa(x.getLegalEntity()),
       vtimestamps,
-      timestamps
+      timestamps,
+      x.getCountry()
     );
     return le;
   }
@@ -215,7 +229,8 @@ public class CivilAviationAuthority {
       n,
       n,
       n,
-      n
+      n,
+      m.getCountry()
     );
     return u;
   }

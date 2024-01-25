@@ -37,6 +37,8 @@ public class UasType {
 
   private URI photoUrl;
 
+  private Boolean approved;
+
   @Valid
   private List<OperationCategory> supportedOperationCategories = new ArrayList<>();
 
@@ -62,7 +64,8 @@ public class UasType {
     UasWeightCategory weightCategory,
     Float mtow,
     List<OperationCategory> supportedOperationCategories,
-    ObjectTimestamps timestamps
+    ObjectTimestamps timestamps,
+    Boolean approved
   ) {
     this.id = id;
     this.modelNumber = modelNumber;
@@ -72,6 +75,7 @@ public class UasType {
     this.mtow = mtow;
     this.supportedOperationCategories = supportedOperationCategories;
     this.timestamps = timestamps;
+    this.approved = approved;
   }
 
   public UasType id(UUID id) {
@@ -98,6 +102,25 @@ public class UasType {
     this.id = id;
   }
 
+  /**
+   * Get approved
+   * @return approved
+   */
+  @Valid
+  @Schema(
+    name = "approved",
+    accessMode = Schema.AccessMode.READ_ONLY,
+    requiredMode = Schema.RequiredMode.REQUIRED
+  )
+  @JsonProperty("approved")
+  public Boolean getApproved() {
+    return approved;
+  }
+
+  public void setApproved(Boolean approved) {
+    this.approved = approved;
+  }
+
   public UasType modelNumber(String modelNumber) {
     this.modelNumber = modelNumber;
     return this;
@@ -107,9 +130,12 @@ public class UasType {
    * Get modelNumber
    * @return modelNumber
    */
-  @NotNull
-  @Schema(name = "modelNumber", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("modelNumber")
+  @Schema(
+    name = "model_number",
+    accessMode = Schema.AccessMode.READ_ONLY,
+    requiredMode = Schema.RequiredMode.REQUIRED
+  )
+  @JsonProperty("model_number")
   public String getModelNumber() {
     return modelNumber;
   }
@@ -378,7 +404,8 @@ public class UasType {
         n,
         n,
         u.propulsionCategory,
-        u.supportedOperationCategories
+        u.supportedOperationCategories,
+        u.getApproved()
       );
       return uu;
     } catch (MalformedURLException e) {
@@ -392,7 +419,8 @@ public class UasType {
         n,
         n,
         u.propulsionCategory,
-        u.supportedOperationCategories
+        u.supportedOperationCategories,
+        u.getApproved()
       );
       return uu;
     }
@@ -411,7 +439,8 @@ public class UasType {
       u.getWeightCategory(),
       u.getMtow(),
       u.getSupportedOperationCategories(),
-      timestamps
+      timestamps,
+      u.getApproved()
     );
     return uu;
   }

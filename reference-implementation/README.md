@@ -3,9 +3,14 @@ DEMO Registry service
 
 ## Dependencies
 
-1. `docker`, `docker-compose`
-
+1. `docker`, `docker-compose`  
 Run `docker-compose up -d` to set up test SpiceDB, Keycloak servers and their Databases.
+1. import keycloak realm
+  1. Delete any existing realm named `pushpaka`
+  1. Create realm by importing `docker/keycloak-realm-pushpaka.json`
+1. optionally import keycloak test users
+  1. Open `pushpaka` realm settings and run partial import with `docker/keycloak-realm-pushpaka-test.json`
+
 
 ### Formatting Sources
 ```

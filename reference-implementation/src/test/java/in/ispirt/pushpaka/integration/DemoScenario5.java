@@ -27,7 +27,7 @@ class DemoScenario5 {
 
   // Scenario 5.a.1
   @Test
-  public void testScenario_5_a_1()
+  public void testManufacturerSubmitsFlightPlan()
     throws ClientProtocolException, IOException, java.text.ParseException {
     String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
     UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
@@ -60,7 +60,7 @@ class DemoScenario5 {
       UUID idPilot = UUID.fromString(jwtsPilot.getJWTClaimsSet().getSubject());
       TestUtils.approvePilot(jwtCaaAdmin, idPilot);
       UUID uasTypeId = TestUtils.uasTypeC3Create(jwtCaaAdmin, mid);
-      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid);
+      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, "000001");
       // Flight Authorisation
       UUID flightPlanId = TestUtils.flightPlanCreate(
         jwtPilot,
@@ -86,7 +86,7 @@ class DemoScenario5 {
 
   // Scenario 5.b.1
   @Test
-  public void testScenario_5_b_1()
+  public void testConflictingFlightPlanRejection()
     throws ClientProtocolException, IOException, java.text.ParseException {
     String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
     UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
@@ -119,7 +119,7 @@ class DemoScenario5 {
       UUID idPilot = UUID.fromString(jwtsPilot.getJWTClaimsSet().getSubject());
       TestUtils.approvePilot(jwtCaaAdmin, idPilot);
       UUID uasTypeId = TestUtils.uasTypeC3Create(jwtCaaAdmin, mid);
-      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid);
+      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, "000001");
       // Flight Authorisation
       UUID flightPlanId = TestUtils.flightPlanCreate(
         jwtPilot,
@@ -145,7 +145,7 @@ class DemoScenario5 {
 
   // Scenario 5.c.1
   @Test
-  public void testScenario_5_c_1()
+  public void testGenerateAutForBvlosVerifyAgainstSigningPubKey()
     throws ClientProtocolException, IOException, java.text.ParseException {
     String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
     UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
@@ -178,7 +178,7 @@ class DemoScenario5 {
       UUID idPilot = UUID.fromString(jwtsPilot.getJWTClaimsSet().getSubject());
       TestUtils.approvePilot(jwtCaaAdmin, idPilot);
       UUID uasTypeId = TestUtils.uasTypeC3Create(jwtCaaAdmin, mid);
-      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid);
+      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, "000001");
       // Flight Authorisation
       UUID flightPlanId = TestUtils.flightPlanCreate(
         jwtPilot,
@@ -204,7 +204,7 @@ class DemoScenario5 {
 
   // Scenario 5.d.1
   @Test
-  public void testScenario_5_d_1()
+  public void testGenerateKillSwitch()
     throws ClientProtocolException, IOException, java.text.ParseException {
     String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
     UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
@@ -237,7 +237,7 @@ class DemoScenario5 {
       UUID idPilot = UUID.fromString(jwtsPilot.getJWTClaimsSet().getSubject());
       TestUtils.approvePilot(jwtCaaAdmin, idPilot);
       UUID uasTypeId = TestUtils.uasTypeC3Create(jwtCaaAdmin, mid);
-      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid);
+      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, "000001");
       // Flight Authorisation
       UUID flightPlanId = TestUtils.flightPlanCreate(
         jwtPilot,
@@ -263,7 +263,7 @@ class DemoScenario5 {
 
   // Scenario 5.e.1
   @Test
-  public void testScenario_5_e_1()
+  public void testGenerateTemporaryFlightRestriction()
     throws ClientProtocolException, IOException, java.text.ParseException {
     String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
     UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
@@ -296,7 +296,66 @@ class DemoScenario5 {
       UUID idPilot = UUID.fromString(jwtsPilot.getJWTClaimsSet().getSubject());
       TestUtils.approvePilot(jwtCaaAdmin, idPilot);
       UUID uasTypeId = TestUtils.uasTypeC3Create(jwtCaaAdmin, mid);
-      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid);
+      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, "000001");
+      // Flight Authorisation
+      UUID flightPlanId = TestUtils.flightPlanCreate(
+        jwtPilot,
+        UUID.randomUUID(),
+        uasId,
+        uasTypeId,
+        mid,
+        leid,
+        idPilot
+      );
+      UUID flightAuthorisationId = TestUtils.flightAuthorisationCreate(
+        jwtPilot,
+        UUID.randomUUID(),
+        flightPlanId,
+        uasId,
+        idPilot
+      );
+      assertNotNull(flightAuthorisationId);
+    } catch (ParseException e) {
+      Logging.severe("JWT ParseException");
+    }
+  }
+
+  // Scenario 5.f.1
+  @Test
+  public void testGenerateKillSwitchMidflight()
+    throws ClientProtocolException, IOException, java.text.ParseException {
+    String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
+    UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
+    assertNotNull(uidPlatformAdmin);
+    String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
+    UUID uidCaaAdmin = TestUtils.userCreate(jwtCaaAdmin); // TODO: skip insertion
+    assertNotNull(uidCaaAdmin);
+    String jwtManufacturerAdmin = TestUtils.loginManufacturerAdminUser();
+    UUID uidManufacturerAdmin = TestUtils.userCreate(jwtManufacturerAdmin); // TODO: skip insertion
+    assertNotNull(uidManufacturerAdmin);
+    String jwtPilot = TestUtils.loginPilotUser();
+    UUID uidPilot = TestUtils.userCreate(jwtPilot); // TODO: skip insertion
+    assertNotNull(uidPilot);
+    try {
+      SignedJWT jwtsCaaAdmin = TestUtils.parseJwt(jwtCaaAdmin);
+      TestUtils.assertJwt(jwtsCaaAdmin);
+      UUID idCaaAdmin = UUID.fromString(jwtsCaaAdmin.getJWTClaimsSet().getSubject());
+      Logging.info("id Caa Admin: " + idCaaAdmin.toString());
+      UUID leidCaa = TestUtils.legalEntityCreate(jwtCaaAdmin, UUID.randomUUID());
+      UUID caaid = TestUtils.civilAviationAuthorityCreate(
+        jwtCaaAdmin,
+        UUID.randomUUID(),
+        leidCaa
+      );
+      assertNotNull(caaid);
+      UUID leid = TestUtils.legalEntityCreate(jwtManufacturerAdmin, UUID.randomUUID());
+      UUID mid = TestUtils.manufacturerCreate(jwtManufacturerAdmin, leid);
+      TestUtils.approveManufacturer(jwtCaaAdmin, mid);
+      SignedJWT jwtsPilot = TestUtils.parseJwt(jwtPilot);
+      UUID idPilot = UUID.fromString(jwtsPilot.getJWTClaimsSet().getSubject());
+      TestUtils.approvePilot(jwtCaaAdmin, idPilot);
+      UUID uasTypeId = TestUtils.uasTypeC3Create(jwtCaaAdmin, mid);
+      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, "000001");
       // Flight Authorisation
       UUID flightPlanId = TestUtils.flightPlanCreate(
         jwtPilot,

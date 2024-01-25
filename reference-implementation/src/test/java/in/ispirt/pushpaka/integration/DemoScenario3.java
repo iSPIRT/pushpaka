@@ -23,7 +23,7 @@ class DemoScenario3 {
 
   // Scenario 3.a.1
   @Test
-  public void testScenario_3_a_1()
+  public void testGenerateAutForVlos()
     throws ClientProtocolException, IOException, java.text.ParseException {
     String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
     UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
@@ -56,7 +56,7 @@ class DemoScenario3 {
       UUID idPilot = UUID.fromString(jwtsPilot.getJWTClaimsSet().getSubject());
       TestUtils.approvePilot(jwtCaaAdmin, idPilot);
       UUID uasTypeId = TestUtils.uasTypeCreate(jwtCaaAdmin, mid);
-      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid);
+      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, "000001");
       // Flight Authorisation
       UUID flightPlanId = TestUtils.flightPlanCreate(
         jwtPilot,

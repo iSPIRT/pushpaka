@@ -7,13 +7,10 @@ package in.ispirt.pushpaka.registry.api;
 
 import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
-import in.ispirt.pushpaka.models.ModelApiResponse;
 import in.ispirt.pushpaka.models.UasType;
 import in.ispirt.pushpaka.registry.utils.DaoException;
-import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,20 +19,20 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.annotation.Generated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.multipart.MultipartFile;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
@@ -46,6 +43,70 @@ import org.springframework.web.multipart.MultipartFile;
 public interface UasTypeApi {
   default Optional<NativeWebRequest> getRequest() {
     return Optional.empty();
+  }
+
+  /**
+   * POST /uasType/approve : Approve a new uasType to the store
+   * Approve a new uasType to the store
+   *
+   * @param uasType Create a new uasType in the store (required)
+   * @return Successful operation (status code 200)
+   *         or Invalid input (status code 405)
+   */
+  @Operation(
+    operationId = "approveUasType",
+    summary = "Approve a new uasType to the store",
+    description = "Approve a new uasType to the store",
+    responses = {
+      @ApiResponse(
+        responseCode = "200",
+        description = "Successful operation",
+        content = {
+          @Content(
+            mediaType = "application/json",
+            schema = @Schema(implementation = UasType.class)
+          )
+        }
+      ),
+      @ApiResponse(responseCode = "405", description = "Invalid input")
+    },
+    security = { @SecurityRequirement(name = "jwt") }
+  )
+  @RequestMapping(
+    method = RequestMethod.POST,
+    value = "/uasType/approve",
+    produces = { "application/json" },
+    consumes = { "application/json" }
+  )
+  default ResponseEntity<UasType> approveUasType(
+    @Parameter(
+      name = "model_number",
+      description = "Model Number assigned to new uasType in the store",
+      required = true
+    ) @Valid @RequestBody String modelNumber,
+    @Parameter(
+      name = "uas_type_id",
+      description = "UasType ID for the new uasType in the store",
+      required = true
+    ) @Valid @RequestBody UUID uasTypeId
+  ) {
+    try {
+      Dao.UasType lec = Dao.UasType.setModelNumber(
+        DaoInstance.getInstance().getSession(),
+        uasTypeId,
+        modelNumber
+      );
+      lec = Dao.UasType.approve(DaoInstance.getInstance().getSession(), uasTypeId);
+      return ResponseEntity.ok(UasType.toOa(lec));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
   /**

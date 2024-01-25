@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.rpc.context.AttributeContext.Auth;
 import com.nimbusds.jwt.SignedJWT;
 import in.ispirt.pushpaka.authorisation.ResourceType;
 import in.ispirt.pushpaka.authorisation.utils.AuthZ;
@@ -64,9 +63,9 @@ public class TestUtils {
       "http://localhost:8080/realms/pushpaka/protocol/openid-connect/token"
     );
     List<NameValuePair> formparams = Arrays.asList(
-      new BasicNameValuePair("client_id", "frontend"),
+      new BasicNameValuePair("client_id", "backend"),
       new BasicNameValuePair("grant_type", "password"),
-      new BasicNameValuePair("client_secret", "FH598McXo0GugVaKqAZYuiM6RDm99QY3"),
+      new BasicNameValuePair("client_secret", "qV6lTdv59FyBL1kn2bRnp6LQF4HVxOkk"),
       new BasicNameValuePair("scope", "openid"),
       new BasicNameValuePair("username", user.getKey()),
       new BasicNameValuePair("password", user.getValue())
@@ -193,6 +192,7 @@ public class TestUtils {
     // assertEquals(httpResponse.getStatusLine().getStatusCode(), 200);
     HttpEntity re = httpResponse.getEntity();
     String reb = EntityUtils.toString(re);
+    Logging.info("USER CREATE RESPONSE: " + reb);
     EntityUtils.consume(re);
     return extractUuid(reb);
   }
@@ -282,7 +282,7 @@ public class TestUtils {
       x.toString().substring(0, 8) +
       "\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN" +
       x.toString().substring(0, 8) +
-      "\", \"timestamps\": {} }, \"validity\": { \"from\": \"2023-11-26T12:08:22.985Z\", \"till\": \"2023-11-26T12:08:22.985Z\" }, \"timestamps\": {} }",
+      "\", \"timestamps\": {} }, \"validity\": { \"from\": \"2023-11-26T12:08:22.985Z\", \"till\": \"2023-11-26T12:08:22.985Z\" }, \"timestamps\": {}, \"country\": \"IND\" }",
       ContentType.APPLICATION_JSON
     );
     HttpPost request = new HttpPost(
@@ -355,7 +355,7 @@ public class TestUtils {
   public static UUID uasTypeCreate(String jwt, UUID x)
     throws ClientProtocolException, IOException, JsonProcessingException {
     StringEntity e = new StringEntity(
-      "{ \"modelNumber\": \"string\", \"manufacturer\": { \"id\": \"" +
+      "{ \"manufacturer\": { \"id\": \"" +
       x.toString() +
       "\", \"legalEntity\": { \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN" +
       x.toString().substring(0, 8) +
@@ -368,17 +368,18 @@ public class TestUtils {
 
     // When
     HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
-    assertEquals(httpResponse.getStatusLine().getStatusCode(), 200);
     HttpEntity re = httpResponse.getEntity();
     String reb = EntityUtils.toString(re);
     EntityUtils.consume(re);
+    Logging.info("UAS CREATE RESPONSE " + reb);
+    assertEquals(httpResponse.getStatusLine().getStatusCode(), 200);
     return TestUtils.extractUuid(reb);
   }
 
   public static UUID uasTypeC2Create(String jwt, UUID x)
     throws ClientProtocolException, IOException, JsonProcessingException {
     StringEntity e = new StringEntity(
-      "{ \"modelNumber\": \"string\", \"manufacturer\": { \"id\": \"" +
+      "{ \"manufacturer\": { \"id\": \"" +
       x.toString() +
       "\", \"legalEntity\": { \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN" +
       x.toString().substring(0, 8) +
@@ -401,7 +402,7 @@ public class TestUtils {
   public static UUID uasTypeC3Create(String jwt, UUID x)
     throws ClientProtocolException, IOException, JsonProcessingException {
     StringEntity e = new StringEntity(
-      "{ \"modelNumber\": \"string\", \"manufacturer\": { \"id\": \"" +
+      "{ \"manufacturer\": { \"id\": \"" +
       x.toString() +
       "\", \"legalEntity\": { \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN" +
       x.toString().substring(0, 8) +
@@ -421,18 +422,25 @@ public class TestUtils {
     return TestUtils.extractUuid(reb);
   }
 
-  public static UUID uasCreate(String jwt, UUID uasTypeId, UUID leid)
+  public static UUID uasCreate(
+    String jwt,
+    UUID uasTypeId,
+    UUID leid,
+    String oemSerialNumber
+  )
     throws ClientProtocolException, IOException, JsonProcessingException, ParseException {
     StringEntity e = new StringEntity(
       "{ \"type\": { \"id\": \"" +
       uasTypeId.toString() +
-      "\", \"modelNumber\": \"string\", \"manufacturer\": { \"legalEntity\": { \"id\": \"" +
+      "\", \"manufacturer\": { \"legalEntity\": { \"id\": \"" +
       leid.toString() +
       "\", \"cin\": \"CIN" +
       leid.toString().substring(0, 8) +
       "\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN" +
       leid.toString().substring(0, 8) +
-      "\", \"timestamps\": {} }, \"validity\": { \"from\": \"2023-11-26T12:14:38.563Z\", \"till\": \"2023-11-26T12:14:38.563Z\" }, \"timestamps\": {} }, \"propulsionCategory\": \"VTOL\", \"weightCategory\": \"NANO\", \"mtow\": 0, \"photoUrl\": \"https://ispirt.github.io/pushpaka/\", \"supportedOperationCategories\": [ \"C1\" ], \"timestamps\": {} }, \"oemSerialNumber\": \"string\", \"timestamps\": {}, \"status\": \"REGISTERED\" }",
+      "\", \"timestamps\": {} }, \"validity\": { \"from\": \"2023-11-26T12:14:38.563Z\", \"till\": \"2023-11-26T12:14:38.563Z\" }, \"timestamps\": {} }, \"propulsionCategory\": \"VTOL\", \"weightCategory\": \"NANO\", \"mtow\": 0, \"photoUrl\": \"https://ispirt.github.io/pushpaka/\", \"supportedOperationCategories\": [ \"C1\" ], \"timestamps\": {} }, \"oem_serial_number\": \"" +
+      oemSerialNumber +
+      "\", \"timestamps\": {}, \"status\": \"REGISTERED\" }",
       ContentType.APPLICATION_JSON
     );
     HttpPost request = new HttpPost("http://localhost:8084/api/v1/uas");
@@ -441,10 +449,11 @@ public class TestUtils {
 
     // When
     HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
-    assertEquals(httpResponse.getStatusLine().getStatusCode(), 200);
     HttpEntity re = httpResponse.getEntity();
     String reb = EntityUtils.toString(re);
     EntityUtils.consume(re);
+    Logging.info("UAS CREATE RESPONSE: " + reb);
+    assertEquals(httpResponse.getStatusLine().getStatusCode(), 200);
     return TestUtils.extractUuid(reb);
   }
 
@@ -490,11 +499,11 @@ public class TestUtils {
       uasId.toString() +
       "\", \"type\": { \"id\": \"" +
       uasTypeId.toString() +
-      "\", \"modelNumber\": \"string\", \"manufacturer\": { \"id\": \"" +
+      "\", \"manufacturer\": { \"id\": \"" +
       mId.toString() +
       "\", \"legalEntity\": { \"id\": \"" +
       leId.toString() +
-      "\", \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": { \"from\": \"2024-01-10T07:32:43.564Z\", \"till\": \"2024-01-10T07:32:43.564Z\" }, \"timestamps\": {} }, \"propulsionCategory\": \"VTOL\", \"weightCategory\": \"NANO\", \"mtow\": 0, \"photoUrl\": \"https://ispirt.github.io/pushpaka/\", \"supportedOperationCategories\": [ \"C1\" ], \"timestamps\": {} }, \"oemSerialNumber\": \"string\", \"timestamps\": {}, \"status\": \"REGISTERED\" }, \"pilot\": { \"id\": \"" +
+      "\", \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": { \"from\": \"2024-01-10T07:32:43.564Z\", \"till\": \"2024-01-10T07:32:43.564Z\" }, \"timestamps\": {} }, \"propulsionCategory\": \"VTOL\", \"weightCategory\": \"NANO\", \"mtow\": 0, \"photoUrl\": \"https://ispirt.github.io/pushpaka/\", \"supportedOperationCategories\": [ \"C1\" ], \"timestamps\": {} }, \"oem_serial_number\": \"string\", \"timestamps\": {}, \"status\": \"REGISTERED\" }, \"pilot\": { \"id\": \"" +
       pilotId.toString() +
       "\", \"user\": { \"firstName\": \"John\", \"lastName\": \"James\", \"email\": \"john@email.com\", \"phone\": \"+919999999999\", \"aadharId\": \"+919999999999\", \"address\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"timestamps\": {}, \"status\": \"ACTIVE\" }, \"timestamps\": {}, \"validity\": { \"from\": \"2024-01-10T07:32:43.564Z\", \"till\": \"2024-01-10T07:32:43.564Z\" } }, \"operation_category\": \"C1\", \"start_time\": \"2024-01-10T07:32:43.564Z\", \"end_time\": \"2024-01-10T07:32:43.564Z\" }",
       ContentType.APPLICATION_JSON
@@ -526,7 +535,7 @@ public class TestUtils {
       id.toString() +
       "\", \"uas\": { \"id\": \"" +
       uas.toString() +
-      "\", \"type\": { \"modelNumber\": \"string\", \"manufacturer\": { \"legalEntity\": { \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": { \"from\": \"2024-01-11T07:23:23.397Z\", \"till\": \"2024-01-11T07:23:23.397Z\" }, \"timestamps\": {} }, \"propulsionCategory\": \"VTOL\", \"weightCategory\": \"NANO\", \"mtow\": 0, \"photoUrl\": \"https://ispirt.github.io/pushpaka/\", \"supportedOperationCategories\": [ \"C1\" ], \"timestamps\": {} }, \"oemSerialNumber\": \"string\", \"timestamps\": {}, \"status\": \"REGISTERED\" }, \"pilot\": { \"id\": \"" +
+      "\", \"type\": { \"manufacturer\": { \"legalEntity\": { \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": { \"from\": \"2024-01-11T07:23:23.397Z\", \"till\": \"2024-01-11T07:23:23.397Z\" }, \"timestamps\": {} }, \"propulsionCategory\": \"VTOL\", \"weightCategory\": \"NANO\", \"mtow\": 0, \"photoUrl\": \"https://ispirt.github.io/pushpaka/\", \"supportedOperationCategories\": [ \"C1\" ], \"timestamps\": {} }, \"oem_serial_number\": \"string\", \"timestamps\": {}, \"status\": \"REGISTERED\" }, \"pilot\": { \"id\": \"" +
       pilot.toString() +
       "\", \"user\": { \"id\": \"\", \"firstName\": \"John\", \"lastName\": \"James\", \"email\": \"john@email.com\", \"phone\": \"+919999999999\", \"aadharId\": \"+919999999999\", \"address\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"timestamps\": {}, \"status\": \"ACTIVE\" }, \"timestamps\": {}, \"validity\": { \"from\": \"2024-01-11T07:23:23.397Z\", \"till\": \"2024-01-11T07:23:23.397Z\" } } }",
       ContentType.APPLICATION_JSON
@@ -621,7 +630,7 @@ public class TestUtils {
       bles +
       "\"uas\": { \"id\": \"" +
       uasId.toString() +
-      "\", \"type\": { \"modelNumber\": \"string\", \"manufacturer\": { \"legalEntity\": { \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": { \"from\": \"2024-01-11T11:01:56.896Z\", \"till\": \"2024-01-11T11:01:56.896Z\" }, \"timestamps\": {} }, \"propulsionCategory\": \"VTOL\", \"weightCategory\": \"NANO\", \"mtow\": 0, \"photoUrl\": \"https://ispirt.github.io/pushpaka/\", \"supportedOperationCategories\": [ \"C1\" ], \"timestamps\": {} }, \"oemSerialNumber\": \"string\", \"timestamps\": {}, \"status\": \"REGISTERED\" }, \"holding\": true }",
+      "\", \"type\": { \"manufacturer\": { \"legalEntity\": { \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": { \"from\": \"2024-01-11T11:01:56.896Z\", \"till\": \"2024-01-11T11:01:56.896Z\" }, \"timestamps\": {} }, \"propulsionCategory\": \"VTOL\", \"weightCategory\": \"NANO\", \"mtow\": 0, \"photoUrl\": \"https://ispirt.github.io/pushpaka/\", \"supportedOperationCategories\": [ \"C1\" ], \"timestamps\": {} }, \"oem_serial_number\": \"string\", \"timestamps\": {}, \"status\": \"REGISTERED\" }, \"holding\": true }",
       ContentType.APPLICATION_JSON
     );
     HttpPost request = new HttpPost("http://localhost:8084/api/v1/sale");
@@ -905,8 +914,28 @@ public class TestUtils {
     // assertEquals(1, 2);
   }
 
-  public static void approveUasType(String jwt, UUID id) {
-    assertEquals(1, 2);
+  public static void approveUasType(String jwt, UUID id)
+    throws ClientProtocolException, IOException, JsonProcessingException {
+    StringEntity e = new StringEntity(
+      "{ \"model_number\": \"" +
+      UUID.randomUUID().toString() +
+      "\", \"uas_type_id\": \"" +
+      id.toString() +
+      "\"}",
+      ContentType.APPLICATION_JSON
+    );
+    HttpPost request = new HttpPost("http://localhost:8084/api/v1/uasType/approve");
+    request.setEntity(e);
+    request.addHeader("Authorization", "Bearer " + jwt);
+
+    // When
+    HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+    HttpEntity re = httpResponse.getEntity();
+    String reb = EntityUtils.toString(re);
+    Logging.info("UasType Approve Response: " + reb);
+    assertEquals(httpResponse.getStatusLine().getStatusCode(), 200);
+    EntityUtils.consume(re);
+    return;
   }
 
   public static void approveTransferCreate(String jwt, UUID id) {

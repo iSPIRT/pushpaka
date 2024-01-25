@@ -1,7 +1,5 @@
 package in.ispirt.pushpaka.integration;
 
-import static org.mockito.ArgumentMatchers.booleanThat;
-
 import com.nimbusds.jwt.SignedJWT;
 import in.ispirt.pushpaka.authorisation.utils.AuthZ;
 import in.ispirt.pushpaka.authorisation.utils.SpicedbClient;
@@ -56,7 +54,7 @@ public class DemoScenario1 {
 
   // Scenario 1.a.1 Civil Aviation Authority
   @Test
-  public void testScenario_1_a_1()
+  public void testRegisterCivilAviationAuthority()
     throws ClientProtocolException, IOException, ParseException {
     String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
 
@@ -96,7 +94,7 @@ public class DemoScenario1 {
 
   // Scenario 1.a.2 Manufacturers
   @Test
-  public void testScenario_1_a_2()
+  public void testRegisterManufacturer()
     throws ClientProtocolException, IOException, ParseException {
     String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
     String jwtManufacturerAdmin = TestUtils.loginManufacturerAdminUser();
@@ -128,7 +126,7 @@ public class DemoScenario1 {
 
   // Scenario 1.a.3 Operators
   @Test
-  public void testScenario_1_a_3()
+  public void testRegisterOperator()
     throws ClientProtocolException, IOException, ParseException {
     String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
     String jwtOperatorAdmin = TestUtils.loginOperatorAdminUser();
@@ -156,7 +154,7 @@ public class DemoScenario1 {
 
   // // Scenario 1.a.4 Pilots
   @Test
-  public void testScenario_1_a_4()
+  public void testRegisterPilot()
     throws ClientProtocolException, IOException, ParseException {
     String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
     String jwtPilot = TestUtils.loginPilotUser();
@@ -187,7 +185,7 @@ public class DemoScenario1 {
 
   // // Scenario 1.a.5 DSSPs
   @Test
-  public void testScenario_1_a_5()
+  public void testRegisterDigitalSkyServiceProvider()
     throws ClientProtocolException, IOException, ParseException {
     String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
     String jwtDsspAdmin = TestUtils.loginDsspAdminUser();
@@ -211,7 +209,7 @@ public class DemoScenario1 {
 
   // Scenario 1.a.6 Repair Agencies
   @Test
-  public void testScenario_1_a_6()
+  public void testRegisterRepairAgency()
     throws ClientProtocolException, IOException, ParseException {
     String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
     String jwtRepairAgencyAdmin = TestUtils.loginRepairAgencyAdminUser();
@@ -243,7 +241,7 @@ public class DemoScenario1 {
 
   // Scenario 1.a.7 Trader
   @Test
-  public void testScenario_1_a_7()
+  public void testRegisterTrader()
     throws ClientProtocolException, IOException, ParseException {
     String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
     String jwtTraderAdmin = TestUtils.loginTraderAdminUser();
@@ -272,7 +270,7 @@ public class DemoScenario1 {
 
   // Scenario 1.a.8 UAS
   @Test
-  public void testScenario_1_a_8()
+  public void testRegisterUas()
     throws ClientProtocolException, IOException, ParseException {
     String jwtCaaAdmin = TestUtils.loginCaaAdminUser();
     String jwtManufacturerAdmin = TestUtils.loginManufacturerAdminUser();
@@ -309,7 +307,9 @@ public class DemoScenario1 {
 
       Logging.info("UAS Type associated : " + isUASTypeAssociationSuccess);
 
-      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid);
+      TestUtils.approveUasType(jwtCaaAdmin, uasTypeId);
+
+      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, "0000011");
 
       boolean isUASAssociationSuccess = TestUtils.associateUASToManufacturer(
         authZ,
@@ -326,7 +326,7 @@ public class DemoScenario1 {
 
   // Scenario 2 UAS Sale
   @Test
-  public void testScenario_2()
+  public void testRegisterSale()
     throws ClientProtocolException, IOException, ParseException {
     String jwtPlatformAdmin = TestUtils.loginPlatformAdminUser();
     UUID uidPlatformAdmin = TestUtils.userCreate(jwtPlatformAdmin); // TODO: skip insertion
@@ -349,7 +349,7 @@ public class DemoScenario1 {
       TestUtils.approveManufacturer(jwtCaaAdmin, manufacturerid);
       UUID uasTypeId = TestUtils.uasTypeCreate(jwtCaaAdmin, manufacturerid);
       TestUtils.approveManufacturer(jwtCaaAdmin, manufacturerid);
-      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid);
+      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, "000001");
       UUID traderLeid = TestUtils.legalEntityCreate(jwtTraderAdmin, UUID.randomUUID());
       UUID traderId = TestUtils.manufacturerCreate(jwtTraderAdmin, traderLeid);
       TestUtils.approveTrader(jwtCaaAdmin, traderId);
