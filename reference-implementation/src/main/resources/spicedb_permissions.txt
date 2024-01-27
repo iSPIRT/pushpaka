@@ -1,4 +1,3 @@
-
   /** user represents a user */
   definition user {}
 
@@ -59,9 +58,9 @@
   definition uas {
   	relation manufacturer: manufacturer
   	relation regulator: caa
-  	relation owner: operator
-  	permission read_uas = manufacturer->super_admin + regulator->super_admin + owner->super_admin
-  	permission decommision_uas = manufacturer->super_admin + regulator->super_admin + owner->super_admin
+  	relation owner: operator | pilot
+  	permission read_uas = manufacturer->super_admin + regulator->super_admin + owner->super_admin + pilot->flight_operations_admin
+  	permission decommision_uas = manufacturer->super_admin + regulator->super_admin + owner->super_admin + pilot->flight_operations_admin
   }
 
   /** defines relationships of uastype with regulator and manufacturer */
@@ -96,4 +95,3 @@
   	permission super_admin = administrator
   	permission approve = regulator->super_admin
   }
-
