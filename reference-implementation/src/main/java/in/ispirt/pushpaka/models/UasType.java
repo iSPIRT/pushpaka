@@ -40,7 +40,7 @@ public class UasType {
   private Boolean approved;
 
   @Valid
-  private List<OperationCategory> supportedOperationCategories = new ArrayList<>();
+  private OperationCategory operationCategory;
 
   private ObjectTimestamps timestamps;
 
@@ -63,7 +63,7 @@ public class UasType {
     UasPropulsionCategory propulsionCategory,
     UasWeightCategory weightCategory,
     Float mtow,
-    List<OperationCategory> supportedOperationCategories,
+    OperationCategory operationCategory,
     ObjectTimestamps timestamps,
     Boolean approved
   ) {
@@ -73,7 +73,7 @@ public class UasType {
     this.propulsionCategory = propulsionCategory;
     this.weightCategory = weightCategory;
     this.mtow = mtow;
-    this.supportedOperationCategories = supportedOperationCategories;
+    this.operationCategory = operationCategory;
     this.timestamps = timestamps;
     this.approved = approved;
   }
@@ -256,42 +256,32 @@ public class UasType {
     this.photoUrl = photoUrl;
   }
 
-  public UasType supportedOperationCategories(
-    List<OperationCategory> supportedOperationCategories
+  public UasType operationCategory(
+    OperationCategory operationCategory
   ) {
-    this.supportedOperationCategories = supportedOperationCategories;
-    return this;
-  }
-
-  public UasType addSupportedOperationCategoriesItem(
-    OperationCategory supportedOperationCategoriesItem
-  ) {
-    if (this.supportedOperationCategories == null) {
-      this.supportedOperationCategories = new ArrayList<>();
-    }
-    this.supportedOperationCategories.add(supportedOperationCategoriesItem);
+    this.operationCategory = operationCategory;
     return this;
   }
 
   /**
-   * Get supportedOperationCategories
-   * @return supportedOperationCategories
+   * Get operationCategory
+   * @return operationCategory
    */
   @NotNull
   @Valid
   @Schema(
-    name = "supportedOperationCategories",
+    name = "operation_category",
     requiredMode = Schema.RequiredMode.REQUIRED
   )
-  @JsonProperty("supportedOperationCategories")
-  public List<OperationCategory> getSupportedOperationCategories() {
-    return supportedOperationCategories;
+  @JsonProperty("operation_category")
+  public OperationCategory getOperationCategory() {
+    return operationCategory;
   }
 
-  public void setSupportedOperationCategories(
-    List<OperationCategory> supportedOperationCategories
+  public void setOperationCategory(
+    OperationCategory operationCategory
   ) {
-    this.supportedOperationCategories = supportedOperationCategories;
+    this.operationCategory = operationCategory;
   }
 
   public UasType timestamps(ObjectTimestamps timestamps) {
@@ -333,8 +323,8 @@ public class UasType {
       Objects.equals(this.mtow, uasType.mtow) &&
       Objects.equals(this.photoUrl, uasType.photoUrl) &&
       Objects.equals(
-        this.supportedOperationCategories,
-        uasType.supportedOperationCategories
+        this.operationCategory,
+        uasType.operationCategory
       ) &&
       Objects.equals(this.timestamps, uasType.timestamps)
     );
@@ -350,7 +340,7 @@ public class UasType {
       weightCategory,
       mtow,
       photoUrl,
-      supportedOperationCategories,
+      operationCategory,
       timestamps
     );
   }
@@ -373,8 +363,8 @@ public class UasType {
     sb.append("    mtow: ").append(toIndentedString(mtow)).append("\n");
     sb.append("    photoUrl: ").append(toIndentedString(photoUrl)).append("\n");
     sb
-      .append("    supportedOperationCategories: ")
-      .append(toIndentedString(supportedOperationCategories))
+      .append("    operationCategory: ")
+      .append(toIndentedString(operationCategory))
       .append("\n");
     sb.append("    timestamps: ").append(toIndentedString(timestamps)).append("\n");
     sb.append("}");
@@ -404,7 +394,7 @@ public class UasType {
         n,
         n,
         u.propulsionCategory,
-        u.supportedOperationCategories,
+        u.operationCategory,
         u.getApproved()
       );
       return uu;
@@ -419,7 +409,7 @@ public class UasType {
         n,
         n,
         u.propulsionCategory,
-        u.supportedOperationCategories,
+        u.operationCategory,
         u.getApproved()
       );
       return uu;
@@ -438,7 +428,7 @@ public class UasType {
       u.getPropulsionCategory(),
       u.getWeightCategory(),
       u.getMtow(),
-      u.getSupportedOperationCategories(),
+      u.getOperationCategory(),
       timestamps,
       u.getApproved()
     );

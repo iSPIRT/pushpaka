@@ -805,12 +805,15 @@ public class Dao implements Serializable {
     }
 
     @Enumerated(EnumType.STRING)
-    @Column //(name = "supported_operation_categories")
-    @ElementCollection(targetClass = OperationCategory.class)
-    private List<OperationCategory> supportedOperationCategories;
+    @Column(name = "operation_category")
+    private OperationCategory operationCategory;
 
-    public List<OperationCategory> getSupportedOperationCategories() {
-      return this.supportedOperationCategories;
+    public OperationCategory getOperationCategory() {
+      return this.operationCategory;
+    }
+
+    public void setOperationCategory(OperationCategory o) {
+      this.operationCategory = o;
     }
 
     // Convenience constructor.
@@ -823,7 +826,7 @@ public class Dao implements Serializable {
       OffsetDateTime tc,
       OffsetDateTime tu,
       UasPropulsionCategory pc,
-      List<OperationCategory> ocs,
+      OperationCategory oc,
       Boolean approved
     ) {
       this.id = id;
@@ -834,7 +837,7 @@ public class Dao implements Serializable {
       this.timestampCreated = tc;
       this.timestampUpdated = tu;
       this.propulsionCategory = pc;
-      this.supportedOperationCategories = ocs;
+      this.operationCategory = oc;
       this.approved = approved;
     }
 
