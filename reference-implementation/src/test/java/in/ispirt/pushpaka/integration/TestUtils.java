@@ -7,9 +7,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jwt.SignedJWT;
-import in.ispirt.pushpaka.authorisation.RelationshipType;
 import in.ispirt.pushpaka.authorisation.ResourceType;
-import in.ispirt.pushpaka.authorisation.SubjectType;
 import in.ispirt.pushpaka.authorisation.utils.AuthZ;
 import in.ispirt.pushpaka.utils.Logging;
 import java.io.IOException;
@@ -68,7 +66,7 @@ public class TestUtils {
     List<NameValuePair> formparams = Arrays.asList(
       new BasicNameValuePair("client_id", "backend"),
       new BasicNameValuePair("grant_type", "password"),
-      new BasicNameValuePair("client_secret", "qV6lTdv59FyBL1kn2bRnp6LQF4HVxOkk"),
+      new BasicNameValuePair("client_secret", "Gm236XNRzKTG04hOiXjhRIgZ59krCOFG"),
       new BasicNameValuePair("scope", "openid"),
       new BasicNameValuePair("username", user.getKey()),
       new BasicNameValuePair("password", user.getValue())

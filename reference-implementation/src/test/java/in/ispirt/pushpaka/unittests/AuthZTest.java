@@ -51,8 +51,7 @@ public class AuthZTest {
   public void testAssociateCAAToPlatform() {
     // caa:caa-authority#platform@platform:digital-sky-platform
 
-    String CAAResourceID = "caa-authority";
-    boolean isSuccess = authZ.associateCAAToPlatform(CAAResourceID);
+    boolean isSuccess = authZ.associateCAAToPlatform(authZ.getCaaResourceID());
 
     assertTrue(isSuccess);
   }
@@ -61,12 +60,11 @@ public class AuthZTest {
   public void testCreateCAAAdministrator() {
     // caa:caa-authority#administrator@user:caa-user
 
-    String caaResourceID = "caa-authority";
     String caaResourceAdminID = "caa-user";
     String platformAdminId = "platform-user";
 
     boolean isSuccess = authZ.createCAAAdmin(
-      caaResourceID,
+      authZ.getCaaResourceID(),
       caaResourceAdminID,
       platformAdminId
     );
@@ -187,28 +185,40 @@ public class AuthZTest {
   @Test
   public void testAddPilotToOperator() {
     // pilot:default-pilot-group#member@user:pilot-user-2
+    String pilotResourceID = "pilot-resource-1";
     String pilotUserID = "pilot-user-1";
     String operatorResourceID = "operator-1";
     String operatorAdminUserID = "operator-user";
 
-    boolean isSuccess = authZ.addPilotToOperator(
+    boolean addPilot = authZ.addPilot(
+      pilotResourceID,
       pilotUserID,
+      authZ.getCaaResourceID()
+    );
+
+    boolean isSuccess = authZ.addPilotToOperator(
+      pilotResourceID,
       operatorResourceID,
       operatorAdminUserID
     );
 
-    assertTrue(isSuccess);
+    boolean isPilotflightOperationsAdmin = authZ.isFlightOperationsAdmin(
+      pilotUserID,
+      operatorResourceID
+    );
+
+    assertTrue(addPilot && isSuccess && isPilotflightOperationsAdmin);
   }
 
   @Test
   public void testRemovePilotToOperator() {
-    // pilot:default-pilot-group#member@user:pilot-user-2
-    String pilotUserID = "pilot-user-1";
+    // pilot:default-pilot-group#member@user:pilot-user-
+    String pilotResourceID = "pilot-resource-1";
     String operatorResourceID = "operator-1";
     String operatorAdminUserID = "operator-user";
 
     boolean isSuccess = authZ.removePilotFromOperator(
-      pilotUserID,
+      pilotResourceID,
       operatorResourceID,
       operatorAdminUserID
     );
@@ -219,27 +229,17 @@ public class AuthZTest {
   @Test
   public void testAddPilotToOperatoNegative() {
     // pilot:default-pilot-group#member@user:pilot-user-2
-    String pilotUserID = "pilot-user-1";
+    String pilotResourceID = "pilot-resource";
     String operatorResourceID = "operator-1";
     String operatorAdminUserID = "operator-user-1";
 
     boolean isSuccess = authZ.addPilotToOperator(
-      pilotUserID,
+      pilotResourceID,
       operatorResourceID,
       operatorAdminUserID
     );
 
     assertFalse(isSuccess);
-  }
-
-  @Test
-  public void testFlightOperationsAdmin() {
-    String pilotUserID = "pilot-user-1";
-    String operatorResourceID = "operator-1";
-
-    boolean isSuccess = authZ.isFlightOperationsAdmin(pilotUserID, operatorResourceID);
-
-    assertTrue(isSuccess);
   }
 
   @Test
@@ -412,14 +412,8 @@ public class AuthZTest {
 
   @Test
   public void testLookupRegulator() {
-    Set<String> regulator = authZ.lookupRegulator();
+    boolean isSuccess = authZ.lookupRegulator(authZ.getCaaResourceID());
 
-    assertTrue(regulator.size() == 1);
-  }
-
-  @Test
-  void removeRegulator() {
-    boolean isSuccess = authZ.removeRegulator();
     assertTrue(isSuccess);
   }
 }
