@@ -64,7 +64,7 @@ public class AuthZ {
     String tokenValue = null;
 
     boolean removeRegulatorCheck = this.removeRegulator();
-    
+
     if (removeRegulatorCheck) {
       tokenValue =
         spicedbClient.writeRelationship(

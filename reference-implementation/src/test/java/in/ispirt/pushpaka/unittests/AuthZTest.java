@@ -432,7 +432,7 @@ public class AuthZTest {
   @Test
   public void testPilotToOperators() {
     String pilotResourceID = "pilot-resource-2";
-   
+
     Set<String> pilotToOperators = authZ.lookupPilotResource(pilotResourceID);
     System.out.println(pilotToOperators);
     assertTrue(pilotToOperators.size() > 0);
