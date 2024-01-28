@@ -76,7 +76,7 @@ public class AuthZ {
         );
     }
 
-    if (tokenValue != null) {
+    if (tokenValue != null && tokenValue.length() > 0) {
       return true;
     } else {
       return false;
@@ -356,7 +356,7 @@ public class AuthZ {
 
   /** This function is used to add pilot user to operator */
   public boolean addPilotToOperator(
-    String pilotUserID,
+    String pilotResourceID,
     String operatorResourceID,
     String operatorUserID
   ) {
@@ -377,7 +377,7 @@ public class AuthZ {
           RelationshipType.PILOT,
           operatorResourceID,
           ResourceType.OPERATOR,
-          pilotUserID,
+          pilotResourceID,
           SubjectType.PILOT
         );
     }
@@ -573,6 +573,19 @@ public class AuthZ {
     }
 
     return resourceIDSetForApproval;
+  }
+
+  public boolean lookupRegulator(String resourceID) {
+    Set<String> resourceSet = spicedbClient.lookupResources(
+      RelationshipType.PLATFORM,
+      ResourceType.CAA,
+      SubjectType.PLATFORM,
+      AuthZConstants.PLATFORM_ID
+    );
+
+    System.out.println(resourceSet);
+
+    return resourceSet.contains(resourceID);
   }
 
   public Set<String> lookupRegulator() {
