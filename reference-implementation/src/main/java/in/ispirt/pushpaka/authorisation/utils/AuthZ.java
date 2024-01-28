@@ -1,21 +1,19 @@
 package in.ispirt.pushpaka.authorisation.utils;
 
+import com.authzed.api.v0.Core;
+import com.authzed.api.v1.Core.Relationship;
 import in.ispirt.pushpaka.authorisation.Permission;
 import in.ispirt.pushpaka.authorisation.RelationshipType;
 import in.ispirt.pushpaka.authorisation.ResourceType;
 import in.ispirt.pushpaka.authorisation.SubjectType;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import javassist.bytecode.Descriptor.Iterator;
-
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import com.authzed.api.v0.Core;
-import com.authzed.api.v1.Core.Relationship;
+import javassist.bytecode.Descriptor.Iterator;
 
 public class AuthZ {
   public SpicedbClient spicedbClient;
@@ -615,19 +613,18 @@ public class AuthZ {
     return resourceSet.size();
   }
 
-  public  ArrayList<String>  lookupRelationship() {
+  public ArrayList<String> lookupRelationship() {
     Set<List<Relationship>> relationshipsSet = spicedbClient.exportRelationships();
     java.util.Iterator<List<Relationship>> relationships = relationshipsSet.iterator();
     ArrayList<String> relationshipsArray = new ArrayList<String>();
 
-   while(relationships.hasNext()){
-    List<Relationship> relationship = relationships.next();
-    for(int i =0; i < relationship.size();i++){
-      relationshipsArray.add(relationship.get(i).getAllFields().toString());
-      System.out.println(relationship.get(i).getAllFields().toString());
+    while (relationships.hasNext()) {
+      List<Relationship> relationship = relationships.next();
+      for (int i = 0; i < relationship.size(); i++) {
+        relationshipsArray.add(relationship.get(i).getAllFields().toString());
+        System.out.println(relationship.get(i).getAllFields().toString());
+      }
     }
-   
-   }
     return relationshipsArray;
   }
 

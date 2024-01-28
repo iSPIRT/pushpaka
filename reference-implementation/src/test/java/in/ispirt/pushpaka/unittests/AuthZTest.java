@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import in.ispirt.pushpaka.authorisation.ResourceType;
 import in.ispirt.pushpaka.authorisation.utils.AuthZ;
 import in.ispirt.pushpaka.authorisation.utils.SpicedbClient;
-
 import java.util.ArrayList;
 import java.util.Set;
 import org.junit.jupiter.api.AfterAll;
@@ -448,18 +447,17 @@ public class AuthZTest {
   }
 
   @Test
-  public void testBulkExportRelationshipsCount(){
+  public void testBulkExportRelationshipsCount() {
     int relationshipCount = authZ.lookupRelationshipsCount();
 
-    assert(relationshipCount > 0 );
+    assert (relationshipCount > 0);
   }
 
   @Test
-  public void testBulkExportRelationships(){
+  public void testBulkExportRelationships() {
     ArrayList<String> relationships = authZ.lookupRelationship();
     int relationshipsCount = relationships.size();
 
     assertTrue(relationshipsCount > 0);
-   
   }
 }
