@@ -202,6 +202,7 @@ public class SpicedbClient {
 
     try {
       response = this.getPermissionsService().writeRelationships(relRequest);
+      Thread.sleep(6000);
     } catch (Exception e) {
       return "";
     }

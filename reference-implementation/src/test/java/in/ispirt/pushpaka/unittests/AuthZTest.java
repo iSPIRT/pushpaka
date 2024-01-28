@@ -183,7 +183,7 @@ public class AuthZTest {
   }
 
   @Test
-  public void testAddPilotToOperator() {
+  public void testAddFirstPilotToOperator() {
     // pilot:default-pilot-group#member@user:pilot-user-2
     String pilotResourceID = "pilot-resource-1";
     String pilotUserID = "pilot-user-1";
@@ -211,7 +211,35 @@ public class AuthZTest {
   }
 
   @Test
-  public void testRemovePilotToOperator() {
+  public void testAddSecondPilotToOperator() {
+    // pilot:default-pilot-group#member@user:pilot-user-2
+    String pilotResourceID = "pilot-resource-2";
+    String pilotUserID = "pilot-user-2";
+    String operatorResourceID = "operator-1";
+    String operatorAdminUserID = "operator-user";
+
+    boolean addPilot = authZ.addPilot(
+      pilotResourceID,
+      pilotUserID,
+      authZ.getCaaResourceID()
+    );
+
+    boolean isSuccess = authZ.addPilotToOperator(
+      pilotResourceID,
+      operatorResourceID,
+      operatorAdminUserID
+    );
+
+    boolean isPilotflightOperationsAdmin = authZ.isFlightOperationsAdmin(
+      pilotUserID,
+      operatorResourceID
+    );
+
+    assertTrue(addPilot && isSuccess && isPilotflightOperationsAdmin);
+  }
+
+  @Test
+  public void testRemoveFirstPilotToOperator() {
     // pilot:default-pilot-group#member@user:pilot-user-
     String pilotResourceID = "pilot-resource-1";
     String operatorResourceID = "operator-1";
@@ -244,7 +272,7 @@ public class AuthZTest {
 
   @Test
   public void testFlightOperationsAdminNegative() {
-    String pilotUserID = "pilot-user-2";
+    String pilotUserID = "pilot-user-3";
     String operatorResourceID = "operator-1";
 
     boolean isSuccess = authZ.isFlightOperationsAdmin(pilotUserID, operatorResourceID);
@@ -403,9 +431,9 @@ public class AuthZTest {
 
   @Test
   public void testPilotToOperators() {
-    String pilotUserID = "pilot-user-1";
-
-    Set<String> pilotToOperators = authZ.lookupPilotResource(pilotUserID);
+    String pilotResourceID = "pilot-resource-2";
+   
+    Set<String> pilotToOperators = authZ.lookupPilotResource(pilotResourceID);
     System.out.println(pilotToOperators);
     assertTrue(pilotToOperators.size() > 0);
   }

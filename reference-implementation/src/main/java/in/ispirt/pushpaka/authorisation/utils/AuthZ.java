@@ -64,7 +64,7 @@ public class AuthZ {
     String tokenValue = null;
 
     boolean removeRegulatorCheck = this.removeRegulator();
-
+    
     if (removeRegulatorCheck) {
       tokenValue =
         spicedbClient.writeRelationship(
@@ -470,7 +470,7 @@ public class AuthZ {
   /**
    * this function will be used to lookup the groups to which a pilot belongs to
    */
-  public Set<String> lookupPilotResource(String pilotUserID) {
+  public Set<String> lookupPilotResource(String pilotResourceID) {
     /**
      * this function will help in looking up pilot
      * across multiple groups
@@ -479,7 +479,7 @@ public class AuthZ {
       RelationshipType.PILOT,
       ResourceType.OPERATOR,
       SubjectType.PILOT,
-      pilotUserID
+      pilotResourceID
     );
 
     return pilotToOperators;
