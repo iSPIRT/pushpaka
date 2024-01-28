@@ -1,10 +1,12 @@
 package in.ispirt.pushpaka.authorisation.utils;
 
 import com.authzed.api.v1.Core;
+import com.authzed.api.v1.ExperimentalServiceGrpc;
 import com.authzed.api.v1.Core.ObjectReference;
 import com.authzed.api.v1.Core.Relationship;
 import com.authzed.api.v1.Core.RelationshipUpdate;
 import com.authzed.api.v1.Core.RelationshipUpdate.Operation;
+import com.authzed.api.v1.ExperimentalServiceOuterClass.BulkExportRelationshipsResponse;
 import com.authzed.api.v1.Core.SubjectReference;
 import com.authzed.api.v1.ExperimentalServiceOuterClass;
 import com.authzed.api.v1.PermissionService;
@@ -16,6 +18,8 @@ import com.authzed.api.v1.SchemaServiceOuterClass.ReadSchemaRequest;
 import com.authzed.api.v1.SchemaServiceOuterClass.ReadSchemaResponse;
 import com.authzed.api.v1.SchemaServiceOuterClass.WriteSchemaRequest;
 import com.authzed.grpcutil.BearerToken;
+import com.google.protobuf.Descriptors;
+
 import in.ispirt.pushpaka.authorisation.Permission;
 import in.ispirt.pushpaka.authorisation.RelationshipType;
 import in.ispirt.pushpaka.authorisation.ResourceType;
@@ -25,6 +29,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -42,6 +48,15 @@ public class SpicedbClient {
   ManagedChannel channel;
   PermissionsServiceGrpc.PermissionsServiceBlockingStub permissionsService;
   SchemaServiceGrpc.SchemaServiceBlockingStub schemaService;
+  ExperimentalServiceGrpc.ExperimentalServiceBlockingStub experimentalService;
+
+  public ExperimentalServiceGrpc.ExperimentalServiceBlockingStub getExperimentalService() {
+    return experimentalService;
+  }
+
+  public void setExperimentalService(ExperimentalServiceGrpc.ExperimentalServiceBlockingStub experimentalService) {
+    this.experimentalService = experimentalService;
+  }
 
   public ManagedChannel getChannel() {
     return channel;
@@ -87,6 +102,12 @@ public class SpicedbClient {
         .withCallCredentials(new BearerToken(token));
 
     setSchemaService(schemaService);
+
+    experimentalService = ExperimentalServiceGrpc
+    .newBlockingStub(channel)
+    .withCallCredentials(new BearerToken(token));
+
+    setExperimentalService(experimentalService);
   }
 
   public static synchronized SpicedbClient getInstance(
@@ -397,16 +418,28 @@ public class SpicedbClient {
     return resources;
   }
 
-  public void exportRelationships() {
+  public Set<List<Core.Relationship>> exportRelationships() {
+    Set<List<Core.Relationship>> resources = new HashSet<>();
+
     ExperimentalServiceOuterClass.BulkExportRelationshipsRequest request = ExperimentalServiceOuterClass
       .BulkExportRelationshipsRequest.newBuilder()
       .build();
-
+  
     try {
-      System.out.println(request);
-      //ExperimentalServiceOuterClass.BulkExportRelationshipsResponse response = m
+      Iterator<BulkExportRelationshipsResponse>  response = 
+      this.experimentalService.bulkExportRelationships(request);
+
+      response.forEachRemaining(
+        bulkExportRelationshipsResponse -> {
+          resources.add(bulkExportRelationshipsResponse.getRelationshipsList());
+        }
+      );
+    
+
     } catch (Exception exception) {
       exception.printStackTrace();
     }
+
+    return resources;
   }
 }
