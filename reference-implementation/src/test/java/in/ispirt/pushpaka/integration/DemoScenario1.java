@@ -4,7 +4,6 @@ import static org.junit.Assert.assertTrue;
 
 import com.nimbusds.jwt.SignedJWT;
 import in.ispirt.pushpaka.authorisation.utils.AuthZ;
-import in.ispirt.pushpaka.authorisation.utils.SpicedbClient;
 import in.ispirt.pushpaka.utils.Logging;
 import java.io.IOException;
 import java.text.ParseException;
@@ -34,12 +33,10 @@ import org.junit.jupiter.api.Test;
  */
 public class DemoScenario1 {
   public static AuthZ authZ;
-  public static SpicedbClient spicedbClient;
 
   @BeforeAll
   public static void setup() {
     authZ = new AuthZ();
-    spicedbClient = authZ.getSpicedbClient();
   }
 
   @AfterAll
