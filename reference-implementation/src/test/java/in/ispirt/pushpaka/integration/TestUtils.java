@@ -969,7 +969,7 @@ public class TestUtils {
   public static void approveUasType(String jwt, UUID id)
     throws ClientProtocolException, IOException, JsonProcessingException {
     StringEntity e = new StringEntity(
-      String.valueOf((int)(Math.random() * 4096)),
+      String.valueOf((int) (Math.random() * 4096)),
       // "{ \"modelNumber\": \"" +
       // UUID.randomUUID().toString() +
       // "\", \"uasTypeId\": \"" +

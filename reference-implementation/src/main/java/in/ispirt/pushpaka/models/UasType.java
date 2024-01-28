@@ -10,9 +10,9 @@ import java.util.Objects;
 import java.util.UUID;
 import javax.annotation.Generated;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 /**
  * UasType
@@ -258,9 +258,7 @@ public class UasType {
     this.photoUrl = photoUrl;
   }
 
-  public UasType operationCategory(
-    OperationCategory operationCategory
-  ) {
+  public UasType operationCategory(OperationCategory operationCategory) {
     this.operationCategory = operationCategory;
     return this;
   }
@@ -271,18 +269,13 @@ public class UasType {
    */
   @NotNull
   @Valid
-  @Schema(
-    name = "operation_category",
-    requiredMode = Schema.RequiredMode.REQUIRED
-  )
+  @Schema(name = "operation_category", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("operation_category")
   public OperationCategory getOperationCategory() {
     return operationCategory;
   }
 
-  public void setOperationCategory(
-    OperationCategory operationCategory
-  ) {
+  public void setOperationCategory(OperationCategory operationCategory) {
     this.operationCategory = operationCategory;
   }
 
@@ -324,10 +317,7 @@ public class UasType {
       Objects.equals(this.weightCategory, uasType.weightCategory) &&
       Objects.equals(this.mtow, uasType.mtow) &&
       Objects.equals(this.photoUrl, uasType.photoUrl) &&
-      Objects.equals(
-        this.operationCategory,
-        uasType.operationCategory
-      ) &&
+      Objects.equals(this.operationCategory, uasType.operationCategory) &&
       Objects.equals(this.timestamps, uasType.timestamps)
     );
   }

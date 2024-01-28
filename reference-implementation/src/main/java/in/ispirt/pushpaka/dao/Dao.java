@@ -1040,7 +1040,18 @@ public class Dao implements Serializable {
       // }
       sb.append(String.format("%02x", holdings).toUpperCase());
       sb.append(String.format("%02x", nonholdings).toUpperCase());
-      Logging.info("setHumanReadableId: " + String.valueOf(this.uasType.getModelNumber()) + " " + String.valueOf(this.getOemSerialNo() + " " + String.valueOf(holdings) + " " + String.valueOf(nonholdings)));
+      Logging.info(
+        "setHumanReadableId: " +
+        String.valueOf(this.uasType.getModelNumber()) +
+        " " +
+        String.valueOf(
+          this.getOemSerialNo() +
+          " " +
+          String.valueOf(holdings) +
+          " " +
+          String.valueOf(nonholdings)
+        )
+      );
       this.humanReadableId = sb.toString();
     }
 
