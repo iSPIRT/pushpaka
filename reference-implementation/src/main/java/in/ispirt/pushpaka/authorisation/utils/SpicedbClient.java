@@ -16,7 +16,6 @@ import com.authzed.api.v1.SchemaServiceOuterClass.ReadSchemaRequest;
 import com.authzed.api.v1.SchemaServiceOuterClass.ReadSchemaResponse;
 import com.authzed.api.v1.SchemaServiceOuterClass.WriteSchemaRequest;
 import com.authzed.grpcutil.BearerToken;
-import com.google.common.collect.Iterables;
 import in.ispirt.pushpaka.authorisation.Permission;
 import in.ispirt.pushpaka.authorisation.RelationshipType;
 import in.ispirt.pushpaka.authorisation.ResourceType;
@@ -404,6 +403,7 @@ public class SpicedbClient {
       .build();
 
     try {
+      System.out.println(request);
       //ExperimentalServiceOuterClass.BulkExportRelationshipsResponse response = m
     } catch (Exception exception) {
       exception.printStackTrace();
