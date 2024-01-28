@@ -6,13 +6,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import javax.annotation.Generated;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Max;
 
 /**
  * UasType
@@ -25,7 +25,7 @@ import javax.validation.constraints.NotNull;
 public class UasType {
   private UUID id;
 
-  private String modelNumber;
+  private Integer modelNumber;
 
   private Manufacturer manufacturer;
 
@@ -58,7 +58,7 @@ public class UasType {
    */
   public UasType(
     UUID id,
-    String modelNumber,
+    Integer modelNumber,
     Manufacturer manufacturer,
     UasPropulsionCategory propulsionCategory,
     UasWeightCategory weightCategory,
@@ -121,7 +121,7 @@ public class UasType {
     this.approved = approved;
   }
 
-  public UasType modelNumber(String modelNumber) {
+  public UasType modelNumber(Integer modelNumber) {
     this.modelNumber = modelNumber;
     return this;
   }
@@ -130,17 +130,19 @@ public class UasType {
    * Get modelNumber
    * @return modelNumber
    */
+  @Min(0)
+  @Max(4095)
   @Schema(
     name = "model_number",
     accessMode = Schema.AccessMode.READ_ONLY,
     requiredMode = Schema.RequiredMode.REQUIRED
   )
   @JsonProperty("model_number")
-  public String getModelNumber() {
+  public Integer getModelNumber() {
     return modelNumber;
   }
 
-  public void setModelNumber(String modelNumber) {
+  public void setModelNumber(Integer modelNumber) {
     this.modelNumber = modelNumber;
   }
 

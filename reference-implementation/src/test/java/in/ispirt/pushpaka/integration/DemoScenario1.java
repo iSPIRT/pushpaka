@@ -365,7 +365,7 @@ public class DemoScenario1 {
 
       TestUtils.approveUasType(jwtCaaAdmin, uasTypeId);
 
-      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, "0000011");
+      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, 11);
 
       boolean isUASAssociationSuccess = TestUtils.associateUASToManufacturer(
         authZ,
@@ -427,7 +427,7 @@ public class DemoScenario1 {
 
       UUID uasTypeId = TestUtils.uasTypeCreate(jwtCaaAdmin, manufacturerid);
       TestUtils.approveManufacturer(jwtCaaAdmin, manufacturerid);
-      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, "000001");
+      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, 9);
 
       boolean isUASTypeAssociationSuccess = TestUtils.associateUASTypeToManufacturer(
         authZ,

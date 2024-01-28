@@ -177,7 +177,7 @@ public class AirspaceUsageToken {
 
   public static Dao.AirspaceUsageToken fromOa(AirspaceUsageToken a) {
     Dao.AirspaceUsageToken u = new Dao.AirspaceUsageToken(a.getId());
-    if (a.getOperationCategory() != OperationCategory.C3) {
+    if (a.getOperationCategory() != OperationCategory.C) {
       u.setUas(Uas.fromOa(a.getUas()));
       u.setPilot(Pilot.fromOa(a.getPilot()));
     } else {
@@ -188,7 +188,7 @@ public class AirspaceUsageToken {
 
   public static AirspaceUsageToken toOa(Dao.AirspaceUsageToken x) {
     AirspaceUsageToken le = new AirspaceUsageToken(x.getId());
-    if (x.getOperationCategory() != OperationCategory.C3) {
+    if (x.getOperationCategory() != OperationCategory.C) {
       le.setId(x.getId());
       le.setPilot(Pilot.toOa(x.getPilot()));
       le.setUas(Uas.toOa(x.getUas()));

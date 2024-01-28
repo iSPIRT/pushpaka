@@ -23,7 +23,7 @@ public class AutTest {
       new Uas(UUID.randomUUID()),
       new Pilot(UUID.randomUUID()),
       null,
-      OperationCategory.C3,
+      OperationCategory.C,
       OffsetDateTime.parse(
         "2023-11-19T14:28:15+05:30",
         DateTimeFormatter.ISO_OFFSET_DATE_TIME
@@ -90,7 +90,7 @@ public class AutTest {
         new Uas(UUID.randomUUID()),
         new Pilot(UUID.randomUUID()),
         null,
-        OperationCategory.C1,
+        OperationCategory.A,
         OffsetDateTime.parse(
           "2023-11-19T14:28:15+05:30",
           DateTimeFormatter.ISO_OFFSET_DATE_TIME

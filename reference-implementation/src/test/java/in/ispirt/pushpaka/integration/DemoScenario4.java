@@ -58,8 +58,8 @@ class DemoScenario4 {
       SignedJWT jwtsPilot = TestUtils.parseJwt(jwtPilot);
       UUID idPilot = UUID.fromString(jwtsPilot.getJWTClaimsSet().getSubject());
       TestUtils.approvePilot(jwtCaaAdmin, idPilot);
-      UUID uasTypeId = TestUtils.uasTypeC2Create(jwtCaaAdmin, mid);
-      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, "000001");
+      UUID uasTypeId = TestUtils.uasTypeBCreate(jwtCaaAdmin, mid);
+      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, 15);
       // Flight Authorisation
       UUID flightPlanId = TestUtils.flightPlanCreate(
         jwtPilot,

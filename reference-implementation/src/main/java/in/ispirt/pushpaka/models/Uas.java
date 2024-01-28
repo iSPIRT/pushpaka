@@ -10,8 +10,8 @@ import java.util.UUID;
 import javax.annotation.Generated;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Max;
 
 /**
  * Uas
@@ -26,7 +26,7 @@ public class Uas {
 
   private UasType type;
 
-  private String oemSerialNumber;
+  private Integer oemSerialNumber;
 
   private ObjectTimestamps timestamps;
 
@@ -53,7 +53,7 @@ public class Uas {
   public Uas(
     UUID id,
     UasType type,
-    String oemSerialNumber,
+    Integer oemSerialNumber,
     ObjectTimestamps timestamps,
     UasStatus status,
     String hrid
@@ -111,7 +111,7 @@ public class Uas {
     this.type = type;
   }
 
-  public Uas oemSerialNumber(String oemSerialNumber) {
+  public Uas oemSerialNumber(Integer oemSerialNumber) {
     this.oemSerialNumber = oemSerialNumber;
     return this;
   }
@@ -121,14 +121,15 @@ public class Uas {
    * @return oemSerialNumber
    */
   @NotNull
-  @Size(min = 6, max = 12)
+  @Min(0)
+  @Max(65535)
   @Schema(name = "oem_serial_number", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("oem_serial_number")
-  public String getOemSerialNumber() {
+  public Integer getOemSerialNumber() {
     return oemSerialNumber;
   }
 
-  public void setOemSerialNumber(String oemSerialNumber) {
+  public void setOemSerialNumber(Integer oemSerialNumber) {
     this.oemSerialNumber = oemSerialNumber;
   }
 
@@ -174,7 +175,6 @@ public class Uas {
     this.status = status;
   }
 
-  @JsonIgnore
   @Schema(
     name = "human_readable_id",
     accessMode = Schema.AccessMode.READ_ONLY,

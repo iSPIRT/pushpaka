@@ -59,8 +59,8 @@ class DemoScenario5 {
       SignedJWT jwtsPilot = TestUtils.parseJwt(jwtPilot);
       UUID idPilot = UUID.fromString(jwtsPilot.getJWTClaimsSet().getSubject());
       TestUtils.approvePilot(jwtCaaAdmin, idPilot);
-      UUID uasTypeId = TestUtils.uasTypeC3Create(jwtCaaAdmin, mid);
-      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, "000001");
+      UUID uasTypeId = TestUtils.uasTypeCCreate(jwtCaaAdmin, mid);
+      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, 16);
       // Flight Authorisation
       UUID flightPlanId = TestUtils.flightPlanCreate(
         jwtPilot,
@@ -118,8 +118,8 @@ class DemoScenario5 {
       SignedJWT jwtsPilot = TestUtils.parseJwt(jwtPilot);
       UUID idPilot = UUID.fromString(jwtsPilot.getJWTClaimsSet().getSubject());
       TestUtils.approvePilot(jwtCaaAdmin, idPilot);
-      UUID uasTypeId = TestUtils.uasTypeC3Create(jwtCaaAdmin, mid);
-      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, "000001");
+      UUID uasTypeId = TestUtils.uasTypeCCreate(jwtCaaAdmin, mid);
+      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, 17);
       // Flight Authorisation
       UUID flightPlanId = TestUtils.flightPlanCreate(
         jwtPilot,
@@ -177,8 +177,8 @@ class DemoScenario5 {
       SignedJWT jwtsPilot = TestUtils.parseJwt(jwtPilot);
       UUID idPilot = UUID.fromString(jwtsPilot.getJWTClaimsSet().getSubject());
       TestUtils.approvePilot(jwtCaaAdmin, idPilot);
-      UUID uasTypeId = TestUtils.uasTypeC3Create(jwtCaaAdmin, mid);
-      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, "000001");
+      UUID uasTypeId = TestUtils.uasTypeCCreate(jwtCaaAdmin, mid);
+      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, 18);
       // Flight Authorisation
       UUID flightPlanId = TestUtils.flightPlanCreate(
         jwtPilot,
@@ -236,8 +236,8 @@ class DemoScenario5 {
       SignedJWT jwtsPilot = TestUtils.parseJwt(jwtPilot);
       UUID idPilot = UUID.fromString(jwtsPilot.getJWTClaimsSet().getSubject());
       TestUtils.approvePilot(jwtCaaAdmin, idPilot);
-      UUID uasTypeId = TestUtils.uasTypeC3Create(jwtCaaAdmin, mid);
-      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, "000001");
+      UUID uasTypeId = TestUtils.uasTypeCCreate(jwtCaaAdmin, mid);
+      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, 19);
       // Flight Authorisation
       UUID flightPlanId = TestUtils.flightPlanCreate(
         jwtPilot,
@@ -295,8 +295,8 @@ class DemoScenario5 {
       SignedJWT jwtsPilot = TestUtils.parseJwt(jwtPilot);
       UUID idPilot = UUID.fromString(jwtsPilot.getJWTClaimsSet().getSubject());
       TestUtils.approvePilot(jwtCaaAdmin, idPilot);
-      UUID uasTypeId = TestUtils.uasTypeC3Create(jwtCaaAdmin, mid);
-      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, "000001");
+      UUID uasTypeId = TestUtils.uasTypeCCreate(jwtCaaAdmin, mid);
+      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, 20);
       // Flight Authorisation
       UUID flightPlanId = TestUtils.flightPlanCreate(
         jwtPilot,
@@ -354,8 +354,8 @@ class DemoScenario5 {
       SignedJWT jwtsPilot = TestUtils.parseJwt(jwtPilot);
       UUID idPilot = UUID.fromString(jwtsPilot.getJWTClaimsSet().getSubject());
       TestUtils.approvePilot(jwtCaaAdmin, idPilot);
-      UUID uasTypeId = TestUtils.uasTypeC3Create(jwtCaaAdmin, mid);
-      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, "000001");
+      UUID uasTypeId = TestUtils.uasTypeCCreate(jwtCaaAdmin, mid);
+      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, 21);
       // Flight Authorisation
       UUID flightPlanId = TestUtils.flightPlanCreate(
         jwtPilot,

@@ -745,13 +745,13 @@ public class Dao implements Serializable {
     }
 
     @Column(name = "model_number")
-    public String modelNumber;
+    public Integer modelNumber;
 
-    public String getModelNumber() {
+    public Integer getModelNumber() {
       return modelNumber;
     }
 
-    public void setModelNumber(String c) {
+    public void setModelNumber(Integer c) {
       this.modelNumber = c;
     }
 
@@ -820,7 +820,7 @@ public class Dao implements Serializable {
     public UasType(
       UUID id,
       Manufacturer manufacturer,
-      String modelNumber,
+      Integer modelNumber,
       URL photoUrl,
       Float mtow,
       OffsetDateTime tc,
@@ -879,7 +879,7 @@ public class Dao implements Serializable {
       return uu;
     }
 
-    public static UasType setModelNumber(Session s, UUID id, String modelNumber)
+    public static UasType setModelNumber(Session s, UUID id, Integer modelNumber)
       throws DaoException {
       UasType uu = s
         .createQuery("from UasType where id= :id", UasType.class)
@@ -967,13 +967,13 @@ public class Dao implements Serializable {
 
     @NotNull
     @Column(name = "oem_serial_no", unique = true)
-    public String oemSerialNo;
+    public Integer oemSerialNo;
 
-    public String getOemSerialNo() {
+    public Integer getOemSerialNo() {
       return oemSerialNo;
     }
 
-    public void setOemSerialNo(String c) {
+    public void setOemSerialNo(Integer c) {
       this.oemSerialNo = c;
     }
 
@@ -1019,11 +1019,9 @@ public class Dao implements Serializable {
 
     public void setHumanReadableId(Session s) {
       StringBuilder sb = new StringBuilder();
-      sb.append(this.uasType.getModelNumber());
-      sb.append("/");
-      sb.append(this.getOemSerialNo());
-      sb.append("/");
-      sb.append("/");
+      sb.append(String.format("%03x", this.uasType.getModelNumber()).toUpperCase());
+      sb.append(this.uasType.getOperationCategory().getValue());
+      sb.append(String.format("%04x", this.getOemSerialNo()).toUpperCase());
       List<Sale> sales = Dao.Sale.getAll(s, this.id);
       Integer holdings = 0;
       Integer nonholdings = 0;
@@ -1035,11 +1033,14 @@ public class Dao implements Serializable {
           nonholdings += 1;
         }
       }
-      if (nonholdings > 0) {
-        sb.append(nonholdings.toString());
-      } else {
-        sb.append("-" + holdings.toString());
-      }
+      // if (nonholdings > 0) {
+      //   sb.append(nonholdings.toString());
+      // } else {
+      //   sb.append("-" + holdings.toString());
+      // }
+      sb.append(String.format("%02x", holdings).toUpperCase());
+      sb.append(String.format("%02x", nonholdings).toUpperCase());
+      Logging.info("setHumanReadableId: " + String.valueOf(this.uasType.getModelNumber()) + " " + String.valueOf(this.getOemSerialNo() + " " + String.valueOf(holdings) + " " + String.valueOf(nonholdings)));
       this.humanReadableId = sb.toString();
     }
 
@@ -1047,7 +1048,7 @@ public class Dao implements Serializable {
     public Uas(
       UUID id,
       UasType ut,
-      String oemSerialNo,
+      Integer oemSerialNo,
       UasStatus s,
       OffsetDateTime tc,
       OffsetDateTime tu,
@@ -2793,8 +2794,8 @@ public class Dao implements Serializable {
     public static AirspaceUsageToken create(Session s, AirspaceUsageToken a) {
       Logging.info("AUT CREATE OperationCategory: " + a.getOperationCategory());
       // TODO remove this?
-      if (a.getOperationCategory() == null) a.setOperationCategory(OperationCategory.C1);
-      if (a.getOperationCategory() == OperationCategory.C3) {
+      if (a.getOperationCategory() == null) a.setOperationCategory(OperationCategory.A);
+      if (a.getOperationCategory() == OperationCategory.C) {
         FlightPlan fp = FlightPlan.get(s, a.getFlightPlan().getId());
         Transaction t = s.beginTransaction();
         a.setFlightPlan(fp);

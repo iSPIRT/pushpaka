@@ -13,11 +13,11 @@ import javax.annotation.Generated;
   date = "2023-09-07T22:13:29.143496+05:30[Asia/Kolkata]"
 )
 public enum OperationCategory {
-  C1("C1"),
+  A("A"),
 
-  C2("C2"),
+  B("B"),
 
-  C3("C3");
+  C("C");
 
   private String value;
 

@@ -84,7 +84,7 @@ public interface UasTypeApi {
       name = "model_number",
       description = "Model Number assigned to new uasType in the store",
       required = true
-    ) @Valid @RequestBody String modelNumber,
+    ) @Valid @RequestBody Integer modelNumber,
     @Parameter(
       name = "uas_type_id",
       description = "UasType ID for the new uasType in the store",
@@ -123,7 +123,6 @@ public interface UasTypeApi {
     operationId = "addUasType",
     summary = "Add a new uasType to the store",
     description = "Add a new uasType to the store",
-    tags = { "uasTypes" },
     responses = {
       @ApiResponse(
         responseCode = "200",
@@ -178,7 +177,6 @@ public interface UasTypeApi {
     operationId = "deleteUasType",
     summary = "Deletes a uasType",
     description = "",
-    tags = { "uasTypes" },
     responses = {
       @ApiResponse(responseCode = "400", description = "Invalid uasType value")
     },
@@ -206,7 +204,6 @@ public interface UasTypeApi {
   @Operation(
     operationId = "findUasTypes",
     summary = "Finds UasTypes",
-    tags = { "uasTypes" },
     responses = {
       @ApiResponse(
         responseCode = "200",
@@ -249,7 +246,6 @@ public interface UasTypeApi {
     operationId = "getUasTypeById",
     summary = "Find uasType by ID",
     description = "Returns a single uasType",
-    tags = { "uasTypes" },
     responses = {
       @ApiResponse(
         responseCode = "200",
@@ -297,7 +293,6 @@ public interface UasTypeApi {
     operationId = "updateUasType",
     summary = "Update an existing uasType",
     description = "Update an existing uasType by Id",
-    tags = { "uasTypes" },
     responses = {
       @ApiResponse(
         responseCode = "200",
