@@ -12,9 +12,11 @@ import in.ispirt.pushpaka.registry.utils.Utils;
 import in.ispirt.pushpaka.utils.Logging;
 import java.io.Serializable;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -28,7 +30,9 @@ import javax.persistence.Table;
 import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotNull;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.postgresql.util.PSQLException;
 
 public class Dao implements Serializable {
   private static final long serialVersionUID = 1L;
@@ -145,71 +149,128 @@ public class Dao implements Serializable {
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public LegalEntity() {}
 
-    public static LegalEntity create(Session s, LegalEntity le) {
-      Address aa = Address.create(s, le.getAddress());
-      Transaction t = s.beginTransaction();
-      OffsetDateTime n = OffsetDateTime.now();
-      // le.setId(UUID.randomUUID());
-      le.setTimestampCreated(n);
-      le.setTimestampUpdated(n);
-      le.setAddress(aa);
-      s.save(le);
-      s.flush();
-      t.commit();
-      s.refresh(le);
-      return le;
+    public static LegalEntity create(SessionFactory sf, LegalEntity le)
+      throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        Address aa = Address.create(sf, le.getAddress());
+        t = s.beginTransaction();
+        OffsetDateTime n = OffsetDateTime.now();
+        // le.setId(UUID.randomUUID());
+        le.setTimestampCreated(n);
+        le.setTimestampUpdated(n);
+        le.setAddress(aa);
+        s.save(le);
+        s.flush();
+        t.commit();
+        s.refresh(le);
+        return le;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static List<LegalEntity> getAll(Session s) {
-      return s.createQuery("from LegalEntity", LegalEntity.class).getResultList();
+    public static List<LegalEntity> getAll(SessionFactory sf) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        List<LegalEntity> les = s
+          .createQuery("from LegalEntity", LegalEntity.class)
+          .getResultList();
+        t.commit();
+        return les;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity getAll");
+      } finally {
+        s.close();
+      }
     }
 
-    public static LegalEntity get(Session s, UUID id) {
-      return s
-        .createQuery("from LegalEntity where id= :id", LegalEntity.class)
-        .setParameter("id", id)
-        .uniqueResult();
+    public static LegalEntity get(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        LegalEntity le = s
+          .createQuery("from LegalEntity where id= :id", LegalEntity.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        t.commit();
+        return le;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static void delete(Session s, UUID id) {
-      Transaction t = s.beginTransaction();
-      LegalEntity le = s
-        .createQuery("from LegalEntity where id= :id", LegalEntity.class)
-        .setParameter("id", id)
-        .uniqueResult();
-      s
-        .createQuery("delete from Address where id= :id")
-        .setParameter("id", le.getAddress().getId())
-        .executeUpdate();
-      s
-        .createQuery("delete from LegalEntity where id= :id")
-        .setParameter("id", id)
-        .executeUpdate();
-      t.commit();
+    public static void delete(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        LegalEntity le = s
+          .createQuery("from LegalEntity where id= :id", LegalEntity.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        s
+          .createQuery("delete from Address where id= :id")
+          .setParameter("id", le.getAddress().getId())
+          .executeUpdate();
+        s
+          .createQuery("delete from LegalEntity where id= :id")
+          .setParameter("id", id)
+          .executeUpdate();
+        t.commit();
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static LegalEntity update(Session s, UUID id, LegalEntity le) {
-      LegalEntity leo = s
-        .createQuery("from LegalEntity where id= :id", LegalEntity.class)
-        .setParameter("id", id)
-        .uniqueResult();
-      leo.setName(le.getName());
-      leo.setCin(le.getCin());
-      leo.setGstin(le.getGstin());
-      leo.setTimestampUpdated(OffsetDateTime.now());
-      Address a = leo.getAddress();
-      Address ao = le.getAddress();
-      ao.setLine1(a.getLine1());
-      ao.setLine2(a.getLine2());
-      ao.setLine3(a.getLine3());
-      ao.setCity(a.getCity());
-      ao.setPinCode(a.getPinCode());
-      ao.setState(a.getState());
-      // ao.setCountry(a.getCountry());
-      s.saveOrUpdate(ao);
-      s.saveOrUpdate(leo);
-      leo.setAddress(ao);
-      return leo;
+    public static LegalEntity update(SessionFactory sf, UUID id, LegalEntity le)
+      throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        LegalEntity leo = s
+          .createQuery("from LegalEntity where id= :id", LegalEntity.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        leo.setName(le.getName());
+        leo.setCin(le.getCin());
+        leo.setGstin(le.getGstin());
+        leo.setTimestampUpdated(OffsetDateTime.now());
+        Address a = leo.getAddress();
+        Address ao = le.getAddress();
+        ao.setLine1(a.getLine1());
+        ao.setLine2(a.getLine2());
+        ao.setLine3(a.getLine3());
+        ao.setCity(a.getCity());
+        ao.setPinCode(a.getPinCode());
+        ao.setState(a.getState());
+        // ao.setCountry(a.getCountry());
+        s.saveOrUpdate(ao);
+        s.saveOrUpdate(leo);
+        leo.setAddress(ao);
+        t.commit();
+        return leo;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
     @Override
@@ -324,58 +385,114 @@ public class Dao implements Serializable {
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public Manufacturer() {}
 
-    public static Manufacturer create(Session s, Manufacturer m)
-      throws DaoException, ConstraintViolationException {
-      LegalEntity le = LegalEntity.get(s, m.getLegalEntity().getId());
-      if (le == null) {
-        throw new DaoException(DaoException.Code.NOT_FOUND, "LegalEntity");
+    public static Manufacturer create(SessionFactory sf, Manufacturer m)
+      throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        LegalEntity le = LegalEntity.get(sf, m.getLegalEntity().getId());
+        if (le == null) {
+          throw new DaoException(DaoException.Code.NOT_FOUND, "LegalEntity");
+        }
+        t = s.beginTransaction();
+        OffsetDateTime n = OffsetDateTime.now();
+        m.setId(UUID.randomUUID());
+        m.setLegalEntity(le);
+        s.save(m);
+        s.flush();
+        t.commit();
+        s.refresh(m);
+        return m;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
       }
-      Transaction t = s.beginTransaction();
-      OffsetDateTime n = OffsetDateTime.now();
-      m.setId(UUID.randomUUID());
-      m.setLegalEntity(le);
-      s.save(m);
-      s.flush();
-      t.commit();
-      s.refresh(m);
-      return m;
     }
 
-    public static List<Manufacturer> getAll(Session s) {
-      return s.createQuery("from Manufacturer", Manufacturer.class).getResultList();
+    public static List<Manufacturer> getAll(SessionFactory sf) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        List<Manufacturer> ms = s
+          .createQuery("from Manufacturer", Manufacturer.class)
+          .getResultList();
+        t.commit();
+        return ms;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static Manufacturer get(Session s, UUID id) {
-      return s
-        .createQuery("from Manufacturer where id= :id", Manufacturer.class)
-        .setParameter("id", id)
-        .uniqueResult();
+    public static Manufacturer get(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        Manufacturer m = s
+          .createQuery("from Manufacturer where id= :id", Manufacturer.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        t.commit();
+        return m;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static void delete(Session s, UUID id) {
-      Transaction t = s.beginTransaction();
-      s
-        .createQuery("delete from Manufacturer where id= :id")
-        .setParameter("id", id)
-        .executeUpdate();
-      t.commit();
+    public static void delete(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        s
+          .createQuery("delete from Manufacturer where id= :id")
+          .setParameter("id", id)
+          .executeUpdate();
+        t.commit();
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static Manufacturer update(Session s, UUID id, Manufacturer le) {
-      Manufacturer leo = s
-        .createQuery("from Manufacturer where id= :id", Manufacturer.class)
-        .setParameter("id", id)
-        .uniqueResult();
-      leo.setTimestampUpdated(OffsetDateTime.now());
-      leo.setValidityStart(le.getValidityStart());
-      leo.setValidityEnd(le.getValidityEnd());
-      LegalEntity a = leo.getLegalEntity();
-      LegalEntity ao = le.getLegalEntity();
-      // ao.setCountry(a.getCountry());
-      s.saveOrUpdate(ao);
-      s.saveOrUpdate(leo);
-      leo.setLegalEntity(ao);
-      return leo;
+    public static Manufacturer update(SessionFactory sf, UUID id, Manufacturer le)
+      throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        Manufacturer leo = s
+          .createQuery("from Manufacturer where id= :id", Manufacturer.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        leo.setTimestampUpdated(OffsetDateTime.now());
+        leo.setValidityStart(le.getValidityStart());
+        leo.setValidityEnd(le.getValidityEnd());
+        LegalEntity a = leo.getLegalEntity();
+        LegalEntity ao = le.getLegalEntity();
+        // ao.setCountry(a.getCountry());
+        s.saveOrUpdate(ao);
+        s.saveOrUpdate(leo);
+        leo.setLegalEntity(ao);
+        t.commit();
+        return leo;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
   }
 
@@ -478,58 +595,114 @@ public class Dao implements Serializable {
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public RepairAgency() {}
 
-    public static RepairAgency create(Session s, RepairAgency m)
-      throws DaoException, ConstraintViolationException {
-      LegalEntity le = LegalEntity.get(s, m.getLegalEntity().getId());
-      if (le == null) {
-        throw new DaoException(DaoException.Code.NOT_FOUND, "LegalEntity");
+    public static RepairAgency create(SessionFactory sf, RepairAgency m)
+      throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        LegalEntity le = LegalEntity.get(sf, m.getLegalEntity().getId());
+        if (le == null) {
+          throw new DaoException(DaoException.Code.NOT_FOUND, "LegalEntity");
+        }
+        t = s.beginTransaction();
+        OffsetDateTime n = OffsetDateTime.now();
+        m.setId(UUID.randomUUID());
+        m.setLegalEntity(le);
+        s.save(m);
+        s.flush();
+        t.commit();
+        s.refresh(m);
+        return m;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
       }
-      Transaction t = s.beginTransaction();
-      OffsetDateTime n = OffsetDateTime.now();
-      m.setId(UUID.randomUUID());
-      m.setLegalEntity(le);
-      s.save(m);
-      s.flush();
-      t.commit();
-      s.refresh(m);
-      return m;
     }
 
-    public static List<RepairAgency> getAll(Session s) {
-      return s.createQuery("from RepairAgency", RepairAgency.class).getResultList();
+    public static List<RepairAgency> getAll(SessionFactory sf) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        List<RepairAgency> ras = s
+          .createQuery("from RepairAgency", RepairAgency.class)
+          .getResultList();
+        t.commit();
+        return ras;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "RepairAgency getAll");
+      } finally {
+        s.close();
+      }
     }
 
-    public static RepairAgency get(Session s, UUID id) {
-      return s
-        .createQuery("from RepairAgency where id= :id", RepairAgency.class)
-        .setParameter("id", id)
-        .uniqueResult();
+    public static RepairAgency get(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        RepairAgency ra = s
+          .createQuery("from RepairAgency where id= :id", RepairAgency.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        t.commit();
+        return ra;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static void delete(Session s, UUID id) {
-      Transaction t = s.beginTransaction();
-      s
-        .createQuery("delete from RepairAgency where id= :id")
-        .setParameter("id", id)
-        .executeUpdate();
-      t.commit();
+    public static void delete(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        s
+          .createQuery("delete from RepairAgency where id= :id")
+          .setParameter("id", id)
+          .executeUpdate();
+        t.commit();
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static RepairAgency update(Session s, UUID id, RepairAgency le) {
-      RepairAgency leo = s
-        .createQuery("from RepairAgency where id= :id", RepairAgency.class)
-        .setParameter("id", id)
-        .uniqueResult();
-      leo.setTimestampUpdated(OffsetDateTime.now());
-      leo.setValidityStart(le.getValidityStart());
-      leo.setValidityEnd(le.getValidityEnd());
-      LegalEntity a = leo.getLegalEntity();
-      LegalEntity ao = le.getLegalEntity();
-      // ao.setCountry(a.getCountry());
-      s.saveOrUpdate(ao);
-      s.saveOrUpdate(leo);
-      leo.setLegalEntity(ao);
-      return leo;
+    public static RepairAgency update(SessionFactory sf, UUID id, RepairAgency le)
+      throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        RepairAgency leo = s
+          .createQuery("from RepairAgency where id= :id", RepairAgency.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        leo.setTimestampUpdated(OffsetDateTime.now());
+        leo.setValidityStart(le.getValidityStart());
+        leo.setValidityEnd(le.getValidityEnd());
+        LegalEntity a = leo.getLegalEntity();
+        LegalEntity ao = le.getLegalEntity();
+        // ao.setCountry(a.getCountry());
+        s.saveOrUpdate(ao);
+        s.saveOrUpdate(leo);
+        leo.setLegalEntity(ao);
+        t.commit();
+        return leo;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
   }
 
@@ -632,58 +805,111 @@ public class Dao implements Serializable {
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public Trader() {}
 
-    public static Trader create(Session s, Trader m)
-      throws DaoException, ConstraintViolationException {
-      LegalEntity le = LegalEntity.get(s, m.getLegalEntity().getId());
-      if (le == null) {
-        throw new DaoException(DaoException.Code.NOT_FOUND, "LegalEntity");
+    public static Trader create(SessionFactory sf, Trader m) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        LegalEntity le = LegalEntity.get(sf, m.getLegalEntity().getId());
+        if (le == null) {
+          throw new DaoException(DaoException.Code.NOT_FOUND, "LegalEntity");
+        }
+        t = s.beginTransaction();
+        OffsetDateTime n = OffsetDateTime.now();
+        m.setId(UUID.randomUUID());
+        m.setLegalEntity(le);
+        s.save(m);
+        s.flush();
+        t.commit();
+        s.refresh(m);
+        return m;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
       }
-      Transaction t = s.beginTransaction();
-      OffsetDateTime n = OffsetDateTime.now();
-      m.setId(UUID.randomUUID());
-      m.setLegalEntity(le);
-      s.save(m);
-      s.flush();
-      t.commit();
-      s.refresh(m);
-      return m;
     }
 
-    public static List<Trader> getAll(Session s) {
-      return s.createQuery("from Trader", Trader.class).getResultList();
+    public static List<Trader> getAll(SessionFactory sf) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        List<Trader> ts = s.createQuery("from Trader", Trader.class).getResultList();
+        t.commit();
+        return ts;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static Trader get(Session s, UUID id) {
-      return s
-        .createQuery("from Trader where id= :id", Trader.class)
-        .setParameter("id", id)
-        .uniqueResult();
+    public static Trader get(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        Trader tr = s
+          .createQuery("from Trader where id= :id", Trader.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        t.commit();
+        return tr;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static void delete(Session s, UUID id) {
-      Transaction t = s.beginTransaction();
-      s
-        .createQuery("delete from Trader where id= :id")
-        .setParameter("id", id)
-        .executeUpdate();
-      t.commit();
+    public static void delete(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        s
+          .createQuery("delete from Trader where id= :id")
+          .setParameter("id", id)
+          .executeUpdate();
+        t.commit();
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static Trader update(Session s, UUID id, Trader le) {
-      Trader leo = s
-        .createQuery("from Trader where id= :id", Trader.class)
-        .setParameter("id", id)
-        .uniqueResult();
-      leo.setTimestampUpdated(OffsetDateTime.now());
-      leo.setValidityStart(le.getValidityStart());
-      leo.setValidityEnd(le.getValidityEnd());
-      LegalEntity a = leo.getLegalEntity();
-      LegalEntity ao = le.getLegalEntity();
-      // ao.setCountry(a.getCountry());
-      s.saveOrUpdate(ao);
-      s.saveOrUpdate(leo);
-      leo.setLegalEntity(ao);
-      return leo;
+    public static Trader update(SessionFactory sf, UUID id, Trader le)
+      throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        Trader leo = s
+          .createQuery("from Trader where id= :id", Trader.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        leo.setTimestampUpdated(OffsetDateTime.now());
+        leo.setValidityStart(le.getValidityStart());
+        leo.setValidityEnd(le.getValidityEnd());
+        LegalEntity a = leo.getLegalEntity();
+        LegalEntity ao = le.getLegalEntity();
+        // ao.setCountry(a.getCountry());
+        s.saveOrUpdate(ao);
+        s.saveOrUpdate(leo);
+        leo.setLegalEntity(ao);
+        t.commit();
+        return leo;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
   }
 
@@ -844,92 +1070,163 @@ public class Dao implements Serializable {
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public UasType() {}
 
-    public static UasType create(Session s, UasType m)
-      throws DaoException, ConstraintViolationException {
-      Manufacturer le = Manufacturer.get(s, m.getManufacturer().getId());
-      if (le == null) {
-        throw new DaoException(DaoException.Code.NOT_FOUND, "Manufacturer");
+    public static UasType create(SessionFactory sf, UasType m) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        Manufacturer le = Manufacturer.get(sf, m.getManufacturer().getId());
+        if (le == null) {
+          throw new DaoException(DaoException.Code.NOT_FOUND, "Manufacturer");
+        }
+        t = s.beginTransaction();
+        OffsetDateTime n = OffsetDateTime.now();
+        m.setId(UUID.randomUUID());
+        m.setManufacturer(le);
+        m.setApproved(false);
+        s.save(m);
+        s.flush();
+        t.commit();
+        s.refresh(m);
+        return m;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
       }
-      Transaction t = s.beginTransaction();
-      OffsetDateTime n = OffsetDateTime.now();
-      m.setId(UUID.randomUUID());
-      m.setManufacturer(le);
-      m.setApproved(false);
-      s.save(m);
-      s.flush();
-      t.commit();
-      s.refresh(m);
-      return m;
     }
 
-    public static UasType approve(Session s, UUID id) throws DaoException {
-      UasType uu = s
-        .createQuery("from UasType where id= :id", UasType.class)
-        .setParameter("id", id)
-        .uniqueResult();
-      if (uu == null) {
-        throw new DaoException(DaoException.Code.NOT_FOUND, "UasType");
+    public static UasType approve(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        UasType uu = s
+          .createQuery("from UasType where id= :id", UasType.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        if (uu == null) {
+          throw new DaoException(DaoException.Code.NOT_FOUND, "UasType");
+        }
+        uu.setApproved(true);
+        s.save(uu);
+        s.flush();
+        t.commit();
+        s.refresh(uu);
+        return uu;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
       }
-      Transaction t = s.beginTransaction();
-      uu.setApproved(true);
-      s.save(uu);
-      s.flush();
-      t.commit();
-      s.refresh(uu);
-      return uu;
     }
 
-    public static UasType setModelNumber(Session s, UUID id, Integer modelNumber)
+    public static UasType setModelNumber(SessionFactory sf, UUID id, Integer modelNumber)
       throws DaoException {
-      UasType uu = s
-        .createQuery("from UasType where id= :id", UasType.class)
-        .setParameter("id", id)
-        .uniqueResult();
-      if (uu == null) {
-        throw new DaoException(DaoException.Code.NOT_FOUND, "UasType");
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        UasType uu = s
+          .createQuery("from UasType where id= :id", UasType.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        if (uu == null) {
+          throw new DaoException(DaoException.Code.NOT_FOUND, "UasType");
+        }
+        uu.setModelNumber(modelNumber);
+        s.save(uu);
+        s.flush();
+        t.commit();
+        s.refresh(uu);
+        return uu;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
       }
-      Transaction t = s.beginTransaction();
-      uu.setModelNumber(modelNumber);
-      s.save(uu);
-      s.flush();
-      t.commit();
-      s.refresh(uu);
-      return uu;
     }
 
-    public static List<UasType> getAll(Session s) {
-      return s.createQuery("from UasType", UasType.class).getResultList();
+    public static List<UasType> getAll(SessionFactory sf) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        List<UasType> utl = s.createQuery("from UasType", UasType.class).getResultList();
+        t.commit();
+        return utl;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static UasType get(Session s, UUID id) {
-      return s
-        .createQuery("from UasType where id= :id", UasType.class)
-        .setParameter("id", id)
-        .uniqueResult();
+    public static UasType get(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        UasType ut = s
+          .createQuery("from UasType where id= :id", UasType.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        t.commit();
+        return ut;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static void delete(Session s, UUID id) {
-      Transaction t = s.beginTransaction();
-      s
-        .createQuery("delete from UasType where id= :id")
-        .setParameter("id", id)
-        .executeUpdate();
-      t.commit();
+    public static void delete(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        s
+          .createQuery("delete from UasType where id= :id")
+          .setParameter("id", id)
+          .executeUpdate();
+        t.commit();
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static UasType update(Session s, UUID id, UasType le) {
-      UasType leo = s
-        .createQuery("from UasType where id= :id", UasType.class)
-        .setParameter("id", id)
-        .uniqueResult();
-      leo.setTimestampUpdated(OffsetDateTime.now());
-      Manufacturer a = leo.getManufacturer();
-      Manufacturer ao = le.getManufacturer();
-      // ao.setCountry(a.getCountry());
-      s.saveOrUpdate(ao);
-      s.saveOrUpdate(leo);
-      leo.setManufacturer(ao);
-      return leo;
+    public static UasType update(SessionFactory sf, UUID id, UasType le)
+      throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        UasType leo = s
+          .createQuery("from UasType where id= :id", UasType.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        leo.setTimestampUpdated(OffsetDateTime.now());
+        Manufacturer a = leo.getManufacturer();
+        Manufacturer ao = le.getManufacturer();
+        // ao.setCountry(a.getCountry());
+        s.saveOrUpdate(ao);
+        s.saveOrUpdate(leo);
+        leo.setManufacturer(ao);
+        t.commit();
+        return leo;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
   }
 
@@ -1017,16 +1314,16 @@ public class Dao implements Serializable {
       return humanReadableId;
     }
 
-    public void setHumanReadableId(Session s) {
+    public void setHumanReadableId(SessionFactory sf) throws DaoException {
       StringBuilder sb = new StringBuilder();
       sb.append(String.format("%03x", this.uasType.getModelNumber()).toUpperCase());
       sb.append(this.uasType.getOperationCategory().getValue());
       sb.append(String.format("%04x", this.getOemSerialNo()).toUpperCase());
-      List<Sale> sales = Dao.Sale.getAll(s, this.id);
+      List<Sale> sales = Dao.Sale.getAll(sf, this.id);
       Integer holdings = 0;
       Integer nonholdings = 0;
       for (Sale t : sales) {
-        Logging.info("Sale: " + s.toString());
+        Logging.info("Sale: " + t.toString());
         if (t.getHolding()) {
           holdings += 1;
         } else {
@@ -1077,60 +1374,113 @@ public class Dao implements Serializable {
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public Uas() {}
 
-    public static Uas create(Session s, Uas m)
-      throws DaoException, ConstraintViolationException {
-      UasType le = UasType.get(s, m.getUasType().getId());
-      if (le == null) {
-        throw new DaoException(DaoException.Code.NOT_FOUND, "UasType");
+    public static Uas create(SessionFactory sf, Uas m) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        UasType le = UasType.get(sf, m.getUasType().getId());
+        if (le == null) {
+          throw new DaoException(DaoException.Code.NOT_FOUND, "UasType");
+        }
+        t = s.beginTransaction();
+        OffsetDateTime n = OffsetDateTime.now();
+        m.setId(UUID.randomUUID());
+        m.setTimestampCreated(n);
+        m.setTimestampUpdated(n);
+        m.setUasType(le);
+        m.setHumanReadableId(sf);
+        Logging.info("DAO UAS Type for UAS create: " + le.toString());
+        Logging.info("DAO UAS Create: " + m.getHumanReadableId());
+        s.save(m);
+        s.flush();
+        t.commit();
+        s.refresh(m);
+        return m;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
       }
-      Transaction t = s.beginTransaction();
-      OffsetDateTime n = OffsetDateTime.now();
-      m.setId(UUID.randomUUID());
-      m.setTimestampCreated(n);
-      m.setTimestampUpdated(n);
-      m.setUasType(le);
-      m.setHumanReadableId(s);
-      Logging.info("DAO UAS Create: " + m.getHumanReadableId());
-      s.save(m);
-      s.flush();
-      t.commit();
-      s.refresh(m);
-      return m;
     }
 
-    public static List<Uas> getAll(Session s) {
-      return s.createQuery("from Uas", Uas.class).getResultList();
+    public static List<Uas> getAll(SessionFactory sf) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        List<Uas> ul = s.createQuery("from Uas", Uas.class).getResultList();
+        t.commit();
+        return ul;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static Uas get(Session s, UUID id) {
-      return s
-        .createQuery("from Uas where id= :id", Uas.class)
-        .setParameter("id", id)
-        .uniqueResult();
+    public static Uas get(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        Uas u = s
+          .createQuery("from Uas where id= :id", Uas.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        t.commit();
+        return u;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static void delete(Session s, UUID id) {
-      Transaction t = s.beginTransaction();
-      s
-        .createQuery("delete from Uas where id= :id")
-        .setParameter("id", id)
-        .executeUpdate();
-      t.commit();
+    public static void delete(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        s
+          .createQuery("delete from Uas where id= :id")
+          .setParameter("id", id)
+          .executeUpdate();
+        t.commit();
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static Uas update(Session s, UUID id, Uas le) {
-      Uas leo = s
-        .createQuery("from Uas where id= :id", Uas.class)
-        .setParameter("id", id)
-        .uniqueResult();
-      leo.setTimestampUpdated(OffsetDateTime.now());
-      UasType a = leo.getUasType();
-      UasType ao = le.getUasType();
-      // ao.setCountry(a.getCountry());
-      s.saveOrUpdate(ao);
-      s.saveOrUpdate(leo);
-      leo.setUasType(ao);
-      return leo;
+    public static Uas update(SessionFactory sf, UUID id, Uas le) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        Uas leo = s
+          .createQuery("from Uas where id= :id", Uas.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        leo.setTimestampUpdated(OffsetDateTime.now());
+        UasType a = leo.getUasType();
+        UasType ao = le.getUasType();
+        // ao.setCountry(a.getCountry());
+        s.saveOrUpdate(ao);
+        s.saveOrUpdate(leo);
+        leo.setUasType(ao);
+        t.commit();
+        return leo;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
   }
 
@@ -1160,13 +1510,13 @@ public class Dao implements Serializable {
     @OneToOne
     @JoinColumn(name = "FK_user")
     // @Column(name = "balance")
-    public Users user;
+    public Person user;
 
-    public Users getUser() {
+    public Person getUser() {
       return user;
     }
 
-    public void setUser(Users m) {
+    public void setUser(Person m) {
       this.user = m;
     }
 
@@ -1219,7 +1569,7 @@ public class Dao implements Serializable {
     // Convenience constructor.
     public Pilot(
       UUID id,
-      Users u,
+      Person u,
       OffsetDateTime tc,
       OffsetDateTime tu,
       OffsetDateTime vs,
@@ -1236,53 +1586,105 @@ public class Dao implements Serializable {
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public Pilot() {}
 
-    public static Pilot create(Session s, Pilot le)
-      throws DaoException, ConstraintViolationException {
-      Users aa = Users.get(s, le.getUser().getId());
-      if (aa == null) {
-        throw new DaoException(DaoException.Code.NOT_FOUND, "User");
+    public static Pilot create(SessionFactory sf, Pilot le) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        Person aa = Person.get(sf, le.getUser().getId());
+        if (aa == null) {
+          throw new DaoException(DaoException.Code.NOT_FOUND, "User");
+        }
+        t = s.beginTransaction();
+        OffsetDateTime n = OffsetDateTime.now();
+        le.setId(UUID.randomUUID());
+        le.setUser(aa);
+        le.setTimestampCreated(n);
+        le.setTimestampUpdated(n);
+        s.save(le);
+        s.flush();
+        t.commit();
+        s.refresh(le);
+        return le;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
       }
-      Transaction t = s.beginTransaction();
-      OffsetDateTime n = OffsetDateTime.now();
-      le.setId(UUID.randomUUID());
-      le.setUser(aa);
-      le.setTimestampCreated(n);
-      le.setTimestampUpdated(n);
-      s.save(le);
-      s.flush();
-      t.commit();
-      s.refresh(le);
-      return le;
     }
 
-    public static List<Pilot> getAll(Session s) {
-      return s.createQuery("from Pilot", Pilot.class).getResultList();
+    public static List<Pilot> getAll(SessionFactory sf) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        List<Pilot> p = s.createQuery("from Pilot", Pilot.class).getResultList();
+        t.commit();
+        return p;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static Pilot get(Session s, UUID id) {
-      return s
-        .createQuery("from Pilot where id= :id", Pilot.class)
-        .setParameter("id", id)
-        .uniqueResult();
+    public static Pilot get(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        Pilot p = s
+          .createQuery("from Pilot where id= :id", Pilot.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        t.commit();
+        return p;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static void delete(Session s, UUID id) {
-      Transaction t = s.beginTransaction();
-      s
-        .createQuery("delete from Pilot where id= :id")
-        .setParameter("id", id)
-        .executeUpdate();
-      t.commit();
+    public static void delete(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        s
+          .createQuery("delete from Pilot where id= :id")
+          .setParameter("id", id)
+          .executeUpdate();
+        t.commit();
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static Pilot update(Session s, UUID id, Pilot le) {
-      Pilot leo = s
-        .createQuery("from Pilot where id= :id", Pilot.class)
-        .setParameter("id", id)
-        .uniqueResult();
-      leo.setTimestampUpdated(OffsetDateTime.now());
-      s.saveOrUpdate(leo);
-      return leo;
+    public static Pilot update(SessionFactory sf, UUID id, Pilot le) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        Pilot leo = s
+          .createQuery("from Pilot where id= :id", Pilot.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        leo.setTimestampUpdated(OffsetDateTime.now());
+        s.saveOrUpdate(leo);
+        t.commit();
+        return leo;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
   }
 
@@ -1416,34 +1818,64 @@ public class Dao implements Serializable {
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public Address() {}
 
-    public static Address create(Session s, Address a) {
-      Transaction t = s.beginTransaction();
-      UUID aid = UUID.randomUUID();
-      a.setId(aid);
-      System.out.println(
-        "Create Address: " + a.getLine1().toString() + " " + a.toString()
-      );
-      s.save(a);
-      s.flush();
-      t.commit();
-      s.refresh(a);
-      return a;
+    public static Address create(SessionFactory sf, Address a) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        UUID aid = UUID.randomUUID();
+        a.setId(aid);
+        System.out.println(
+          "Create Address: " + a.getLine1().toString() + " " + a.toString()
+        );
+        s.save(a);
+        s.flush();
+        t.commit();
+        s.refresh(a);
+        return a;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "Address create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static Address get(Session s, UUID id) {
-      return s
-        .createQuery("from Address where id= :id", Address.class)
-        .setParameter("id", id)
-        .uniqueResult();
+    public static Address get(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        Address a = s
+          .createQuery("from Address where id= :id", Address.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        t.commit();
+        return a;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static void delete(Session s, UUID id) {
-      Transaction t = s.beginTransaction();
-      s
-        .createQuery("delete from Address where id= :id")
-        .setParameter("id", id)
-        .executeUpdate();
-      t.commit();
+    public static void delete(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        s
+          .createQuery("delete from Address where id= :id")
+          .setParameter("id", id)
+          .executeUpdate();
+        t.commit();
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
     @Override
@@ -1463,11 +1895,11 @@ public class Dao implements Serializable {
     }
   }
 
-  // User is our model, which corresponds to the "users" database table.
-  @Entity(name = Users.PERSISTENCE_NAME)
-  @Table(name = Users.PERSISTENCE_NAME)
-  public static class Users {
-    static final String PERSISTENCE_NAME = "Users";
+  // User is our model, which corresponds to the "Person" database table.
+  @Entity(name = Person.PERSISTENCE_NAME)
+  @Table(name = Person.PERSISTENCE_NAME)
+  public static class Person {
+    static final String PERSISTENCE_NAME = "Person";
 
     @Id
     @Column(name = "id")
@@ -1481,7 +1913,7 @@ public class Dao implements Serializable {
       this.id = id;
     }
 
-    public Users(UUID id) {
+    public Person(UUID id) {
       this.id = id;
     }
 
@@ -1506,7 +1938,7 @@ public class Dao implements Serializable {
     }
 
     @OneToOne
-    @JoinColumn(name = "FK_address")
+    @JoinColumn(name = "fk_address")
     private Address address;
 
     public Address getAddress() {
@@ -1555,7 +1987,7 @@ public class Dao implements Serializable {
     }
 
     // Convenience constructor.
-    public Users(
+    public Person(
       UUID id,
       String phone,
       String aadharId,
@@ -1574,102 +2006,167 @@ public class Dao implements Serializable {
     }
 
     // Hibernate needs a default (no-arg) constructor to create model objects.
-    public Users() {}
+    public Person() {}
 
-    public static Users create(Session s, Users le)
-      throws DaoException, ConstraintViolationException {
-      Users u = s
-        .createQuery("from Users where id= :id", Users.class)
-        .setParameter("id", le.getId())
-        .uniqueResult();
-      if (u != null) {
-        Address aa = Address.get(s, u.getAddress().getId());
-        Transaction t = s.beginTransaction();
-        OffsetDateTime n = OffsetDateTime.now();
-        aa.setLine1(le.getAddress().getLine1());
-        aa.setLine2(le.getAddress().getLine2());
-        aa.setLine3(le.getAddress().getLine3());
-        aa.setCity(le.getAddress().getCity());
-        aa.setState(le.getAddress().getState());
-        aa.setPinCode(le.getAddress().getPinCode());
-        aa.setCountry(le.getAddress().getCountry());
-        le.setTimestampCreated(n);
-        le.setTimestampUpdated(n);
-        le.setAddress(aa);
-        le.setStatus(UserStatus.INACTIVE);
-        s.merge(aa);
-        s.merge(le);
-        s.flush();
-        t.commit();
-        s.refresh(le);
-        // s.evict(le);
-        return le;
-      } else {
-        Address aa = Address.create(s, le.getAddress());
-        Transaction t = s.beginTransaction();
-        OffsetDateTime n = OffsetDateTime.now();
-        le.setTimestampCreated(n);
-        le.setTimestampUpdated(n);
-        le.setAddress(aa);
-        le.setStatus(UserStatus.INACTIVE);
-        s.save(le);
-        s.flush();
-        t.commit();
-        s.refresh(le);
-        // s.evict(le);
-        return le;
+    public static Person get(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        Person u = s
+          .createQuery("from Person where id= :id", Person.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        return u;
+      } catch (Exception e) {
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "");
+      } finally {
+        s.close();
       }
     }
 
-    public static List<Users> getAll(Session s) {
-      return s.createQuery("from Users", Users.class).getResultList();
+    public static Person create(SessionFactory sf, Person le) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        Person u = Person.get(sf, le.id);
+        t = s.beginTransaction();
+        if (u != null) {
+          Address aa = Address.get(sf, u.getAddress().getId());
+          OffsetDateTime n = OffsetDateTime.now();
+          aa.setLine1(le.getAddress().getLine1());
+          aa.setLine2(le.getAddress().getLine2());
+          aa.setLine3(le.getAddress().getLine3());
+          aa.setCity(le.getAddress().getCity());
+          aa.setState(le.getAddress().getState());
+          aa.setPinCode(le.getAddress().getPinCode());
+          aa.setCountry(le.getAddress().getCountry());
+          le.setTimestampCreated(n);
+          le.setTimestampUpdated(n);
+          le.setAddress(aa);
+          le.setStatus(UserStatus.INACTIVE);
+          s.merge(aa);
+          s.merge(le);
+          s.flush();
+          t.commit();
+          s.refresh(le);
+          // s.evict(le);
+          return le;
+        } else {
+          Address aa = Address.create(sf, le.getAddress());
+          OffsetDateTime n = OffsetDateTime.now();
+          le.setTimestampCreated(n);
+          le.setTimestampUpdated(n);
+          le.setAddress(aa);
+          le.setStatus(UserStatus.INACTIVE);
+          s.save(le);
+          s.flush();
+          t.commit();
+          s.refresh(le);
+          // s.evict(le);
+          return le;
+        }
+      } catch (Exception e) {
+        if (t != null) t.rollback();
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "User create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static Users get(Session s, UUID id) {
-      return s
-        .createQuery("from Users where id= :id", Users.class)
-        .setParameter("id", id)
-        .uniqueResult();
+    public static List<Person> getAll(SessionFactory sf) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        List<Person> pl = s.createQuery("from Person", Person.class).getResultList();
+        t.commit();
+        return pl;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static void delete(Session s, UUID id) {
-      Transaction t = s.beginTransaction();
-      Users le = s
-        .createQuery("from Users where id= :id", Users.class)
-        .setParameter("id", id)
-        .uniqueResult();
-      s
-        .createQuery("delete from Address where id= :id")
-        .setString("id", le.getAddress().getId().toString())
-        .executeUpdate();
-      s
-        .createQuery("delete from Users where id= :id")
-        .setParameter("id", id)
-        .executeUpdate();
-      t.commit();
+    // public static Person get(SessionFactory sf, UUID id) throws DaoException {
+    //   Session s = sf.openSession();
+    //   Transaction t = null;
+    //   try {
+    //     return s
+    //       .createQuery("from Person where id= :id", Person.class)
+    //       .setParameter("id", id)
+    //       .uniqueResult();
+    //   } catch (Exception e) {
+    //     e.printStackTrace();
+    //     throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+    //   } finally {
+    //     s.close();
+    //   }
+    // }
+
+    public static void delete(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        Person le = s
+          .createQuery("from Person where id= :id", Person.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        s
+          .createQuery("delete from Address where id= :id")
+          .setString("id", le.getAddress().getId().toString())
+          .executeUpdate();
+        s
+          .createQuery("delete from Person where id= :id")
+          .setParameter("id", id)
+          .executeUpdate();
+        t.commit();
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static Users update(Session s, UUID id, Users le) {
-      Users leo = s
-        .createQuery("from Users where id= :id", Users.class)
-        .setParameter("id", id)
-        .uniqueResult();
-      leo.setPhone(leo.getPhone());
-      leo.setAadharId(leo.getAadharId());
-      leo.setTimestampUpdated(OffsetDateTime.now());
-      Address a = leo.getAddress();
-      Address ao = le.getAddress();
-      ao.setLine1(a.getLine1());
-      ao.setLine2(a.getLine2());
-      ao.setLine3(a.getLine3());
-      ao.setCity(a.getCity());
-      ao.setPinCode(a.getPinCode());
-      ao.setState(a.getState());
-      ao.setCountry(a.getCountry());
-      s.saveOrUpdate(ao);
-      s.saveOrUpdate(leo);
-      leo.setAddress(ao);
-      return leo;
+    public static Person update(SessionFactory sf, UUID id, Person le)
+      throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        Person leo = s
+          .createQuery("from Person where id= :id", Person.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        leo.setPhone(leo.getPhone());
+        leo.setAadharId(leo.getAadharId());
+        leo.setTimestampUpdated(OffsetDateTime.now());
+        Address a = leo.getAddress();
+        Address ao = le.getAddress();
+        ao.setLine1(a.getLine1());
+        ao.setLine2(a.getLine2());
+        ao.setLine3(a.getLine3());
+        ao.setCity(a.getCity());
+        ao.setPinCode(a.getPinCode());
+        ao.setState(a.getState());
+        ao.setCountry(a.getCountry());
+        s.saveOrUpdate(ao);
+        s.saveOrUpdate(leo);
+        leo.setAddress(ao);
+        t.commit();
+        return leo;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
   }
 
@@ -1786,71 +2283,139 @@ public class Dao implements Serializable {
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public CivilAviationAuthority() {}
 
-    public static CivilAviationAuthority create(Session s, CivilAviationAuthority m)
+    public static CivilAviationAuthority create(
+      SessionFactory sf,
+      CivilAviationAuthority m
+    )
       throws DaoException {
-      Logging.info("LE: " + m.getLegalEntity().getId());
-      LegalEntity le = LegalEntity.get(s, m.getLegalEntity().getId());
-      if (le == null) {
-        throw new DaoException(DaoException.Code.NOT_FOUND, "LegalEntity");
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        Logging.info("LE: " + m.getLegalEntity().getId());
+        LegalEntity le = LegalEntity.get(sf, m.getLegalEntity().getId());
+        if (le == null) {
+          throw new DaoException(DaoException.Code.NOT_FOUND, "LegalEntity");
+        }
+        t = s.beginTransaction();
+        OffsetDateTime n = OffsetDateTime.now();
+        m.setId(UUID.randomUUID());
+        m.setLegalEntity(le);
+        s.save(m);
+        s.flush();
+        t.commit();
+        s.refresh(m);
+        return m;
+      } catch (Exception e) {
+        if (
+          e
+            .getCause()
+            .getClass()
+            .getName()
+            .equals("org.hibernate.exception.ConstraintViolationException")
+        ) {
+          throw new DaoException(
+            DaoException.Code.CONSTRAINT_VIOLATION,
+            "CivilAviationAuthority"
+          );
+        } else throw e;
+      } finally {
+        s.close();
       }
-      Transaction t = s.beginTransaction();
-      OffsetDateTime n = OffsetDateTime.now();
-      m.setId(UUID.randomUUID());
-      m.setLegalEntity(le);
-      s.save(m);
-      s.flush();
-      t.commit();
-      s.refresh(m);
-      return m;
     }
 
-    public static List<CivilAviationAuthority> getAll(Session s) {
-      return s
-        .createQuery("from CivilAviationAuthority", CivilAviationAuthority.class)
-        .getResultList();
+    public static List<CivilAviationAuthority> getAll(SessionFactory sf)
+      throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        List<CivilAviationAuthority> caal = s
+          .createQuery("from CivilAviationAuthority", CivilAviationAuthority.class)
+          .getResultList();
+        t.commit();
+        return caal;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static CivilAviationAuthority get(Session s, UUID id) {
-      return s
-        .createQuery(
-          "from CivilAviationAuthority where id= :id",
-          CivilAviationAuthority.class
-        )
-        .setParameter("id", id)
-        .uniqueResult();
+    public static CivilAviationAuthority get(SessionFactory sf, UUID id)
+      throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        CivilAviationAuthority caa = s
+          .createQuery(
+            "from CivilAviationAuthority where id= :id",
+            CivilAviationAuthority.class
+          )
+          .setParameter("id", id)
+          .uniqueResult();
+        t.commit();
+        return caa;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static void delete(Session s, UUID id) {
-      Transaction t = s.beginTransaction();
-      s
-        .createQuery("delete from CivilAviationAuthority where id= :id")
-        .setParameter("id", id)
-        .executeUpdate();
-      t.commit();
+    public static void delete(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        s
+          .createQuery("delete from CivilAviationAuthority where id= :id")
+          .setParameter("id", id)
+          .executeUpdate();
+        t.commit();
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
     public static CivilAviationAuthority update(
-      Session s,
+      SessionFactory sf,
       UUID id,
       CivilAviationAuthority le
-    ) {
-      CivilAviationAuthority leo = s
-        .createQuery(
-          "from CivilAviationAuthority where id= :id",
-          CivilAviationAuthority.class
-        )
-        .setParameter("id", id)
-        .uniqueResult();
-      leo.setTimestampUpdated(OffsetDateTime.now());
-      leo.setValidityStart(le.getValidityStart());
-      leo.setValidityEnd(le.getValidityEnd());
-      LegalEntity a = leo.getLegalEntity();
-      LegalEntity ao = le.getLegalEntity();
-      // ao.setCountry(a.getCountry());
-      s.saveOrUpdate(ao);
-      s.saveOrUpdate(leo);
-      leo.setLegalEntity(ao);
-      return leo;
+    )
+      throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        CivilAviationAuthority leo = s
+          .createQuery(
+            "from CivilAviationAuthority where id= :id",
+            CivilAviationAuthority.class
+          )
+          .setParameter("id", id)
+          .uniqueResult();
+        leo.setTimestampUpdated(OffsetDateTime.now());
+        leo.setValidityStart(le.getValidityStart());
+        leo.setValidityEnd(le.getValidityEnd());
+        LegalEntity a = leo.getLegalEntity();
+        LegalEntity ao = le.getLegalEntity();
+        // ao.setCountry(a.getCountry());
+        s.saveOrUpdate(ao);
+        s.saveOrUpdate(leo);
+        leo.setLegalEntity(ao);
+        t.commit();
+        return leo;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
   }
 
@@ -1953,58 +2518,109 @@ public class Dao implements Serializable {
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public Operator() {}
 
-    public static Operator create(Session s, Operator m)
-      throws DaoException, ConstraintViolationException {
-      LegalEntity le = LegalEntity.get(s, m.getLegalEntity().getId());
-      if (le == null) {
-        throw new DaoException(DaoException.Code.NOT_FOUND, "LegalEntity");
+    public static Operator create(SessionFactory sf, Operator m) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        LegalEntity le = LegalEntity.get(sf, m.getLegalEntity().getId());
+        if (le == null) {
+          throw new DaoException(DaoException.Code.NOT_FOUND, "LegalEntity");
+        }
+        t = s.beginTransaction();
+        OffsetDateTime n = OffsetDateTime.now();
+        m.setId(UUID.randomUUID());
+        m.setLegalEntity(le);
+        s.save(m);
+        s.flush();
+        t.commit();
+        s.refresh(m);
+        return m;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
       }
-      Transaction t = s.beginTransaction();
-      OffsetDateTime n = OffsetDateTime.now();
-      m.setId(UUID.randomUUID());
-      m.setLegalEntity(le);
-      s.save(m);
-      s.flush();
-      t.commit();
-      s.refresh(m);
-      return m;
     }
 
-    public static List<Operator> getAll(Session s) {
-      return s.createQuery("from Operator", Operator.class).getResultList();
+    public static List<Operator> getAll(SessionFactory sf) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        return s.createQuery("from Operator", Operator.class).getResultList();
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static Operator get(Session s, UUID id) {
-      return s
-        .createQuery("from Operator where id= :id", Operator.class)
-        .setParameter("id", id)
-        .uniqueResult();
+    public static Operator get(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        Operator o = s
+          .createQuery("from Operator where id= :id", Operator.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        t.commit();
+        return o;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static void delete(Session s, UUID id) {
-      Transaction t = s.beginTransaction();
-      s
-        .createQuery("delete from Operator where id= :id")
-        .setParameter("id", id)
-        .executeUpdate();
-      t.commit();
+    public static void delete(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        s
+          .createQuery("delete from Operator where id= :id")
+          .setParameter("id", id)
+          .executeUpdate();
+        t.commit();
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static Operator update(Session s, UUID id, Operator le) {
-      Operator leo = s
-        .createQuery("from Operator where id= :id", Operator.class)
-        .setParameter("id", id)
-        .uniqueResult();
-      leo.setTimestampUpdated(OffsetDateTime.now());
-      leo.setValidityStart(le.getValidityStart());
-      leo.setValidityEnd(le.getValidityEnd());
-      LegalEntity a = leo.getLegalEntity();
-      LegalEntity ao = le.getLegalEntity();
-      // ao.setCountry(a.getCountry());
-      s.saveOrUpdate(ao);
-      s.saveOrUpdate(leo);
-      leo.setLegalEntity(ao);
-      return leo;
+    public static Operator update(SessionFactory sf, UUID id, Operator le)
+      throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        Operator leo = s
+          .createQuery("from Operator where id= :id", Operator.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        leo.setTimestampUpdated(OffsetDateTime.now());
+        leo.setValidityStart(le.getValidityStart());
+        leo.setValidityEnd(le.getValidityEnd());
+        LegalEntity a = leo.getLegalEntity();
+        LegalEntity ao = le.getLegalEntity();
+        // ao.setCountry(a.getCountry());
+        s.saveOrUpdate(ao);
+        s.saveOrUpdate(leo);
+        leo.setLegalEntity(ao);
+        t.commit();
+        return leo;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
   }
 
@@ -2108,72 +2724,128 @@ public class Dao implements Serializable {
     public DigitalSkyServiceProvider() {}
 
     public static DigitalSkyServiceProvider create(
-      Session s,
+      SessionFactory sf,
       DigitalSkyServiceProvider m
     )
-      throws DaoException, ConstraintViolationException {
-      LegalEntity le = LegalEntity.get(s, m.getLegalEntity().getId());
-      if (le == null) {
-        throw new DaoException(DaoException.Code.NOT_FOUND, "LegalEntity");
+      throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        LegalEntity le = LegalEntity.get(sf, m.getLegalEntity().getId());
+        if (le == null) {
+          throw new DaoException(DaoException.Code.NOT_FOUND, "LegalEntity");
+        }
+        t = s.beginTransaction();
+        OffsetDateTime n = OffsetDateTime.now();
+        m.setId(UUID.randomUUID());
+        m.setLegalEntity(le);
+        s.save(m);
+        s.flush();
+        t.commit();
+        s.refresh(m);
+        return m;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
       }
-      Transaction t = s.beginTransaction();
-      OffsetDateTime n = OffsetDateTime.now();
-      m.setId(UUID.randomUUID());
-      m.setLegalEntity(le);
-      s.save(m);
-      s.flush();
-      t.commit();
-      s.refresh(m);
-      return m;
     }
 
-    public static List<DigitalSkyServiceProvider> getAll(Session s) {
-      return s
-        .createQuery("from DigitalSkyServiceProvider", DigitalSkyServiceProvider.class)
-        .getResultList();
+    public static List<DigitalSkyServiceProvider> getAll(SessionFactory sf)
+      throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        List<DigitalSkyServiceProvider> dssps = s
+          .createQuery("from DigitalSkyServiceProvider", DigitalSkyServiceProvider.class)
+          .getResultList();
+        t.commit();
+        return dssps;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static DigitalSkyServiceProvider get(Session s, UUID id) {
-      return s
-        .createQuery(
-          "from DigitalSkyServiceProvider where id= :id",
-          DigitalSkyServiceProvider.class
-        )
-        .setParameter("id", id)
-        .uniqueResult();
+    public static DigitalSkyServiceProvider get(SessionFactory sf, UUID id)
+      throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        DigitalSkyServiceProvider dssp = s
+          .createQuery(
+            "from DigitalSkyServiceProvider where id= :id",
+            DigitalSkyServiceProvider.class
+          )
+          .setParameter("id", id)
+          .uniqueResult();
+        t.commit();
+        return dssp;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static void delete(Session s, UUID id) {
-      Transaction t = s.beginTransaction();
-      s
-        .createQuery("delete from DigitalSkyServiceProvider where id= :id")
-        .setParameter("id", id)
-        .executeUpdate();
-      t.commit();
+    public static void delete(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        s
+          .createQuery("delete from DigitalSkyServiceProvider where id= :id")
+          .setParameter("id", id)
+          .executeUpdate();
+        t.commit();
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
     public static DigitalSkyServiceProvider update(
-      Session s,
+      SessionFactory sf,
       UUID id,
       DigitalSkyServiceProvider le
-    ) {
-      DigitalSkyServiceProvider leo = s
-        .createQuery(
-          "from DigitalSkyServiceProvider where id= :id",
-          DigitalSkyServiceProvider.class
-        )
-        .setParameter("id", id)
-        .uniqueResult();
-      leo.setTimestampUpdated(OffsetDateTime.now());
-      leo.setValidityStart(le.getValidityStart());
-      leo.setValidityEnd(le.getValidityEnd());
-      LegalEntity a = leo.getLegalEntity();
-      LegalEntity ao = le.getLegalEntity();
-      // ao.setCountry(a.getCountry());
-      s.saveOrUpdate(ao);
-      s.saveOrUpdate(leo);
-      leo.setLegalEntity(ao);
-      return leo;
+    )
+      throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        DigitalSkyServiceProvider leo = s
+          .createQuery(
+            "from DigitalSkyServiceProvider where id= :id",
+            DigitalSkyServiceProvider.class
+          )
+          .setParameter("id", id)
+          .uniqueResult();
+        leo.setTimestampUpdated(OffsetDateTime.now());
+        leo.setValidityStart(le.getValidityStart());
+        leo.setValidityEnd(le.getValidityEnd());
+        LegalEntity a = leo.getLegalEntity();
+        LegalEntity ao = le.getLegalEntity();
+        // ao.setCountry(a.getCountry());
+        s.saveOrUpdate(ao);
+        s.saveOrUpdate(leo);
+        leo.setLegalEntity(ao);
+        t.commit();
+        return leo;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
   }
 
@@ -2269,26 +2941,26 @@ public class Dao implements Serializable {
     @ManyToOne
     @JoinColumn(name = "FK_seller_user")
     // @Column(name = "seller_user")
-    public Users sellerUser;
+    public Person sellerUser;
 
-    public Users getSellerUser() {
+    public Person getSellerUser() {
       return sellerUser;
     }
 
-    public void setSellerUser(Users a) {
+    public void setSellerUser(Person a) {
       this.sellerUser = a;
     }
 
     @ManyToOne
     @JoinColumn(name = "FK_buyer_user")
     // @Column(name = "buyer_user")
-    public Users buyerUser;
+    public Person buyerUser;
 
-    public Users getBuyerUser() {
+    public Person getBuyerUser() {
       return buyerUser;
     }
 
-    public void setBuyerUser(Users a) {
+    public void setBuyerUser(Person a) {
       this.buyerUser = a;
     }
 
@@ -2326,8 +2998,8 @@ public class Dao implements Serializable {
       OffsetDateTime tu,
       OffsetDateTime vs,
       OffsetDateTime ve,
-      Users su,
-      Users bu,
+      Person su,
+      Person bu,
       LegalEntity sle,
       LegalEntity ble,
       Boolean h
@@ -2348,78 +3020,128 @@ public class Dao implements Serializable {
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public Sale() {}
 
-    public static Sale create(Session s, Sale m)
-      throws DaoException, ConstraintViolationException {
-      if (m.getTimestampCreated() != null) Logging.info(
-        "Timestamps " + m.getTimestampCreated().toString()
-      );
-      if (m.getTimestampUpdated() != null) Logging.info(
-        "Timestamps " + m.getTimestampUpdated().toString()
-      );
-      Transaction t = s.beginTransaction();
-      OffsetDateTime n = OffsetDateTime.now();
-      m.setId(UUID.randomUUID());
-      //
-      Uas uas = Uas.get(s, m.getUas().getId());
-      if (m.getBuyerUser() != null) {
-        Users bu = Users.get(s, m.getBuyerUser().getId());
-        m.setBuyerUser(bu);
-      }
-      if (m.getSellerUser() != null) {
-        Users su = Users.get(s, m.getSellerUser().getId());
-        m.setSellerUser(su);
-      }
-      if (m.getBuyerLegalEntity() != null) {
-        LegalEntity ble = LegalEntity.get(s, m.getBuyerLegalEntity().getId());
-        m.setBuyerLegalEntity(ble);
-      }
-      if (m.getSellerLegalEntity() != null) {
-        LegalEntity sle = LegalEntity.get(s, m.getSellerLegalEntity().getId());
-        m.setSellerLegalEntity(sle);
-      }
-      ///
+    public static Sale create(SessionFactory sf, Sale m) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        if (m.getTimestampCreated() != null) Logging.info(
+          "Timestamps " + m.getTimestampCreated().toString()
+        );
+        if (m.getTimestampUpdated() != null) Logging.info(
+          "Timestamps " + m.getTimestampUpdated().toString()
+        );
+        t = s.beginTransaction();
+        OffsetDateTime n = OffsetDateTime.now();
+        m.setId(UUID.randomUUID());
+        //
+        Uas uas = Uas.get(sf, m.getUas().getId());
+        if (m.getBuyerUser() != null) {
+          Person bu = Person.get(sf, m.getBuyerUser().getId());
+          m.setBuyerUser(bu);
+        }
+        if (m.getSellerUser() != null) {
+          Person su = Person.get(sf, m.getSellerUser().getId());
+          m.setSellerUser(su);
+        }
+        if (m.getBuyerLegalEntity() != null) {
+          LegalEntity ble = LegalEntity.get(sf, m.getBuyerLegalEntity().getId());
+          m.setBuyerLegalEntity(ble);
+        }
+        if (m.getSellerLegalEntity() != null) {
+          LegalEntity sle = LegalEntity.get(sf, m.getSellerLegalEntity().getId());
+          m.setSellerLegalEntity(sle);
+        }
 
-      ///
-      s.save(m);
-      s.flush();
-      t.commit();
-      s.refresh(m);
-      return m;
+        s.save(m);
+        s.flush();
+        t.commit();
+        s.refresh(m);
+        return m;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static List<Sale> getAll(Session s, UUID uasId) {
-      return s
-        .createQuery("from Sale where FK_uas= :id", Sale.class)
-        .setParameter("id", uasId)
-        .getResultList();
+    public static List<Sale> getAll(SessionFactory sf, UUID uasId) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        List<Sale> sl = s
+          .createQuery("from Sale where FK_uas= :id", Sale.class)
+          .setParameter("id", uasId)
+          .getResultList();
+        t.commit();
+        return sl;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static Sale get(Session s, UUID id) {
-      return s
-        .createQuery("from Sale where id= :id", Sale.class)
-        .setParameter("id", id)
-        .uniqueResult();
+    public static Sale get(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        Sale ss = s
+          .createQuery("from Sale where id= :id", Sale.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        t.commit();
+        return ss;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static void delete(Session s, UUID id) {
-      Transaction t = s.beginTransaction();
-      s
-        .createQuery("delete from Sale where id= :id")
-        .setParameter("id", id)
-        .executeUpdate();
-      t.commit();
+    public static void delete(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        s
+          .createQuery("delete from Sale where id= :id")
+          .setParameter("id", id)
+          .executeUpdate();
+        t.commit();
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static Sale update(Session s, UUID id, Sale le) {
-      Sale leo = s
-        .createQuery("from Sale where id= :id", Sale.class)
-        .setParameter("id", id)
-        .uniqueResult();
-      leo.setTimestampUpdated(OffsetDateTime.now());
-      leo.setValidityStart(le.getValidityStart());
-      leo.setValidityEnd(le.getValidityEnd());
-      s.saveOrUpdate(leo);
-      return leo;
+    public static Sale update(SessionFactory sf, UUID id, Sale le) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        Sale leo = s
+          .createQuery("from Sale where id= :id", Sale.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        leo.setTimestampUpdated(OffsetDateTime.now());
+        leo.setValidityStart(le.getValidityStart());
+        leo.setValidityEnd(le.getValidityEnd());
+        s.saveOrUpdate(leo);
+        t.commit();
+        return leo;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
   }
 
@@ -2506,57 +3228,118 @@ public class Dao implements Serializable {
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public Lease() {}
 
-    public static Lease create(Session s, Lease m)
-      throws DaoException, ConstraintViolationException {
-      Transaction t = s.beginTransaction();
-      OffsetDateTime n = OffsetDateTime.now();
-      m.setId(UUID.randomUUID());
-      s.save(m);
-      s.flush();
-      t.commit();
-      s.refresh(m);
-      return m;
+    public static Lease create(SessionFactory sf, Lease m) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        OffsetDateTime n = OffsetDateTime.now();
+        m.setId(UUID.randomUUID());
+        s.save(m);
+        s.flush();
+        t.commit();
+        s.refresh(m);
+        return m;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static List<Lease> getAll(Session s) {
-      return s.createQuery("from Lease", Lease.class).getResultList();
+    public static List<Lease> getAll(SessionFactory sf) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        List<Lease> ll = s.createQuery("from Lease", Lease.class).getResultList();
+        t.commit();
+        return ll;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static Lease get(Session s, UUID id) {
-      return s
-        .createQuery("from Lease where id= :id", Lease.class)
-        .setParameter("id", id)
-        .uniqueResult();
+    public static Lease get(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        Lease l = s
+          .createQuery("from Lease where id= :id", Lease.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        t.commit();
+        return l;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static void delete(Session s, UUID id) {
-      Transaction t = s.beginTransaction();
-      s
-        .createQuery("delete from Lease where id= :id")
-        .setParameter("id", id)
-        .executeUpdate();
-      t.commit();
+    public static void delete(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        s
+          .createQuery("delete from Lease where id= :id")
+          .setParameter("id", id)
+          .executeUpdate();
+        t.commit();
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static Lease update(Session s, UUID id, Lease le) {
-      Lease leo = s
-        .createQuery("from Lease where id= :id", Lease.class)
-        .setParameter("id", id)
-        .uniqueResult();
-      leo.setTimestampUpdated(OffsetDateTime.now());
-      leo.setValidityStart(le.getValidityStart());
-      leo.setValidityEnd(le.getValidityEnd());
-      s.saveOrUpdate(leo);
-      return leo;
+    public static Lease update(SessionFactory sf, UUID id, Lease le) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        Lease leo = s
+          .createQuery("from Lease where id= :id", Lease.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        leo.setTimestampUpdated(OffsetDateTime.now());
+        leo.setValidityStart(le.getValidityStart());
+        leo.setValidityEnd(le.getValidityEnd());
+        s.saveOrUpdate(leo);
+        t.commit();
+        return leo;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
   }
 
-  public static void deleteAll(Session s) {
-    Transaction t = s.beginTransaction();
-    s.createQuery("delete from LegalEntity", LegalEntity.class).executeUpdate();
-    s.createQuery("delete from Address").executeUpdate();
-    s.createQuery("delete from LegalEntity").executeUpdate();
-    t.commit();
+  public static void deleteAll(SessionFactory sf) throws DaoException {
+    Session s = sf.openSession();
+    Transaction t = null;
+    try {
+      t = s.beginTransaction();
+      s.createQuery("delete from LegalEntity", LegalEntity.class).executeUpdate();
+      s.createQuery("delete from Address").executeUpdate();
+      s.createQuery("delete from LegalEntity").executeUpdate();
+      t.commit();
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+    } finally {
+      s.close();
+    }
   }
 
   // FlightPlan is our model, which corresponds to the "FlightPlanes" database table.
@@ -2666,47 +3449,103 @@ public class Dao implements Serializable {
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public FlightPlan() {}
 
-    public static FlightPlan create(Session s, FlightPlan a) {
-      Pilot pilot = Pilot.get(s, a.getPilot().getId());
-      Uas uas = Uas.get(s, a.getUas().getId());
-      Transaction t = s.beginTransaction();
-      a.setPilot(pilot);
-      a.setUas(uas);
-      s.save(a);
-      s.flush();
-      t.commit();
-      s.refresh(a);
-      return a;
+    public static FlightPlan create(SessionFactory sf, FlightPlan a) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        Pilot pilot = Pilot.get(sf, a.getPilot().getId());
+        Uas uas = Uas.get(sf, a.getUas().getId());
+        t = s.beginTransaction();
+        a.setPilot(pilot);
+        a.setUas(uas);
+        s.save(a);
+        s.flush();
+        t.commit();
+        s.refresh(a);
+        return a;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static List<FlightPlan> getAll(Session s) {
-      return s.createQuery("from FlightPlan", FlightPlan.class).getResultList();
+    public static List<FlightPlan> getAll(SessionFactory sf) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        List<FlightPlan> fpl = s
+          .createQuery("from FlightPlan", FlightPlan.class)
+          .getResultList();
+        t.commit();
+        return fpl;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static FlightPlan get(Session s, UUID id) {
-      return s
-        .createQuery("from FlightPlan where id= :id", FlightPlan.class)
-        .setParameter("id", id)
-        .uniqueResult();
+    public static FlightPlan get(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        FlightPlan fp = s
+          .createQuery("from FlightPlan where id= :id", FlightPlan.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        t.commit();
+        return fp;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static void delete(Session s, UUID id) {
-      Transaction t = s.beginTransaction();
-      s
-        .createQuery("delete from FlightPlan where id= :id")
-        .setParameter("id", id)
-        .executeUpdate();
-      t.commit();
+    public static void delete(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        s
+          .createQuery("delete from FlightPlan where id= :id")
+          .setParameter("id", id)
+          .executeUpdate();
+        t.commit();
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static FlightPlan update(Session s, UUID id, FlightPlan le) {
-      FlightPlan leo = s
-        .createQuery("from FlightPlan where id= :id", FlightPlan.class)
-        .setParameter("id", id)
-        .uniqueResult();
-      // ao.setCountry(a.getCountry());
-      s.saveOrUpdate(leo);
-      return leo;
+    public static FlightPlan update(SessionFactory sf, UUID id, FlightPlan le)
+      throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        FlightPlan leo = s
+          .createQuery("from FlightPlan where id= :id", FlightPlan.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        // ao.setCountry(a.getCountry());
+        s.saveOrUpdate(leo);
+        t.commit();
+        return leo;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
     @Override
@@ -2802,64 +3641,120 @@ public class Dao implements Serializable {
     // Hibernate needs a default (no-arg) constructor to create model objects.
     public AirspaceUsageToken() {}
 
-    public static AirspaceUsageToken create(Session s, AirspaceUsageToken a) {
-      Logging.info("AUT CREATE OperationCategory: " + a.getOperationCategory());
-      // TODO remove this?
-      if (a.getOperationCategory() == null) a.setOperationCategory(OperationCategory.A);
-      if (a.getOperationCategory() == OperationCategory.C) {
-        FlightPlan fp = FlightPlan.get(s, a.getFlightPlan().getId());
-        Transaction t = s.beginTransaction();
-        a.setFlightPlan(fp);
-        s.save(a);
-        s.flush();
-        t.commit();
-        s.refresh(a);
-      } else {
-        Logging.info("AUT CREATE Pilot " + a.getPilot().getId());
-        Logging.info("AUT CREATE Uas " + a.getUas().getId());
-        Pilot pilot = Pilot.get(s, a.getPilot().getId());
-        Uas uas = Uas.get(s, a.getUas().getId());
-        Transaction t = s.beginTransaction();
-        a.setPilot(pilot);
-        a.setUas(uas);
-        s.save(a);
-        s.flush();
-        t.commit();
-        s.refresh(a);
+    public static AirspaceUsageToken create(SessionFactory sf, AirspaceUsageToken a)
+      throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        Logging.info("AUT CREATE OperationCategory: " + a.getOperationCategory());
+        t = s.beginTransaction();
+        // TODO remove this?
+        if (a.getOperationCategory() == null) a.setOperationCategory(OperationCategory.A);
+        if (a.getOperationCategory() == OperationCategory.C) {
+          FlightPlan fp = FlightPlan.get(sf, a.getFlightPlan().getId());
+          a.setFlightPlan(fp);
+          s.save(a);
+          s.flush();
+          t.commit();
+          s.refresh(a);
+        } else {
+          Logging.info("AUT CREATE Pilot " + a.getPilot().getId());
+          Logging.info("AUT CREATE Uas " + a.getUas().getId());
+          Pilot pilot = Pilot.get(sf, a.getPilot().getId());
+          Uas uas = Uas.get(sf, a.getUas().getId());
+          a.setPilot(pilot);
+          a.setUas(uas);
+          s.save(a);
+          s.flush();
+          t.commit();
+          s.refresh(a);
+        }
+        return a;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
       }
-      return a;
     }
 
-    public static List<AirspaceUsageToken> getAll(Session s) {
-      return s
-        .createQuery("from AirspaceUsageToken", AirspaceUsageToken.class)
-        .getResultList();
+    public static List<AirspaceUsageToken> getAll(SessionFactory sf) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        List<AirspaceUsageToken> auts = s
+          .createQuery("from AirspaceUsageToken", AirspaceUsageToken.class)
+          .getResultList();
+        t.commit();
+        return auts;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static AirspaceUsageToken get(Session s, UUID id) {
-      return s
-        .createQuery("from AirspaceUsageToken where id= :id", AirspaceUsageToken.class)
-        .setParameter("id", id)
-        .uniqueResult();
+    public static AirspaceUsageToken get(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        AirspaceUsageToken aut = s
+          .createQuery("from AirspaceUsageToken where id= :id", AirspaceUsageToken.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        t.commit();
+        return aut;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      } finally {
+        s.close();
+      }
     }
 
-    public static void delete(Session s, UUID id) {
-      Transaction t = s.beginTransaction();
-      s
-        .createQuery("delete from AirspaceUsageToken where id= :id")
-        .setParameter("id", id)
-        .executeUpdate();
-      t.commit();
+    public static void delete(SessionFactory sf, UUID id) throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        s
+          .createQuery("delete from AirspaceUsageToken where id= :id")
+          .setParameter("id", id)
+          .executeUpdate();
+        t.commit();
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new DaoException(DaoException.Code.UNKNOWN, "AirspaceUsageToken delete");
+      } finally {
+        s.close();
+      }
     }
 
-    public static AirspaceUsageToken update(Session s, UUID id, AirspaceUsageToken le) {
-      AirspaceUsageToken leo = s
-        .createQuery("from AirspaceUsageToken where id= :id", AirspaceUsageToken.class)
-        .setParameter("id", id)
-        .uniqueResult();
-      // ao.setCountry(a.getCountry());
-      s.saveOrUpdate(leo);
-      return leo;
+    public static AirspaceUsageToken update(
+      SessionFactory sf,
+      UUID id,
+      AirspaceUsageToken le
+    )
+      throws DaoException {
+      Session s = sf.openSession();
+      Transaction t = null;
+      try {
+        t = s.beginTransaction();
+        AirspaceUsageToken leo = s
+          .createQuery("from AirspaceUsageToken where id= :id", AirspaceUsageToken.class)
+          .setParameter("id", id)
+          .uniqueResult();
+        // ao.setCountry(a.getCountry());
+        s.saveOrUpdate(leo);
+        return leo;
+      } catch (Exception e) {
+        throw new DaoException(DaoException.Code.UNKNOWN, "AirspaceUsageToken");
+      } finally {
+        s.close();
+      }
     }
 
     @Override

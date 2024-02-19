@@ -92,8 +92,11 @@ public interface UserApi {
   ) {
     Logging.info("JWT: " + authentication.toString());
     try {
-      Dao.Users le = User.fromOa(user);
-      Dao.Users lec = Dao.Users.create(DaoInstance.getInstance().getSession(), le);
+      Dao.Person le = User.fromOa(user);
+      Dao.Person lec = Dao.Person.create(
+        DaoInstance.getInstance().getSessionFactory(),
+        le
+      );
       return ResponseEntity.ok(User.toOa(lec));
     } catch (ConstraintViolationException e) {
       System.err.println("Exception: " + e.toString());

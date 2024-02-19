@@ -295,8 +295,8 @@ public class Sale {
   }
 
   public static Dao.Sale fromOa(Sale u) {
-    Dao.Users su = null;
-    Dao.Users bu = null;
+    Dao.Person su = null;
+    Dao.Person bu = null;
     Dao.LegalEntity sle = null;
     Dao.LegalEntity ble = null;
     if (u.getSellerUser() != null) su = User.fromOa(u.getSellerUser());

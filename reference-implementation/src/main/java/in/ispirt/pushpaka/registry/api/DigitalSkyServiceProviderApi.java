@@ -93,7 +93,7 @@ public interface DigitalSkyServiceProviderApi {
         "Create DigitalSkyServiceProvider " + digitalSkyServiceProvider.toString()
       );
       Dao.DigitalSkyServiceProvider mm = Dao.DigitalSkyServiceProvider.create(
-        DaoInstance.getInstance().getSession(),
+        DaoInstance.getInstance().getSessionFactory(),
         DigitalSkyServiceProvider.fromOa(digitalSkyServiceProvider)
       );
       return ResponseEntity.ok(DigitalSkyServiceProvider.toOa(mm));
@@ -140,11 +140,21 @@ public interface DigitalSkyServiceProviderApi {
       in = ParameterIn.PATH
     ) @PathVariable("digitalSkyServiceProviderId") UUID digitalSkyServiceProviderId
   ) {
-    Dao.DigitalSkyServiceProvider.delete(
-      DaoInstance.getInstance().getSession(),
-      digitalSkyServiceProviderId
-    );
-    return ResponseEntity.ok().build();
+    try {
+      Dao.DigitalSkyServiceProvider.delete(
+        DaoInstance.getInstance().getSessionFactory(),
+        digitalSkyServiceProviderId
+      );
+      return ResponseEntity.ok().build();
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
@@ -196,14 +206,24 @@ public interface DigitalSkyServiceProviderApi {
     //       }
     //     }
     //   );
-    List<Dao.DigitalSkyServiceProvider> les = Dao.DigitalSkyServiceProvider.getAll(
-      DaoInstance.getInstance().getSession()
-    );
-    List<DigitalSkyServiceProvider> leso = les
-      .stream()
-      .map(x -> in.ispirt.pushpaka.models.DigitalSkyServiceProvider.toOa(x))
-      .collect(Collectors.toList());
-    return ResponseEntity.ok(leso);
+    try {
+      List<Dao.DigitalSkyServiceProvider> les = Dao.DigitalSkyServiceProvider.getAll(
+        DaoInstance.getInstance().getSessionFactory()
+      );
+      List<DigitalSkyServiceProvider> leso = les
+        .stream()
+        .map(x -> in.ispirt.pushpaka.models.DigitalSkyServiceProvider.toOa(x))
+        .collect(Collectors.toList());
+      return ResponseEntity.ok(leso);
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -267,13 +287,23 @@ public interface DigitalSkyServiceProviderApi {
     //       }
     //     }
     //   );
-    Dao.DigitalSkyServiceProvider le = Dao.DigitalSkyServiceProvider.get(
-      DaoInstance.getInstance().getSession(),
-      digitalSkyServiceProviderId
-    );
-    return ResponseEntity.ok(
-      in.ispirt.pushpaka.models.DigitalSkyServiceProvider.toOa(le)
-    );
+    try {
+      Dao.DigitalSkyServiceProvider le = Dao.DigitalSkyServiceProvider.get(
+        DaoInstance.getInstance().getSessionFactory(),
+        digitalSkyServiceProviderId
+      );
+      return ResponseEntity.ok(
+        in.ispirt.pushpaka.models.DigitalSkyServiceProvider.toOa(le)
+      );
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -310,14 +340,24 @@ public interface DigitalSkyServiceProviderApi {
       required = true
     ) @Valid @RequestBody DigitalSkyServiceProvider digitalSkyServiceProvider
   ) {
-    Dao.DigitalSkyServiceProvider le = Dao.DigitalSkyServiceProvider.update(
-      DaoInstance.getInstance().getSession(),
-      digitalSkyServiceProviderId,
-      DigitalSkyServiceProvider.fromOa(digitalSkyServiceProvider)
-    );
-    return ResponseEntity.ok(
-      in.ispirt.pushpaka.models.DigitalSkyServiceProvider.toOa(le)
-    );
+    try {
+      Dao.DigitalSkyServiceProvider le = Dao.DigitalSkyServiceProvider.update(
+        DaoInstance.getInstance().getSessionFactory(),
+        digitalSkyServiceProviderId,
+        DigitalSkyServiceProvider.fromOa(digitalSkyServiceProvider)
+      );
+      return ResponseEntity.ok(
+        in.ispirt.pushpaka.models.DigitalSkyServiceProvider.toOa(le)
+      );
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }

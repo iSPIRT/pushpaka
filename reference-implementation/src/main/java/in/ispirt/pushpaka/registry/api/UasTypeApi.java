@@ -94,11 +94,11 @@ public interface UasTypeApi {
     try {
       Logging.info("Approve request; " + modelNumber + " " + uasTypeId.toString());
       Dao.UasType lec = Dao.UasType.setModelNumber(
-        DaoInstance.getInstance().getSession(),
+        DaoInstance.getInstance().getSessionFactory(),
         uasTypeId,
         modelNumber
       );
-      lec = Dao.UasType.approve(DaoInstance.getInstance().getSession(), uasTypeId);
+      lec = Dao.UasType.approve(DaoInstance.getInstance().getSessionFactory(), uasTypeId);
       return ResponseEntity.ok(UasType.toOa(lec));
     } catch (DaoException e) {
       System.err.println("Exception: " + e.toString());
@@ -153,7 +153,10 @@ public interface UasTypeApi {
   ) {
     try {
       Dao.UasType le = UasType.fromOa(uasType);
-      Dao.UasType lec = Dao.UasType.create(DaoInstance.getInstance().getSession(), le);
+      Dao.UasType lec = Dao.UasType.create(
+        DaoInstance.getInstance().getSessionFactory(),
+        le
+      );
       return ResponseEntity.ok(UasType.toOa(lec));
     } catch (DaoException e) {
       System.err.println("Exception: " + e.toString());
@@ -191,8 +194,18 @@ public interface UasTypeApi {
       in = ParameterIn.PATH
     ) @PathVariable("uasTypeId") UUID uasTypeId
   ) {
-    Dao.UasType.delete(DaoInstance.getInstance().getSession(), uasTypeId);
-    return ResponseEntity.ok().build();
+    try {
+      Dao.UasType.delete(DaoInstance.getInstance().getSessionFactory(), uasTypeId);
+      return ResponseEntity.ok().build();
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -225,12 +238,24 @@ public interface UasTypeApi {
     produces = { "application/json" }
   )
   default ResponseEntity<List<UasType>> findUasTypes() {
-    List<Dao.UasType> les = Dao.UasType.getAll(DaoInstance.getInstance().getSession());
-    List<UasType> leso = les
-      .stream()
-      .map(x -> in.ispirt.pushpaka.models.UasType.toOa(x))
-      .collect(Collectors.toList());
-    return ResponseEntity.ok(leso);
+    try {
+      List<Dao.UasType> les = Dao.UasType.getAll(
+        DaoInstance.getInstance().getSessionFactory()
+      );
+      List<UasType> leso = les
+        .stream()
+        .map(x -> in.ispirt.pushpaka.models.UasType.toOa(x))
+        .collect(Collectors.toList());
+      return ResponseEntity.ok(leso);
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -275,8 +300,21 @@ public interface UasTypeApi {
       in = ParameterIn.PATH
     ) @PathVariable("uasTypeId") UUID uasTypeId
   ) {
-    Dao.UasType le = Dao.UasType.get(DaoInstance.getInstance().getSession(), uasTypeId);
-    return ResponseEntity.ok(in.ispirt.pushpaka.models.UasType.toOa(le));
+    try {
+      Dao.UasType le = Dao.UasType.get(
+        DaoInstance.getInstance().getSessionFactory(),
+        uasTypeId
+      );
+      return ResponseEntity.ok(in.ispirt.pushpaka.models.UasType.toOa(le));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -323,21 +361,21 @@ public interface UasTypeApi {
       required = true
     ) @Valid @RequestBody UasType uasType
   ) {
-    getRequest()
-      .ifPresent(
-        request -> {
-          for (MediaType mediaType : MediaType.parseMediaTypes(
-            request.getHeader("Accept")
-          )) {
-            if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-              String exampleString =
-                "{ \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"manufacturer\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"legalEntity\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] }";
-              ApiUtil.setExampleResponse(request, "application/json", exampleString);
-              break;
-            }
-          }
-        }
+    try {
+      Dao.UasType le = Dao.UasType.update(
+        DaoInstance.getInstance().getSessionFactory(),
+        uasType.getId(),
+        UasType.fromOa(uasType)
       );
-    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+      return ResponseEntity.ok(in.ispirt.pushpaka.models.UasType.toOa(le));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }

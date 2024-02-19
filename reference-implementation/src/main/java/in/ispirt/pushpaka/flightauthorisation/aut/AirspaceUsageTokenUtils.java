@@ -1,7 +1,6 @@
 package in.ispirt.pushpaka.flightauthorisation.aut;
 
 import com.google.gson.JsonObject;
-import in.ispirt.pushpaka.models.AirspaceUsageOperationType;
 import in.ispirt.pushpaka.models.AirspaceUsageToken;
 import in.ispirt.pushpaka.models.AirspaceUsageTokenAttenuations;
 import in.ispirt.pushpaka.models.AirspaceUsageTokenState;

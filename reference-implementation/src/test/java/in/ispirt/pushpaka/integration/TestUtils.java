@@ -190,7 +190,7 @@ public class TestUtils {
 
     // When
     HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
-    // assertEquals(httpResponse.getStatusLine().getStatusCode(), 200);
+    assertEquals(httpResponse.getStatusLine().getStatusCode(), 200);
     HttpEntity re = httpResponse.getEntity();
     String reb = EntityUtils.toString(re);
     Logging.info("USER CREATE RESPONSE: " + reb);

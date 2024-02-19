@@ -95,7 +95,7 @@ public interface OwnershipApi {
   ) {
     try {
       Dao.Lease le = Lease.fromOa(lease);
-      Dao.Lease lec = Dao.Lease.create(DaoInstance.getInstance().getSession(), le);
+      Dao.Lease lec = Dao.Lease.create(DaoInstance.getInstance().getSessionFactory(), le);
       return ResponseEntity.ok(Lease.toOa(lec));
     } catch (DaoException e) {
       System.err.println("Exception: " + e.toString());
@@ -133,8 +133,18 @@ public interface OwnershipApi {
       in = ParameterIn.PATH
     ) @PathVariable("leaseId") UUID leaseId
   ) {
-    Dao.Lease.delete(DaoInstance.getInstance().getSession(), leaseId);
-    return ResponseEntity.ok().build();
+    try {
+      Dao.Lease.delete(DaoInstance.getInstance().getSessionFactory(), leaseId);
+      return ResponseEntity.ok().build();
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -167,12 +177,24 @@ public interface OwnershipApi {
     produces = { "application/json" }
   )
   default ResponseEntity<List<Lease>> findLeases() {
-    List<Dao.Lease> les = Dao.Lease.getAll(DaoInstance.getInstance().getSession());
-    List<Lease> leso = les
-      .stream()
-      .map(x -> in.ispirt.pushpaka.models.Lease.toOa(x))
-      .collect(Collectors.toList());
-    return ResponseEntity.ok(leso);
+    try {
+      List<Dao.Lease> les = Dao.Lease.getAll(
+        DaoInstance.getInstance().getSessionFactory()
+      );
+      List<Lease> leso = les
+        .stream()
+        .map(x -> in.ispirt.pushpaka.models.Lease.toOa(x))
+        .collect(Collectors.toList());
+      return ResponseEntity.ok(leso);
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -217,8 +239,21 @@ public interface OwnershipApi {
       in = ParameterIn.PATH
     ) @PathVariable("leaseId") UUID leaseId
   ) {
-    Dao.Lease le = Dao.Lease.get(DaoInstance.getInstance().getSession(), leaseId);
-    return ResponseEntity.ok(in.ispirt.pushpaka.models.Lease.toOa(le));
+    try {
+      Dao.Lease le = Dao.Lease.get(
+        DaoInstance.getInstance().getSessionFactory(),
+        leaseId
+      );
+      return ResponseEntity.ok(in.ispirt.pushpaka.models.Lease.toOa(le));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -265,22 +300,23 @@ public interface OwnershipApi {
       required = true
     ) @Valid @RequestBody Lease lease
   ) {
-    getRequest()
-      .ifPresent(
-        request -> {
-          for (MediaType mediaType : MediaType.parseMediaTypes(
-            request.getHeader("Accept")
-          )) {
-            if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-              String exampleString =
-                "{ \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"manufacturer\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"legalEntity\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] }";
-              ApiUtil.setExampleResponse(request, "application/json", exampleString);
-              break;
-            }
-          }
-        }
+    try {
+      Dao.Lease le = Lease.fromOa(lease);
+      Dao.Lease lec = Dao.Lease.update(
+        DaoInstance.getInstance().getSessionFactory(),
+        le.getId(),
+        le
       );
-    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+      return ResponseEntity.ok(Lease.toOa(lec));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /******************************
@@ -329,7 +365,7 @@ public interface OwnershipApi {
   ) {
     try {
       Dao.Sale le = Sale.fromOa(sale);
-      Dao.Sale lec = Dao.Sale.create(DaoInstance.getInstance().getSession(), le);
+      Dao.Sale lec = Dao.Sale.create(DaoInstance.getInstance().getSessionFactory(), le);
       return ResponseEntity.ok(Sale.toOa(lec));
     } catch (DaoException e) {
       System.err.println("Exception: " + e.toString());
@@ -367,8 +403,18 @@ public interface OwnershipApi {
       in = ParameterIn.PATH
     ) @PathVariable("saleId") UUID saleId
   ) {
-    Dao.Sale.delete(DaoInstance.getInstance().getSession(), saleId);
-    return ResponseEntity.ok().build();
+    try {
+      Dao.Sale.delete(DaoInstance.getInstance().getSessionFactory(), saleId);
+      return ResponseEntity.ok().build();
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -408,12 +454,25 @@ public interface OwnershipApi {
       in = ParameterIn.PATH
     ) @PathVariable("uasId") UUID uasId
   ) {
-    List<Dao.Sale> les = Dao.Sale.getAll(DaoInstance.getInstance().getSession(), uasId);
-    List<Sale> leso = les
-      .stream()
-      .map(x -> in.ispirt.pushpaka.models.Sale.toOa(x))
-      .collect(Collectors.toList());
-    return ResponseEntity.ok(leso);
+    try {
+      List<Dao.Sale> les = Dao.Sale.getAll(
+        DaoInstance.getInstance().getSessionFactory(),
+        uasId
+      );
+      List<Sale> leso = les
+        .stream()
+        .map(x -> in.ispirt.pushpaka.models.Sale.toOa(x))
+        .collect(Collectors.toList());
+      return ResponseEntity.ok(leso);
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -458,8 +517,18 @@ public interface OwnershipApi {
       in = ParameterIn.PATH
     ) @PathVariable("saleId") UUID saleId
   ) {
-    Dao.Sale le = Dao.Sale.get(DaoInstance.getInstance().getSession(), saleId);
-    return ResponseEntity.ok(in.ispirt.pushpaka.models.Sale.toOa(le));
+    try {
+      Dao.Sale le = Dao.Sale.get(DaoInstance.getInstance().getSessionFactory(), saleId);
+      return ResponseEntity.ok(in.ispirt.pushpaka.models.Sale.toOa(le));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -506,21 +575,22 @@ public interface OwnershipApi {
       required = true
     ) @Valid @RequestBody Sale sale
   ) {
-    getRequest()
-      .ifPresent(
-        request -> {
-          for (MediaType mediaType : MediaType.parseMediaTypes(
-            request.getHeader("Accept")
-          )) {
-            if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-              String exampleString =
-                "{ \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"manufacturer\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"legalEntity\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] }";
-              ApiUtil.setExampleResponse(request, "application/json", exampleString);
-              break;
-            }
-          }
-        }
+    try {
+      Dao.Sale le = Sale.fromOa(sale);
+      Dao.Sale lec = Dao.Sale.update(
+        DaoInstance.getInstance().getSessionFactory(),
+        le.getId(),
+        le
       );
-    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+      return ResponseEntity.ok(Sale.toOa(lec));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }

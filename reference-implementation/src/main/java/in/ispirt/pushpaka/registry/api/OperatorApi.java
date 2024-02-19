@@ -91,7 +91,7 @@ public interface OperatorApi {
     try {
       System.out.println("Create Operator " + operator.toString());
       Dao.Operator mm = Dao.Operator.create(
-        DaoInstance.getInstance().getSession(),
+        DaoInstance.getInstance().getSessionFactory(),
         Operator.fromOa(operator)
       );
       return ResponseEntity.ok(Operator.toOa(mm));
@@ -132,8 +132,18 @@ public interface OperatorApi {
       in = ParameterIn.PATH
     ) @PathVariable("operatorId") UUID operatorId
   ) {
-    Dao.Operator.delete(DaoInstance.getInstance().getSession(), operatorId);
-    return ResponseEntity.ok().build();
+    try {
+      Dao.Operator.delete(DaoInstance.getInstance().getSessionFactory(), operatorId);
+      return ResponseEntity.ok().build();
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
@@ -183,12 +193,24 @@ public interface OperatorApi {
     //       }
     //     }
     //   );
-    List<Dao.Operator> les = Dao.Operator.getAll(DaoInstance.getInstance().getSession());
-    List<Operator> leso = les
-      .stream()
-      .map(x -> in.ispirt.pushpaka.models.Operator.toOa(x))
-      .collect(Collectors.toList());
-    return ResponseEntity.ok(leso);
+    try {
+      List<Dao.Operator> les = Dao.Operator.getAll(
+        DaoInstance.getInstance().getSessionFactory()
+      );
+      List<Operator> leso = les
+        .stream()
+        .map(x -> in.ispirt.pushpaka.models.Operator.toOa(x))
+        .collect(Collectors.toList());
+      return ResponseEntity.ok(leso);
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -249,11 +271,21 @@ public interface OperatorApi {
     //       }
     //     }
     //   );
-    Dao.Operator le = Dao.Operator.get(
-      DaoInstance.getInstance().getSession(),
-      operatorId
-    );
-    return ResponseEntity.ok(in.ispirt.pushpaka.models.Operator.toOa(le));
+    try {
+      Dao.Operator le = Dao.Operator.get(
+        DaoInstance.getInstance().getSessionFactory(),
+        operatorId
+      );
+      return ResponseEntity.ok(in.ispirt.pushpaka.models.Operator.toOa(le));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -287,12 +319,22 @@ public interface OperatorApi {
       required = true
     ) @Valid @RequestBody Operator operator
   ) {
-    Dao.Operator le = Dao.Operator.update(
-      DaoInstance.getInstance().getSession(),
-      operatorId,
-      Operator.fromOa(operator)
-    );
-    return ResponseEntity.ok(in.ispirt.pushpaka.models.Operator.toOa(le));
+    try {
+      Dao.Operator le = Dao.Operator.update(
+        DaoInstance.getInstance().getSessionFactory(),
+        operatorId,
+        Operator.fromOa(operator)
+      );
+      return ResponseEntity.ok(in.ispirt.pushpaka.models.Operator.toOa(le));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }

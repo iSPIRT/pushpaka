@@ -4,7 +4,8 @@ public class DaoException extends Exception {
 
   public enum Code {
     UNKNOWN("UNKNOWN"),
-    NOT_FOUND("NOT FOUND");
+    NOT_FOUND("NOT FOUND"),
+    CONSTRAINT_VIOLATION("CONSTRAINT VIOLATION");
 
     private String value;
 

@@ -326,7 +326,7 @@ public class User {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public static User toOa(Dao.Users u) {
+  public static User toOa(Dao.Person u) {
     ObjectTimestamps ot = new ObjectTimestamps(
       u.getTimestampCreated(),
       u.getTimestampUpdated()
@@ -345,8 +345,8 @@ public class User {
     return uu;
   }
 
-  public static Dao.Users fromOa(User u) {
-    Dao.Users uu = new Dao.Users(
+  public static Dao.Person fromOa(User u) {
+    Dao.Person uu = new Dao.Person(
       u.getId(),
       u.getPhone(),
       u.getAadharId(),

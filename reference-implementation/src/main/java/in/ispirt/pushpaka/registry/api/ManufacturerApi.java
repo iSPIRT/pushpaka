@@ -91,7 +91,7 @@ public interface ManufacturerApi {
     try {
       System.out.println("Create Manufacturer " + manufacturer.toString());
       Dao.Manufacturer mm = Dao.Manufacturer.create(
-        DaoInstance.getInstance().getSession(),
+        DaoInstance.getInstance().getSessionFactory(),
         Manufacturer.fromOa(manufacturer)
       );
       return ResponseEntity.ok(Manufacturer.toOa(mm));
@@ -132,8 +132,21 @@ public interface ManufacturerApi {
       in = ParameterIn.PATH
     ) @PathVariable("manufacturerId") UUID manufacturerId
   ) {
-    Dao.Manufacturer.delete(DaoInstance.getInstance().getSession(), manufacturerId);
-    return ResponseEntity.ok().build();
+    try {
+      Dao.Manufacturer.delete(
+        DaoInstance.getInstance().getSessionFactory(),
+        manufacturerId
+      );
+      return ResponseEntity.ok().build();
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
@@ -183,14 +196,24 @@ public interface ManufacturerApi {
     //       }
     //     }
     //   );
-    List<Dao.Manufacturer> les = Dao.Manufacturer.getAll(
-      DaoInstance.getInstance().getSession()
-    );
-    List<Manufacturer> leso = les
-      .stream()
-      .map(x -> in.ispirt.pushpaka.models.Manufacturer.toOa(x))
-      .collect(Collectors.toList());
-    return ResponseEntity.ok(leso);
+    try {
+      List<Dao.Manufacturer> les = Dao.Manufacturer.getAll(
+        DaoInstance.getInstance().getSessionFactory()
+      );
+      List<Manufacturer> leso = les
+        .stream()
+        .map(x -> in.ispirt.pushpaka.models.Manufacturer.toOa(x))
+        .collect(Collectors.toList());
+      return ResponseEntity.ok(leso);
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -251,11 +274,21 @@ public interface ManufacturerApi {
     //       }
     //     }
     //   );
-    Dao.Manufacturer le = Dao.Manufacturer.get(
-      DaoInstance.getInstance().getSession(),
-      manufacturerId
-    );
-    return ResponseEntity.ok(in.ispirt.pushpaka.models.Manufacturer.toOa(le));
+    try {
+      Dao.Manufacturer le = Dao.Manufacturer.get(
+        DaoInstance.getInstance().getSessionFactory(),
+        manufacturerId
+      );
+      return ResponseEntity.ok(in.ispirt.pushpaka.models.Manufacturer.toOa(le));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -289,12 +322,22 @@ public interface ManufacturerApi {
       required = true
     ) @Valid @RequestBody Manufacturer manufacturer
   ) {
-    Dao.Manufacturer le = Dao.Manufacturer.update(
-      DaoInstance.getInstance().getSession(),
-      manufacturerId,
-      Manufacturer.fromOa(manufacturer)
-    );
-    return ResponseEntity.ok(in.ispirt.pushpaka.models.Manufacturer.toOa(le));
+    try {
+      Dao.Manufacturer le = Dao.Manufacturer.update(
+        DaoInstance.getInstance().getSessionFactory(),
+        manufacturerId,
+        Manufacturer.fromOa(manufacturer)
+      );
+      return ResponseEntity.ok(in.ispirt.pushpaka.models.Manufacturer.toOa(le));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }

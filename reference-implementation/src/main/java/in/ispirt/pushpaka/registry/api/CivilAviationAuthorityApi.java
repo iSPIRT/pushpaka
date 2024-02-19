@@ -93,7 +93,7 @@ public interface CivilAviationAuthorityApi {
         "Create CivilAviationAuthority " + civilAviationAuthority.toString()
       );
       Dao.CivilAviationAuthority mm = Dao.CivilAviationAuthority.create(
-        DaoInstance.getInstance().getSession(),
+        DaoInstance.getInstance().getSessionFactory(),
         CivilAviationAuthority.fromOa(civilAviationAuthority)
       );
       return ResponseEntity.ok(CivilAviationAuthority.toOa(mm));
@@ -140,12 +140,21 @@ public interface CivilAviationAuthorityApi {
       in = ParameterIn.PATH
     ) @PathVariable("civilAviationAuthorityId") UUID civilAviationAuthorityId
   ) {
-    Dao.CivilAviationAuthority.delete(
-      DaoInstance.getInstance().getSession(),
-      civilAviationAuthorityId
-    );
-    return ResponseEntity.ok().build();
-    // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    try {
+      Dao.CivilAviationAuthority.delete(
+        DaoInstance.getInstance().getSessionFactory(),
+        civilAviationAuthorityId
+      );
+      return ResponseEntity.ok().build();
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -181,29 +190,24 @@ public interface CivilAviationAuthorityApi {
     produces = { "application/json" }
   )
   default ResponseEntity<List<CivilAviationAuthority>> findCivilAviationAuthorities() {
-    // getRequest()
-    //   .ifPresent(
-    //     request -> {
-    //       for (MediaType mediaType : MediaType.parseMediaTypes(
-    //         request.getHeader("Accept")
-    //       )) {
-    //         if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-    //           String exampleString =
-    //             "[ { \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"civilAviationAuthority\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"civilAviationAuthority\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } }, { \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"civilAviationAuthority\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"civilAviationAuthority\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } } ]";
-    //           ApiUtil.setExampleResponse(request, "application/json", exampleString);
-    //           break;
-    //         }
-    //       }
-    //     }
-    //   );
-    List<Dao.CivilAviationAuthority> les = Dao.CivilAviationAuthority.getAll(
-      DaoInstance.getInstance().getSession()
-    );
-    List<CivilAviationAuthority> leso = les
-      .stream()
-      .map(x -> in.ispirt.pushpaka.models.CivilAviationAuthority.toOa(x))
-      .collect(Collectors.toList());
-    return ResponseEntity.ok(leso);
+    try {
+      List<Dao.CivilAviationAuthority> les = Dao.CivilAviationAuthority.getAll(
+        DaoInstance.getInstance().getSessionFactory()
+      );
+      List<CivilAviationAuthority> leso = les
+        .stream()
+        .map(x -> in.ispirt.pushpaka.models.CivilAviationAuthority.toOa(x))
+        .collect(Collectors.toList());
+      return ResponseEntity.ok(leso);
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -249,26 +253,21 @@ public interface CivilAviationAuthorityApi {
       in = ParameterIn.PATH
     ) @PathVariable("civilAviationAuthorityId") UUID civilAviationAuthorityId
   ) {
-    // getRequest()
-    //   .ifPresent(
-    //     request -> {
-    //       for (MediaType mediaType : MediaType.parseMediaTypes(
-    //         request.getHeader("Accept")
-    //       )) {
-    //         if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-    //           String exampleString =
-    //             "{ \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"civilAviationAuthority\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"civilAviationAuthority\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } }";
-    //           ApiUtil.setExampleResponse(request, "application/json", exampleString);
-    //           break;
-    //         }
-    //       }
-    //     }
-    //   );
-    Dao.CivilAviationAuthority le = Dao.CivilAviationAuthority.get(
-      DaoInstance.getInstance().getSession(),
-      civilAviationAuthorityId
-    );
-    return ResponseEntity.ok(in.ispirt.pushpaka.models.CivilAviationAuthority.toOa(le));
+    try {
+      Dao.CivilAviationAuthority le = Dao.CivilAviationAuthority.get(
+        DaoInstance.getInstance().getSessionFactory(),
+        civilAviationAuthorityId
+      );
+      return ResponseEntity.ok(in.ispirt.pushpaka.models.CivilAviationAuthority.toOa(le));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -305,12 +304,17 @@ public interface CivilAviationAuthorityApi {
       required = true
     ) @Valid @RequestBody CivilAviationAuthority civilAviationAuthority
   ) {
-    Dao.CivilAviationAuthority le = Dao.CivilAviationAuthority.update(
-      DaoInstance.getInstance().getSession(),
-      civilAviationAuthorityId,
-      CivilAviationAuthority.fromOa(civilAviationAuthority)
-    );
-    return ResponseEntity.ok(in.ispirt.pushpaka.models.CivilAviationAuthority.toOa(le));
+    try {
+      Dao.CivilAviationAuthority le = Dao.CivilAviationAuthority.update(
+        DaoInstance.getInstance().getSessionFactory(),
+        civilAviationAuthorityId,
+        CivilAviationAuthority.fromOa(civilAviationAuthority)
+      );
+      return ResponseEntity.ok(in.ispirt.pushpaka.models.CivilAviationAuthority.toOa(le));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }

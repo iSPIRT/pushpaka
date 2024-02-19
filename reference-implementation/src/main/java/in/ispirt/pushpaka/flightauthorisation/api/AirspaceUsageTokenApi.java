@@ -8,6 +8,7 @@ package in.ispirt.pushpaka.flightauthorisation.api;
 import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
 import in.ispirt.pushpaka.models.AirspaceUsageToken;
+import in.ispirt.pushpaka.registry.utils.DaoException;
 import in.ispirt.pushpaka.utils.Logging;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -87,7 +88,7 @@ public interface AirspaceUsageTokenApi {
     try {
       Logging.info("Create AirspaceUsageToken " + aut.toString());
       Dao.AirspaceUsageToken mm = Dao.AirspaceUsageToken.create(
-        DaoInstance.getInstance().getSession(),
+        DaoInstance.getInstance().getSessionFactory(),
         AirspaceUsageToken.fromOa(aut)
       );
       return ResponseEntity.ok(AirspaceUsageToken.toOa(mm));
@@ -130,11 +131,21 @@ public interface AirspaceUsageTokenApi {
       in = ParameterIn.PATH
     ) @PathVariable("AirspaceUsageTokenId") UUID AirspaceUsageTokenId
   ) {
-    Dao.AirspaceUsageToken.delete(
-      DaoInstance.getInstance().getSession(),
-      AirspaceUsageTokenId
-    );
-    return ResponseEntity.ok().build();
+    try {
+      Dao.AirspaceUsageToken.delete(
+        DaoInstance.getInstance().getSessionFactory(),
+        AirspaceUsageTokenId
+      );
+      return ResponseEntity.ok().build();
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
@@ -185,14 +196,24 @@ public interface AirspaceUsageTokenApi {
     //       }
     //     }
     //   );
-    List<Dao.AirspaceUsageToken> les = Dao.AirspaceUsageToken.getAll(
-      DaoInstance.getInstance().getSession()
-    );
-    List<AirspaceUsageToken> leso = les
-      .stream()
-      .map(x -> in.ispirt.pushpaka.models.AirspaceUsageToken.toOa(x))
-      .collect(Collectors.toList());
-    return ResponseEntity.ok(leso);
+    try {
+      List<Dao.AirspaceUsageToken> les = Dao.AirspaceUsageToken.getAll(
+        DaoInstance.getInstance().getSessionFactory()
+      );
+      List<AirspaceUsageToken> leso = les
+        .stream()
+        .map(x -> in.ispirt.pushpaka.models.AirspaceUsageToken.toOa(x))
+        .collect(Collectors.toList());
+      return ResponseEntity.ok(leso);
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -252,11 +273,21 @@ public interface AirspaceUsageTokenApi {
     //       }
     //     }
     //   );
-    Dao.AirspaceUsageToken le = Dao.AirspaceUsageToken.get(
-      DaoInstance.getInstance().getSession(),
-      AirspaceUsageTokenId
-    );
-    return ResponseEntity.ok(in.ispirt.pushpaka.models.AirspaceUsageToken.toOa(le));
+    try {
+      Dao.AirspaceUsageToken le = Dao.AirspaceUsageToken.get(
+        DaoInstance.getInstance().getSessionFactory(),
+        AirspaceUsageTokenId
+      );
+      return ResponseEntity.ok(in.ispirt.pushpaka.models.AirspaceUsageToken.toOa(le));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -292,12 +323,22 @@ public interface AirspaceUsageTokenApi {
       required = true
     ) @Valid @RequestBody AirspaceUsageToken AirspaceUsageToken
   ) {
-    Dao.AirspaceUsageToken le = Dao.AirspaceUsageToken.update(
-      DaoInstance.getInstance().getSession(),
-      AirspaceUsageTokenId,
-      AirspaceUsageToken.fromOa(AirspaceUsageToken)
-    );
-    return ResponseEntity.ok(in.ispirt.pushpaka.models.AirspaceUsageToken.toOa(le));
+    try {
+      Dao.AirspaceUsageToken le = Dao.AirspaceUsageToken.update(
+        DaoInstance.getInstance().getSessionFactory(),
+        AirspaceUsageTokenId,
+        AirspaceUsageToken.fromOa(AirspaceUsageToken)
+      );
+      return ResponseEntity.ok(in.ispirt.pushpaka.models.AirspaceUsageToken.toOa(le));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }

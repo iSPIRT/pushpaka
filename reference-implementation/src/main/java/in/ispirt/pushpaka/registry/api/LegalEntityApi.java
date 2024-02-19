@@ -8,6 +8,7 @@ package in.ispirt.pushpaka.registry.api;
 import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
 import in.ispirt.pushpaka.models.LegalEntity;
+import in.ispirt.pushpaka.registry.utils.DaoException;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -107,15 +108,19 @@ public interface LegalEntityApi {
     try {
       Dao.LegalEntity le = LegalEntity.fromOa(legalEntity);
       Dao.LegalEntity lec = Dao.LegalEntity.create(
-        DaoInstance.getInstance().getSession(),
+        DaoInstance.getInstance().getSessionFactory(),
         le
       );
       return ResponseEntity.ok(LegalEntity.toOa(lec));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
       System.err.println("Exception: " + e.toString());
       e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
   /**
@@ -145,8 +150,21 @@ public interface LegalEntityApi {
       in = ParameterIn.PATH
     ) @PathVariable("legalEntityId") UUID legalEntityId
   ) {
-    Dao.LegalEntity.delete(DaoInstance.getInstance().getSession(), legalEntityId);
-    return ResponseEntity.ok().build();
+    try {
+      Dao.LegalEntity.delete(
+        DaoInstance.getInstance().getSessionFactory(),
+        legalEntityId
+      );
+      return ResponseEntity.ok().build();
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
@@ -196,14 +214,24 @@ public interface LegalEntityApi {
     //       }
     //     }
     //   );
-    List<Dao.LegalEntity> les = Dao.LegalEntity.getAll(
-      DaoInstance.getInstance().getSession()
-    );
-    List<LegalEntity> leso = les
-      .stream()
-      .map(x -> in.ispirt.pushpaka.models.LegalEntity.toOa(x))
-      .collect(Collectors.toList());
-    return ResponseEntity.ok(leso);
+    try {
+      List<Dao.LegalEntity> les = Dao.LegalEntity.getAll(
+        DaoInstance.getInstance().getSessionFactory()
+      );
+      List<LegalEntity> leso = les
+        .stream()
+        .map(x -> in.ispirt.pushpaka.models.LegalEntity.toOa(x))
+        .collect(Collectors.toList());
+      return ResponseEntity.ok(leso);
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -264,11 +292,21 @@ public interface LegalEntityApi {
     //       }
     //     }
     //   );
-    Dao.LegalEntity le = Dao.LegalEntity.get(
-      DaoInstance.getInstance().getSession(),
-      legalEntityId
-    );
-    return ResponseEntity.ok(in.ispirt.pushpaka.models.LegalEntity.toOa(le));
+    try {
+      Dao.LegalEntity le = Dao.LegalEntity.get(
+        DaoInstance.getInstance().getSessionFactory(),
+        legalEntityId
+      );
+      return ResponseEntity.ok(in.ispirt.pushpaka.models.LegalEntity.toOa(le));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -302,12 +340,22 @@ public interface LegalEntityApi {
       required = true
     ) @Valid @RequestBody LegalEntity legalEntity
   ) {
-    Dao.LegalEntity le = Dao.LegalEntity.update(
-      DaoInstance.getInstance().getSession(),
-      legalEntityId,
-      LegalEntity.fromOa(legalEntity)
-    );
-    return ResponseEntity.ok(LegalEntity.toOa(le));
+    try {
+      Dao.LegalEntity le = Dao.LegalEntity.update(
+        DaoInstance.getInstance().getSessionFactory(),
+        legalEntityId,
+        LegalEntity.fromOa(legalEntity)
+      );
+      return ResponseEntity.ok(LegalEntity.toOa(le));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }

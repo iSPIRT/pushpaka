@@ -90,7 +90,7 @@ public interface UasApi {
   ) {
     try {
       Dao.Uas le = Uas.fromOa(uas);
-      Dao.Uas lec = Dao.Uas.create(DaoInstance.getInstance().getSession(), le);
+      Dao.Uas lec = Dao.Uas.create(DaoInstance.getInstance().getSessionFactory(), le);
       return ResponseEntity.ok(Uas.toOa(lec));
     } catch (ConstraintViolationException e) {
       System.err.println("Exception: " + e.toString());
@@ -137,8 +137,18 @@ public interface UasApi {
       in = ParameterIn.HEADER
     ) @RequestHeader(value = "api_key", required = false) String apiKey
   ) {
-    Dao.Uas.delete(DaoInstance.getInstance().getSession(), uasId);
-    return ResponseEntity.ok().build();
+    try {
+      Dao.Uas.delete(DaoInstance.getInstance().getSessionFactory(), uasId);
+      return ResponseEntity.ok().build();
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -172,12 +182,22 @@ public interface UasApi {
     produces = { "application/json" }
   )
   default ResponseEntity<List<Uas>> findUass() {
-    List<Dao.Uas> les = Dao.Uas.getAll(DaoInstance.getInstance().getSession());
-    List<Uas> leso = les
-      .stream()
-      .map(x -> in.ispirt.pushpaka.models.Uas.toOa(x))
-      .collect(Collectors.toList());
-    return ResponseEntity.ok(leso);
+    try {
+      List<Dao.Uas> les = Dao.Uas.getAll(DaoInstance.getInstance().getSessionFactory());
+      List<Uas> leso = les
+        .stream()
+        .map(x -> in.ispirt.pushpaka.models.Uas.toOa(x))
+        .collect(Collectors.toList());
+      return ResponseEntity.ok(leso);
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -223,8 +243,18 @@ public interface UasApi {
       in = ParameterIn.PATH
     ) @PathVariable("uasId") UUID uasId
   ) {
-    Dao.Uas le = Dao.Uas.get(DaoInstance.getInstance().getSession(), uasId);
-    return ResponseEntity.ok(in.ispirt.pushpaka.models.Uas.toOa(le));
+    try {
+      Dao.Uas le = Dao.Uas.get(DaoInstance.getInstance().getSessionFactory(), uasId);
+      return ResponseEntity.ok(in.ispirt.pushpaka.models.Uas.toOa(le));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**

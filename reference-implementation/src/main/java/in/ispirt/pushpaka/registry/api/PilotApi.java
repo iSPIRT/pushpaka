@@ -91,7 +91,7 @@ public interface PilotApi {
     try {
       System.out.println("Create Pilot " + pilot.toString());
       Dao.Pilot mm = Dao.Pilot.create(
-        DaoInstance.getInstance().getSession(),
+        DaoInstance.getInstance().getSessionFactory(),
         Pilot.fromOa(pilot)
       );
       return ResponseEntity.ok(Pilot.toOa(mm));
@@ -132,8 +132,18 @@ public interface PilotApi {
       in = ParameterIn.PATH
     ) @PathVariable("pilotId") UUID pilotId
   ) {
-    Dao.Pilot.delete(DaoInstance.getInstance().getSession(), pilotId);
-    return ResponseEntity.ok().build();
+    try {
+      Dao.Pilot.delete(DaoInstance.getInstance().getSessionFactory(), pilotId);
+      return ResponseEntity.ok().build();
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
@@ -183,12 +193,24 @@ public interface PilotApi {
     //       }
     //     }
     //   );
-    List<Dao.Pilot> les = Dao.Pilot.getAll(DaoInstance.getInstance().getSession());
-    List<Pilot> leso = les
-      .stream()
-      .map(x -> in.ispirt.pushpaka.models.Pilot.toOa(x))
-      .collect(Collectors.toList());
-    return ResponseEntity.ok(leso);
+    try {
+      List<Dao.Pilot> les = Dao.Pilot.getAll(
+        DaoInstance.getInstance().getSessionFactory()
+      );
+      List<Pilot> leso = les
+        .stream()
+        .map(x -> in.ispirt.pushpaka.models.Pilot.toOa(x))
+        .collect(Collectors.toList());
+      return ResponseEntity.ok(leso);
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -249,8 +271,21 @@ public interface PilotApi {
     //       }
     //     }
     //   );
-    Dao.Pilot le = Dao.Pilot.get(DaoInstance.getInstance().getSession(), pilotId);
-    return ResponseEntity.ok(in.ispirt.pushpaka.models.Pilot.toOa(le));
+    try {
+      Dao.Pilot le = Dao.Pilot.get(
+        DaoInstance.getInstance().getSessionFactory(),
+        pilotId
+      );
+      return ResponseEntity.ok(in.ispirt.pushpaka.models.Pilot.toOa(le));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -284,12 +319,22 @@ public interface PilotApi {
       required = true
     ) @Valid @RequestBody Pilot pilot
   ) {
-    Dao.Pilot le = Dao.Pilot.update(
-      DaoInstance.getInstance().getSession(),
-      pilotId,
-      Pilot.fromOa(pilot)
-    );
-    return ResponseEntity.ok(in.ispirt.pushpaka.models.Pilot.toOa(le));
+    try {
+      Dao.Pilot le = Dao.Pilot.update(
+        DaoInstance.getInstance().getSessionFactory(),
+        pilotId,
+        Pilot.fromOa(pilot)
+      );
+      return ResponseEntity.ok(in.ispirt.pushpaka.models.Pilot.toOa(le));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }

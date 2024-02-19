@@ -27,7 +27,7 @@ public class DaoInstance {
         .addAnnotatedClass(Dao.UasType.class)
         .addAnnotatedClass(Dao.Sale.class)
         .addAnnotatedClass(Dao.Uas.class)
-        .addAnnotatedClass(Dao.Users.class)
+        .addAnnotatedClass(Dao.Person.class)
         .addAnnotatedClass(Dao.Pilot.class)
         .addAnnotatedClass(Dao.Address.class)
         .addAnnotatedClass(Dao.CivilAviationAuthority.class)
@@ -50,6 +50,10 @@ public class DaoInstance {
 
   public Session getSession() {
     return session;
+  }
+
+  public SessionFactory getSessionFactory() {
+    return sessionFactory;
   }
 
   protected void finalize() {

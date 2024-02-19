@@ -8,6 +8,7 @@ import in.ispirt.pushpaka.utils.Logging;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import org.apache.http.client.ClientProtocolException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -362,7 +363,12 @@ public class DemoScenario1 {
 
       TestUtils.approveUasType(jwtCaaAdmin, uasTypeId);
 
-      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, 11);
+      UUID uasId = TestUtils.uasCreate(
+        jwtCaaAdmin,
+        uasTypeId,
+        leid,
+        ThreadLocalRandom.current().nextInt(0, 65535)
+      );
 
       boolean isUASAssociationSuccess = TestUtils.associateUASToManufacturer(
         authZ,
@@ -424,7 +430,12 @@ public class DemoScenario1 {
 
       UUID uasTypeId = TestUtils.uasTypeCreate(jwtCaaAdmin, manufacturerid);
       TestUtils.approveManufacturer(jwtCaaAdmin, manufacturerid);
-      UUID uasId = TestUtils.uasCreate(jwtCaaAdmin, uasTypeId, leid, 9);
+      UUID uasId = TestUtils.uasCreate(
+        jwtCaaAdmin,
+        uasTypeId,
+        leid,
+        ThreadLocalRandom.current().nextInt(0, 65535)
+      );
 
       boolean isUASTypeAssociationSuccess = TestUtils.associateUASTypeToManufacturer(
         authZ,

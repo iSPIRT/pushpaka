@@ -90,7 +90,7 @@ public interface TraderApi {
     try {
       System.out.println("Create Trader " + trader.toString());
       Dao.Trader mm = Dao.Trader.create(
-        DaoInstance.getInstance().getSession(),
+        DaoInstance.getInstance().getSessionFactory(),
         Trader.fromOa(trader)
       );
       return ResponseEntity.ok(Trader.toOa(mm));
@@ -130,9 +130,19 @@ public interface TraderApi {
       in = ParameterIn.PATH
     ) @PathVariable("traderId") UUID traderId
   ) {
-    Dao.Trader.delete(DaoInstance.getInstance().getSession(), traderId);
-    return ResponseEntity.ok().build();
-    // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    try {
+      Dao.Trader.delete(DaoInstance.getInstance().getSessionFactory(), traderId);
+      return ResponseEntity.ok().build();
+      // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -180,12 +190,24 @@ public interface TraderApi {
     //       }
     //     }
     //   );
-    List<Dao.Trader> les = Dao.Trader.getAll(DaoInstance.getInstance().getSession());
-    List<Trader> leso = les
-      .stream()
-      .map(x -> in.ispirt.pushpaka.models.Trader.toOa(x))
-      .collect(Collectors.toList());
-    return ResponseEntity.ok(leso);
+    try {
+      List<Dao.Trader> les = Dao.Trader.getAll(
+        DaoInstance.getInstance().getSessionFactory()
+      );
+      List<Trader> leso = les
+        .stream()
+        .map(x -> in.ispirt.pushpaka.models.Trader.toOa(x))
+        .collect(Collectors.toList());
+      return ResponseEntity.ok(leso);
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -245,8 +267,21 @@ public interface TraderApi {
     //       }
     //     }
     //   );
-    Dao.Trader le = Dao.Trader.get(DaoInstance.getInstance().getSession(), traderId);
-    return ResponseEntity.ok(in.ispirt.pushpaka.models.Trader.toOa(le));
+    try {
+      Dao.Trader le = Dao.Trader.get(
+        DaoInstance.getInstance().getSessionFactory(),
+        traderId
+      );
+      return ResponseEntity.ok(in.ispirt.pushpaka.models.Trader.toOa(le));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -279,12 +314,22 @@ public interface TraderApi {
       required = true
     ) @Valid @RequestBody Trader trader
   ) {
-    Dao.Trader le = Dao.Trader.update(
-      DaoInstance.getInstance().getSession(),
-      traderId,
-      Trader.fromOa(trader)
-    );
-    return ResponseEntity.ok(in.ispirt.pushpaka.models.Trader.toOa(le));
+    try {
+      Dao.Trader le = Dao.Trader.update(
+        DaoInstance.getInstance().getSessionFactory(),
+        traderId,
+        Trader.fromOa(trader)
+      );
+      return ResponseEntity.ok(in.ispirt.pushpaka.models.Trader.toOa(le));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }

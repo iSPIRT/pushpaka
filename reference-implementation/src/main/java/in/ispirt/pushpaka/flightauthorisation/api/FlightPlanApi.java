@@ -8,6 +8,7 @@ package in.ispirt.pushpaka.flightauthorisation.api;
 import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
 import in.ispirt.pushpaka.models.FlightPlan;
+import in.ispirt.pushpaka.registry.utils.DaoException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -89,7 +90,7 @@ public interface FlightPlanApi {
     try {
       System.out.println("Create FlightPlan " + FlightPlan.toString());
       Dao.FlightPlan mm = Dao.FlightPlan.create(
-        DaoInstance.getInstance().getSession(),
+        DaoInstance.getInstance().getSessionFactory(),
         FlightPlan.fromOa(FlightPlan)
       );
       return ResponseEntity.ok(FlightPlan.toOa(mm));
@@ -129,8 +130,18 @@ public interface FlightPlanApi {
       in = ParameterIn.PATH
     ) @PathVariable("FlightPlanId") UUID FlightPlanId
   ) {
-    Dao.FlightPlan.delete(DaoInstance.getInstance().getSession(), FlightPlanId);
-    return ResponseEntity.ok().build();
+    try {
+      Dao.FlightPlan.delete(DaoInstance.getInstance().getSessionFactory(), FlightPlanId);
+      return ResponseEntity.ok().build();
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
@@ -179,14 +190,24 @@ public interface FlightPlanApi {
     //       }
     //     }
     //   );
-    List<Dao.FlightPlan> les = Dao.FlightPlan.getAll(
-      DaoInstance.getInstance().getSession()
-    );
-    List<FlightPlan> leso = les
-      .stream()
-      .map(x -> in.ispirt.pushpaka.models.FlightPlan.toOa(x))
-      .collect(Collectors.toList());
-    return ResponseEntity.ok(leso);
+    try {
+      List<Dao.FlightPlan> les = Dao.FlightPlan.getAll(
+        DaoInstance.getInstance().getSessionFactory()
+      );
+      List<FlightPlan> leso = les
+        .stream()
+        .map(x -> in.ispirt.pushpaka.models.FlightPlan.toOa(x))
+        .collect(Collectors.toList());
+      return ResponseEntity.ok(leso);
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -246,11 +267,21 @@ public interface FlightPlanApi {
     //       }
     //     }
     //   );
-    Dao.FlightPlan le = Dao.FlightPlan.get(
-      DaoInstance.getInstance().getSession(),
-      FlightPlanId
-    );
-    return ResponseEntity.ok(in.ispirt.pushpaka.models.FlightPlan.toOa(le));
+    try {
+      Dao.FlightPlan le = Dao.FlightPlan.get(
+        DaoInstance.getInstance().getSessionFactory(),
+        FlightPlanId
+      );
+      return ResponseEntity.ok(in.ispirt.pushpaka.models.FlightPlan.toOa(le));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -283,12 +314,22 @@ public interface FlightPlanApi {
       required = true
     ) @Valid @RequestBody FlightPlan FlightPlan
   ) {
-    Dao.FlightPlan le = Dao.FlightPlan.update(
-      DaoInstance.getInstance().getSession(),
-      FlightPlanId,
-      FlightPlan.fromOa(FlightPlan)
-    );
-    return ResponseEntity.ok(in.ispirt.pushpaka.models.FlightPlan.toOa(le));
+    try {
+      Dao.FlightPlan le = Dao.FlightPlan.update(
+        DaoInstance.getInstance().getSessionFactory(),
+        FlightPlanId,
+        FlightPlan.fromOa(FlightPlan)
+      );
+      return ResponseEntity.ok(in.ispirt.pushpaka.models.FlightPlan.toOa(le));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }
