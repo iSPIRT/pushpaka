@@ -80,7 +80,6 @@ public class TestUtils {
     // assertEquals(httpResponse.getStatusLine().getStatusCode(), 200);
     HttpEntity re = httpResponse.getEntity();
     String reb = EntityUtils.toString(re);
-    // System.out.println("response: " + reb);
     EntityUtils.consume(re);
     Map<String, Object> mm = extractJsonMap(reb);
     String jwt = String.valueOf(mm.get("access_token"));
@@ -510,7 +509,7 @@ public class TestUtils {
       mId.toString() +
       "\", \"legalEntity\": { \"id\": \"" +
       leId.toString() +
-      "\", \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": { \"from\": \"2024-01-10T07:32:43.564Z\", \"till\": \"2024-01-10T07:32:43.564Z\" }, \"timestamps\": {} }, \"propulsionCategory\": \"VTOL\", \"weightCategory\": \"NANO\", \"mtow\": 0, \"photoUrl\": \"https://ispirt.github.io/pushpaka/\", \"operation_category\": \"A\", \"timestamps\": {} }, \"oem_serial_number\": \"string\", \"timestamps\": {}, \"status\": \"REGISTERED\" }, \"pilot\": { \"id\": \"" +
+      "\", \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": { \"from\": \"2024-01-10T07:32:43.564Z\", \"till\": \"2024-01-10T07:32:43.564Z\" }, \"timestamps\": {} }, \"propulsionCategory\": \"VTOL\", \"weightCategory\": \"NANO\", \"mtow\": 0, \"photoUrl\": \"https://ispirt.github.io/pushpaka/\", \"operation_category\": \"A\", \"timestamps\": {} }, \"oem_serial_number\": 1111, \"timestamps\": {}, \"status\": \"REGISTERED\" }, \"pilot\": { \"id\": \"" +
       pilotId.toString() +
       "\", \"user\": { \"firstName\": \"John\", \"lastName\": \"James\", \"email\": \"john@email.com\", \"phone\": \"+919999999999\", \"aadharId\": \"+919999999999\", \"address\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"timestamps\": {}, \"status\": \"ACTIVE\" }, \"timestamps\": {}, \"validity\": { \"from\": \"2024-01-10T07:32:43.564Z\", \"till\": \"2024-01-10T07:32:43.564Z\" } }, \"operation_category\": \"A\", \"start_time\": \"2024-01-10T07:32:43.564Z\", \"end_time\": \"2024-01-10T07:32:43.564Z\" }",
       ContentType.APPLICATION_JSON
@@ -542,7 +541,7 @@ public class TestUtils {
       id.toString() +
       "\", \"uas\": { \"id\": \"" +
       uas.toString() +
-      "\", \"type\": { \"manufacturer\": { \"legalEntity\": { \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": { \"from\": \"2024-01-11T07:23:23.397Z\", \"till\": \"2024-01-11T07:23:23.397Z\" }, \"timestamps\": {} }, \"propulsionCategory\": \"VTOL\", \"weightCategory\": \"NANO\", \"mtow\": 0, \"photoUrl\": \"https://ispirt.github.io/pushpaka/\", \"operation_category\": [ \"A\" ], \"timestamps\": {} }, \"oem_serial_number\": \"string\", \"timestamps\": {}, \"status\": \"REGISTERED\" }, \"pilot\": { \"id\": \"" +
+      "\", \"type\": { \"manufacturer\": { \"legalEntity\": { \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": { \"from\": \"2024-01-11T07:23:23.397Z\", \"till\": \"2024-01-11T07:23:23.397Z\" }, \"timestamps\": {} }, \"propulsionCategory\": \"VTOL\", \"weightCategory\": \"NANO\", \"mtow\": 0, \"photoUrl\": \"https://ispirt.github.io/pushpaka/\", \"operation_category\": [ \"A\" ], \"timestamps\": {} }, \"oem_serial_number\": 1111, \"timestamps\": {}, \"status\": \"REGISTERED\" }, \"pilot\": { \"id\": \"" +
       pilot.toString() +
       "\", \"user\": { \"id\": \"\", \"firstName\": \"John\", \"lastName\": \"James\", \"email\": \"john@email.com\", \"phone\": \"+919999999999\", \"aadharId\": \"+919999999999\", \"address\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"timestamps\": {}, \"status\": \"ACTIVE\" }, \"timestamps\": {}, \"validity\": { \"from\": \"2024-01-11T07:23:23.397Z\", \"till\": \"2024-01-11T07:23:23.397Z\" } } }",
       ContentType.APPLICATION_JSON
@@ -637,7 +636,7 @@ public class TestUtils {
       bles +
       "\"uas\": { \"id\": \"" +
       uasId.toString() +
-      "\", \"type\": { \"manufacturer\": { \"legalEntity\": { \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": { \"from\": \"2024-01-11T11:01:56.896Z\", \"till\": \"2024-01-11T11:01:56.896Z\" }, \"timestamps\": {} }, \"propulsionCategory\": \"VTOL\", \"weightCategory\": \"NANO\", \"mtow\": 0, \"photoUrl\": \"https://ispirt.github.io/pushpaka/\", \"operation_category\": \"A\", \"timestamps\": {} }, \"oem_serial_number\": \"string\", \"timestamps\": {}, \"status\": \"REGISTERED\" }, \"holding\": true }",
+      "\", \"type\": { \"manufacturer\": { \"legalEntity\": { \"cin\": \"CIN00000\", \"name\": \"Test Company Pvt Ltd\", \"regdAddress\": { \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", \"line1\": \"123 ABC Housing Society\", \"line2\": \"Landmark\", \"line3\": \"Bandra West\", \"city\": \"Mumbai\", \"state\": \"ANDHRA_PRADESH\", \"pinCode\": \"400000\", \"country\": \"IND\" }, \"gstin\": \"GSTIN00000\", \"timestamps\": {} }, \"validity\": { \"from\": \"2024-01-11T11:01:56.896Z\", \"till\": \"2024-01-11T11:01:56.896Z\" }, \"timestamps\": {} }, \"propulsionCategory\": \"VTOL\", \"weightCategory\": \"NANO\", \"mtow\": 0, \"photoUrl\": \"https://ispirt.github.io/pushpaka/\", \"operation_category\": \"A\", \"timestamps\": {} }, \"oem_serial_number\": 1111, \"timestamps\": {}, \"status\": \"REGISTERED\" }, \"holding\": true }",
       ContentType.APPLICATION_JSON
     );
     HttpPost request = new HttpPost("http://localhost:8084/api/v1/sale");
@@ -970,11 +969,6 @@ public class TestUtils {
     throws ClientProtocolException, IOException, JsonProcessingException {
     StringEntity e = new StringEntity(
       String.valueOf((int) (Math.random() * 4096)),
-      // "{ \"modelNumber\": \"" +
-      // UUID.randomUUID().toString() +
-      // "\", \"uasTypeId\": \"" +
-      // id.toString() +
-      // "\"}",
       ContentType.APPLICATION_JSON
     );
     HttpPost request = new HttpPost(

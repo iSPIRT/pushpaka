@@ -9,6 +9,7 @@ import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
 import in.ispirt.pushpaka.models.DigitalSkyServiceProvider;
 import in.ispirt.pushpaka.registry.utils.DaoException;
+import in.ispirt.pushpaka.utils.Logging;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -89,20 +90,18 @@ public interface DigitalSkyServiceProviderApi {
     ) @Valid @RequestBody DigitalSkyServiceProvider digitalSkyServiceProvider
   ) {
     try {
-      System.out.println(
-        "Create DigitalSkyServiceProvider " + digitalSkyServiceProvider.toString()
-      );
       Dao.DigitalSkyServiceProvider mm = Dao.DigitalSkyServiceProvider.create(
         DaoInstance.getInstance().getSessionFactory(),
         DigitalSkyServiceProvider.fromOa(digitalSkyServiceProvider)
       );
+      Logging.info("Create DigitalSkyServiceProvider " + mm.getId().toString());
       return ResponseEntity.ok(DigitalSkyServiceProvider.toOa(mm));
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -147,11 +146,11 @@ public interface DigitalSkyServiceProviderApi {
       );
       return ResponseEntity.ok().build();
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -216,11 +215,11 @@ public interface DigitalSkyServiceProviderApi {
         .collect(Collectors.toList());
       return ResponseEntity.ok(leso);
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -296,11 +295,11 @@ public interface DigitalSkyServiceProviderApi {
         in.ispirt.pushpaka.models.DigitalSkyServiceProvider.toOa(le)
       );
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -350,11 +349,11 @@ public interface DigitalSkyServiceProviderApi {
         in.ispirt.pushpaka.models.DigitalSkyServiceProvider.toOa(le)
       );
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }

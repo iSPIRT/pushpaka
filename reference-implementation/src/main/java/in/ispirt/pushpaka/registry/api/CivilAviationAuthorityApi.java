@@ -9,6 +9,7 @@ import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
 import in.ispirt.pushpaka.models.CivilAviationAuthority;
 import in.ispirt.pushpaka.registry.utils.DaoException;
+import in.ispirt.pushpaka.utils.Logging;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -89,20 +90,18 @@ public interface CivilAviationAuthorityApi {
     ) @Valid @RequestBody CivilAviationAuthority civilAviationAuthority
   ) {
     try {
-      System.out.println(
-        "Create CivilAviationAuthority " + civilAviationAuthority.toString()
-      );
       Dao.CivilAviationAuthority mm = Dao.CivilAviationAuthority.create(
         DaoInstance.getInstance().getSessionFactory(),
         CivilAviationAuthority.fromOa(civilAviationAuthority)
       );
+      Logging.info("Create CivilAviationAuthority " + mm.getId().toString());
       return ResponseEntity.ok(CivilAviationAuthority.toOa(mm));
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -147,11 +146,11 @@ public interface CivilAviationAuthorityApi {
       );
       return ResponseEntity.ok().build();
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -200,11 +199,11 @@ public interface CivilAviationAuthorityApi {
         .collect(Collectors.toList());
       return ResponseEntity.ok(leso);
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -260,11 +259,11 @@ public interface CivilAviationAuthorityApi {
       );
       return ResponseEntity.ok(in.ispirt.pushpaka.models.CivilAviationAuthority.toOa(le));
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -312,7 +311,7 @@ public interface CivilAviationAuthorityApi {
       );
       return ResponseEntity.ok(in.ispirt.pushpaka.models.CivilAviationAuthority.toOa(le));
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);

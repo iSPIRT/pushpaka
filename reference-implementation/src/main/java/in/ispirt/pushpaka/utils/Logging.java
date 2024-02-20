@@ -1,10 +1,9 @@
 package in.ispirt.pushpaka.utils;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Logging {
-  public static Logger logger = Logger.getLogger("in.ispirt.pushpaka.utils.Logger");
+  private static Logger logger = Logger.getLogger("pushpaka");
 
   public static void info(String m) {
     logger.info(m);

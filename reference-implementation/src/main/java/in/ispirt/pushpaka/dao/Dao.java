@@ -157,7 +157,7 @@ public class Dao implements Serializable {
         Address aa = Address.create(sf, le.getAddress());
         t = s.beginTransaction();
         OffsetDateTime n = OffsetDateTime.now();
-        // le.setId(UUID.randomUUID());
+        le.setId(UUID.randomUUID());
         le.setTimestampCreated(n);
         le.setTimestampUpdated(n);
         le.setAddress(aa);
@@ -168,6 +168,7 @@ public class Dao implements Serializable {
         return le;
       } catch (Exception e) {
         e.printStackTrace();
+        if (t != null) t.rollback();
         throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
       } finally {
         s.close();
@@ -186,6 +187,7 @@ public class Dao implements Serializable {
         return les;
       } catch (Exception e) {
         e.printStackTrace();
+        if (t != null) t.rollback();
         throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity getAll");
       } finally {
         s.close();
@@ -205,7 +207,8 @@ public class Dao implements Serializable {
         return le;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity get");
       } finally {
         s.close();
       }
@@ -231,7 +234,8 @@ public class Dao implements Serializable {
         t.commit();
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity delete");
       } finally {
         s.close();
       }
@@ -267,7 +271,8 @@ public class Dao implements Serializable {
         return leo;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity update");
       } finally {
         s.close();
       }
@@ -397,6 +402,8 @@ public class Dao implements Serializable {
         t = s.beginTransaction();
         OffsetDateTime n = OffsetDateTime.now();
         m.setId(UUID.randomUUID());
+        m.setTimestampCreated(n);
+        m.setTimestampUpdated(n);
         m.setLegalEntity(le);
         s.save(m);
         s.flush();
@@ -405,7 +412,8 @@ public class Dao implements Serializable {
         return m;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "Manufacturer create");
       } finally {
         s.close();
       }
@@ -423,7 +431,8 @@ public class Dao implements Serializable {
         return ms;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "Manufacturer getAll");
       } finally {
         s.close();
       }
@@ -442,7 +451,8 @@ public class Dao implements Serializable {
         return m;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "Manufacturer get");
       } finally {
         s.close();
       }
@@ -460,7 +470,8 @@ public class Dao implements Serializable {
         t.commit();
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "Manufacturer delete");
       } finally {
         s.close();
       }
@@ -489,7 +500,8 @@ public class Dao implements Serializable {
         return leo;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "Manufacturer update");
       } finally {
         s.close();
       }
@@ -607,6 +619,8 @@ public class Dao implements Serializable {
         t = s.beginTransaction();
         OffsetDateTime n = OffsetDateTime.now();
         m.setId(UUID.randomUUID());
+        m.setTimestampCreated(n);
+        m.setTimestampUpdated(n);
         m.setLegalEntity(le);
         s.save(m);
         s.flush();
@@ -615,7 +629,8 @@ public class Dao implements Serializable {
         return m;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "RepairAgency create");
       } finally {
         s.close();
       }
@@ -633,6 +648,7 @@ public class Dao implements Serializable {
         return ras;
       } catch (Exception e) {
         e.printStackTrace();
+        if (t != null) t.rollback();
         throw new DaoException(DaoException.Code.UNKNOWN, "RepairAgency getAll");
       } finally {
         s.close();
@@ -652,7 +668,8 @@ public class Dao implements Serializable {
         return ra;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "RepairAgency get");
       } finally {
         s.close();
       }
@@ -670,7 +687,8 @@ public class Dao implements Serializable {
         t.commit();
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "RepairAgency delete");
       } finally {
         s.close();
       }
@@ -699,7 +717,8 @@ public class Dao implements Serializable {
         return leo;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "RepairAgency update");
       } finally {
         s.close();
       }
@@ -816,6 +835,8 @@ public class Dao implements Serializable {
         t = s.beginTransaction();
         OffsetDateTime n = OffsetDateTime.now();
         m.setId(UUID.randomUUID());
+        m.setTimestampCreated(n);
+        m.setTimestampUpdated(n);
         m.setLegalEntity(le);
         s.save(m);
         s.flush();
@@ -824,7 +845,8 @@ public class Dao implements Serializable {
         return m;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "Trader create");
       } finally {
         s.close();
       }
@@ -840,7 +862,8 @@ public class Dao implements Serializable {
         return ts;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "Trader getAll");
       } finally {
         s.close();
       }
@@ -859,7 +882,8 @@ public class Dao implements Serializable {
         return tr;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "Trader get");
       } finally {
         s.close();
       }
@@ -877,7 +901,8 @@ public class Dao implements Serializable {
         t.commit();
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "Trader delete");
       } finally {
         s.close();
       }
@@ -906,7 +931,8 @@ public class Dao implements Serializable {
         return leo;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "Trader update");
       } finally {
         s.close();
       }
@@ -1081,6 +1107,8 @@ public class Dao implements Serializable {
         t = s.beginTransaction();
         OffsetDateTime n = OffsetDateTime.now();
         m.setId(UUID.randomUUID());
+        m.setTimestampCreated(n);
+        m.setTimestampUpdated(n);
         m.setManufacturer(le);
         m.setApproved(false);
         s.save(m);
@@ -1090,7 +1118,8 @@ public class Dao implements Serializable {
         return m;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "UasType create");
       } finally {
         s.close();
       }
@@ -1116,7 +1145,8 @@ public class Dao implements Serializable {
         return uu;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "UasType approve");
       } finally {
         s.close();
       }
@@ -1143,7 +1173,8 @@ public class Dao implements Serializable {
         return uu;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "UasType setModelNumber");
       } finally {
         s.close();
       }
@@ -1159,7 +1190,8 @@ public class Dao implements Serializable {
         return utl;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "UasType getAll");
       } finally {
         s.close();
       }
@@ -1178,7 +1210,8 @@ public class Dao implements Serializable {
         return ut;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "UasType get");
       } finally {
         s.close();
       }
@@ -1196,7 +1229,8 @@ public class Dao implements Serializable {
         t.commit();
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "UasType delete");
       } finally {
         s.close();
       }
@@ -1223,7 +1257,8 @@ public class Dao implements Serializable {
         return leo;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "UasType update");
       } finally {
         s.close();
       }
@@ -1323,7 +1358,7 @@ public class Dao implements Serializable {
       Integer holdings = 0;
       Integer nonholdings = 0;
       for (Sale t : sales) {
-        Logging.info("Sale: " + t.toString());
+        // Logging.info("Sale: " + t.toString());
         if (t.getHolding()) {
           holdings += 1;
         } else {
@@ -1337,18 +1372,18 @@ public class Dao implements Serializable {
       // }
       sb.append(String.format("%02x", holdings).toUpperCase());
       sb.append(String.format("%02x", nonholdings).toUpperCase());
-      Logging.info(
-        "setHumanReadableId: " +
-        String.valueOf(this.uasType.getModelNumber()) +
-        " " +
-        String.valueOf(
-          this.getOemSerialNo() +
-          " " +
-          String.valueOf(holdings) +
-          " " +
-          String.valueOf(nonholdings)
-        )
-      );
+      // Logging.info(
+      //   "setHumanReadableId: " +
+      //   String.valueOf(this.uasType.getModelNumber()) +
+      //   " " +
+      //   String.valueOf(
+      //     this.getOemSerialNo() +
+      //     " " +
+      //     String.valueOf(holdings) +
+      //     " " +
+      //     String.valueOf(nonholdings)
+      //   )
+      // );
       this.humanReadableId = sb.toString();
     }
 
@@ -1398,7 +1433,8 @@ public class Dao implements Serializable {
         return m;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "Uas create");
       } finally {
         s.close();
       }
@@ -1414,7 +1450,8 @@ public class Dao implements Serializable {
         return ul;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "Uas getAll");
       } finally {
         s.close();
       }
@@ -1433,7 +1470,8 @@ public class Dao implements Serializable {
         return u;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "Uas get");
       } finally {
         s.close();
       }
@@ -1451,7 +1489,8 @@ public class Dao implements Serializable {
         t.commit();
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "Uas delete");
       } finally {
         s.close();
       }
@@ -1477,7 +1516,8 @@ public class Dao implements Serializable {
         return leo;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "Uas update");
       } finally {
         s.close();
       }
@@ -1607,7 +1647,8 @@ public class Dao implements Serializable {
         return le;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "Pilot create");
       } finally {
         s.close();
       }
@@ -1623,7 +1664,8 @@ public class Dao implements Serializable {
         return p;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "Pilot getAll");
       } finally {
         s.close();
       }
@@ -1642,7 +1684,8 @@ public class Dao implements Serializable {
         return p;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "Pilot get");
       } finally {
         s.close();
       }
@@ -1660,7 +1703,8 @@ public class Dao implements Serializable {
         t.commit();
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "Pilot delete");
       } finally {
         s.close();
       }
@@ -1681,7 +1725,8 @@ public class Dao implements Serializable {
         return leo;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "Pilot update");
       } finally {
         s.close();
       }
@@ -1825,9 +1870,9 @@ public class Dao implements Serializable {
         t = s.beginTransaction();
         UUID aid = UUID.randomUUID();
         a.setId(aid);
-        System.out.println(
-          "Create Address: " + a.getLine1().toString() + " " + a.toString()
-        );
+        // Logging.info(
+        //   "Create Address: " + a.getLine1().toString() + " " + a.toString()
+        // );
         s.save(a);
         s.flush();
         t.commit();
@@ -1854,7 +1899,8 @@ public class Dao implements Serializable {
         return a;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "Address get");
       } finally {
         s.close();
       }
@@ -1872,7 +1918,8 @@ public class Dao implements Serializable {
         t.commit();
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        if (t != null) t.rollback();
+        throw new DaoException(DaoException.Code.UNKNOWN, "Address delete");
       } finally {
         s.close();
       }
@@ -2020,7 +2067,7 @@ public class Dao implements Serializable {
         return u;
       } catch (Exception e) {
         if (t != null) t.rollback();
-        throw new DaoException(DaoException.Code.UNKNOWN, "");
+        throw new DaoException(DaoException.Code.UNKNOWN, "Person get");
       } finally {
         s.close();
       }
@@ -2070,7 +2117,7 @@ public class Dao implements Serializable {
       } catch (Exception e) {
         if (t != null) t.rollback();
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "User create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "Person create");
       } finally {
         s.close();
       }
@@ -2086,7 +2133,7 @@ public class Dao implements Serializable {
         return pl;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "Person getAll");
       } finally {
         s.close();
       }
@@ -2128,7 +2175,7 @@ public class Dao implements Serializable {
         t.commit();
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "Person delete");
       } finally {
         s.close();
       }
@@ -2163,7 +2210,7 @@ public class Dao implements Serializable {
         return leo;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "Person update");
       } finally {
         s.close();
       }
@@ -2291,7 +2338,6 @@ public class Dao implements Serializable {
       Session s = sf.openSession();
       Transaction t = null;
       try {
-        Logging.info("LE: " + m.getLegalEntity().getId());
         LegalEntity le = LegalEntity.get(sf, m.getLegalEntity().getId());
         if (le == null) {
           throw new DaoException(DaoException.Code.NOT_FOUND, "LegalEntity");
@@ -2299,6 +2345,8 @@ public class Dao implements Serializable {
         t = s.beginTransaction();
         OffsetDateTime n = OffsetDateTime.now();
         m.setId(UUID.randomUUID());
+        m.setTimestampCreated(n);
+        m.setTimestampUpdated(n);
         m.setLegalEntity(le);
         s.save(m);
         s.flush();
@@ -2336,7 +2384,10 @@ public class Dao implements Serializable {
         return caal;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(
+          DaoException.Code.UNKNOWN,
+          "CivilAviationAuthority getAll"
+        );
       } finally {
         s.close();
       }
@@ -2358,7 +2409,7 @@ public class Dao implements Serializable {
         return caa;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "CivilAviationAuthority get");
       } finally {
         s.close();
       }
@@ -2376,7 +2427,10 @@ public class Dao implements Serializable {
         t.commit();
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(
+          DaoException.Code.UNKNOWN,
+          "CivilAviationAuthority delete"
+        );
       } finally {
         s.close();
       }
@@ -2412,7 +2466,10 @@ public class Dao implements Serializable {
         return leo;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(
+          DaoException.Code.UNKNOWN,
+          "CivilAviationAuthority update"
+        );
       } finally {
         s.close();
       }
@@ -2529,6 +2586,8 @@ public class Dao implements Serializable {
         t = s.beginTransaction();
         OffsetDateTime n = OffsetDateTime.now();
         m.setId(UUID.randomUUID());
+        m.setTimestampCreated(n);
+        m.setTimestampUpdated(n);
         m.setLegalEntity(le);
         s.save(m);
         s.flush();
@@ -2537,7 +2596,7 @@ public class Dao implements Serializable {
         return m;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "Operator create");
       } finally {
         s.close();
       }
@@ -2551,7 +2610,7 @@ public class Dao implements Serializable {
         return s.createQuery("from Operator", Operator.class).getResultList();
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "Operator getAll");
       } finally {
         s.close();
       }
@@ -2570,7 +2629,7 @@ public class Dao implements Serializable {
         return o;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "Operator get");
       } finally {
         s.close();
       }
@@ -2588,7 +2647,7 @@ public class Dao implements Serializable {
         t.commit();
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "Operator delete");
       } finally {
         s.close();
       }
@@ -2617,7 +2676,7 @@ public class Dao implements Serializable {
         return leo;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "Operator update");
       } finally {
         s.close();
       }
@@ -2738,6 +2797,8 @@ public class Dao implements Serializable {
         t = s.beginTransaction();
         OffsetDateTime n = OffsetDateTime.now();
         m.setId(UUID.randomUUID());
+        m.setTimestampCreated(n);
+        m.setTimestampUpdated(n);
         m.setLegalEntity(le);
         s.save(m);
         s.flush();
@@ -2746,7 +2807,10 @@ public class Dao implements Serializable {
         return m;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(
+          DaoException.Code.UNKNOWN,
+          "DigitalSkyServiceProvider create"
+        );
       } finally {
         s.close();
       }
@@ -2765,7 +2829,10 @@ public class Dao implements Serializable {
         return dssps;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(
+          DaoException.Code.UNKNOWN,
+          "DigitalSkyServiceProvider getAll"
+        );
       } finally {
         s.close();
       }
@@ -2788,7 +2855,10 @@ public class Dao implements Serializable {
         return dssp;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(
+          DaoException.Code.UNKNOWN,
+          "DigitalSkyServiceProvider get"
+        );
       } finally {
         s.close();
       }
@@ -2806,7 +2876,10 @@ public class Dao implements Serializable {
         t.commit();
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(
+          DaoException.Code.UNKNOWN,
+          "DigitalSkyServiceProvider delete"
+        );
       } finally {
         s.close();
       }
@@ -2842,7 +2915,10 @@ public class Dao implements Serializable {
         return leo;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(
+          DaoException.Code.UNKNOWN,
+          "DigitalSkyServiceProvider update"
+        );
       } finally {
         s.close();
       }
@@ -3024,15 +3100,17 @@ public class Dao implements Serializable {
       Session s = sf.openSession();
       Transaction t = null;
       try {
-        if (m.getTimestampCreated() != null) Logging.info(
-          "Timestamps " + m.getTimestampCreated().toString()
-        );
-        if (m.getTimestampUpdated() != null) Logging.info(
-          "Timestamps " + m.getTimestampUpdated().toString()
-        );
+        // if (m.getTimestampCreated() != null) Logging.info(
+        //   "Timestamps " + m.getTimestampCreated().toString()
+        // );
+        // if (m.getTimestampUpdated() != null) Logging.info(
+        //   "Timestamps " + m.getTimestampUpdated().toString()
+        // );
         t = s.beginTransaction();
         OffsetDateTime n = OffsetDateTime.now();
         m.setId(UUID.randomUUID());
+        m.setTimestampCreated(n);
+        m.setTimestampUpdated(n);
         //
         Uas uas = Uas.get(sf, m.getUas().getId());
         if (m.getBuyerUser() != null) {
@@ -3059,7 +3137,7 @@ public class Dao implements Serializable {
         return m;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "Sale create");
       } finally {
         s.close();
       }
@@ -3078,7 +3156,7 @@ public class Dao implements Serializable {
         return sl;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "Sale getAll");
       } finally {
         s.close();
       }
@@ -3097,7 +3175,7 @@ public class Dao implements Serializable {
         return ss;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "Sale get");
       } finally {
         s.close();
       }
@@ -3115,7 +3193,7 @@ public class Dao implements Serializable {
         t.commit();
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "Sale delete");
       } finally {
         s.close();
       }
@@ -3138,7 +3216,7 @@ public class Dao implements Serializable {
         return leo;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "Sale update");
       } finally {
         s.close();
       }
@@ -3235,6 +3313,8 @@ public class Dao implements Serializable {
         t = s.beginTransaction();
         OffsetDateTime n = OffsetDateTime.now();
         m.setId(UUID.randomUUID());
+        m.setTimestampCreated(n);
+        m.setTimestampUpdated(n);
         s.save(m);
         s.flush();
         t.commit();
@@ -3242,7 +3322,7 @@ public class Dao implements Serializable {
         return m;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "Lease create");
       } finally {
         s.close();
       }
@@ -3258,7 +3338,7 @@ public class Dao implements Serializable {
         return ll;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "Lease getAll");
       } finally {
         s.close();
       }
@@ -3277,7 +3357,7 @@ public class Dao implements Serializable {
         return l;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "Lease get");
       } finally {
         s.close();
       }
@@ -3295,7 +3375,7 @@ public class Dao implements Serializable {
         t.commit();
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "Lease delete");
       } finally {
         s.close();
       }
@@ -3318,7 +3398,7 @@ public class Dao implements Serializable {
         return leo;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "Lease update");
       } finally {
         s.close();
       }
@@ -3336,7 +3416,7 @@ public class Dao implements Serializable {
       t.commit();
     } catch (Exception e) {
       e.printStackTrace();
-      throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+      throw new DaoException(DaoException.Code.UNKNOWN, "deleteAll");
     } finally {
       s.close();
     }
@@ -3465,7 +3545,7 @@ public class Dao implements Serializable {
         return a;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "FlightPlan create");
       } finally {
         s.close();
       }
@@ -3483,7 +3563,7 @@ public class Dao implements Serializable {
         return fpl;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "FlightPlan getAll");
       } finally {
         s.close();
       }
@@ -3502,7 +3582,7 @@ public class Dao implements Serializable {
         return fp;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "FlightPlan get");
       } finally {
         s.close();
       }
@@ -3520,7 +3600,7 @@ public class Dao implements Serializable {
         t.commit();
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "FlightPlan delete");
       } finally {
         s.close();
       }
@@ -3542,7 +3622,7 @@ public class Dao implements Serializable {
         return leo;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "FlightPlan update");
       } finally {
         s.close();
       }
@@ -3672,7 +3752,7 @@ public class Dao implements Serializable {
         return a;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "AirspaceUsageToken create");
       } finally {
         s.close();
       }
@@ -3690,7 +3770,7 @@ public class Dao implements Serializable {
         return auts;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "AirspaceUsageToken getAll");
       } finally {
         s.close();
       }
@@ -3709,7 +3789,7 @@ public class Dao implements Serializable {
         return aut;
       } catch (Exception e) {
         e.printStackTrace();
-        throw new DaoException(DaoException.Code.UNKNOWN, "LegalEntity create");
+        throw new DaoException(DaoException.Code.UNKNOWN, "AirspaceUsageToken get");
       } finally {
         s.close();
       }
@@ -3751,7 +3831,7 @@ public class Dao implements Serializable {
         s.saveOrUpdate(leo);
         return leo;
       } catch (Exception e) {
-        throw new DaoException(DaoException.Code.UNKNOWN, "AirspaceUsageToken");
+        throw new DaoException(DaoException.Code.UNKNOWN, "AirspaceUsageToken update");
       } finally {
         s.close();
       }

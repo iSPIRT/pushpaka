@@ -9,6 +9,7 @@ import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
 import in.ispirt.pushpaka.models.Manufacturer;
 import in.ispirt.pushpaka.registry.utils.DaoException;
+import in.ispirt.pushpaka.utils.Logging;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -89,18 +90,18 @@ public interface ManufacturerApi {
     ) @Valid @RequestBody Manufacturer manufacturer
   ) {
     try {
-      System.out.println("Create Manufacturer " + manufacturer.toString());
       Dao.Manufacturer mm = Dao.Manufacturer.create(
         DaoInstance.getInstance().getSessionFactory(),
         Manufacturer.fromOa(manufacturer)
       );
+      Logging.info("Created Manufacturer " + mm.getId().toString());
       return ResponseEntity.ok(Manufacturer.toOa(mm));
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -139,11 +140,11 @@ public interface ManufacturerApi {
       );
       return ResponseEntity.ok().build();
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -206,11 +207,11 @@ public interface ManufacturerApi {
         .collect(Collectors.toList());
       return ResponseEntity.ok(leso);
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -281,11 +282,11 @@ public interface ManufacturerApi {
       );
       return ResponseEntity.ok(in.ispirt.pushpaka.models.Manufacturer.toOa(le));
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -330,11 +331,11 @@ public interface ManufacturerApi {
       );
       return ResponseEntity.ok(in.ispirt.pushpaka.models.Manufacturer.toOa(le));
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }

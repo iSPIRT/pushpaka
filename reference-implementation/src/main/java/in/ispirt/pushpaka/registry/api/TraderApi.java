@@ -9,6 +9,7 @@ import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
 import in.ispirt.pushpaka.models.Trader;
 import in.ispirt.pushpaka.registry.utils.DaoException;
+import in.ispirt.pushpaka.utils.Logging;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -88,18 +89,18 @@ public interface TraderApi {
     ) @Valid @RequestBody Trader trader
   ) {
     try {
-      System.out.println("Create Trader " + trader.toString());
       Dao.Trader mm = Dao.Trader.create(
         DaoInstance.getInstance().getSessionFactory(),
         Trader.fromOa(trader)
       );
+      Logging.info("Created Trader " + mm.getId().toString());
       return ResponseEntity.ok(Trader.toOa(mm));
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -135,11 +136,11 @@ public interface TraderApi {
       return ResponseEntity.ok().build();
       // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -200,11 +201,11 @@ public interface TraderApi {
         .collect(Collectors.toList());
       return ResponseEntity.ok(leso);
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -274,11 +275,11 @@ public interface TraderApi {
       );
       return ResponseEntity.ok(in.ispirt.pushpaka.models.Trader.toOa(le));
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -322,11 +323,11 @@ public interface TraderApi {
       );
       return ResponseEntity.ok(in.ispirt.pushpaka.models.Trader.toOa(le));
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }

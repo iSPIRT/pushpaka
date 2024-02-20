@@ -6,6 +6,7 @@ import in.ispirt.pushpaka.authorisation.Permission;
 import in.ispirt.pushpaka.authorisation.RelationshipType;
 import in.ispirt.pushpaka.authorisation.ResourceType;
 import in.ispirt.pushpaka.authorisation.SubjectType;
+import in.ispirt.pushpaka.utils.Logging;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import java.lang.reflect.Array;
@@ -587,7 +588,7 @@ public class AuthZ {
       AuthZConstants.PLATFORM_ID
     );
 
-    System.out.println(resourceSet);
+    Logging.info(resourceSet.toString());
 
     return resourceSet.contains(resourceID);
   }
@@ -600,7 +601,7 @@ public class AuthZ {
       AuthZConstants.PLATFORM_ID
     );
 
-    System.out.println(resourceSet);
+    Logging.info(resourceSet.toString());
 
     return resourceSet;
   }
@@ -608,7 +609,7 @@ public class AuthZ {
   public int lookupRelationshipsCount() {
     Set<List<Relationship>> resourceSet = spicedbClient.exportRelationships();
 
-    System.out.println(resourceSet);
+    Logging.info(resourceSet.toString());
 
     return resourceSet.size();
   }
@@ -622,7 +623,7 @@ public class AuthZ {
       List<Relationship> relationship = relationships.next();
       for (int i = 0; i < relationship.size(); i++) {
         relationshipsArray.add(relationship.get(i).getAllFields().toString());
-        System.out.println(relationship.get(i).getAllFields().toString());
+        Logging.info(relationship.get(i).getAllFields().toString());
       }
     }
     return relationshipsArray;

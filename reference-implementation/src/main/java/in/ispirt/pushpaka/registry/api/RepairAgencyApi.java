@@ -9,6 +9,7 @@ import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
 import in.ispirt.pushpaka.models.RepairAgency;
 import in.ispirt.pushpaka.registry.utils.DaoException;
+import in.ispirt.pushpaka.utils.Logging;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -88,18 +89,18 @@ public interface RepairAgencyApi {
     ) @Valid @RequestBody RepairAgency repairAgency
   ) {
     try {
-      System.out.println("Create RepairAgency " + repairAgency.toString());
       Dao.RepairAgency mm = Dao.RepairAgency.create(
         DaoInstance.getInstance().getSessionFactory(),
         RepairAgency.fromOa(repairAgency)
       );
+      Logging.info("Created RepairAgency " + mm.getId().toString());
       return ResponseEntity.ok(RepairAgency.toOa(mm));
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -137,11 +138,11 @@ public interface RepairAgencyApi {
       );
       return ResponseEntity.ok().build();
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -203,11 +204,11 @@ public interface RepairAgencyApi {
         .collect(Collectors.toList());
       return ResponseEntity.ok(leso);
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -277,11 +278,11 @@ public interface RepairAgencyApi {
       );
       return ResponseEntity.ok(in.ispirt.pushpaka.models.RepairAgency.toOa(le));
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -325,11 +326,11 @@ public interface RepairAgencyApi {
       );
       return ResponseEntity.ok(in.ispirt.pushpaka.models.RepairAgency.toOa(le));
     } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
+      Logging.severe("Exception: " + e.toString());
       e.printStackTrace(System.err);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
