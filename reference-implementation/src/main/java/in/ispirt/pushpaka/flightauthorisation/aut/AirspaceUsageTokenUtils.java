@@ -7,7 +7,6 @@ import in.ispirt.pushpaka.models.AirspaceUsageTokenState;
 import in.ispirt.pushpaka.models.FlightPlan;
 import in.ispirt.pushpaka.models.GeocageData;
 import in.ispirt.pushpaka.models.GeospatialData;
-import in.ispirt.pushpaka.models.OperationCategory;
 import in.ispirt.pushpaka.models.Pilot;
 import in.ispirt.pushpaka.models.Uas;
 import java.io.FileInputStream;
@@ -39,7 +38,6 @@ public class AirspaceUsageTokenUtils {
     Uas uas,
     Pilot pilot,
     FlightPlan flightPlan,
-    OperationCategory operationCategory,
     OffsetDateTime startTime,
     OffsetDateTime endTime
   ) {
@@ -51,7 +49,6 @@ public class AirspaceUsageTokenUtils {
     airspaceUsageToken.setUas(uas);
     airspaceUsageToken.setPilot(pilot);
     airspaceUsageToken.setFlightPlan(flightPlan);
-    airspaceUsageToken.setOperationCategory(operationCategory);
     airspaceUsageToken.setStartTime(startTime);
     airspaceUsageToken.setEndTime(endTime);
     airspaceUsageToken.setState(AirspaceUsageTokenState.CREATED);
@@ -209,7 +206,6 @@ public class AirspaceUsageTokenUtils {
   public static String generateAirspaceUsageToken(
     Uas uas,
     Pilot pilot,
-    OperationCategory operationCategory,
     OffsetDateTime startTime,
     OffsetDateTime endTime
   ) {
@@ -220,7 +216,6 @@ public class AirspaceUsageTokenUtils {
     airspaceUsageToken.setId(uuid);
     airspaceUsageToken.setUas(uas);
     airspaceUsageToken.setPilot(pilot);
-    airspaceUsageToken.setOperationCategory(operationCategory);
     airspaceUsageToken.setStartTime(startTime);
     airspaceUsageToken.setEndTime(endTime);
     airspaceUsageToken.setState(AirspaceUsageTokenState.CREATED);

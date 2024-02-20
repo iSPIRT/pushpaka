@@ -3445,18 +3445,6 @@ public class Dao implements Serializable {
     }
 
     @NotNull
-    @Column(name = "operation_category")
-    public OperationCategory operationCategory;
-
-    public OperationCategory getOperationCategory() {
-      return operationCategory;
-    }
-
-    public void setOperationCategory(OperationCategory operationCategory) {
-      this.operationCategory = operationCategory;
-    }
-
-    @NotNull
     @Column(name = "start_time")
     // @Column(name = "uas_id")
     public OffsetDateTime startTime;
@@ -3510,20 +3498,12 @@ public class Dao implements Serializable {
 
     //
     // Convenience constructor.
-    public FlightPlan(
-      UUID id,
-      Uas u,
-      Pilot p,
-      OffsetDateTime st,
-      OffsetDateTime et,
-      OperationCategory c
-    ) {
+    public FlightPlan(UUID id, Uas u, Pilot p, OffsetDateTime st, OffsetDateTime et) {
       this.id = id;
       this.uas = u;
       this.pilot = p;
       this.startTime = st;
       this.endTime = et;
-      this.operationCategory = c;
     }
 
     // Hibernate needs a default (no-arg) constructor to create model objects.
@@ -3699,18 +3679,6 @@ public class Dao implements Serializable {
       this.uas = id;
     }
 
-    @NotNull
-    @Column(name = "operation_category")
-    public OperationCategory operationCategory;
-
-    public OperationCategory getOperationCategory() {
-      return operationCategory;
-    }
-
-    public void setOperationCategory(OperationCategory operationCategory) {
-      this.operationCategory = operationCategory;
-    }
-
     // Convenience constructor.
     // public AirspaceUsageToken(
     //   UUID id
@@ -3726,11 +3694,9 @@ public class Dao implements Serializable {
       Session s = sf.openSession();
       Transaction t = null;
       try {
-        Logging.info("AUT CREATE OperationCategory: " + a.getOperationCategory());
+        Logging.info("AUT CREATE OperationCategory: " + a.getId());
         t = s.beginTransaction();
-        // TODO remove this?
-        if (a.getOperationCategory() == null) a.setOperationCategory(OperationCategory.A);
-        if (a.getOperationCategory() == OperationCategory.C) {
+        if (a.getUas().getUasType().getOperationCategory() == OperationCategory.C) {
           FlightPlan fp = FlightPlan.get(sf, a.getFlightPlan().getId());
           a.setFlightPlan(fp);
           s.save(a);

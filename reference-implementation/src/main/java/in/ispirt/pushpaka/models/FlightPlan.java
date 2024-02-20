@@ -2,7 +2,6 @@ package in.ispirt.pushpaka.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import in.ispirt.pushpaka.dao.Dao;
-import in.ispirt.pushpaka.models.OperationCategory;
 import in.ispirt.pushpaka.models.Pilot;
 import in.ispirt.pushpaka.models.Uas;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -25,7 +24,6 @@ public class FlightPlan {
   private UUID id;
   private Uas uas;
   private Pilot pilot;
-  private OperationCategory operationCategory;
   private OffsetDateTime startTime;
   private OffsetDateTime endTime;
 
@@ -101,31 +99,12 @@ public class FlightPlan {
     this.pilot = u;
   }
 
-  @NotNull
-  @Schema(name = "operation_category", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("operation_category")
-  public OperationCategory getOperationCategory() {
-    return this.operationCategory;
-  }
-
-  public void setOperationCategory(OperationCategory u) {
-    this.operationCategory = u;
-  }
-
-  public FlightPlan(
-    UUID id,
-    Uas u,
-    Pilot p,
-    OffsetDateTime st,
-    OffsetDateTime et,
-    OperationCategory c
-  ) {
+  public FlightPlan(UUID id, Uas u, Pilot p, OffsetDateTime st, OffsetDateTime et) {
     this.id = id;
     this.uas = u;
     this.pilot = p;
     this.startTime = st;
     this.endTime = et;
-    this.operationCategory = c;
   }
 
   @Override
@@ -171,8 +150,7 @@ public class FlightPlan {
       Uas.fromOa(a.getUas()),
       Pilot.fromOa(a.getPilot()),
       a.getStartTime(),
-      a.getEndTime(),
-      a.getOperationCategory()
+      a.getEndTime()
     );
     return u;
   }
@@ -183,8 +161,7 @@ public class FlightPlan {
       Uas.toOa(x.getUas()),
       Pilot.toOa(x.getPilot()),
       x.getStartTime(),
-      x.getEndTime(),
-      x.getOperationCategory()
+      x.getEndTime()
     );
     return le;
   }

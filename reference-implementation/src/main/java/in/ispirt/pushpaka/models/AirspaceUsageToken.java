@@ -27,7 +27,6 @@ public class AirspaceUsageToken {
   private OffsetDateTime startTime;
   private OffsetDateTime endTime;
   private AirspaceUsageTokenState state;
-  private OperationCategory operationType;
   private AirspaceUsageTokenAttenuations attenuations;
 
   @NotNull
@@ -111,16 +110,6 @@ public class AirspaceUsageToken {
     this.state = state;
   }
 
-  @Schema(name = "operation_category", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("operation_category")
-  public OperationCategory getOperationCategory() {
-    return operationType;
-  }
-
-  public void setOperationCategory(OperationCategory operationType) {
-    this.operationType = operationType;
-  }
-
   @Schema(name = "attentuations", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("attentuations")
   public AirspaceUsageTokenAttenuations getAttenuations() {
@@ -177,7 +166,7 @@ public class AirspaceUsageToken {
 
   public static Dao.AirspaceUsageToken fromOa(AirspaceUsageToken a) {
     Dao.AirspaceUsageToken u = new Dao.AirspaceUsageToken(a.getId());
-    if (a.getOperationCategory() != OperationCategory.C) {
+    if (a.getUas().getType().getOperationCategory() != OperationCategory.C) {
       u.setUas(Uas.fromOa(a.getUas()));
       u.setPilot(Pilot.fromOa(a.getPilot()));
     } else {
@@ -188,7 +177,7 @@ public class AirspaceUsageToken {
 
   public static AirspaceUsageToken toOa(Dao.AirspaceUsageToken x) {
     AirspaceUsageToken le = new AirspaceUsageToken(x.getId());
-    if (x.getOperationCategory() != OperationCategory.C) {
+    if (x.getUas().getUasType().getOperationCategory() != OperationCategory.C) {
       le.setId(x.getId());
       le.setPilot(Pilot.toOa(x.getPilot()));
       le.setUas(Uas.toOa(x.getUas()));
