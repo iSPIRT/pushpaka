@@ -1,14 +1,8 @@
 openapi: 3.0.1
 info:
-  title: Pushpaka Registry
-  description: "This is a sample UasType Store Server based on the OpenAPI 3.0 specification.\
-    \  You can find out more about Swagger at [http://swagger.io](http://swagger.io).\
-    \ In the third iteration of the uasType store, we've switched to the design first\
-    \ approach! You can now help us improve the API whether it's by making changes\
-    \ to the definition itself or to the code. That way, with time, we can improve\
-    \ the API in general, and expose some of the new features in OAS3.  Some useful\
-    \ links: - [The UasType Store repository](https://github.com/swagger-api/swagger-petstore)\
-    \ - [The source API definition for the UasType Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)"
+  title: Pushpaka Flight Authorisation
+  description: "Flight Authorisation Service allows registered entities to create\
+    \ flight plans, receive authorisation tokens"
   termsOfService: http://swagger.io/terms/
   contact:
     email: sayandeep@ispirt.in
@@ -19,16 +13,15 @@ info:
 servers:
 - url: http://localhost:8083/
 tags:
-- name: AirspaceUsageTokens
-  description: AirspaceUsageTokens
 - name: flightPlans
   description: flightPlans
+- name: airspaceUsageTokens
+  description: AirspaceUsageTokens
 paths:
-  /api/v1/FlightPlan/{FlightPlanId}:
+  /api/v1/flightPlan/{FlightPlanId}:
     get:
       tags:
       - flightPlans
-      - FlightPlan
       summary: Find FlightPlan by ID
       description: Returns a single FlightPlan
       operationId: getFlightPlanById
@@ -64,7 +57,6 @@ paths:
     put:
       tags:
       - flightPlans
-      - FlightPlan
       summary: Updates a FlightPlan in the store
       operationId: updateFlightPlan
       parameters:
@@ -93,7 +85,6 @@ paths:
     delete:
       tags:
       - flightPlans
-      - FlightPlan
       summary: Deletes a FlightPlan
       operationId: deleteFlightPlan
       parameters:
@@ -109,11 +100,10 @@ paths:
           description: Invalid FlightPlan value
       security:
       - jwt: []
-  /api/v1/AirspaceUsageToken/{AirspaceUsageTokenId}:
+  /api/v1/airspaceUsageToken/{AirspaceUsageTokenId}:
     get:
       tags:
-      - AirspaceUsageTokens
-      - AirspaceUsageToken
+      - airspaceUsageTokens
       summary: Find AirspaceUsageToken by ID
       description: Returns a single AirspaceUsageToken
       operationId: getAirspaceUsageTokenById
@@ -148,8 +138,7 @@ paths:
       - jwt: []
     put:
       tags:
-      - AirspaceUsageTokens
-      - AirspaceUsageToken
+      - airspaceUsageTokens
       summary: Updates a AirspaceUsageToken in the store
       operationId: updateAirspaceUsageToken
       parameters:
@@ -177,8 +166,7 @@ paths:
       - jwt: []
     delete:
       tags:
-      - AirspaceUsageTokens
-      - AirspaceUsageToken
+      - airspaceUsageTokens
       summary: Deletes a AirspaceUsageToken
       operationId: deleteAirspaceUsageToken
       parameters:
@@ -194,11 +182,10 @@ paths:
           description: Invalid AirspaceUsageToken value
       security:
       - jwt: []
-  /api/v1/FlightPlan:
+  /api/v1/flightPlan:
     post:
       tags:
       - flightPlans
-      - FlightPlan
       summary: Add a new FlightPlan to the store
       description: Add a new FlightPlan to the store
       operationId: addFlightPlan
@@ -223,11 +210,10 @@ paths:
                 $ref: '#/components/schemas/FlightPlan'
       security:
       - jwt: []
-  /api/v1/AirspaceUsageToken:
+  /api/v1/airspaceUsageToken:
     post:
       tags:
-      - AirspaceUsageTokens
-      - AirspaceUsageToken
+      - airspaceUsageTokens
       summary: Add a new AirspaceUsageToken to the store
       description: Add a new AirspaceUsageToken to the store
       operationId: addAirspaceUsageToken
@@ -252,11 +238,10 @@ paths:
                 $ref: '#/components/schemas/AirspaceUsageToken'
       security:
       - jwt: []
-  /api/v1/FlightPlan/find:
+  /api/v1/flightPlan/find:
     get:
       tags:
       - flightPlans
-      - FlightPlan
       summary: Finds flightPlans
       operationId: findflightPlans
       responses:
@@ -278,11 +263,10 @@ paths:
                   $ref: '#/components/schemas/FlightPlan'
       security:
       - jwt: []
-  /api/v1/AirspaceUsageToken/find:
+  /api/v1/airspaceUsageToken/find:
     get:
       tags:
-      - AirspaceUsageTokens
-      - AirspaceUsageToken
+      - airspaceUsageTokens
       summary: Finds AirspaceUsageTokens
       operationId: findAirspaceUsageTokens
       responses:
@@ -306,48 +290,353 @@ paths:
       - jwt: []
 components:
   schemas:
-    FlightPlan:
+    Address:
       required:
+      - city
+      - country
       - id
+      - line1
+      - line2
+      - line3
+      - pinCode
+      - state
       type: object
       properties:
         id:
           type: string
           format: uuid
-    AirspaceUsageToken:
+        line1:
+          type: string
+          example: 123 ABC Housing Society
+        line2:
+          type: string
+          example: Landmark
+        line3:
+          type: string
+          example: Bandra West
+        city:
+          type: string
+          example: Mumbai
+        state:
+          type: string
+          enum:
+          - ANDHRA_PRADESH
+          - ARUNACHAL_PRADESH
+          - ASSAM
+          - BIHAR
+          - CHHATTISGARH
+          - GOA
+          - GUJARAT
+          - HARYANA
+          - HIMACHAL_PRADESH
+          - JHARKHAND
+          - KARNATAKA
+          - KERALA
+          - MADHYA_PRADESH
+          - MAHARASHTRA
+          - MANIPUR
+          - MEGHALAYA
+          - MIZORAM
+          - NAGALAND
+          - ODISHA
+          - PUNJAB
+          - RAJASTHAN
+          - SIKKIM
+          - TAMIL_NADU
+          - TELANGANA
+          - TRIPURA
+          - UTTARAKHAND
+          - UTTAR_PRADESH
+          - WEST_BENGAL
+          - ANDAMAN_NICOBAR_ISLANDS
+          - CHANDIGARH
+          - DADRA_NAGAR_HAVELI_DAMAN_DIU
+          - NCT
+          - JAMMU_KASHMIR
+          - LADAKH
+          - LAKSHADWEEP
+          - PUDUCHERRY
+        pinCode:
+          type: string
+          example: "400000"
+        country:
+          type: string
+          example: IND
+          enum:
+          - IND
+          - USA
+    FlightPlan:
       required:
+      - end_time
       - id
+      - pilot
+      - start_time
+      - uas
       type: object
       properties:
-        droneID:
+        id:
           type: string
           format: uuid
-        pilotID:
+        uas:
+          $ref: '#/components/schemas/Uas'
+        pilot:
+          $ref: '#/components/schemas/Pilot'
+        start_time:
+          type: string
+          format: date-time
+        end_time:
+          type: string
+          format: date-time
+    LegalEntity:
+      required:
+      - cin
+      - id
+      - name
+      - regdAddress
+      - timestamps
+      type: object
+      properties:
+        id:
           type: string
           format: uuid
-        issuerID:
+          readOnly: true
+        cin:
           type: string
-        startTime:
+          example: CIN00000
+        name:
           type: string
-        endTime:
+          example: Test Company Pvt Ltd
+        regdAddress:
+          $ref: '#/components/schemas/Address'
+        gstin:
           type: string
+          example: GSTIN00000
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+    Manufacturer:
+      required:
+      - id
+      - legalEntity
+      - timestamps
+      - validity
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        legalEntity:
+          $ref: '#/components/schemas/LegalEntity'
+        validity:
+          $ref: '#/components/schemas/Validity'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+    ObjectTimestamps:
+      required:
+      - created
+      - updated
+      type: object
+      properties:
+        created:
+          type: string
+          format: date-time
+        updated:
+          type: string
+          format: date-time
+    Pilot:
+      required:
+      - id
+      - timestamps
+      - user
+      - validity
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          $ref: '#/components/schemas/User'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+        validity:
+          $ref: '#/components/schemas/Validity'
+    Uas:
+      required:
+      - human_readable_id
+      - id
+      - oem_serial_number
+      - status
+      - timestamps
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        type:
+          $ref: '#/components/schemas/UasType'
+        oem_serial_number:
+          maximum: 65535
+          minimum: 0
+          type: integer
+          format: int32
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+        status:
+          type: string
+          enum:
+          - REGISTERED
+          - ACTIVE
+          - GROUNDED
+        human_readable_id:
+          type: string
+          readOnly: true
+    UasType:
+      required:
+      - approved
+      - id
+      - manufacturer
+      - model_number
+      - mtow
+      - operation_category
+      - propulsionCategory
+      - timestamps
+      - weightCategory
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        model_number:
+          maximum: 4095
+          minimum: 0
+          type: integer
+          format: int32
+          readOnly: true
+        manufacturer:
+          $ref: '#/components/schemas/Manufacturer'
+        propulsionCategory:
+          type: string
+          enum:
+          - VTOL
+          - FIXED_WING
+          - HYBRID
+        weightCategory:
+          type: string
+          enum:
+          - NANO
+          - SMALL
+          - MICRO
+          - MEDIUM
+          - LARGE
+        mtow:
+          type: number
+          description: maximum take off weight in kilograms
+          format: float
+        photoUrl:
+          type: string
+          format: uri
+          example: https://ispirt.github.io/pushpaka/
+        approved:
+          type: boolean
+          readOnly: true
+        operation_category:
+          type: string
+          enum:
+          - A
+          - B
+          - C
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+    User:
+      required:
+      - email
+      - firstName
+      - id
+      - lastName
+      - timestamps
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          example: e66b7c9e-79f5-44b0-9642-59ca20b7af63
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        phone:
+          type: string
+          example: +919999999999
+        aadharId:
+          type: string
+          example: +919999999999
+        address:
+          $ref: '#/components/schemas/Address'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+        status:
+          type: string
+          description: User Status
+          example: ACTIVE
+          enum:
+          - ACTIVE
+          - INACTIVE
+    Validity:
+      required:
+      - from
+      type: object
+      properties:
+        from:
+          type: string
+          format: date-time
+        till:
+          type: string
+          format: date-time
+    AirspaceUsageToken:
+      required:
+      - attentuations
+      - end_time
+      - id
+      - issuer
+      - start_time
+      - state
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        uas:
+          $ref: '#/components/schemas/Uas'
+        pilot:
+          $ref: '#/components/schemas/Pilot'
+        flight_plan:
+          $ref: '#/components/schemas/FlightPlan'
+        issuer:
+          type: string
+        start_time:
+          type: string
+          format: date-time
+        end_time:
+          type: string
+          format: date-time
         state:
           type: string
           enum:
           - CREATED
           - INUSE
           - TERMINATED
-        operationType:
-          type: string
-          enum:
-          - VLOS
-          - EVLOS
-          - BVLOS
-        attenuations:
+        attentuations:
           $ref: '#/components/schemas/AirspaceUsageTokenAttenuations'
-        id:
-          type: string
-          format: uuid
     AirspaceUsageTokenAttenuations:
       type: object
       properties:

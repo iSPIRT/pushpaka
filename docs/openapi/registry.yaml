@@ -1065,8 +1065,9 @@ paths:
         content:
           application/json:
             schema:
-              type: string
+              type: integer
               description: Model Number assigned to new uasType in the store
+              format: int32
         required: true
       responses:
         "200":
@@ -2019,6 +2020,7 @@ components:
           $ref: '#/components/schemas/ObjectTimestamps'
     Uas:
       required:
+      - human_readable_id
       - id
       - oem_serial_number
       - status
@@ -2026,8 +2028,6 @@ components:
       - type
       type: object
       properties:
-        humanReadableId:
-          $ref: '#/components/schemas/Uas'
         id:
           type: string
           format: uuid
@@ -2035,9 +2035,10 @@ components:
         type:
           $ref: '#/components/schemas/UasType'
         oem_serial_number:
-          maxLength: 12
-          minLength: 6
-          type: string
+          maximum: 65535
+          minimum: 0
+          type: integer
+          format: int32
         timestamps:
           $ref: '#/components/schemas/ObjectTimestamps'
         status:
@@ -2046,6 +2047,9 @@ components:
           - REGISTERED
           - ACTIVE
           - GROUNDED
+        human_readable_id:
+          type: string
+          readOnly: true
     UasType:
       required:
       - approved
@@ -2053,8 +2057,8 @@ components:
       - manufacturer
       - model_number
       - mtow
+      - operation_category
       - propulsionCategory
-      - supportedOperationCategories
       - timestamps
       - weightCategory
       type: object
@@ -2064,7 +2068,10 @@ components:
           format: uuid
           readOnly: true
         model_number:
-          type: string
+          maximum: 4095
+          minimum: 0
+          type: integer
+          format: int32
           readOnly: true
         manufacturer:
           $ref: '#/components/schemas/Manufacturer'
@@ -2093,14 +2100,12 @@ components:
         approved:
           type: boolean
           readOnly: true
-        supportedOperationCategories:
-          type: array
-          items:
-            type: string
-            enum:
-            - C1
-            - C2
-            - C3
+        operation_category:
+          type: string
+          enum:
+          - A
+          - B
+          - C
         timestamps:
           $ref: '#/components/schemas/ObjectTimestamps'
     Validity:
