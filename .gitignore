@@ -5,3 +5,4 @@ docs/aut/target/
 docs/aut/.vscode
 
 .vim
+.vagrant
