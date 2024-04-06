@@ -31,7 +31,7 @@ def _load_dynamic_env_data(bld):
             # relative paths from the make build are relative to BUILDROOT
             d = os.path.join(bld.env.BUILDROOT, d)
         d = os.path.normpath(d)
-        if not d in idirs2:
+        if d not in idirs2:
             idirs2.append(d)
     _dynamic_env_data['include_dirs'] = idirs2
 
@@ -64,11 +64,13 @@ class upload_fw(Task.Task):
             if not self.wsl2_prereq_checks():
                 return
             print("If this takes takes too long here, try power-cycling your hardware\n")
-            cmd = "{} '{}/uploader.py' '{}'".format('python.exe', upload_tools, src.abspath())
+            cmd = "{} -u '{}/uploader.py' '{}'".format('python.exe', upload_tools, src.abspath())
         else:
             cmd = "{} '{}/uploader.py' '{}'".format(self.env.get_flat('PYTHON'), upload_tools, src.abspath())
         if upload_port is not None:
             cmd += " '--port' '%s'" % upload_port
+        if self.generator.bld.options.upload_force:
+            cmd += " '--force'"
         return self.exec_command(cmd)
 
     def wsl2_prereq_checks(self):
@@ -96,7 +98,7 @@ class upload_fw(Task.Task):
         except subprocess.CalledProcessError:
             #if where.exe can't find the file it returns a non-zero result which throws this exception
             where_python = ""
-        if not where_python or not "\Python\Python" in where_python or "python.exe" not in where_python:
+        if not where_python or "\Python\Python" not in where_python or "python.exe" not in where_python:
             print(self.get_full_wsl2_error_msg("Windows python.exe not found"))
             return False
         return True
@@ -348,7 +350,7 @@ class generate_apj(Task.Task):
 class build_abin(Task.Task):
     '''build an abin file for skyviper firmware upload via web UI'''
     color='CYAN'
-    run_str='${TOOLS_SCRIPTS}/make_abin.sh ${SRC}.bin ${SRC}.abin'
+    run_str='${TOOLS_SCRIPTS}/make_abin.sh ${SRC} ${TGT}'
     always_run = True
     def keyword(self):
         return "Generating"
@@ -400,7 +402,7 @@ def chibios_firmware(self):
 
     if self.env.BUILD_ABIN:
         abin_target = self.bld.bldnode.find_or_declare('bin/' + link_output.change_ext('.abin').name)
-        abin_task = self.create_task('build_abin', src=link_output, tgt=abin_target)
+        abin_task = self.create_task('build_abin', src=bin_target, tgt=abin_target)
         abin_task.set_run_after(generate_apj_task)
 
     cleanup_task = self.create_task('build_normalized_bins', src=bin_target)
@@ -409,7 +411,10 @@ def chibios_firmware(self):
     bootloader_bin = self.bld.srcnode.make_node("Tools/bootloaders/%s_bl.bin" % self.env.BOARD)
     if self.bld.env.HAVE_INTEL_HEX:
         if os.path.exists(bootloader_bin.abspath()):
-            hex_target = self.bld.bldnode.find_or_declare('bin/' + link_output.change_ext('.hex').name)
+            if int(self.bld.env.FLASH_RESERVE_START_KB) > 0:
+                hex_target = self.bld.bldnode.find_or_declare('bin/' + link_output.change_ext('_with_bl.hex').name)
+            else:
+                hex_target = self.bld.bldnode.find_or_declare('bin/' + link_output.change_ext('.hex').name)
             hex_task = self.create_task('build_intel_hex', src=[bin_target[0], bootloader_bin], tgt=hex_target)
             hex_task.set_run_after(cleanup_task)
         else:
@@ -442,25 +447,34 @@ def setup_canmgr_build(cfg):
     the build based on the presence of CAN pins in hwdef.dat except for AP_Periph builds'''
     env = cfg.env
     env.AP_LIBRARIES += [
-        'AP_UAVCAN',
-        'modules/uavcan/libuavcan/src/**/*.cpp',
+        'AP_DroneCAN',
+        'modules/DroneCAN/libcanard/*.c',
         ]
-
+    env.INCLUDES += [
+        cfg.srcnode.find_dir('modules/DroneCAN/libcanard').abspath(),
+        ]
     env.CFLAGS += ['-DHAL_CAN_IFACES=2']
 
-    env.DEFINES += [
-        'UAVCAN_CPP_VERSION=UAVCAN_CPP03',
-        'UAVCAN_NO_ASSERTIONS=1',
-        'UAVCAN_NULLPTR=nullptr'
-        ]
-
-    if cfg.env.HAL_CANFD_SUPPORTED:
-        env.DEFINES += ['UAVCAN_SUPPORT_CANFD=1']
-    else:
-        env.DEFINES += ['UAVCAN_SUPPORT_CANFD=0']
+    if not env.AP_PERIPH:
+        env.DEFINES += [
+            'DRONECAN_CXX_WRAPPERS=1',
+            'USE_USER_HELPERS=1',
+            'CANARD_ENABLE_DEADLINE=1',
+            'CANARD_MULTI_IFACE=1',
+            'CANARD_ALLOCATE_SEM=1'
+            ]
 
     cfg.get_board().with_can = True
 
+def setup_canperiph_build(cfg):
+    '''enable CAN build for peripherals'''
+    env = cfg.env
+    env.DEFINES += [
+        'CANARD_ENABLE_DEADLINE=1',
+        ]
+
+    cfg.get_board().with_can = True
+    
 def load_env_vars(env):
     '''optionally load extra environment variables from env.py in the build directory'''
     print("Checking for env.py")
@@ -488,6 +502,8 @@ def load_env_vars(env):
         else:
             env[k] = v
             print("env set %s=%s" % (k, v))
+    if env.DEBUG or env.DEBUG_SYMBOLS:
+        env.CHIBIOS_BUILD_FLAGS += ' ENABLE_DEBUG_SYMBOLS=yes'
     if env.ENABLE_ASSERTS:
         env.CHIBIOS_BUILD_FLAGS += ' ENABLE_ASSERTS=yes'
     if env.ENABLE_MALLOC_GUARD:
@@ -569,6 +585,10 @@ def configure(cfg):
     load_env_vars(cfg.env)
     if env.HAL_NUM_CAN_IFACES and not env.AP_PERIPH:
         setup_canmgr_build(cfg)
+    if env.HAL_NUM_CAN_IFACES and env.AP_PERIPH and not env.BOOTLOADER:
+        setup_canperiph_build(cfg)
+    if env.HAL_NUM_CAN_IFACES and env.AP_PERIPH and int(env.HAL_NUM_CAN_IFACES)>1 and not env.BOOTLOADER:
+        env.DEFINES += [ 'CANARD_MULTI_IFACE=1' ]
     setup_optimization(cfg.env)
 
 def generate_hwdef_h(env):
@@ -643,13 +663,22 @@ def build(bld):
     
     bld(
         # create the file modules/ChibiOS/include_dirs
-        rule="touch Makefile && BUILDDIR=${BUILDDIR_REL} CRASHCATCHER=${CC_ROOT_REL} CHIBIOS=${CH_ROOT_REL} AP_HAL=${AP_HAL_REL} ${CHIBIOS_BUILD_FLAGS} ${CHIBIOS_BOARD_NAME} ${MAKE} pass -f '${BOARD_MK}'",
+        rule="touch Makefile && BUILDDIR=${BUILDDIR_REL} BUILDROOT=${BUILDROOT} CRASHCATCHER=${CC_ROOT_REL} CHIBIOS=${CH_ROOT_REL} AP_HAL=${AP_HAL_REL} ${CHIBIOS_BUILD_FLAGS} ${CHIBIOS_BOARD_NAME} ${MAKE} pass -f '${BOARD_MK}'",
         group='dynamic_sources',
         target=bld.bldnode.find_or_declare('modules/ChibiOS/include_dirs')
     )
 
+    bld(
+        # create the file modules/ChibiOS/include_dirs
+        rule="echo // BUILD_FLAGS: ${BUILDDIR_REL} ${BUILDROOT} ${CC_ROOT_REL} ${CH_ROOT_REL} ${AP_HAL_REL} ${CHIBIOS_BUILD_FLAGS} ${CHIBIOS_BOARD_NAME} ${HAL_MAX_STACK_FRAME_SIZE} > chibios_flags.h",
+        group='dynamic_sources',
+        target=bld.bldnode.find_or_declare('chibios_flags.h')
+    )
+    
     common_src = [bld.bldnode.find_or_declare('hwdef.h'),
                   bld.bldnode.find_or_declare('hw.dat'),
+                  bld.bldnode.find_or_declare('ldscript.ld'),
+                  bld.bldnode.find_or_declare('common.ld'),
                   bld.bldnode.find_or_declare('modules/ChibiOS/include_dirs')]
     common_src += bld.path.ant_glob('libraries/AP_HAL_ChibiOS/hwdef/common/*.[ch]')
     common_src += bld.path.ant_glob('libraries/AP_HAL_ChibiOS/hwdef/common/*.mk')
@@ -661,7 +690,7 @@ def build(bld):
     if bld.env.ENABLE_CRASHDUMP:
         ch_task = bld(
             # build libch.a from ChibiOS sources and hwdef.h
-            rule="BUILDDIR='${BUILDDIR_REL}' CRASHCATCHER='${CC_ROOT_REL}' CHIBIOS='${CH_ROOT_REL}' AP_HAL=${AP_HAL_REL} ${CHIBIOS_BUILD_FLAGS} ${CHIBIOS_BOARD_NAME} ${HAL_MAX_STACK_FRAME_SIZE} '${MAKE}' -j%u lib -f '${BOARD_MK}'" % bld.options.jobs,
+            rule="BUILDDIR='${BUILDDIR_REL}' BUILDROOT='${BUILDROOT}' CRASHCATCHER='${CC_ROOT_REL}' CHIBIOS='${CH_ROOT_REL}' AP_HAL=${AP_HAL_REL} ${CHIBIOS_BUILD_FLAGS} ${CHIBIOS_BOARD_NAME} ${HAL_MAX_STACK_FRAME_SIZE} '${MAKE}' -j%u lib -f '${BOARD_MK}'" % bld.options.jobs,
             group='dynamic_sources',
             source=common_src,
             target=[bld.bldnode.find_or_declare('modules/ChibiOS/libch.a'), bld.bldnode.find_or_declare('modules/ChibiOS/libcc.a')]
@@ -669,7 +698,7 @@ def build(bld):
     else:
         ch_task = bld(
             # build libch.a from ChibiOS sources and hwdef.h
-            rule="BUILDDIR='${BUILDDIR_REL}' CHIBIOS='${CH_ROOT_REL}' AP_HAL=${AP_HAL_REL} ${CHIBIOS_BUILD_FLAGS} ${CHIBIOS_BOARD_NAME} ${HAL_MAX_STACK_FRAME_SIZE} '${MAKE}' -j%u lib -f '${BOARD_MK}'" % bld.options.jobs,
+            rule="BUILDDIR='${BUILDDIR_REL}' BUILDROOT='${BUILDROOT}' CHIBIOS='${CH_ROOT_REL}' AP_HAL=${AP_HAL_REL} ${CHIBIOS_BUILD_FLAGS} ${CHIBIOS_BOARD_NAME} ${HAL_MAX_STACK_FRAME_SIZE} '${MAKE}' -j%u lib -f '${BOARD_MK}'" % bld.options.jobs,
             group='dynamic_sources',
             source=common_src,
             target=bld.bldnode.find_or_declare('modules/ChibiOS/libch.a')
@@ -695,11 +724,11 @@ def build(bld):
     # errors if we accidentially try to use one of those functions either
     # directly or via another libc call
     wraplist = ['sscanf', 'fprintf', 'snprintf', 'vsnprintf','vasprintf','asprintf','vprintf','scanf',
-                'fiprintf','printf',
+                'printf',
                 'fopen', 'fflush', 'fwrite', 'fread', 'fputs', 'fgets',
                 'clearerr', 'fseek', 'ferror', 'fclose', 'tmpfile', 'getc', 'ungetc', 'feof',
                 'ftell', 'freopen', 'remove', 'vfprintf', 'fscanf',
                 '_gettimeofday', '_times', '_times_r', '_gettimeofday_r', 'time', 'clock',
-                '_sbrk_r', '_malloc_r', '_calloc_r', '_free_r']
+                '_sbrk', '_sbrk_r', '_malloc_r', '_calloc_r', '_free_r']
     for w in wraplist:
         bld.env.LINKFLAGS += ['-Wl,--wrap,%s' % w]

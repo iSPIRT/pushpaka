@@ -69,18 +69,13 @@
 #include <AC_Sprayer/AC_Sprayer.h>          // Crop sprayer library
 #include <AP_ADSB/AP_ADSB.h>                // ADS-B RF based collision avoidance module library
 #include <AP_Proximity/AP_Proximity.h>      // ArduPilot proximity sensor library
+#include <AC_PrecLand/AC_PrecLand_config.h>
 #include <AP_OpticalFlow/AP_OpticalFlow.h>
 #include <AP_Winch/AP_Winch_config.h>
 
 // Configuration
 #include "defines.h"
 #include "config.h"
-
-#if FRAME_CONFIG == HELI_FRAME
-    #define AC_AttitudeControl_t AC_AttitudeControl_Heli
-#else
-    #define AC_AttitudeControl_t AC_AttitudeControl_Multi
-#endif
 
 #if FRAME_CONFIG == HELI_FRAME
  #define MOTOR_CLASS AP_MotorsHeli
@@ -99,8 +94,13 @@
 #include "AP_Rally.h"           // Rally point library
 #include "AP_Arming.h"
 
-// libraries which are dependent on #defines in defines.h and/or config.h
-#if BEACON_ENABLED == ENABLED
+#include <AP_ExternalControl/AP_ExternalControl_config.h>
+#if AP_EXTERNAL_CONTROL_ENABLED
+#include "AP_ExternalControl_Copter.h"
+#endif
+
+#include <AP_Beacon/AP_Beacon_config.h>
+#if AP_BEACON_ENABLED
  #include <AP_Beacon/AP_Beacon.h>
 #endif
 
@@ -115,7 +115,7 @@
 #if AP_GRIPPER_ENABLED
  # include <AP_Gripper/AP_Gripper.h>
 #endif
-#if PRECISION_LANDING == ENABLED
+#if AC_PRECLAND_ENABLED
  # include <AC_PrecLand/AC_PrecLand.h>
  # include <AC_PrecLand/AC_PrecLand_StateMachine.h>
 #endif
@@ -168,15 +168,14 @@
   #error AP_OAPathPlanner relies on AP_FENCE_ENABLED which is disabled
 #endif
 
-// Local modules
-#ifdef USER_PARAMS_ENABLED
-#include "UserParameters.h"
-#endif
-#include "Parameters.h"
 #if HAL_ADSB_ENABLED
 #include "avoidance_adsb.h"
 #endif
-
+// Local modules
+#include "Parameters.h"
+#if USER_PARAMS_ENABLED
+#include "UserParameters.h"
+#endif
 #include "mode.h"
 
 class Copter : public AP_Vehicle {
@@ -192,6 +191,9 @@ public:
     friend class AP_AdvancedFailsafe_Copter;
 #endif
     friend class AP_Arming_Copter;
+#if AP_EXTERNAL_CONTROL_ENABLED
+    friend class AP_ExternalControl_Copter;
+#endif
     friend class ToyMode;
     friend class RC_Channel_Copter;
     friend class RC_Channels_Copter;
@@ -226,6 +228,10 @@ public:
     friend class ModeAutorotate;
     friend class ModeTurtle;
 
+    friend class _AutoTakeoff;
+
+    friend class PayloadPlace;
+
     Copter(void);
 
 private:
@@ -246,7 +252,9 @@ private:
     RC_Channel *channel_throttle;
     RC_Channel *channel_yaw;
 
+#if HAL_LOGGING_ENABLED
     AP_Logger logger;
+#endif
 
     // flight modes convenience array
     AP_Int8 *flight_modes;
@@ -318,6 +326,12 @@ private:
     AP_OpticalFlow optflow;
 #endif
 
+    // external control library
+#if AP_EXTERNAL_CONTROL_ENABLED
+    AP_ExternalControl_Copter external_control;
+#endif
+
+
     // system time in milliseconds of last recorded yaw reset from ekf
     uint32_t ekfYawReset_ms;
     int8_t ekf_primary_core;
@@ -328,6 +342,14 @@ private:
         uint32_t start_ms;  // system time high vibration were last detected
         uint32_t clear_ms;  // system time high vibrations stopped
     } vibration_check;
+
+    // EKF variances are unfiltered and are designed to recover very quickly when possible
+    // thus failsafes should be triggered on filtered values in order to avoid transient errors 
+    LowPassFilterFloat pos_variance_filt;
+    LowPassFilterFloat vel_variance_filt;
+    LowPassFilterFloat hgt_variance_filt;
+    bool variances_valid;
+    uint32_t last_ekf_check_us;
 
     // takeoff check
     uint32_t takeoff_check_warning_ms;  // system time user was last warned of takeoff check failure
@@ -467,7 +489,8 @@ private:
 
     // Attitude, Position and Waypoint navigation objects
     // To-Do: move inertial nav up or other navigation variables down here
-    AC_AttitudeControl_t *attitude_control;
+    AC_AttitudeControl *attitude_control;
+    const struct AP_Param::GroupInfo *attitude_control_var_info;
     AC_PosControl *pos_control;
     AC_WPNav *wp_nav;
     AC_Loiter *loiter_nav;
@@ -529,7 +552,7 @@ private:
 #endif
 
     // Precision Landing
-#if PRECISION_LANDING == ENABLED
+#if AC_PRECLAND_ENABLED
     AC_PrecLand precland;
     AC_PrecLand_StateMachine precland_statemachine;
 #endif
@@ -679,6 +702,8 @@ private:
     // returns true if the EKF failsafe has triggered
     bool has_ekf_failsafed() const override;
 #endif // AP_SCRIPTING_ENABLED
+    bool is_landing() const override;
+    bool is_taking_off() const override;
     void rc_loop();
     void throttle_loop();
     void update_batt_compass(void);
@@ -821,6 +846,7 @@ private:
     // standby.cpp
     void standby_update();
 
+#if HAL_LOGGING_ENABLED
     // Log.cpp
     void Log_Write_Control_Tuning();
     void Log_Write_Attitude();
@@ -842,6 +868,7 @@ private:
     void Log_Write_SysID_Data(float waveform_time, float waveform_sample, float waveform_freq, float angle_x, float angle_y, float angle_z, float accel_x, float accel_y, float accel_z);
     void Log_Write_Vehicle_Startup_Messages();
     void log_init(void);
+#endif  // HAL_LOGGING_ENABLED
 
     // mode.cpp
     bool set_mode(Mode::Number mode, ModeReason reason);
@@ -850,8 +877,12 @@ private:
     // called when an attempt to change into a mode is unsuccessful:
     void mode_change_failed(const Mode *mode, const char *reason);
     uint8_t get_mode() const override { return (uint8_t)flightmode->mode_number(); }
+    bool current_mode_requires_mission() const override;
     void update_flight_mode();
     void notify_flight_mode();
+
+    // Check if this mode can be entered from the GCS
+    bool gcs_mode_enabled(const Mode::Number mode_num);
 
     // mode_land.cpp
     void set_mode_land_with_pause(ModeReason reason);
@@ -891,7 +922,6 @@ private:
     void default_dead_zones();
     void init_rc_in();
     void init_rc_out();
-    void enable_motor_output();
     void read_radio();
     void set_throttle_and_failsafe(uint16_t throttle_pwm);
     void set_throttle_zero_flag(int16_t throttle_control);

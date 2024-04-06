@@ -56,7 +56,7 @@ const AP_Param::GroupInfo AR_PosControl::var_info[] = {
     // @Param: _VEL_I
     // @DisplayName: Velocity (horizontal) I gain
     // @Description: Velocity (horizontal) I gain.  Corrects long-term difference between desired and actual velocity to a target acceleration
-    // @Range: 0.02 1.00
+    // @Range: 0.00 1.00
     // @Increment: 0.01
     // @User: Advanced
 
@@ -363,6 +363,7 @@ void AR_PosControl::get_srate(float &velocity_srate)
     velocity_srate = _pid_vel.get_pid_info_x().slew_rate;
 }
 
+#if HAL_LOGGING_ENABLED
 // write PSC logs
 void AR_PosControl::write_log()
 {
@@ -401,6 +402,7 @@ void AR_PosControl::write_log()
                             _accel_target.y * 100.0,    // target accel
                             curr_accel_NED.y);      // accel
 }
+#endif
 
 /// initialise ekf xy position reset check
 void AR_PosControl::init_ekf_xy_reset()
