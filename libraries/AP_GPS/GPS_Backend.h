@@ -18,7 +18,12 @@
  */
 #pragma once
 
+#include "AP_GPS_config.h"
+
+#if AP_GPS_ENABLED
+
 #include <GCS_MAVLink/GCS_MAVLink.h>
+#include <GCS_MAVLink/GCS_config.h>
 #include <AP_RTC/JitterCorrection.h>
 #include "AP_GPS.h"
 #include "AP_GPS_config.h"
@@ -27,6 +32,14 @@
 // enable this to log all bytes from the GPS. Also needs a call to
 // log_data() in each backend
 #define AP_GPS_DEBUG_LOGGING_ENABLED 0
+#endif
+
+#ifndef AP_GPS_MB_MIN_LAG
+#define AP_GPS_MB_MIN_LAG 0.05f
+#endif
+
+#ifndef AP_GPS_MB_MAX_LAG
+#define AP_GPS_MB_MAX_LAG 0.25f
 #endif
 
 #if AP_GPS_DEBUG_LOGGING_ENABLED
@@ -55,13 +68,15 @@ public:
 
     virtual void inject_data(const uint8_t *data, uint16_t len);
 
+#if HAL_GCS_ENABLED
     //MAVLink methods
     virtual bool supports_mavlink_gps_rtk_message() const { return false; }
     virtual void send_mavlink_gps_rtk(mavlink_channel_t chan);
+    virtual void handle_msg(const mavlink_message_t &msg) { return ; }
+#endif
 
     virtual void broadcast_configuration_failure_reason(void) const { return ; }
 
-    virtual void handle_msg(const mavlink_message_t &msg) { return ; }
 #if HAL_MSP_GPS_ENABLED
     virtual void handle_msp(const MSP::msp_gps_data_message_t &pkt) { return; }
 #endif
@@ -107,10 +122,6 @@ protected:
     JitterCorrection jitter_correction;
     uint32_t _last_itow_ms;
     bool _have_itow;
-
-    // common utility functions
-    int32_t swap_int32(int32_t v) const;
-    int16_t swap_int16(int16_t v) const;
 
     /*
       fill in 3D velocity from 2D components
@@ -181,3 +192,5 @@ private:
 #endif
 
 };
+
+#endif  // AP_GPS_ENABLED
