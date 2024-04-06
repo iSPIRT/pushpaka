@@ -57,6 +57,10 @@
 #include <AP_KDECAN/AP_KDECAN.h>
 #include <AP_Vehicle/AP_Vehicle.h>
 
+#ifdef AP_PUSHPAKA_TRUSTED_FLIGHT_ENABLED
+#include <AP_PushpakaTrustedFlight/AP_PushpakaTrustedFlight.h>
+#endif
+
 #if HAL_MAX_CAN_PROTOCOL_DRIVERS
   #include <AP_CANManager/AP_CANManager.h>
   #include <AP_Common/AP_Common.h>
@@ -1494,6 +1498,19 @@ bool AP_Arming::aux_auth_checks(bool display_failure)
 }
 #endif  // AP_ARMING_AUX_AUTH_ENABLED
 
+// Pushpaka Trusted Flight Checks
+bool AP_Arming::trusted_flight_checks(bool display_failure)
+{
+#ifdef AP_PUSHPAKA_TRUSTED_FLIGHT_ENABLED
+    char fail_msg[50] {};
+    if (!AP::pushpaka_trusted_flight().is_trusted(fail_msg, sizeof(fail_msg))) {
+        check_failed(display_failure, "PushpakaTrustedFlight: %s", fail_msg);
+        return false;
+    }
+#endif
+    return true;
+}
+
 #if HAL_GENERATOR_ENABLED
 bool AP_Arming::generator_checks(bool display_failure) const
 {
@@ -1709,10 +1726,12 @@ bool AP_Arming::arm(AP_Arming::Method method, const bool do_arming_checks)
 
     running_arming_checks = true;  // so we show Arm: rather than Disarm: in messages
 
-    if ((!do_arming_checks && mandatory_checks(true)) || (pre_arm_checks(true) && arm_checks(method))) {
-        armed = true;
+    armed = (!do_arming_checks && mandatory_checks(true)) || (pre_arm_checks(true) && arm_checks(method));
 
-        _last_arm_method = method;
+    _last_arm_method = method;
+    armed &= trusted_flight_checks(true);
+
+    if (armed) {
 
 #if HAL_LOGGING_ENABLED
         Log_Write_Arm(!do_arming_checks, method); // note Log_Write_Armed takes forced not do_arming_checks

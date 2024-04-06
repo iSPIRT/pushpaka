@@ -511,6 +511,12 @@ def configure(cfg):
         cfg.msg('Using static linking', 'yes', color='YELLOW')
         cfg.env.STATIC_LINKING = True
 
+    cfg.start_msg('Pushpaka Trusted Flight')
+    if cfg.options.trusted_flight_issuer and cfg.options.trusted_flight_root_certificate:
+        cfg.end_msg('enabled')
+    else:
+        cfg.end_msg('disabled', color='YELLOW')
+
     if cfg.options.num_aux_imus > 0:
         cfg.define('INS_AUX_INSTANCES', cfg.options.num_aux_imus)
 

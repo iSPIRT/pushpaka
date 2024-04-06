@@ -402,6 +402,10 @@ void AP_Vehicle::setup()
     opendroneid.init();
 #endif
 
+#ifdef AP_PUSHPAKA_TRUSTED_FLIGHT_ENABLED
+    pushpaka_trusted_flight.init();
+#endif
+
 // init EFI monitoring
 #if HAL_EFI_ENABLED
     efi.init();

@@ -42,3 +42,6 @@
 [submodule "modules/lwip"]
 	path = ardupilot/modules/lwip
 	url = https://github.com/ArduPilot/lwip.git
+[submodule "ardupilot/modules/l8w8jwt"]
+	path = ardupilot/modules/l8w8jwt
+	url = https://github.com/GlitchedPolygons/l8w8jwt.git

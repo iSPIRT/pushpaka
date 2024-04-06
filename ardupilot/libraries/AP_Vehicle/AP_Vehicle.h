@@ -69,6 +69,10 @@
 #include <AP_KDECAN/AP_KDECAN.h>
 #include <Filter/AP_Filter.h>
 
+#ifdef AP_PUSHPAKA_TRUSTED_FLIGHT_ENABLED
+#include <AP_PushpakaTrustedFlight/AP_PushpakaTrustedFlight.h>
+#endif
+
 class AP_DDS_Client;
 
 class AP_Vehicle : public AP_HAL::HAL::Callbacks {
@@ -338,6 +342,10 @@ protected:
 
     // Inertial Navigation EKF
     AP_AHRS ahrs;
+
+#ifdef AP_PUSHPAKA_TRUSTED_FLIGHT_ENABLED
+  AP_PushpakaTrustedFlight pushpaka_trusted_flight;
+#endif
 
 #if HAL_HOTT_TELEM_ENABLED
     AP_Hott_Telem hott_telem;
