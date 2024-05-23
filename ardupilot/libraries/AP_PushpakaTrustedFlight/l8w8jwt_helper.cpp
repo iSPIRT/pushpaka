@@ -1,4 +1,4 @@
-#include "l8w8jwt_helper.h"
+#include "./l8w8jwt_helper.h"
 #include <AP_HAL/AP_HAL.h>
 #include <AP_Logger/AP_Logger.h>
 #include <mbedtls/x509.h>
@@ -8,31 +8,35 @@
 #include <sys/time.h>
 #else
 #include <AP_GPS/AP_GPS.h>
-const AP_GPS& gps = AP::gps();
+const AP_GPS &gps = AP::gps();
 #endif
 
-extern const AP_HAL::HAL& hal;
+extern const AP_HAL::HAL &hal;
 
-void log_message(const char *message);  // remove
+void log_message(const char *message); // remove
 
 void log_message(const char *message)
 {
-    struct log_Message pkt{
+    struct log_Message pkt
+    {
         LOG_PACKET_HEADER_INIT(LOG_TRUSTED_FLIGHT_MSG),
-        time_us : AP_HAL::micros64(),
-        msg  : {}
+            time_us : AP_HAL::micros64(),
+                      msg: {}
     };
 
     strncpy_noterm(pkt.msg, message, sizeof(pkt.msg));
     AP::logger().WriteBlock(&pkt, sizeof(pkt));
 }
 
-void *l8w8jwt_realloc_impl(void *ptr, size_t new_size) {
+void *l8w8jwt_realloc_impl(void *ptr, size_t new_size)
+{
     return hal.util->std_realloc(ptr, new_size);
 }
 
-time_t l8w8jwt_time_impl(time_t *time) {
-    if (time != NULL) {
+time_t l8w8jwt_time_impl(time_t *time)
+{
+    if (time != NULL)
+    {
         // only support to fetch current time
         return -1;
     }
@@ -53,17 +57,17 @@ time_t l8w8jwt_time_impl(time_t *time) {
 
     mbedtls_x509_time now;
     struct tm *lt, tm_buf;
-    lt = mbedtls_platform_gmtime_r( (mbedtls_time_t *)&ret_time, &tm_buf );
-    if( lt == NULL )
+    lt = mbedtls_platform_gmtime_r((mbedtls_time_t *)&ret_time, &tm_buf);
+    if (lt == NULL)
         log_message("lt is NULL");
     else
     {
         now.year = lt->tm_year + 1900;
-        now.mon  = lt->tm_mon  + 1;
-        now.day  = lt->tm_mday;
+        now.mon = lt->tm_mon + 1;
+        now.day = lt->tm_mday;
         now.hour = lt->tm_hour;
-        now.min  = lt->tm_min;
-        now.sec  = lt->tm_sec;
+        now.min = lt->tm_min;
+        now.sec = lt->tm_sec;
 
         hal.util->snprintf(msg, sizeof(msg), "Current time: %d/%d/%d %d:%d:%d UTC", now.day, now.mon, now.year, now.hour, now.min, now.sec);
         log_message(msg);

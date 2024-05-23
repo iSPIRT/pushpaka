@@ -306,6 +306,18 @@ submodules at specific revisions.
     g.add_option('--enable-dronecan-tests', action='store_true',
                  default=False,
                  help="Enables DroneCAN tests in sitl")
+    
+    g.add_option('--trusted-flight-issuer', 
+                 type='string',
+                 default=None,
+                 help="Aerobridge trusted flight valid token issuer")
+
+    g.add_option('--trusted-flight-root-certificate', 
+                 type='string',
+                 default=None,
+                 help="Aerobridge trusted flight root certificate")
+
+
     g = opt.ap_groups['linux']
 
     linux_options = ('--prefix', '--destdir', '--bindir', '--libdir')
@@ -441,6 +453,7 @@ configuration in order to save typing.
                  type='int',
                  default=0,
                  help='zero time on boot in microseconds')
+    
     
 def _collect_autoconfig_files(cfg):
     for m in sys.modules.values():

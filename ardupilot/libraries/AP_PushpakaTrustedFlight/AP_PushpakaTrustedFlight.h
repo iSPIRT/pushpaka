@@ -18,10 +18,10 @@ public:
 private:
     void log_message(const char *message);
     bool validate_token(mbedtls_x509_crt *certificate);
-    bool validate_certificate_chain(mbedtls_x509_crt* certificate_chain, const char *cn);
-    bool read_certificate_from_file(const char *filepath, mbedtls_x509_crt* certificate);
+    bool validate_certificate_chain(mbedtls_x509_crt *certificate_chain, const char *cn);
+    bool read_certificate_from_file(const char *filepath, mbedtls_x509_crt *certificate);
     bool read_from_file(const char *filename, char **outbuf, size_t *outsize);
-    bool write_pem_certificate(mbedtls_x509_crt* certificate, unsigned char **outbuf, size_t *outsize);
+    bool write_pem_certificate(mbedtls_x509_crt *certificate, unsigned char **outbuf, size_t *outsize);
 
     const char *token_issuer_path = "@ROMFS/trusted_flight/token_issuer";
     const char *trusted_certificate_path = "@ROMFS/trusted_flight/root_ca.crt";
@@ -41,5 +41,5 @@ private:
 
 namespace AP
 {
-AP_PushpakaTrustedFlight &pushpaka_trusted_flight();
+    AP_PushpakaTrustedFlight &pushpaka_trusted_flight();
 };

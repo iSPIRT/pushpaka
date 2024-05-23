@@ -2,15 +2,14 @@
 
 #include <mbedtls/platform_time.h>
 #include <l8w8jwt/timehelper.h>
-#include <utils/definitions.h>
-
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-void *l8w8jwt_realloc_impl(void *ptr, size_t new_size);
-time_t l8w8jwt_time_impl(time_t *time);
+    void *l8w8jwt_realloc_impl(void *ptr, size_t new_size);
+    time_t l8w8jwt_time_impl(time_t *time);
 
 #ifdef __cplusplus
 }
@@ -28,5 +27,5 @@ l8w8jwt_time_t (*l8w8jwt_time)(l8w8jwt_time_t *time) = l8w8jwt_time_impl;
 
 // defined in boards.py
 #if CHILLBUFF_PLATFORM_REALLOC_ALT
-void *(*chillbuff_realloc) (void *ptr, size_t size) = l8w8jwt_realloc_impl;
+void *(*chillbuff_realloc)(void *ptr, size_t size) = l8w8jwt_realloc_impl;
 #endif
