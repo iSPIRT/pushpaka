@@ -1,12 +1,22 @@
 package in.ispirt.pushpaka.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.TokenBuffer;
+import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import in.ispirt.pushpaka.dao.Dao;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.Objects;
@@ -121,13 +131,20 @@ public class AirspaceUsageToken {
   }
 
   public String toJsonString() {
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    JsonElement jsonElement = gson.toJsonTree(this);
-    JsonObject jsonObject = new JsonObject();
-    jsonObject.add("payload", jsonElement);
-    String airspaceUsageTokenJson = gson.toJson(this);
+//    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//    JsonElement jsonElement = gson.toJsonTree(this);
+//    JsonObject jsonObject = new JsonObject();
+//    jsonObject.add("payload", jsonElement);
+//    String airspaceUsageTokenJson = gson.toJson(this);
 
-    return airspaceUsageTokenJson;
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JavaTimeModule());
+
+    try {
+      return mapper.writeValueAsString(this);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   public Map toJsonObject() {

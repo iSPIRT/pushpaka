@@ -80,4 +80,10 @@ if __name__ == '__main__':
     root_cert = get_certificate_from_file(f'{dir_name}/{ROOT_CA_DIR}/certificate.crt')
 
     leaf_key = create_ca_chain(f'{dir_name}/{CA_CHAIN_FILE}', root_key, root_cert, ca_count)
+    # Write lead_key as PEM file
+    with open(f'{dir_name}/leaf.pem', 'wb') as f:
+        f.write(leaf_key.private_bytes(encoding=serialization.Encoding.PEM,
+                                  format=serialization.PrivateFormat.TraditionalOpenSSL,
+                                  encryption_algorithm=serialization.NoEncryption()))
+        print(f'Root private key written to file: {f.name}')
     create_token(leaf_key, f'{dir_name}/{TOKEN_FILE}')

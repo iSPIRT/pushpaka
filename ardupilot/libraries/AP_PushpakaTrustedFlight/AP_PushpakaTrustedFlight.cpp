@@ -52,6 +52,8 @@ bool AP_PushpakaTrustedFlight::is_trusted(char *buffer, size_t buflen)
     params.alg = L8W8JWT_ALG_RS256;
     params.validate_exp = 1;
     params.exp_tolerance_seconds = 60;
+    params.validate_aud = 0;
+    
 
     if (!read_from_file(token_issuer_path, &(params.validate_iss), &(params.validate_iss_length)))
     {

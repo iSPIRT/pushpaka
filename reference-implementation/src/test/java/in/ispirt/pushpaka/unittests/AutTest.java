@@ -1,17 +1,16 @@
 package in.ispirt.pushpaka.unittests;
 
+import com.nimbusds.jwt.JWTClaimsSet;
 import in.ispirt.pushpaka.flightauthorisation.aut.AirspaceUsageTokenUtils;
 import in.ispirt.pushpaka.models.AirspaceUsageToken;
 import in.ispirt.pushpaka.models.AirspaceUsageTokenAttenuations;
 import in.ispirt.pushpaka.models.GeocageData;
 import in.ispirt.pushpaka.models.GeospatialData;
-import in.ispirt.pushpaka.models.OperationCategory;
 import in.ispirt.pushpaka.models.Pilot;
 import in.ispirt.pushpaka.models.Uas;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
-import org.jose4j.jwt.JwtClaims;
 import org.junit.jupiter.api.Test;
 
 public class AutTest {
@@ -51,13 +50,13 @@ public class AutTest {
     // signing the claim
     try {
       String signedToken = AirspaceUsageTokenUtils.signAirspaceUsageTokenObjectJWT(
-        AirspaceUsageTokenUtils.getDigitalSkyPrivateKey("digitalsky.jks"),
+        AirspaceUsageTokenUtils.getDigitalSkyRsaKey(),
         "digitalsky",
         airspaceUsageToken,
-        "Issuer",
+        "leaf.cname",
         "Audience",
         "subject",
-        10,
+        3600,
         2
       );
 
@@ -65,10 +64,14 @@ public class AutTest {
       System.out.println(signedToken);
       System.out.println("===signedToken===");
 
-      JwtClaims jwtClaims = AirspaceUsageTokenUtils.validateAirspaceUsageTokenObjectJWT(
-        AirspaceUsageTokenUtils.getDigitalSkyPublicKey("digitalsky.cer"),
+//      String publicKey = AirspaceUsageTokenUtils.getDigitalSkyPublicKey();
+//      String privateKey = AirspaceUsageTokenUtils.getDigitalSkyPrivateKey();
+//      String jwk = AirspaceUsageTokenUtils.getDigitalSkyJwk();
+
+      JWTClaimsSet jwtClaims = AirspaceUsageTokenUtils.validateAirspaceUsageTokenObjectJWT(
+        AirspaceUsageTokenUtils.getDigitalSkyPublicKey(),
         signedToken,
-        "Issuer",
+        "leaf.cname",
         "Audience",
         30
       );
@@ -77,7 +80,7 @@ public class AutTest {
       System.out.println(jwtClaims);
       System.out.println("===jwtClaims===");
       System.out.println("===jwk===");
-      System.out.println(AirspaceUsageTokenUtils.getDigitalSkyJwk("digitalsky.cer"));
+      System.out.println(AirspaceUsageTokenUtils.getDigitalSkyJwk());
       System.out.println("===jwk===");
     } catch (Exception e) {
       e.printStackTrace();
@@ -117,10 +120,10 @@ public class AutTest {
 
     try {
       String signedToken = AirspaceUsageTokenUtils.signAirspaceUsageTokenObjectJWT(
-        AirspaceUsageTokenUtils.getDigitalSkyPrivateKey("digitalsky.jks"),
+        AirspaceUsageTokenUtils.getDigitalSkyRsaKey(),
         "digitalsky",
         airspaceUsageToken,
-        "Issuer",
+        "leaf.cname",
         "Audience",
         "subject",
         10,
@@ -129,10 +132,10 @@ public class AutTest {
 
       System.out.println(signedToken);
 
-      JwtClaims jwtClaims = AirspaceUsageTokenUtils.validateAirspaceUsageTokenObjectJWT(
-        AirspaceUsageTokenUtils.getDigitalSkyPublicKey("digitalsky.cer"),
+      JWTClaimsSet jwtClaims = AirspaceUsageTokenUtils.validateAirspaceUsageTokenObjectJWT(
+        AirspaceUsageTokenUtils.getDigitalSkyPublicKey(),
         signedToken,
-        "Issuer",
+        "leaf.cname",
         "Audience",
         30
       );

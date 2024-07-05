@@ -1,37 +1,38 @@
 package in.ispirt.pushpaka.flightauthorisation.aut;
 
-import com.google.gson.JsonObject;
+import com.nimbusds.jose.*;
+import com.nimbusds.jose.crypto.RSASSASigner;
+import com.nimbusds.jose.jwk.JWK;
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.RSAKey;
+import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
+import com.nimbusds.jose.jwk.source.JWKSource;
+import com.nimbusds.jose.proc.*;
+import com.nimbusds.jwt.JWTClaimNames;
+import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
+import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
+import com.nimbusds.jwt.proc.DefaultJWTClaimsVerifier;
+import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import in.ispirt.pushpaka.models.AirspaceUsageToken;
 import in.ispirt.pushpaka.models.AirspaceUsageTokenAttenuations;
 import in.ispirt.pushpaka.models.AirspaceUsageTokenState;
 import in.ispirt.pushpaka.models.FlightPlan;
-import in.ispirt.pushpaka.models.GeocageData;
-import in.ispirt.pushpaka.models.GeospatialData;
 import in.ispirt.pushpaka.models.Pilot;
 import in.ispirt.pushpaka.models.Uas;
-import java.io.FileInputStream;
+
+import java.io.*;
 import java.security.Key;
-import java.security.KeyStore;
 import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
-import java.security.interfaces.RSAPublicKey;
+import java.security.cert.CertificateException;
+import java.text.ParseException;
 import java.time.OffsetDateTime;
-import java.util.Map;
-import java.util.UUID;
-import org.jose4j.jwa.AlgorithmConstraints.ConstraintType;
-import org.jose4j.jwk.RsaJsonWebKey;
-import org.jose4j.jwk.RsaJwkGenerator;
-import org.jose4j.jws.AlgorithmIdentifiers;
-import org.jose4j.jws.JsonWebSignature;
-import org.jose4j.jwt.JwtClaims;
-import org.jose4j.jwt.consumer.ErrorCodes;
-import org.jose4j.jwt.consumer.InvalidJwtException;
-import org.jose4j.jwt.consumer.JwtConsumer;
-import org.jose4j.jwt.consumer.JwtConsumerBuilder;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class AirspaceUsageTokenUtils {
+ private static ConfigurableJWTProcessor<SecurityContext> jwtProcessor = new DefaultJWTProcessor<>();
+
 
   //methods below are representative of manipulation of AUT at object level in SDK
   public static AirspaceUsageToken createAirspaceUsageTokenObject(
@@ -63,143 +64,117 @@ public class AirspaceUsageTokenUtils {
     airspaceUsageToken.setAttenuations(airspaceUsageTokenAttenuations);
   }
 
-  public static PublicKey getDigitalSkyPublicKey(String filename) throws Exception {
-    CertificateFactory cf = CertificateFactory.getInstance("X.509");
-    X509Certificate cert = (X509Certificate) cf.generateCertificate(
-      new FileInputStream(filename)
-    );
-
-    PublicKey retVal = cert.getPublicKey();
-
-    return retVal;
+  public static Key getDigitalSkyPublicKey() throws CertificateException, JOSEException {
+    return getDigitalSkyJwk().toRSAKey().toPublicKey();
   }
 
-  public static String getDigitalSkyJwk(String filename) throws Exception {
-    CertificateFactory cf = CertificateFactory.getInstance("X.509");
-    X509Certificate cert = (X509Certificate) cf.generateCertificate(
-      new FileInputStream(filename)
-    );
-
-    PublicKey retVal = cert.getPublicKey();
-
-    com.nimbusds.jose.jwk.RSAKey jwk = new com.nimbusds.jose.jwk.RSAKey.Builder(
-      (RSAPublicKey) retVal
-    )
-    .build();
-
-    return jwk.toJSONString();
+  public static PrivateKey getDigitalSkyPrivateKey() throws JOSEException {
+    return getDigitalSkyJwk().toRSAKey().toPrivateKey();
   }
 
-  public static PrivateKey getDigitalSkyPrivateKey(String filename) throws Exception {
-    //keytool -genkey -alias digitalsky -keyalg RSA -keystore digitalsky.jks -keysize 2048
-    //keytool -export -keystore digitalsky.jks -alias digitalsky -file digitalsky.cer
+  public static RSAKey getDigitalSkyRsaKey() throws JOSEException {
+    return getDigitalSkyJwk().toRSAKey();
+  }
 
-    String jksPassword = "digitalsky";
+  public static JWK getDigitalSkyJwk() throws JOSEException {
+    InputStream is = AirspaceUsageTokenUtils.class.getClassLoader().getResourceAsStream("certs/private.pem");
+    String privateKeyString = new BufferedReader(new InputStreamReader(is))
+            .lines().collect(Collectors.joining("\n"));
+      return JWK.parseFromPEMEncodedObjects(privateKeyString);
+  }
 
-    KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
-    ks.load(new FileInputStream("digitalsky.jks"), jksPassword.toCharArray());
-    PrivateKey privateKey = (PrivateKey) ks.getKey(
-      jksPassword,
-      jksPassword.toCharArray()
-    );
-
-    return privateKey;
+  public static JWKSet getDigitalSkyJwks() throws JOSEException {
+     return new JWKSet(getDigitalSkyJwk());
   }
 
   public static String signAirspaceUsageTokenObjectJWT(
-    PrivateKey privateKey,
-    String keyID,
-    AirspaceUsageToken airspaceUsageToken,
-    String issuer,
-    String audience,
-    String subject,
-    int expirationTimePeriod,
-    int validtionTimePeriod
+          RSAKey rsaKey,
+          String keyID,
+          AirspaceUsageToken airspaceUsageToken,
+          String issuer,
+          String audience,
+          String subject,
+          int expirationTimeInMinutes,
+          int validationTimePeriodInMinutes
   ) {
     String jwt = null;
     //String additionalClaimAsString = airspaceUsageToken.toJsonString();
     Map additionalClaimAsJsonObject = airspaceUsageToken.toJsonObject();
 
     try {
-      RsaJsonWebKey rsaJsonWebKey = RsaJwkGenerator.generateJwk(2048);
-      rsaJsonWebKey.setKeyId("k1");
+      // Create RSA-signer with the private key
+      JWSSigner signer = new RSASSASigner(rsaKey);
+      Date currentTime = new Date();
+      JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
+              .issuer(issuer)
+              .audience(audience)
+              .expirationTime(new Date(currentTime.getTime() + expirationTimeInMinutes * 60 * 1000))
+              .issueTime(currentTime)
+//              .notBeforeTime(new Date(currentTime.getTime() - validationTimePeriodInMinutes * 60 * 1000))
+              .subject(subject)
+              .claim("payload", additionalClaimAsJsonObject)
+              .build();
 
-      JwtClaims claims = new JwtClaims();
-      claims.setIssuer(issuer); // who creates the token and signs it
-      claims.setAudience(audience); // to whom the token is intended to be sent
-      claims.setExpirationTimeMinutesInTheFuture(expirationTimePeriod); // time when the token will expire (10 minutes from now)
-      claims.setGeneratedJwtId(); // a unique identifier for the token
-      claims.setIssuedAtToNow(); // when the token was issued/created (now)
-      claims.setNotBeforeMinutesInThePast(validtionTimePeriod); // time before which the token is not yet valid (2 minutes ago)
-      claims.setSubject(subject); // the subject/principal is whom the token is about
-      claims.setClaim("payload", additionalClaimAsJsonObject); // additional claims/attributes about the subject can be added
+      SignedJWT signedJWT = new SignedJWT(
+              new JWSHeader.Builder(JWSAlgorithm.RS256).keyID(rsaKey.getKeyID()).type(JOSEObjectType.JWT).build(),
+              claimsSet);
 
-      JsonWebSignature jws = new JsonWebSignature();
-      jws.setPayload(claims.toJson());
-      jws.setKey(privateKey);
-      jws.setKeyIdHeaderValue(keyID);
-      jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.RSA_USING_SHA256);
-      jwt = jws.getCompactSerialization();
-    } catch (Exception e) {
+      signedJWT.sign(signer);
+      return signedJWT.serialize();
+    } catch (JOSEException e) {
       e.printStackTrace();
+      throw new RuntimeException(e);
     }
-
-    return jwt;
   }
 
-  public static JwtClaims validateAirspaceUsageTokenObjectJWT(
+
+  public static JWTClaimsSet validateAirspaceUsageTokenObjectJWT(
     Key publicKey,
     String signedAirspaceUsageToken,
     String issuer,
     String audience,
     int expirationTimePeriod
-  ) {
-    JwtClaims jwtClaims = null;
+  ) throws JOSEException {
+    JWTClaimsSet jwtClaims = null;
 
+    jwtProcessor.setJWSTypeVerifier(
+            new DefaultJOSEObjectTypeVerifier<>(new JOSEObjectType(JOSEObjectType.JWT.getType())));
+    // The expected JWS algorithm of the access tokens (agreed out-of-band)
+    JWSAlgorithm expectedJWSAlg = JWSAlgorithm.RS256;
+    JWKSource<SecurityContext> keySource = new ImmutableJWKSet(getDigitalSkyJwks());
+    // Configure the JWT processor with a key selector to feed matching public
+    // RSA keys sourced from the JWK set URL
+    JWSKeySelector<SecurityContext> keySelector = new JWSVerificationKeySelector<>(
+            expectedJWSAlg,
+            keySource);
+    jwtProcessor.setJWSKeySelector(keySelector);
+
+    // Set the required JWT claims for access tokens
+    jwtProcessor.setJWTClaimsSetVerifier(new DefaultJWTClaimsVerifier<>(
+            new JWTClaimsSet.Builder().issuer(issuer).build(),
+            new HashSet<>(Arrays.asList(
+                    JWTClaimNames.SUBJECT,
+                    JWTClaimNames.ISSUED_AT,
+                    JWTClaimNames.EXPIRATION_TIME,
+                    JWTClaimNames.ISSUER,
+                    JWTClaimNames.AUDIENCE
+            ))));
+
+    // Process the token
+    SecurityContext ctx = null; // optional context parameter, not required here
+    JWTClaimsSet claimsSet;
     try {
-      JwtConsumer jwtConsumer = new JwtConsumerBuilder()
-        .setRequireExpirationTime() // the JWT must have an expiration time
-        .setAllowedClockSkewInSeconds(30) // allow some leeway in validating time based claims to account for clock skew
-        .setRequireSubject() // the JWT must have a subject claim
-        .setExpectedIssuer(issuer) // whom the JWT needs to have been issued by
-        .setExpectedAudience(audience) // to whom the JWT is intended for
-        .setVerificationKey(publicKey) // verify the signature with the public key
-        .setJwsAlgorithmConstraints( // only allow the expected signature algorithm(s) in the given context
-          ConstraintType.PERMIT,
-          AlgorithmIdentifiers.RSA_USING_SHA256
-        ) // which is only RS256 here
-        .build(); // create the JwtConsumer instance
-
-      try {
-        //  Validate the JWT and process it to the Claims
-        jwtClaims = jwtConsumer.processToClaims(signedAirspaceUsageToken);
-      } catch (InvalidJwtException e) {
-        // InvalidJwtException will be thrown, if the JWT failed processing or validation in anyway.
-        // Hopefully with meaningful explanations(s) about what went wrong.
-        System.out.println("Invalid JWT! " + e);
-
-        // Programmatic access to (some) specific reasons for JWT invalidity is also possible
-        // should you want different error handling behavior for certain conditions.
-
-        // Whether or not the JWT has expired being one common reason for invalidity
-        if (e.hasExpired()) {
-          System.out.println(
-            "JWT expired at " + e.getJwtContext().getJwtClaims().getExpirationTime()
-          );
-        }
-
-        // Or maybe the audience was invalid
-        if (e.hasErrorCode(ErrorCodes.AUDIENCE_INVALID)) {
-          System.out.println(
-            "JWT had wrong audience: " + e.getJwtContext().getJwtClaims().getAudience()
-          );
-        }
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
+      claimsSet = jwtProcessor.process(signedAirspaceUsageToken, ctx);
+      return claimsSet;
+    } catch (ParseException | BadJOSEException e) {
+      // Invalid token
+      System.err.println(e.getMessage());
+      return jwtClaims;
+    } catch (JOSEException e) {
+      // Key sourcing failed or another internal exception
+      System.err.println(e.getMessage());
+      return jwtClaims;
     }
-
-    return jwtClaims;
   }
 
   //methods below are representative of service end points for AUT
