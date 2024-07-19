@@ -31,6 +31,7 @@
 #include "UASMessageHandler.h"
 #include "FactSystem.h"
 #include "GPSRTKFactGroup.h"
+#include "UserAuthentication.h"
 
 #ifdef QGC_RTLAB_ENABLED
 #include "OpalLink.h"
@@ -175,6 +176,8 @@ public:
 
     bool _checkTelemetrySavePath(bool useMessageBox);
 
+    UserAuthentication* getUserAuthentication() { return userAuthentication; }
+
 private slots:
     void _missingParamsDisplay                      (void);
     void _qgcCurrentStableVersionDownloadComplete   (QString remoteFile, QString localFile, QString errorMsg);
@@ -189,6 +192,7 @@ private:
     QObject*    _rootQmlObject          ();
     void        _checkForNewVersion     ();
     void        _exitWithError          (QString errorMessage);
+    UserAuthentication* userAuthentication = new UserAuthentication();
 
     // Overrides from QApplication
     bool compressEvent(QEvent *event, QObject *receiver, QPostEventList *postedEvents) override;

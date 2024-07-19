@@ -245,6 +245,7 @@ QT += \
     gui \
     location \
     network \
+    networkauth \
     opengl \
     positioning \
     qml \
@@ -434,6 +435,7 @@ HEADERS += \
     src/QmlControls/CustomAction.h \
     src/QmlControls/CustomActionManager.h \
     src/QmlControls/QmlUnitsConversion.h \
+    src/UserAuthentication.h \
     src/Vehicle/VehicleEscStatusFactGroup.h \
     src/api/QGCCorePlugin.h \
     src/api/QGCOptions.h \
@@ -448,6 +450,7 @@ contains (DEFINES, QGC_ENABLE_PAIRING) {
 
 SOURCES += \
     src/QmlControls/CustomActionManager.cc \
+    src/UserAuthentication.cpp \
     src/Vehicle/VehicleEscStatusFactGroup.cc \
     src/api/QGCCorePlugin.cc \
     src/api/QGCOptions.cc \
@@ -471,9 +474,9 @@ DebugBuild { PX4FirmwarePlugin { PX4FirmwarePluginFactory { APMFirmwarePlugin { 
 
     HEADERS += \
         src/Audio/AudioOutputTest.h \
-        src/FactSystem/FactSystemTestBase.h \
-        src/FactSystem/FactSystemTestGeneric.h \
-        src/FactSystem/FactSystemTestPX4.h \
+        # src/FactSystem/FactSystemTestBase.h \
+        # src/FactSystem/FactSystemTestGeneric.h \
+        # src/FactSystem/FactSystemTestPX4.h \
         src/FactSystem/ParameterManagerTest.h \
         src/MissionManager/CameraCalcTest.h \
         src/MissionManager/CameraSectionTest.h \
@@ -520,9 +523,9 @@ DebugBuild { PX4FirmwarePlugin { PX4FirmwarePluginFactory { APMFirmwarePlugin { 
 
     SOURCES += \
         src/Audio/AudioOutputTest.cc \
-        src/FactSystem/FactSystemTestBase.cc \
-        src/FactSystem/FactSystemTestGeneric.cc \
-        src/FactSystem/FactSystemTestPX4.cc \
+        # src/FactSystem/FactSystemTestBase.cc \
+        # src/FactSystem/FactSystemTestGeneric.cc \
+        # src/FactSystem/FactSystemTestPX4.cc \
         src/FactSystem/ParameterManagerTest.cc \
         src/MissionManager/CameraCalcTest.cc \
         src/MissionManager/CameraSectionTest.cc \

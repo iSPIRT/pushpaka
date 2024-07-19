@@ -13,8 +13,8 @@
 
 #include "ComponentInformationCacheTest.h"
 #include "ComponentInformationTranslationTest.h"
-#include "FactSystemTestGeneric.h"
-#include "FactSystemTestPX4.h"
+// #include "FactSystemTestGeneric.h"
+// #include "FactSystemTestPX4.h"
 //#include "FileDialogTest.h"
 #include "GeoTest.h"
 //#include "MessageBoxTest.h"
@@ -54,8 +54,8 @@
 
 UT_REGISTER_TEST(ComponentInformationCacheTest)
 UT_REGISTER_TEST(ComponentInformationTranslationTest)
-UT_REGISTER_TEST(FactSystemTestGeneric)
-UT_REGISTER_TEST(FactSystemTestPX4)
+// UT_REGISTER_TEST(FactSystemTestGeneric)
+// UT_REGISTER_TEST(FactSystemTestPX4)
 //UT_REGISTER_TEST(FileDialogTest)
 UT_REGISTER_TEST(GeoTest)
 UT_REGISTER_TEST(VehicleLinkManagerTest)

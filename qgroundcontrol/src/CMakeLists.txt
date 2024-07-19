@@ -4,6 +4,7 @@ include_directories(
 	${CMAKE_CURRENT_BINARY_DIR}
 	${Qt5Location_PRIVATE_INCLUDE_DIRS}
 	VideoManager
+        Gimbal
 )
 
 set(EXTRA_SRC)

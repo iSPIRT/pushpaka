@@ -117,6 +117,27 @@ RowLayout {
         }
     }
 
+    QGCButton {
+        id:             loginStatusLabel
+        text:           loginStatusText()
+        // property bool isLoggedIn: Boolean = false
+
+        function loginStatusText() {
+            if (userAuthentication.isAuthenticated) {
+                return "Logout"
+            } else {
+                return "Login"
+            }
+        }
+        onClicked: {
+            if (userAuthentication.isAuthenticated) {
+             // isLoggedIn = false;
+            } else {
+                userAuthentication.authorise();
+            }
+        }
+    }
+
     Item {
         Layout.preferredWidth:  ScreenTools.defaultFontPixelWidth * ScreenTools.largeFontPointRatio * 1.5
         height:                 1

@@ -65,6 +65,7 @@
 #endif
 #endif
 
+
 #ifdef Q_OS_WIN
 
 #include <windows.h>
@@ -371,6 +372,7 @@ int main(int argc, char *argv[])
 
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     QGCApplication* app = new QGCApplication(argc, argv, runUnitTests);
+
     Q_CHECK_PTR(app);
     if(app->isErrorState()) {
         app->exec();
