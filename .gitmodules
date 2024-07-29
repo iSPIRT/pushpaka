@@ -45,3 +45,33 @@
 [submodule "ardupilot/modules/l8w8jwt"]
 	path = ardupilot/modules/l8w8jwt
 	url = https://github.com/GlitchedPolygons/l8w8jwt.git
+[submodule "qgroundcontrol/src/GPS/Drivers"]
+	path = qgroundcontrol/src/GPS/Drivers
+	url = https://github.com/PX4/GpsDrivers.git
+[submodule "qgroundcontrol/libs/mavlink/include/mavlink/v2.0"]
+	path = qgroundcontrol/libs/mavlink/include/mavlink/v2.0
+	url = https://github.com/mavlink/c_library_v2.git
+[submodule "qgroundcontrol/libs/OpenSSL/android_openssl"]
+	path = qgroundcontrol/libs/OpenSSL/android_openssl
+	url = https://github.com/KDAB/android_openssl
+[submodule "qgroundcontrol/libs/qmlglsink/gst-plugins-good"]
+	path = qgroundcontrol/libs/qmlglsink/gst-plugins-good
+	url = https://github.com/mavlink/gst-plugins-good.git
+[submodule "qgroundcontrol/libs/xz-embedded"]
+	path = qgroundcontrol/libs/xz-embedded
+	url = https://github.com/Auterion/xz-embedded.git
+[submodule "qgroundcontrol/libs/libevents/libevents"]
+	path = qgroundcontrol/libs/libevents/libevents
+	url = https://github.com/mavlink/libevents.git
+[submodule "qgroundcontrol/libs/eigen"]
+	path = qgroundcontrol/libs/eigen
+	url = https://gitlab.com/libeigen/eigen.git
+[submodule "qgroundcontrol/libs/qmdnsengine"]
+	path = qgroundcontrol/libs/qmdnsengine
+	url = https://github.com/patrickelectric/qmdnsengine
+[submodule "qgroundcontrol/libs/shapelib"]
+	path = qgroundcontrol/libs/shapelib
+	url = https://github.com/OSGeo/shapelib.git
+[submodule "qgroundcontrol/src/FirmwarePlugin/APM/ArduPilot-Parameter-Repository"]
+	path = qgroundcontrol/src/FirmwarePlugin/APM/ArduPilot-Parameter-Repository
+	url = https://github.com/ArduPilot/ArduPilot-Parameter-Repository
