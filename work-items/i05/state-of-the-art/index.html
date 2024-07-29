@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../img/favicon.ico">
+        <title>State of the art in UTM - Pushpaka</title>
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/mono-blue.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../..">Pushpaka</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../../.." class="nav-link">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../" class="nav-link">Work Items</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../../nomenclature/" class="nav-link">Nomenclature</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../../bibliography/" class="nav-link">Bibliography</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#state-of-the-art-in-utm" class="nav-link">State of the art in UTM</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#gutma" class="nav-link">GUTMA</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#swiss-conops" class="nav-link">Swiss ConOps</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#european-union-aviation-safety-agency" class="nav-link">European Union Aviation Safety Agency</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#icao" class="nav-link">ICAO</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#federal-aviation-authority" class="nav-link">Federal Aviation Authority</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#japan" class="nav-link">Japan</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#china" class="nav-link">China</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#india" class="nav-link">India</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="state-of-the-art-in-utm">State of the art in UTM</h1>
+<p><a href="../">Go back</a></p>
+<div class="toc">
+<ul>
+<li><a href="#state-of-the-art-in-utm">State of the art in UTM</a><ul>
+<li><a href="#gutma">GUTMA</a><ul>
+<li><a href="#key-insights-from-gutma-architecture-document">Key Insights from GUTMA Architecture document</a></li>
+</ul>
+</li>
+<li><a href="#swiss-conops">Swiss ConOps</a><ul>
+<li><a href="#key-insights-from-swiss-conops">Key Insights from Swiss ConOps</a></li>
+</ul>
+</li>
+<li><a href="#european-union-aviation-safety-agency">European Union Aviation Safety Agency</a><ul>
+<li><a href="#u-space-specifications">U-Space Specifications</a></li>
+</ul>
+</li>
+<li><a href="#icao">ICAO</a></li>
+<li><a href="#federal-aviation-authority">Federal Aviation Authority</a><ul>
+<li><a href="#utm-specification-v1v2">UTM Specification v1/v2</a></li>
+<li><a href="#unmanned-aerial-mobility-specification-v1">Unmanned Aerial Mobility Specification v1</a></li>
+</ul>
+</li>
+<li><a href="#japan">Japan</a></li>
+<li><a href="#china">China</a></li>
+<li><a href="#india">India</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>The following contains a review of existing efforts by different agencies / stakeholders. Some of them have not been updated for a couple of years and we highlight key elements of the the related documents / concepts. </p>
+<h2 id="gutma">GUTMA</h2>
+<p>Given that GUTMA is mainly a industry organization and not a authority, they maintain opinions on the architectures for UTM. The main document reviewed is the <a href="https://www.gutma.org/docs/Global_UTM_Architecture_V1.pdf">UTM Architecture</a> and the <a href="https://gutma.org/designing-utm-for-global-success/">Designing UTM for Global Success</a> documents. GUTMA recognizes UTM as a "system of systems" with many active and passive stakeholders:
+<img alt="GUTMA-UTM-System" src="../../images/gutma-utm-system.jpg" />
+Source:  Page 13, Illustration 2 of UTM Architecture document.</p>
+<p>The figure above illustrates the key players in the eco-system and is useful in understanding the scope of a UTM system. In a digital context, all the interactions will happen via APIs since a number of the interactions will be done by computers with little or no human oversight unless there is an emergency.</p>
+<h3 id="key-insights-from-gutma-architecture-document">Key Insights from GUTMA Architecture document</h3>
+<ul>
+<li>The document identifies roles and use-cases (Pages 17-19, UTM Architecture) which is a good starting point for understanding how these stakeholders will interact with these services.</li>
+<li>The document does not specify technical architectures for UTM and is a good starting point to get a overview of the eco-system. </li>
+<li>Given that the authors are not in a standards making organization or authority they do not specify or recommend standards that could be adopted. </li>
+</ul>
+<h2 id="swiss-conops">Swiss ConOps</h2>
+<p>A <a href="https://www.bazl.admin.ch/bazl/en/home/good-to-know/drohnen/wichtigsten-regeln/uspace.html">U-Space Concept of Operations for Switzerland</a> was first published in 2019 and updated in 2020. This document, focuses on the specifics and layout a advanced architecture. In Switzerland Skyguide the ANSP works in co-ordination with the Civil Agencies to form the "Common Information Function" (Section 6.1)
+<img alt="Swiss-U-Space-Architecture" src="../../images/swiss-u-space-architecture.jpg" />
+(Source: Swiss ConOps Document, link above)</p>
+<h3 id="key-insights-from-swiss-conops">Key Insights from Swiss ConOps</h3>
+<ul>
+<li>The ConOps recognizes two main types of USP services: Vertically integrated and "USP as a service". Both of these talk to a common interoperability framework and exchange data.
+<img alt="USP-Service-Type" src="../../images/usp-types.jpg" />
+(Source: Swiss ConOps Document, link above)</li>
+<li>The ConOps talks about a incremental framework of approval with selected services and providers in a collaborative fashion by leveraging standards. The incremental process will start with a voluntary stage and after the publication of U-Space rules, technical tools, processes will be explored.</li>
+<li>The Swiss ConOps references the ASTM standard for Network Remote-ID and Tracking and the inter-operability between USSes.</li>
+</ul>
+<h2 id="european-union-aviation-safety-agency">European Union Aviation Safety Agency</h2>
+<p>The EU recently published a legislative framework for U-Space. The regulation details the roles and responsibilities of the different stakeholders in the U-Space / UTM eco-system. The EU through its ConOps has classified operations and airspaces and equipment guidelines for U-Space, a example image is below. 
+<img alt="EU-Drone-rules" src="../../images/eu-drone-rules.jpg" />
+Source : <a href="https://dronerules.eu/sl/professional/eu_regulations_updates">Dronerules.eu</a></p>
+<h3 id="u-space-specifications">U-Space Specifications</h3>
+<ul>
+<li>EU works as a federation and it is left to the member states to design the U-Space for drone operations.</li>
+<li>The new U-Space regulation calls for a creation of <code>U-Space Service Providers (USSP)</code> that will be certified to provide U-Space services. </li>
+<li>The EU has identified four mandatory services that must be provided by USSPs:</li>
+<li>Geo-awareness</li>
+<li>Traffic Information</li>
+<li>Flight Authorization</li>
+<li>Network Identification</li>
+<li>The exist standards for these services e.g. <a href="https://eurocae.net/news/posts/2020/june/ed-269-minimum-operational-performance-standard-for-uas-geo-fencing/">ED-269</a> for Geo-awareness, <a href="https://www.astm.org/f3411-19.html">ASTM F3411-19</a> etc. It can be reasonable to assume that these or similar standards will be adopted to by authorities to enable standardized certification.</li>
+<li>Once the implementing regulation comes into force in January 2023, we can assume that there will be activity and interest in this space from the EU.</li>
+<li>Drone operators and ANSPs will have to establish contracts wtih a certified USSP.</li>
+</ul>
+<h2 id="icao">ICAO</h2>
+<p>(AG)</p>
+<h2 id="federal-aviation-authority">Federal Aviation Authority</h2>
+<h3 id="utm-specification-v1v2">UTM Specification v1/v2</h3>
+<p>(SP)</p>
+<h3 id="unmanned-aerial-mobility-specification-v1">Unmanned Aerial Mobility Specification v1</h3>
+<p>(MS)</p>
+<h2 id="japan">Japan</h2>
+<p>(GT)</p>
+<h2 id="china">China</h2>
+<p>(??)</p>
+<h2 id="india">India</h2>
+<p>In November 2020, the MoCA published a <a href="../../ref/draft-utm-policy/">National UTM Policy Discussion Draft</a>. It describes a fairly comprehensive traffic management ecosystem and details the stakeholders, components, services provided by UTMSPs and DigitalSky at a high level. The <a href="../../ref/draft-utm-policy/#utm-architecture">Architecture</a> is clearly inspired by the JARUS UTM architecture <a href="../../../bibliography/#NASA-UTM-1"><code>NASA-UTM-1</code></a>. The section on <a href="../../ref/draft-utm-policy/#real-time-identification-and-tracking-of-uas">Identification and Tracking of UAS</a> seems to be inspired by ASTM Remote ID standard <a href="../../../bibliography/#ASTM-F3411-19"><code>ASTM-F3411-19</code></a>. For Risk Assessment of unmanned operations, the ICAO Safety Management System <a href="../../../bibliography/#ICAO-Annex19"><code>ICAO-Annex19</code></a> The draft also discusses <a href="../../ref/draft-utm-policy/#utm-operational-scenarios">eleven operational scenarios</a> modelled on SORA standard scenarios (see <a href="../../../bibliography/#JARUS-SORA"><code>JARUS-SORA</code></a>, <a href="../../../bibliography/#JARUS-SORA-STS01"><code>JARUS-SORA-STS01</code></a>, <a href="../../../bibliography/#JARUS-SORA-STS02"><code>JARUS-SORA-STS02</code></a>), although not as well defined from a risk assessment point-of-view. The scenarios seem to be geared towards enabling particular business cases based on operational constraints that are too broad for actual standardisation. The section on <a href="../../ref/draft-utm-policy/#airspace-classification-of-utm-airspace">Airspace classification for UTM operations</a> proposed three classes U1 through U3 where different combinations of flight rules, viz. Unmanned (<a href="../../../nomenclature/#UFR"><code>UFR</code></a>), Visual (<a href="../../../nomenclature/#VFR"><code>VFR</code></a>) and Instrument (<a href="../../../nomenclature/#IFR"><code>IFR</code></a>) Flight Rules may apply. The draft also describes strategies for <a href="../../ref/draft-utm-policy/#utm-deployment-plan">UTM deployment</a> and models for <a href="../../ref/draft-utm-policy/#utm-service-charges">UTM monetisation</a>.</p>
+<p>While the discussion draft covers almost all the aspects of UTM policy making, several proposals seem unrealistic given the current socio-politic and economic conditions in India. A few of these issues are outlined below.</p>
+<ol>
+<li><strong>Roadmapping absent</strong><br />
+Establishing a complex ecosytem such as that for a UTM, with a large number of stakeholder types and participants, requires a well reasoned roadmap for development and operationalisation of government owned infrastructure. For instance such environments in the USA and EU have evolved organically over several years and with full-time active participation of regulators, industry, innovators and the academia. Bootstrapping an Indian UTM ecosystem development with knowhow from abroad will still require an adoption period.</li>
+<li><strong>Limited Technical knowhow</strong></li>
+<li><strong>Limited Market capacity</strong></li>
+<li><strong>Limited incentives for innovation</strong></li>
+<li><strong>Technical standards absent</strong><br />
+While a policy provides a birds-eye view of the development of a UTM ecosystem, it is ultimately technical standards and specifications that bring such a policy closer to reality. Unfortunately, while there are a lot of working and research groups with limited scopes all across India, their is a clear lack of effort on the development of such standards which can be easily adopted by the DGCA, QCI and AAI (as building blocks for the DigitalSky platform).</li>
+<li><strong>DigitalSky capabilities</strong><br />
+In the discussion draft, it has been proposed that DigitalSky support the entire spectrum of services that a UTM SP can or may provide. While this is a great goal to strive towards, such a monopolistic approach is often unrealistic particularly given the immense amount of innovation and research in the field of unmanned aviation. With new technologies emanating from the academia and the industry every so often, the burden to adopt these on a state-run infrastructure would be immense dooming it to repeat past failures. In addition, it would only deincentivise private and academic innovation in the UTM. It would be much more realistic to adopt a grounded approach, limiting the scope of DigitalSky to regulatory and interaction with government and other state-run bodies. It is notable that such an approach has has worked well in the EU and USA.</li>
+<li><strong>Key open issues</strong><ol>
+<li>Remote ID &amp; Tracking<ol>
+<li>Technical standards not specified</li>
+</ol>
+</li>
+<li>Authentication &amp; Network Security<ol>
+<li>RA/CA to be implemented under DigitalSky: completely unnecessary and increases complexity</li>
+</ol>
+</li>
+<li>Safety and Risk Assessment<ol>
+<li>SORA vs ICAO SMS<br />
+SMS maybe too generic for UA operations; UTM Policy should also include JARUS SORA</li>
+<li>Standard Scenarios<ol>
+<li>seem closer to business scenarios rather than operational scenarios</li>
+<li>operational limits/criteria not defined</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>ATM-UTM Integration<ol>
+<li>Technical standards<br />
+UFII-ATM-ANSP integration needs to be planned</li>
+</ol>
+</li>
+<li>UTM Business Rules: No implementable details on <ol>
+<li>Separation standards</li>
+<li>Terrain &amp; Obstacle clearance standards for<ol>
+<li>DAA</li>
+<li>UTM based service</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Deployment<ol>
+<li>Choice of Single-per-region/Multiple-per-region/Hybrid<br />
+We should policy favour maximum participants to foster innovation</li>
+</ol>
+</li>
+<li>Pricing models<br />
+    Only pricing models for UTMs to register themselves and manage particular airspaces should be specified; the pricing models for clients of UTM services should be market driven. Criteria for pricing UTM registration and operational fees charged by AAI/DGCA/etc. may include: list of services provided, airspace area under management, operations supported by UTM, etc.</li>
+</ol>
+</li>
+</ol></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../js/base.js"></script>
+        <script src="../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
