@@ -20,8 +20,8 @@ Civil Aviation Authorities worldwide have started rule making for unmanned aviat
 
 | Name                 | Email/Website                                                     | Location |
 | -------------------- | ----------------------------------------------------------------- | -------- |
-| Amit Garg            | [<i class="fa fa-envelope-o"></i>](mailto:studies.amit@gmail.com) | 🇮🇳     |
-| Sayandeep Purkayasth | [<i class="fa fa-envelope-o"></i>](mailto:sayandeep@deepcyan.ai)  | 🇮🇳     |
+| Amit Garg            | [<i class="fa fa-envelope"></i>](mailto:studies.amit@gmail.com) | 🇮🇳     |
+| Sayandeep Purkayasth | [<i class="fa fa-envelope"></i>](mailto:sayandeep@deepcyan.ai)  | 🇮🇳     |
 | Abhishek Dwivedi     | [<i class="fa fa-link"></i>](https://abhishekdwivedi.org)         | 🇮🇳     |
 | Arun Kumar           |                                                                   | 🇮🇳     |
 | Sumit Sarkar         | [<i class="fa fa-link"></i>](https://sumit.me/)                   | 🇮🇳     |
@@ -31,9 +31,9 @@ Civil Aviation Authorities worldwide have started rule making for unmanned aviat
 
 | Name                | Email                                                                                        | Location |
 | ------------------- | -------------------------------------------------------------------------------------------- | -------- |
-| Siddharth Shetty    | [<i class="fa fa-envelope-o"></i>](mailto:siddharth.shetty@ispirt.in)                        | 🇮🇳     |
-| Siddharth Ravikumar | [<i class="fa fa-envelope-o"></i>](mailto:ravikumar.siddharth@gmail.com)                     | 🇨🇦     |
-| George Thomas       | [<i class="fa fa-envelope-o"></i>](mailto:georj13@gmail.com)                                 | 🇮🇳     |
+| Siddharth Shetty    | [<i class="fa fa-envelope"></i>](mailto:siddharth.shetty@ispirt.in)                        | 🇮🇳     |
+| Siddharth Ravikumar | [<i class="fa fa-envelope"></i>](mailto:ravikumar.siddharth@gmail.com)                     | 🇨🇦     |
+| George Thomas       | [<i class="fa fa-envelope"></i>](mailto:georj13@gmail.com)                                 | 🇮🇳     |
 | Hrishikesh Ballal   | <a href="https://about.openskies.sh/#contact" target="_blank"><i class="fa fa-link"></i></a> | 🇮🇪     |
-| Manish Shukla       | [<i class="fa fa-envelope-o"></i>](mailto:manish.shukla393@gmail.com)                        | 🇮🇳     |
-| Nihal Mohan         | [<i class="fa fa-envelope-o"></i>](mailto:nihalm@skylarkdrones.com)                          | 🇮🇳     |
+| Manish Shukla       | [<i class="fa fa-envelope"></i>](mailto:manish.shukla393@gmail.com)                        | 🇮🇳     |
+| Nihal Mohan         | [<i class="fa fa-envelope"></i>](mailto:nihalm@skylarkdrones.com)                          | 🇮🇳     |
