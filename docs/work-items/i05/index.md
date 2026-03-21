@@ -47,17 +47,17 @@ See [here](./state-of-the-art.md).
 
 ### Manufacturer
 
-1. Manage Registration with CAA
+1. Manage Registry with CAA
 
 ### Pilot
 
-1. Manage Registration with CAA
+1. Manage Registry with CAA
 1. Plan a Flight
 1. Apply for Flight Permit
 
 ### Operator
 
-1. Manage Registration with CAA
+1. Manage Registry with CAA
 1. Manage Pilots
 1. Manage UASs
 
@@ -150,7 +150,7 @@ i.e. IAF, Navy, Coast Guard, HAL
 
 ### Services
 
-#### Registration
+#### Registry
 
 1. Manufacturer Profile Management
 1. Pilot Profile Management
@@ -208,35 +208,12 @@ i.e. IAF, Navy, Coast Guard, HAL
 
 ### Phases (high level)
 
-| Milestone | Services                                                                                                                                           | Timeline            |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
-| M0        | Registration, Restriction Management V0, Incident Reporting                                                                                        | Till Feb 2022       |
-| M1        | Communication and Navigation, Flight Awareness, Permission Management, Discovery, Airspace Authorisation, Messaging                                | Feb 2022 - Feb 2023 |
-| M2        | Flight Notification, Strategic Deconfliction, Conflict Advisory and Alert, Dynamic Airspace Density, Weather                                       | Feb 2023 - Feb 2024 |
-| M3        | Emergency Management, Conformance Monitoring, Restriction Management V1, Log Management, Interface with ATC, Swarm Management, Corridor Management | Feb 2024 - Feb 2025 |
+ | Milestone | Services                                                                                                                                           | Timeline            |
+ | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+ | M0        | Registry, Permission Management, Airspace Authorisation                                                                                            | Till Jun 2026       |
+ | M1        | Emergency Management, Conformance Monitoring, Incident Reporting                                                                                   | Till Sep 2026       |
+ | M2        | Log Management, Communication and Navigation, Flight Awareness, Discovery, Messaging                                                               | Dec 2026            |
+ | M3        | Restriction Management, Flight Notification, Dynamic Airspace Density                                                                              | March 2027          |
+ | M4        | Strategic Deconfliction, Conflict Advisory and Alert, Weather                                                                                      | Dec 2027            |
+ | M5        | Interface with ATC, Swarm Management, Corridor Management                                                                                          | Dec 2027            |
 
-### Phases (detail)
-
-| Milestone | Service                      | Description                                                                                         | Timeline      |
-| --------- | ---------------------------- | --------------------------------------------------------------------------------------------------- | ------------- |
-| M0        | Registration                 | Pilot, Manufacturer Org., Training Org., Operator Org. registration and profile management          | Till Feb 2022 |
-|           | Restriction Management V0    | Airspace Rules                                                                                      |               |
-|           | Incident Reporting           |                                                                                                     |               |
-| M1        | Communication and Navigation |                                                                                                     | Till Feb 2023 |
-|           | Flight Awareness             | Get info about flights in Volume of Interest                                                        |               |
-|           | Permission Management        | Allow UTMs to issue flight permits                                                                  |               |
-|           | Discovery                    | Allow UTMs to discover each other                                                                   |               |
-|           | Airspace Authorisation       | Integration with Non-CAA authorities for seeking flight permission                                  |               |
-|           | Messaging                    | Allow Pilots/Ops to create/search TFR/NOTAM/UVR                                                     |               |
-| M2        | Flight Notification          | Get flights in AOI                                                                                  | Till Feb 2024 |
-|           | Strategic Deconfliction      | Pre-flight deconfliction with issued flight plans based on volume restrictions and intersections    |               |
-|           | Conflict Advisory and Alert  | Get constraints, advisory, directives for conflicts to aid pilot based deconfliction                |               |
-|           | Dynamic Airspace Density     | Get expected airspace density for volume of interest                                                |               |
-|           | Weather                      | Get wind, visibility, temperature, precipitation prediction for Flight                              |               |
-| M3        | Emergency Management         | UVR/NOTAM/TFR preemption rules                                                                      | Till Feb 2025 |
-|           | Conformance Monitoring       | Check Remote ID Tracking for conformance with buffers                                               |               |
-|           | Restriction Management V1    |                                                                                                     |               |
-|           | Swarm Management             | Allow UTMs to manage swarm coordination                                                             |               |
-|           | Corridor Management          | Maintain Corridor geometries and operational constraints, allow UTMs to coordinate ops in corridors |               |
-|           | Log Management               | Flight Log storage and analytics                                                                    |               |
-|           | Interface with ATC           |                                                                                                     |               |

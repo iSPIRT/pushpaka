@@ -2,1043 +2,130 @@
 
 ID: `I08`  
 Status: `WORKING DRAFT`  
+Supersedes: N/A  
+Classification: `Safety Infrastructure Standard`  
 Version: `1`  
 
-**[NIDSP 1.0	11](#nidsp-1.0)**
-
-[Document Status	11](#document-status)
-
-[Authors	11](#authors)
-
-[Version History	11](#version-history)
-
-[Nomenclature	11](#nomenclature)
-
-[Change Summary	12](#change-summary)
-
-[→ v1.0	12](#→-v1.0)
-
-[**1 Scope	13**](#1-scope)
-
-[1.1 Purpose	13](#1.1-purpose)
-
-[1.2 System Objectives	13](#1.2-system-objectives)
-
-[1.3 Applicability	14](#1.3-applicability)
-
-[1.4 Non-Replacement Clause	14](#1.4-non-replacement-clause)
-
-[**2 Normative References	15**](#2-normative-references)
-
-[Conformance	15](#conformance)
-
-[**3 Definitions and Terms	16**](#3-definitions-and-terms)
-
-[**4 Architectural Principles	17**](#4-architectural-principles)
-
-[4.1 Layered Modularity	17](#4.1-layered-modularity)
-
-[4.2 Separation of Mechanism and Policy	17](#4.2-separation-of-mechanism-and-policy)
-
-[4.3 Deterministic Convergence	17](#4.3-deterministic-convergence)
-
-[4.4 Auditability	17](#4.4-auditability)
-
-[4.5 Sovereign Control	18](#4.5-sovereign-control)
-
-[4.6 Safety First Principle	18](#4.6-safety-first-principle)
-
-[**5 System Architecture Overview	19**](#5-system-architecture-overview)
-
-[5.1 General Architecture	19](#5.1-general-architecture)
-
-[5.2 Layered Architecture Model	19](#5.2-layered-architecture-model)
-
-[Layer 1 — Identity Layer	19](#layer-1-—-identity-layer)
-
-[Layer 2 — Planning Layer	19](#layer-2-—-planning-layer)
-
-[Layer 3 — Intelligence Layer	19](#layer-3-—-intelligence-layer)
-
-[Layer 4 — Tactical Layer	19](#layer-4-—-tactical-layer)
-
-[Layer 5 — Core Arbitration Layer	20](#layer-5-—-core-arbitration-layer)
-
-[Layer 6 — Policy Layer	20](#layer-6-—-policy-layer)
-
-[Layer 7 — Risk Layer	20](#layer-7-—-risk-layer)
-
-[Layer 8 — Infrastructure Layer	20](#layer-8-—-infrastructure-layer)
-
-[Layer 9 — Emergency Layer	20](#layer-9-—-emergency-layer)
-
-[Layer 10 — Compliance & Certification Layer	20](#layer-10-—-compliance-&-certification-layer)
-
-[5.3 Logical Interaction Flow	20](#5.3-logical-interaction-flow)
-
-[5.4 Responsibility Allocation	21](#5.4-responsibility-allocation)
-
-[Core SHALL:	21](#core-shall:)
-
-[Policy SHALL:	21](#policy-shall:)
-
-[Identity SHALL:	21](#identity-shall:)
-
-[Tactical SHALL:	21](#tactical-shall:)
-
-[Risk SHALL:	22](#risk-shall:)
-
-[Infrastructure SHALL:	22](#infrastructure-shall:)
-
-[Emergency SHALL:	22](#emergency-shall:)
-
-[5.5 Non-Responsibilities	22](#5.5-non-responsibilities)
-
-[5.6 Data Integrity Model	23](#5.6-data-integrity-model)
-
-[5.7 Audit Anchoring Model	23](#5.7-audit-anchoring-model)
-
-[5.8 Deterministic Boundary Conditions	24](#5.8-deterministic-boundary-conditions)
-
-[5.9 Scalability Model	24](#5.9-scalability-model)
-
-[5.10 Governance Boundary	24](#5.10-governance-boundary)
-
-[**6 NIDSP-Core v1.1	26**](#6-nidsp-core-v1.1)
-
-[Deterministic Negotiation and Arbitration Engine	26](#deterministic-negotiation-and-arbitration-engine)
-
-[6.1 Scope	26](#6.1-scope)
-
-[6.2 Core Responsibilities	26](#6.2-core-responsibilities)
-
-[6.3 Negotiation Session	27](#6.3-negotiation-session)
-
-[6.3.1 Session Creation	27](#6.3.1-session-creation)
-
-[6.3.2 Deterministic Snapshot	28](#6.3.2-deterministic-snapshot)
-
-[6.4 NegotiationEnvelope Structure	28](#6.4-negotiationenvelope-structure)
-
-[6.5 State Machine	29](#6.5-state-machine)
-
-[6.6 Round Discipline	29](#6.6-round-discipline)
-
-[6.6.1 Maximum Rounds	29](#6.6.1-maximum-rounds)
-
-[6.6.2 Round Ordering	29](#6.6.2-round-ordering)
-
-[6.6.3 Round Timeout	29](#6.6.3-round-timeout)
-
-[6.7 Convergence Detection	30](#6.7-convergence-detection)
-
-[6.8 Escalation	30](#6.8-escalation)
-
-[6.9 Arbitration	30](#6.9-arbitration)
-
-[6.9.1 Arbitration Trigger	30](#6.9.1-arbitration-trigger)
-
-[6.9.2 Deterministic Ordering	31](#6.9.2-deterministic-ordering)
-
-[6.9.3 Tie-Break	31](#6.9.3-tie-break)
-
-[6.10 Storm Compression Mode	31](#6.10-storm-compression-mode)
-
-[6.11 Swarm Handling	31](#6.11-swarm-handling)
-
-[6.12 Emergency Freeze Window	31](#6.12-emergency-freeze-window)
-
-[6.13 Network Partition Handling	32](#6.13-network-partition-handling)
-
-[6.14 Safety Deadlock	32](#6.14-safety-deadlock)
-
-[6.15 Replay Protection	33](#6.15-replay-protection)
-
-[6.16 Audit Requirements	33](#6.16-audit-requirements)
-
-[6.17 Performance Guarantees	33](#6.17-performance-guarantees)
-
-[6.18 Non-Responsibilities	34](#6.18-non-responsibilities)
-
-[6.19 Certification Requirements	34](#6.19-certification-requirements)
-
-[**7 NIDSP-Policy v1.1	35**](#7-nidsp-policy-v1.1)
-
-[Deterministic Arbitration Policy Framework	35](#deterministic-arbitration-policy-framework)
-
-[7.1 Scope	35](#7.1-scope)
-
-[7.2 ArbitrationPolicy Object	35](#7.2-arbitrationpolicy-object)
-
-[7.3 Deterministic Ordering Rule Set	36](#7.3-deterministic-ordering-rule-set)
-
-[7.3.1 Ordering Inputs	36](#7.3.1-ordering-inputs)
-
-[7.3.2 Ordering Requirements	37](#7.3.2-ordering-requirements)
-
-[7.3.3 Prohibited Ordering Logic	37](#7.3.3-prohibited-ordering-logic)
-
-[7.4 Tie-Break Rule	37](#7.4-tie-break-rule)
-
-[7.5 Risk Weighting Rule	38](#7.5-risk-weighting-rule)
-
-[7.6 Swarm Priority Rule	38](#7.6-swarm-priority-rule)
-
-[7.7 Infrastructure Priority Rule	38](#7.7-infrastructure-priority-rule)
-
-[7.8 Emergency Override Rule	39](#7.8-emergency-override-rule)
-
-[7.9 Negotiation Constraints	39](#7.9-negotiation-constraints)
-
-[7.10 Policy Immutability	39](#7.10-policy-immutability)
-
-[7.11 Policy Versioning	40](#7.11-policy-versioning)
-
-[7.12 Policy Integrity	40](#7.12-policy-integrity)
-
-[7.13 Policy Activation & Deactivation	40](#7.13-policy-activation-&-deactivation)
-
-[7.14 Surge Prioritization Integration	41](#7.14-surge-prioritization-integration)
-
-[7.15 Certification Requirements	41](#7.15-certification-requirements)
-
-[7.16 Non-Responsibilities	42](#7.16-non-responsibilities)
-
-[**8 NIDSP-Registry v1.0	43**](#8-nidsp-registry-v1.0)
-
-[National UIN and Asset Registry Governance	43](#national-uin-and-asset-registry-governance)
-
-[8.1 Scope	43](#8.1-scope)
-
-[8.2 UIN Namespace	43](#8.2-uin-namespace)
-
-[8.2.1 UIN Structure	43](#8.2.1-uin-structure)
-
-[8.2.2 UIN Integrity	44](#8.2.2-uin-integrity)
-
-[8.3 Asset Binding	44](#8.3-asset-binding)
-
-[8.4 Custodial Continuity	45](#8.4-custodial-continuity)
-
-[8.4.1 Operator Transfer	45](#8.4.1-operator-transfer)
-
-[8.4.2 UTMSP Portability	45](#8.4.2-utmsp-portability)
-
-[8.5 Device Certificate Binding	45](#8.5-device-certificate-binding)
-
-[8.6 Registry Lookup Requirements	46](#8.6-registry-lookup-requirements)
-
-[8.7 Registry Update Lifecycle	46](#8.7-registry-update-lifecycle)
-
-[8.7.1 Creation	46](#8.7.1-creation)
-
-[8.7.2 Update	46](#8.7.2-update)
-
-[8.7.3 Suspension	46](#8.7.3-suspension)
-
-[8.7.4 Revocation	47](#8.7.4-revocation)
-
-[8.8 Registry and Identity Integration	47](#8.8-registry-and-identity-integration)
-
-[8.9 Registry and Tactical Integration	47](#8.9-registry-and-tactical-integration)
-
-[8.10 Registry and Risk Integration	48](#8.10-registry-and-risk-integration)
-
-[8.11 Audit Requirements	48](#8.11-audit-requirements)
-
-[8.12 Data Integrity Requirements	48](#8.12-data-integrity-requirements)
-
-[8.13 Performance Requirements	49](#8.13-performance-requirements)
-
-[8.14 Certification Requirements	49](#8.14-certification-requirements)
-
-[8.15 Non-Responsibilities	50](#8.15-non-responsibilities)
-
-[**9 NIDSP-Identity v1.0	51**](#9-nidsp-identity-v1.0)
-
-[Actor Identity, Role, and Authorization Governance	51](#actor-identity,-role,-and-authorization-governance)
-
-[9.1 Scope	51](#9.1-scope)
-
-[9.2 Actor Categories	51](#9.2-actor-categories)
-
-[9.3 IdentityRecord Structure	52](#9.3-identityrecord-structure)
-
-[9.4 Role Classification	53](#9.4-role-classification)
-
-[9.5 Authorization Scope	53](#9.5-authorization-scope)
-
-[9.6 Credential Binding	54](#9.6-credential-binding)
-
-[9.7 Identity Lifecycle	54](#9.7-identity-lifecycle)
-
-[9.7.1 Creation	54](#9.7.1-creation)
-
-[9.7.2 Update	55](#9.7.2-update)
-
-[9.7.3 Suspension	55](#9.7.3-suspension)
-
-[9.7.4 Revocation	55](#9.7.4-revocation)
-
-[9.8 Mid-Flight Revocation Handling	56](#9.8-mid-flight-revocation-handling)
-
-[9.9 Swarm Identity Binding	56](#9.9-swarm-identity-binding)
-
-[9.10 Infrastructure Identity Binding	56](#9.10-infrastructure-identity-binding)
-
-[9.11 Identity Integration with Other Modules	57](#9.11-identity-integration-with-other-modules)
-
-[Registry Integration	57](#registry-integration)
-
-[Planning Integration	57](#planning-integration)
-
-[Tactical Integration	57](#tactical-integration)
-
-[Core Integration	57](#core-integration)
-
-[Emergency Integration	57](#emergency-integration)
-
-[9.12 Revocation Propagation Requirements	57](#9.12-revocation-propagation-requirements)
-
-[9.13 Audit Requirements	58](#9.13-audit-requirements)
-
-[9.14 Data Integrity & Security	58](#9.14-data-integrity-&-security)
-
-[9.15 Performance Requirements	59](#9.15-performance-requirements)
-
-[9.16 Certification Requirements	59](#9.16-certification-requirements)
-
-[9.17 Non-Responsibilities	59](#9.17-non-responsibilities)
-
-[**10 NIDSP-Planning v1.1	61**](#10-nidsp-planning-v1.1)
-
-[Flight Planning and Permission Abstraction Governance	61](#flight-planning-and-permission-abstraction-governance)
-
-[10.1 Scope	61](#10.1-scope)
-
-[10.2 Flight Intent Submission	61](#10.2-flight-intent-submission)
-
-[10.3 OperationalVolume Structure	62](#10.3-operationalvolume-structure)
-
-[10.4 Authorization Validation	63](#10.4-authorization-validation)
-
-[10.5 Risk Injection	63](#10.5-risk-injection)
-
-[10.6 Infrastructure Validation	64](#10.6-infrastructure-validation)
-
-[10.7 Swarm Planning Extension	64](#10.7-swarm-planning-extension)
-
-[10.8 Advisory Integration	64](#10.8-advisory-integration)
-
-[10.9 Conflict Detection and Escalation	65](#10.9-conflict-detection-and-escalation)
-
-[10.10 Negotiation Initiation	65](#10.10-negotiation-initiation)
-
-[10.11 Approval State	66](#10.11-approval-state)
-
-[10.12 Modification Handling	66](#10.12-modification-handling)
-
-[10.13 Emergency Interaction	67](#10.13-emergency-interaction)
-
-[10.14 Performance Requirements	67](#10.14-performance-requirements)
-
-[10.15 Audit Requirements	67](#10.15-audit-requirements)
-
-[10.16 Degraded Mode Handling	68](#10.16-degraded-mode-handling)
-
-[10.17 Certification Requirements	68](#10.17-certification-requirements)
-
-[10.18 Non-Responsibilities	69](#10.18-non-responsibilities)
-
-[**11 NIDSP-Intelligence v1.1	70**](#11-nidsp-intelligence-v1.1)
-
-[Advisory, Forecasting, and Hazard Information Layer	70](#advisory,-forecasting,-and-hazard-information-layer)
-
-[11.1 Scope	70](#11.1-scope)
-
-[11.2 Purpose	70](#11.2-purpose)
-
-[11.3 Data Sources	71](#11.3-data-sources)
-
-[11.4 DensityForecast Object	71](#11.4-densityforecast-object)
-
-[11.5 HazardObject Schema	72](#11.5-hazardobject-schema)
-
-[11.6 Advisory Integration with Planning	73](#11.6-advisory-integration-with-planning)
-
-[11.7 Advisory Integration with Tactical	73](#11.7-advisory-integration-with-tactical)
-
-[11.8 Confidence Indicators	74](#11.8-confidence-indicators)
-
-[11.9 Dataset Integrity Requirements	74](#11.9-dataset-integrity-requirements)
-
-[11.10 Emergency Interaction	74](#11.10-emergency-interaction)
-
-[11.11 Audit Requirements	75](#11.11-audit-requirements)
-
-[11.12 Performance Requirements	75](#11.12-performance-requirements)
-
-[11.13 Degraded Mode Handling	75](#11.13-degraded-mode-handling)
-
-[11.14 Certification Requirements	76](#11.14-certification-requirements)
-
-[11.15 Non-Responsibilities	76](#11.15-non-responsibilities)
-
-[**12 NIDSP-Tactical v1.0	77**](#12-nidsp-tactical-v1.0)
-
-[Real-Time Coordination and Conflict Advisory Layer	77](#real-time-coordination-and-conflict-advisory-layer)
-
-[12.1 Scope	77](#12.1-scope)
-
-[12.2 Operational Context	78](#12.2-operational-context)
-
-[12.3 TelemetryObject	78](#12.3-telemetryobject)
-
-[12.4 Telemetry Validation	79](#12.4-telemetry-validation)
-
-[12.5 Conflict Detection	79](#12.5-conflict-detection)
-
-[12.6 ConflictAlert Object	80](#12.6-conflictalert-object)
-
-[12.7 Advisory Classification	81](#12.7-advisory-classification)
-
-[INFORMATIVE	81](#informative)
-
-[SUGGESTIVE	81](#suggestive)
-
-[DIRECTIVE	81](#directive)
-
-[12.8 DynamicReroute Object	81](#12.8-dynamicreroute-object)
-
-[12.9 Escalation to Core	82](#12.9-escalation-to-core)
-
-[12.10 Swarm Integration	82](#12.10-swarm-integration)
-
-[12.11 Infrastructure Enforcement	83](#12.11-infrastructure-enforcement)
-
-[12.12 Emergency Enforcement	83](#12.12-emergency-enforcement)
-
-[12.13 Rate Limiting	84](#12.13-rate-limiting)
-
-[12.14 Network Partition Safe Mode	84](#12.14-network-partition-safe-mode)
-
-[12.15 Replay Protection	84](#12.15-replay-protection)
-
-[12.16 Audit Requirements	85](#12.16-audit-requirements)
-
-[12.17 Performance Requirements	85](#12.17-performance-requirements)
-
-[12.18 Certification Requirements	86](#12.18-certification-requirements)
-
-[12.19 Non-Responsibilities	86](#12.19-non-responsibilities)
-
-[**13 NIDSP-Risk v1.0	88**](#13-nidsp-risk-v1.0)
-
-[Operational Risk Classification and Safety Threshold Governance	88](#operational-risk-classification-and-safety-threshold-governance)
-
-[13.1 Scope	88](#13.1-scope)
-
-[13.2 RiskClass Object	89](#13.2-riskclass-object)
-
-[13.3 ARC Classification	89](#13.3-arc-classification)
-
-[13.4 SAIL Level	90](#13.4-sail-level)
-
-[13.5 GroundRiskClass	90](#13.5-groundriskclass)
-
-[13.6 Operational Safety Objectives (OSO)	91](#13.6-operational-safety-objectives-\(oso\))
-
-[13.7 Separation Threshold Binding	91](#13.7-separation-threshold-binding)
-
-[13.8 Swarm Risk Aggregation	91](#13.8-swarm-risk-aggregation)
-
-[13.9 Risk Dataset Integrity	92](#13.9-risk-dataset-integrity)
-
-[13.10 Policy Integration	92](#13.10-policy-integration)
-
-[13.11 Tactical Integration	93](#13.11-tactical-integration)
-
-[13.12 Emergency Interaction	93](#13.12-emergency-interaction)
-
-[13.13 Risk Lifecycle	93](#13.13-risk-lifecycle)
-
-[Creation	93](#creation)
-
-[Update	94](#update)
-
-[Expiry	94](#expiry)
-
-[13.14 Degraded Mode Handling	94](#13.14-degraded-mode-handling)
-
-[13.15 Performance Requirements	94](#13.15-performance-requirements)
-
-[13.16 Audit Requirements	94](#13.16-audit-requirements)
-
-[13.17 Certification Requirements	95](#13.17-certification-requirements)
-
-[13.18 Non-Responsibilities	95](#13.18-non-responsibilities)
-
-[**14 NIDSP-Swarm v1.0	97**](#14-nidsp-swarm-v1.0)
-
-[Coordinated Group Operations Governance	97](#coordinated-group-operations-governance)
-
-[14.1 Scope	97](#14.1-scope)
-
-[14.2 Swarm Identifier Model	97](#14.2-swarm-identifier-model)
-
-[14.3 Swarm Topology Classification	98](#14.3-swarm-topology-classification)
-
-[14.4 Shared Operational Envelope	99](#14.4-shared-operational-envelope)
-
-[14.5 Intra-Swarm Separation	99](#14.5-intra-swarm-separation)
-
-[14.6 Swarm Risk Integration	99](#14.6-swarm-risk-integration)
-
-[14.7 Coordinated Negotiation Mode	100](#14.7-coordinated-negotiation-mode)
-
-[14.8 Swarm Arbitration Compression	100](#14.8-swarm-arbitration-compression)
-
-[14.9 Swarm Split Handling	101](#14.9-swarm-split-handling)
-
-[14.10 Swarm Dissolution	101](#14.10-swarm-dissolution)
-
-[14.11 Infrastructure Interaction	102](#14.11-infrastructure-interaction)
-
-[14.12 Tactical Integration	102](#14.12-tactical-integration)
-
-[14.13 Emergency Interaction	102](#14.13-emergency-interaction)
-
-[14.14 Performance Requirements	103](#14.14-performance-requirements)
-
-[14.15 Audit Requirements	103](#14.15-audit-requirements)
-
-[14.16 Certification Requirements	104](#14.16-certification-requirements)
-
-[14.17 Non-Responsibilities	104](#14.17-non-responsibilities)
-
-[**15 NIDSP-Infrastructure v1.0	105**](#15-nidsp-infrastructure-v1.0)
-
-[Persistent Airspace and Operational Object Governance	105](#persistent-airspace-and-operational-object-governance)
-
-[15.1 Scope	105](#15.1-scope)
-
-[15.2 Infrastructure Object Categories	106](#15.2-infrastructure-object-categories)
-
-[15.3 DroneCorridor	106](#15.3-dronecorridor)
-
-[15.3.1 Definition	106](#15.3.1-definition)
-
-[15.3.2 Corridor Class	107](#15.3.2-corridor-class)
-
-[15.3.3 Capacity Management	107](#15.3.3-capacity-management)
-
-[15.4 DronePort	107](#15.4-droneport)
-
-[15.4.1 Definition	107](#15.4.1-definition)
-
-[15.4.2 Occupancy Management	108](#15.4.2-occupancy-management)
-
-[15.5 ReservedVolume	108](#15.5-reservedvolume)
-
-[15.6 TemporaryInfrastructureZone	109](#15.6-temporaryinfrastructurezone)
-
-[15.7 Priority Classification	109](#15.7-priority-classification)
-
-[15.8 Infrastructure Lifecycle	110](#15.8-infrastructure-lifecycle)
-
-[Creation	110](#creation-1)
-
-[Modification	110](#modification)
-
-[Deactivation	110](#deactivation)
-
-[15.9 Registry Integration	110](#15.9-registry-integration)
-
-[15.10 Planning Integration	111](#15.10-planning-integration)
-
-[15.11 Tactical Integration	111](#15.11-tactical-integration)
-
-[15.12 Risk Integration	112](#15.12-risk-integration)
-
-[15.13 Emergency Interaction	112](#15.13-emergency-interaction)
-
-[15.14 Surge Mode Interaction	112](#15.14-surge-mode-interaction)
-
-[15.15 Performance Requirements	112](#15.15-performance-requirements)
-
-[15.16 Audit Requirements	113](#15.16-audit-requirements)
-
-[15.17 Certification Requirements	113](#15.17-certification-requirements)
-
-[15.18 Non-Responsibilities	114](#15.18-non-responsibilities)
-
-[**16 NIDSP-Emergency v1.0	115**](#16-nidsp-emergency-v1.0)
-
-[Sovereign Emergency Override and ATC Coordination Governance	115](#sovereign-emergency-override-and-atc-coordination-governance)
-
-[16.1 Scope	115](#16.1-scope)
-
-[16.2 EmergencyAirspaceDirective Object	116](#16.2-emergencyairspacedirective-object)
-
-[16.3 Emergency Classification	116](#16.3-emergency-classification)
-
-[16.4 Deterministic Precedence Rule	117](#16.4-deterministic-precedence-rule)
-
-[16.5 Priority Override Behavior	117](#16.5-priority-override-behavior)
-
-[16.6 Negotiation Freeze Window	118](#16.6-negotiation-freeze-window)
-
-[16.7 Enforcement Levels	118](#16.7-enforcement-levels)
-
-[ADVISORY\_ONLY	118](#advisory_only)
-
-[MANDATORY\_COMPLIANCE	118](#mandatory_compliance)
-
-[IMMEDIATE\_TERMINATION	118](#immediate_termination)
-
-[16.8 Temporary Infrastructure Injection	119](#16.8-temporary-infrastructure-injection)
-
-[16.9 Risk Interaction	119](#16.9-risk-interaction)
-
-[16.10 Tactical Integration	119](#16.10-tactical-integration)
-
-[16.11 ATC Coordination Interface	120](#16.11-atc-coordination-interface)
-
-[16.12 Emergency Lifecycle	120](#16.12-emergency-lifecycle)
-
-[Activation	120](#activation)
-
-[Update	120](#update-1)
-
-[Deactivation	121](#deactivation-1)
-
-[16.13 Surge Interaction	121](#16.13-surge-interaction)
-
-[16.14 Degraded Mode Handling	121](#16.14-degraded-mode-handling)
-
-[16.15 Performance Requirements	121](#16.15-performance-requirements)
-
-[16.16 Audit Requirements	122](#16.16-audit-requirements)
-
-[16.17 Certification Requirements	122](#16.17-certification-requirements)
-
-[16.18 Non-Responsibilities	123](#16.18-non-responsibilities)
-
-[**17 Security Requirements	124**](#17-security-requirements)
-
-[Cryptographic Trust, Authentication, and Integrity Governance	124](#cryptographic-trust,-authentication,-and-integrity-governance)
-
-[17.1 Scope	124](#17.1-scope)
-
-[17.2 Sovereign Root Certificate Authority	125](#17.2-sovereign-root-certificate-authority)
-
-[17.3 X.509 Certificate Requirements	125](#17.3-x.509-certificate-requirements)
-
-[17.4 Mutual TLS (mTLS)	126](#17.4-mutual-tls-\(mtls\))
-
-[17.5 Digital Signature Requirements	126](#17.5-digital-signature-requirements)
-
-[17.6 Message Integrity	127](#17.6-message-integrity)
-
-[17.7 Replay Protection	127](#17.7-replay-protection)
-
-[17.8 Revocation Enforcement	128](#17.8-revocation-enforcement)
-
-[17.9 Deterministic Validation Behavior	128](#17.9-deterministic-validation-behavior)
-
-[17.10 Data at Rest Protection	128](#17.10-data-at-rest-protection)
-
-[17.11 Risk Dataset Protection	129](#17.11-risk-dataset-protection)
-
-[17.12 Policy Integrity	129](#17.12-policy-integrity)
-
-[17.13 Audit Chain Integrity	130](#17.13-audit-chain-integrity)
-
-[17.14 Compromise Handling	130](#17.14-compromise-handling)
-
-[17.15 Partition and Recovery Security	130](#17.15-partition-and-recovery-security)
-
-[17.16 Performance Requirements	131](#17.16-performance-requirements)
-
-[17.17 Certification Requirements	131](#17.17-certification-requirements)
-
-[17.18 Non-Responsibilities	132](#17.18-non-responsibilities)
-
-[**18 Performance & Scalability Requirements	133**](#18-performance-&-scalability-requirements)
-
-[Latency, Throughput, Availability, and Resilience Governance	133](#latency,-throughput,-availability,-and-resilience-governance)
-
-[18.1 Scope	133](#18.1-scope)
-
-[18.2 General Principles	133](#18.2-general-principles)
-
-[18.3 Latency Requirements	134](#18.3-latency-requirements)
-
-[18.3.1 Telemetry Processing	134](#18.3.1-telemetry-processing)
-
-[18.3.2 ConflictAlert Propagation	134](#18.3.2-conflictalert-propagation)
-
-[18.3.3 Escalation to Core	134](#18.3.3-escalation-to-core)
-
-[18.3.4 Arbitration Completion	134](#18.3.4-arbitration-completion)
-
-[18.3.5 Emergency Directive Propagation	134](#18.3.5-emergency-directive-propagation)
-
-[18.3.6 Negotiation Freeze Activation	135](#18.3.6-negotiation-freeze-activation)
-
-[18.4 Throughput Requirements	135](#18.4-throughput-requirements)
-
-[18.5 Swarm Scalability	135](#18.5-swarm-scalability)
-
-[18.6 Infrastructure Capacity Handling	135](#18.6-infrastructure-capacity-handling)
-
-[18.7 Risk Evaluation Performance	136](#18.7-risk-evaluation-performance)
-
-[18.8 Identity & Security Validation Performance	136](#18.8-identity-&-security-validation-performance)
-
-[18.9 Availability Requirements	136](#18.9-availability-requirements)
-
-[18.10 Resilience Requirements	137](#18.10-resilience-requirements)
-
-[18.11 Surge Prioritization Mode	137](#18.11-surge-prioritization-mode)
-
-[18.12 Storm Compression Activation	138](#18.12-storm-compression-activation)
-
-[18.13 Degraded Mode Operation	138](#18.13-degraded-mode-operation)
-
-[18.14 Deterministic Message Ordering	139](#18.14-deterministic-message-ordering)
-
-[18.15 Failover Requirements	139](#18.15-failover-requirements)
-
-[18.16 Monitoring Requirements	140](#18.16-monitoring-requirements)
-
-[18.17 Certification Requirements	140](#18.17-certification-requirements)
-
-[18.18 Non-Responsibilities	141](#18.18-non-responsibilities)
-
-[**19 Operational Hardening & Extreme Condition Safeguards	142**](#19-operational-hardening-&-extreme-condition-safeguards)
-
-[Deterministic Stability Under Adverse Conditions	142](#deterministic-stability-under-adverse-conditions)
-
-[19.1 Scope	142](#19.1-scope)
-
-[19.2 Negotiation Storm Compression	143](#19.2-negotiation-storm-compression)
-
-[19.3 Swarm Arbitration Compression	143](#19.3-swarm-arbitration-compression)
-
-[19.4 Emergency Freeze Window	143](#19.4-emergency-freeze-window)
-
-[19.5 Mid-Flight Identity Revocation Handling	144](#19.5-mid-flight-identity-revocation-handling)
-
-[19.6 Tactical Rate Limiting	144](#19.6-tactical-rate-limiting)
-
-[19.7 Network Partition Safe Mode	145](#19.7-network-partition-safe-mode)
-
-[19.8 Emergency Directive Precedence Conflict	145](#19.8-emergency-directive-precedence-conflict)
-
-[19.9 Risk Dataset Corruption Handling	146](#19.9-risk-dataset-corruption-handling)
-
-[19.10 Surge Prioritization Mode	146](#19.10-surge-prioritization-mode)
-
-[19.11 Degraded Mode Safety Guarantee	147](#19.11-degraded-mode-safety-guarantee)
-
-[19.12 Compromise Containment	147](#19.12-compromise-containment)
-
-[19.13 Failover Integrity Preservation	148](#19.13-failover-integrity-preservation)
-
-[19.14 Hardening Certification Requirements	148](#19.14-hardening-certification-requirements)
-
-[19.15 Non-Responsibilities	149](#19.15-non-responsibilities)
-
-[**20 Certification Framework	150**](#20-certification-framework)
-
-[Validation, Compliance, and Continuous Conformance Governance	150](#validation,-compliance,-and-continuous-conformance-governance)
-
-[20.1 Scope	150](#20.1-scope)
-
-[20.2 Certification Authority	150](#20.2-certification-authority)
-
-[20.3 Certification Scope	151](#20.3-certification-scope)
-
-[20.4 Deterministic Validation Testing	151](#20.4-deterministic-validation-testing)
-
-[20.5 Performance Validation Testing	152](#20.5-performance-validation-testing)
-
-[20.6 Stress & Resilience Simulation	152](#20.6-stress-&-resilience-simulation)
-
-[20.7 Security Conformance Testing	153](#20.7-security-conformance-testing)
-
-[20.8 Audit Integrity Validation	154](#20.8-audit-integrity-validation)
-
-[20.9 Continuous Monitoring Requirements	154](#20.9-continuous-monitoring-requirements)
-
-[20.10 Re-Certification Requirements	155](#20.10-re-certification-requirements)
-
-[20.11 Compliance Violations	155](#20.11-compliance-violations)
-
-[20.12 Interoperability Testing	156](#20.12-interoperability-testing)
-
-[20.13 Transparency & Reporting	156](#20.13-transparency-&-reporting)
-
-[20.14 Change Management Governance	156](#20.14-change-management-governance)
-
-[20.15 Non-Responsibilities	157](#20.15-non-responsibilities)
-
-[**ANNEXURE A — Data Object Schemas (Normative)	158**](#annexure-a-—-data-object-schemas-\(normative\))
-
-[A.1 General Requirements	158](#a.1-general-requirements)
-
-[A.2 NegotiationEnvelope Schema	158](#a.2-negotiationenvelope-schema)
-
-[A.3 TelemetryObject Schema	159](#a.3-telemetryobject-schema)
-
-[A.4 ConflictAlert Schema	160](#a.4-conflictalert-schema)
-
-[A.5 RiskClass Schema	160](#a.5-riskclass-schema)
-
-[A.6 EmergencyAirspaceDirective Schema	161](#a.6-emergencyairspacedirective-schema)
-
-[A.7 AuditRecord Schema	162](#a.7-auditrecord-schema)
-
-[**ANNEXURE B — State Machine Definitions (Normative)	162**](#annexure-b-—-state-machine-definitions-\(normative\))
-
-[B.1 Core Negotiation State Machine	162](#b.1-core-negotiation-state-machine)
-
-[B.2 Planning State Model	163](#b.2-planning-state-model)
-
-[B.3 Tactical Advisory Escalation Model	163](#b.3-tactical-advisory-escalation-model)
-
-[B.4 Emergency Lifecycle	163](#b.4-emergency-lifecycle)
-
-[B.5 Swarm Lifecycle	163](#b.5-swarm-lifecycle)
-
-[**ANNEXURE C — Arbitration Worked Examples (Illustrative)	163**](#annexure-c-—-arbitration-worked-examples-\(illustrative\))
-
-[Example 1: Equal Risk Flights	163](#example-1:-equal-risk-flights)
-
-[Example 2: Emergency vs Normal	164](#example-2:-emergency-vs-normal)
-
-[Example 3: Swarm vs Single	164](#example-3:-swarm-vs-single)
-
-[**ANNEXURE D — Separation Threshold Reference (Normative)	165**](#annexure-d-—-separation-threshold-reference-\(normative\))
-
-[**ANNEXURE E — Timing & Timeout Matrix (Normative)	165**](#annexure-e-—-timing-&-timeout-matrix-\(normative\))
-
-[**ANNEXURE F — Error Codes & Compliance Events (Normative)	166**](#annexure-f-—-error-codes-&-compliance-events-\(normative\))
-
-[**ANNEXURE G — Degraded Mode Matrix (Normative)	166**](#annexure-g-—-degraded-mode-matrix-\(normative\))
-
-[**ANNEXURE H — Security Algorithm Requirements (Normative)	167**](#annexure-h-—-security-algorithm-requirements-\(normative\))
-
-[**ANNEXURE I — Certification Test Catalogue (Normative)	167**](#annexure-i-—-certification-test-catalogue-\(normative\))
-
-[**ANNEXURE J — Migration & Version Governance (Normative)	168**](#annexure-j-—-migration-&-version-governance-\(normative\))
-
-[J.1 Policy Version Migration	168](#j.1-policy-version-migration)
-
-[J.2 Dataset Version Migration	168](#j.2-dataset-version-migration)
-
-[J.3 Backward Compatibility	168](#j.3-backward-compatibility)
-
-[**ANNEXURE K — Spec Markdown	169**](#annexure-k-—-spec-markdown)
-
-# 
-
-# 
-
-# NIDSP 1.0 {#nidsp-1.0}
-
-## Interoperable Digital Sky Service Provider Specification UTM Architecture Standard
-
----
-
-## **Document Status** {#document-status}
-
-Supersedes: N/A  
-Classification: Safety Infrastructure Standard
-
----
-
-## **Authors** {#authors}
+**Authors**
 
 | Name | Role(s) | Contact |
 | :---- | :---- | :---- |
 | Abhishek Dwivedi | Corresponding author | abhishek.dwivedi@ispirt.in |
 | Sayandeep Purkayasth | Contributor | sayandeep@ispirt.in |
 
----
-
-## **Version History** {#version-history}
+**Version History**
 
 | Version | Date | Description |
 | :---- | ----- | ----- |
 | 1.0 | 30 April 2026 | Initial publication includes the scopes of TBD |
 |  |  |  |
 
----
+**Outline**
 
-## **Nomenclature** {#nomenclature}
+[TOC]
+
+## **Nomenclature**
 
 | Term | Description |
 | :---- | :---- |
 | IDSP | Interoperable DigitalSky Service Provider |
 |  |  |
 
----
+## **Change Summary**
 
-## **Change Summary** {#change-summary}
-
-### → v1.0 {#→-v1.0}
+### → v1.0
 
 Version 1.0 provides an initial IDSP architecture from a deterministic arbitration framework into a complete national interoperability and safety infrastructure specification.
 
 Enhancements include:
 
 * Identity lifecycle and role governance
-
 * Tactical real-time coordination standardization
-
 * Swarm operations governance
-
 * Infrastructure object modeling (corridors, ports, reserved volumes)
-
 * Risk classification integration (ARC, SAIL, OSO)
-
 * Emergency override and ATC interface standardization
-
 * Performance and scalability norms
-
 * Operational hardening under extreme conditions
-
 * Surge and partition safeguards
 
----
+# **Scope**
 
-# 
-
-# **1 Scope** {#1-scope}
-
----
-
-## **1.1 Purpose** {#1.1-purpose}
+## **Purpose**
 
 This specification defines the complete interoperability, governance, safety, performance, and resilience architecture governing multi-UTMSP coordination within the national UTM ecosystem.
 
 NIDSP 1.1 establishes a deterministic, auditable, sovereign-grade framework that enables:
 
 * Structured flight planning and arbitration
-
 * Real-time tactical coordination
-
 * Swarm and grouped operations
-
 * Persistent infrastructure modeling
-
 * Risk-aware operational governance
-
 * Emergency airspace override
-
 * Scalable national deployment
 
 This specification SHALL serve as the authoritative technical standard for interoperable Digital Sky operations.
 
----
-
-## **1.2 System Objectives** {#1.2-system-objectives}
+## **System Objectives**
 
 NIDSP 1.1 SHALL:
 
 1. Ensure deterministic conflict resolution between UTMSPs.
-
 2. Preserve separation safety under all operating conditions.
-
 3. Prevent non-deterministic arbitration outcomes.
-
 4. Bind operational actions to cryptographically verifiable identity.
-
 5. Support scalable, high-density airspace environments.
-
 6. Enable sovereign emergency override without breaking determinism.
-
 7. Ensure auditability and non-repudiation of all critical actions.
-
 8. Maintain safety during degraded or partitioned network conditions.
 
----
-
-## **1.3 Applicability** {#1.3-applicability}
+## **Applicability**
 
 This specification applies to:
 
 * All certified UTMSPs
-
 * Designated Authorities issuing policy or emergency directives
-
 * Infrastructure operators registering airspace objects
-
 * Swarm operators participating in grouped operations
-
 * Risk dataset authorities
 
 Compliance is mandatory for participation in interoperable operations.
 
----
-
-## **1.4 Non-Replacement Clause** {#1.4-non-replacement-clause}
+## **Non-Replacement Clause**
 
 This specification:
 
 * SHALL NOT replace aviation law or regulatory authority.
-
 * SHALL NOT define proprietary deconfliction algorithms.
-
 * SHALL NOT centralize operational optimization.
-
 * SHALL operate as a structured interoperability and governance layer above flight permission systems.
 
----
-
-# 
-
-# **2 Normative References** {#2-normative-references}
+# **Normative References**
 
 The following modules form integral parts of this specification:
 
 * NIDSP-Core v1.1
-
 * NIDSP-Policy v1.1
-
 * NIDSP-Registry v1.0
-
 * NIDSP-Identity v1.0
-
 * NIDSP-Planning v1.1
-
 * NIDSP-Intelligence v1.1
-
 * NIDSP-Tactical v1.0
-
 * NIDSP-Swarm v1.0
-
 * NIDSP-Infrastructure v1.0
-
 * NIDSP-Risk v1.0
-
 * NIDSP-Emergency v1.0
 
 All referenced modules SHALL be considered normative.
 
----
-
-## **Conformance** {#conformance}
+## **Conformance**
 
 All certified UTMSPs operating within the national airspace interoperability framework SHALL conform to this specification in full.
 
 Partial implementation is not permitted unless explicitly authorized under a controlled migration phase.
 
-# 
-
-# **3 Definitions and Terms** {#3-definitions-and-terms}
+# **Definitions and Terms**
 
 For the purposes of this specification:
 
@@ -1060,32 +147,21 @@ For the purposes of this specification:
 
 **Safe Holding Mode** — Deterministic fallback state during network partition.
 
----
+# **Architectural Principles**
 
-# 
-
-# **4 Architectural Principles** {#4-architectural-principles}
-
----
-
-## **4.1 Layered Modularity** {#4.1-layered-modularity}
+## **Layered Modularity**
 
 NIDSP SHALL be modular.  
 Each module SHALL:
 
 * Declare responsibilities
-
 * Declare non-responsibilities
-
 * Expose defined interfaces
-
 * Be independently certifiable
 
 Modules SHALL interact only through defined interfaces.
 
----
-
-## **4.2 Separation of Mechanism and Policy** {#4.2-separation-of-mechanism-and-policy}
+## **Separation of Mechanism and Policy**
 
 Core SHALL implement negotiation and arbitration mechanics.
 
@@ -1095,9 +171,7 @@ Operational modules SHALL NOT embed arbitration logic.
 
 This separation SHALL prevent hidden priority bias.
 
----
-
-## **4.3 Deterministic Convergence** {#4.3-deterministic-convergence}
+## **Deterministic Convergence**
 
 Identical inputs SHALL produce identical outputs.
 
@@ -1105,9 +179,7 @@ Negotiation SHALL terminate only in defined states.
 
 No randomness SHALL influence arbitration.
 
----
-
-## **4.4 Auditability** {#4.4-auditability}
+## **Auditability**
 
 All state-changing events SHALL:
 
@@ -1121,9 +193,7 @@ All state-changing events SHALL:
 
 Historical records SHALL NOT be deleted.
 
----
-
-## **4.5 Sovereign Control** {#4.5-sovereign-control}
+## **Sovereign Control**
 
 Emergency overrides SHALL be possible.
 
@@ -1137,9 +207,7 @@ Such overrides SHALL:
 
 * Not corrupt determinism
 
----
-
-## **4.6 Safety First Principle** {#4.6-safety-first-principle}
+## **Safety First Principle**
 
 Under degraded conditions:
 
@@ -1147,73 +215,63 @@ Safety SHALL take precedence over availability.
 
 No arbitration SHALL occur with incomplete information.
 
-# 
+# **5 System Architecture Overview**
 
-# **5 System Architecture Overview** {#5-system-architecture-overview}
-
----
-
-## **5.1 General Architecture** {#5.1-general-architecture}
+## **General Architecture**
 
 NIDSP 1.1 defines a layered, deterministic, interoperable architecture governing multi-UTMSP operations.
 
 The architecture SHALL:
 
 * Separate operational coordination from arbitration mechanics.
-
 * Prevent embedded priority bias.
-
 * Maintain cryptographic traceability of all state transitions.
-
 * Preserve safety under high-density and degraded conditions.
-
 * Support sovereign override without compromising determinism.
 
 The system SHALL operate as a federated interoperability layer across participating UTMSPs.
 
----
-
-## **5.2 Layered Architecture Model** {#5.2-layered-architecture-model}
+## **Layered Architecture Model**
 
 The architecture SHALL consist of the following logical layers:
 
-### **Layer 1 — Identity Layer** {#layer-1-—-identity-layer}
+### **Layer 1 — Identity Layer**
 
 Defines actor identity, role binding, authorization scope, and certificate validation.
 
-### **Layer 2 — Planning Layer** {#layer-2-—-planning-layer}
+### **Layer 2 — Planning Layer**
 
 Defines flight permission abstraction and OperationalVolume submission.
 
-### **Layer 3 — Intelligence Layer** {#layer-3-—-intelligence-layer}
+### **Layer 3 — Intelligence Layer**
 
 Provides advisory enrichment including density forecasts and hazard data.
 
-### **Layer 4 — Tactical Layer** {#layer-4-—-tactical-layer}
+### **Layer 4 — Tactical Layer**
 
 Provides real-time telemetry exchange, conflict advisory, and reroute coordination.
 
-### **Layer 5 — Core Arbitration Layer** {#layer-5-—-core-arbitration-layer}
+### **Layer 5 — Core Arbitration Layer**
 
 Implements deterministic negotiation state machine and arbitration trigger.
 
-### **Layer 6 — Policy Layer** {#layer-6-—-policy-layer}
+### **Layer 6 — Policy Layer**
 
 Defines deterministic priority ordering and negotiation constraints.
 
-### **Layer 7 — Risk Layer** {#layer-7-—-risk-layer}
+### **Layer 7 — Risk Layer**
 
 Provides structured risk classification input to Planning, Tactical, and Policy.
 
-### **Layer 8 — Infrastructure Layer** {#layer-8-—-infrastructure-layer}
+### **Layer 8 — Infrastructure Layer**
 
 Defines persistent airspace objects including corridors and ports.
 
-### **Layer 9 — Emergency Layer** {#layer-9-—-emergency-layer}
+### **Layer 9 — Emergency Layer**
 
 Implements sovereign override and ATC coordination.
 
-### **Layer 10 — Compliance & Certification Layer** {#layer-10-—-compliance-&-certification-layer}
+### **Layer 10 — Compliance & Certification Layer**
 
 Ensures enforcement, audit integrity, and performance validation.
 
@@ -1221,9 +279,7 @@ Each layer SHALL expose clearly defined interfaces to adjacent layers.
 
 No layer SHALL bypass Core arbitration authority.
 
----
-
-## **5.3 Logical Interaction Flow** {#5.3-logical-interaction-flow}
+## **Logical Interaction Flow**
 
 The following high-level interaction flow SHALL govern operations:
 
@@ -1251,11 +307,9 @@ The following high-level interaction flow SHALL govern operations:
 
 9. All state transitions SHALL be audit-anchored.
 
----
+## **Responsibility Allocation**
 
-## **5.4 Responsibility Allocation** {#5.4-responsibility-allocation}
-
-### **Core SHALL:** {#core-shall:}
+### **Core SHALL:**
 
 * Govern negotiation mechanics.
 
@@ -1265,13 +319,13 @@ The following high-level interaction flow SHALL govern operations:
 
 * Enforce deterministic resolution.
 
-### **Policy SHALL:** {#policy-shall:}
+### **Policy SHALL:**
 
 * Define ordering logic.
 
 * Remain immutable during active negotiation.
 
-### **Identity SHALL:** {#identity-shall:}
+### **Identity SHALL:**
 
 * Validate actor legitimacy.
 
@@ -1279,7 +333,7 @@ The following high-level interaction flow SHALL govern operations:
 
 * Propagate revocation.
 
-### **Tactical SHALL:** {#tactical-shall:}
+### **Tactical SHALL:**
 
 * Exchange telemetry.
 
@@ -1289,7 +343,7 @@ The following high-level interaction flow SHALL govern operations:
 
 * Escalate when required.
 
-### **Risk SHALL:** {#risk-shall:}
+### **Risk SHALL:**
 
 * Classify operational exposure.
 
@@ -1297,7 +351,7 @@ The following high-level interaction flow SHALL govern operations:
 
 * Provide deterministic Policy inputs.
 
-### **Infrastructure SHALL:** {#infrastructure-shall:}
+### **Infrastructure SHALL:**
 
 * Register corridors and ports.
 
@@ -1305,7 +359,7 @@ The following high-level interaction flow SHALL govern operations:
 
 * Integrate with Tactical and Planning.
 
-### **Emergency SHALL:** {#emergency-shall:}
+### **Emergency SHALL:**
 
 * Inject time-bounded override.
 
@@ -1313,9 +367,7 @@ The following high-level interaction flow SHALL govern operations:
 
 * Preserve audit integrity.
 
----
-
-## **5.5 Non-Responsibilities** {#5.5-non-responsibilities}
+## **Non-Responsibilities**
 
 The architecture SHALL NOT:
 
@@ -1329,9 +381,7 @@ The architecture SHALL NOT:
 
 * Allow modules to override deterministic logic outside defined interfaces.
 
----
-
-## **5.6 Data Integrity Model** {#5.6-data-integrity-model}
+## **Data Integrity Model**
 
 All modules SHALL adhere to:
 
@@ -1347,9 +397,7 @@ All modules SHALL adhere to:
 
 All cross-module data exchange SHALL be verifiable.
 
----
-
-## **5.7 Audit Anchoring Model** {#5.7-audit-anchoring-model}
+## **Audit Anchoring Model**
 
 Every state-changing event SHALL generate an AuditRecord.
 
@@ -1373,9 +421,7 @@ Audit records SHALL form a hash-linked chain.
 
 Tampering SHALL be detectable.
 
----
-
-## **5.8 Deterministic Boundary Conditions** {#5.8-deterministic-boundary-conditions}
+## **Deterministic Boundary Conditions**
 
 Under extreme conditions:
 
@@ -1389,9 +435,7 @@ Under extreme conditions:
 
 These safeguards SHALL preserve systemic integrity.
 
----
-
-## **5.9 Scalability Model** {#5.9-scalability-model}
+## **Scalability Model**
 
 The architecture SHALL:
 
@@ -1405,9 +449,7 @@ The architecture SHALL:
 
 Scalability SHALL NOT compromise determinism.
 
----
-
-## **5.10 Governance Boundary** {#5.10-governance-boundary}
+## **Governance Boundary**
 
 NIDSP SHALL operate as:
 
@@ -1419,15 +461,13 @@ NIDSP SHALL operate as:
 
 It SHALL NOT function as centralized traffic optimizer.
 
-# 
 
-# **6 NIDSP-Core v1.1** {#6-nidsp-core-v1.1}
 
-## **Deterministic Negotiation and Arbitration Engine** {#deterministic-negotiation-and-arbitration-engine}
+# **6 NIDSP-Core v1.1**
 
----
+## **Deterministic Negotiation and Arbitration Engine**
 
-## **6.1 Scope** {#6.1-scope}
+## **Scope**
 
 The Core module SHALL define the deterministic interoperability mechanism governing negotiation and arbitration between certified UTMSPs.
 
@@ -1461,9 +501,7 @@ The Core module SHALL NOT:
 
 * Bypass Identity validation.
 
----
-
-## **6.2 Core Responsibilities** {#6.2-core-responsibilities}
+## **Core Responsibilities**
 
 Core SHALL act as the sole authority for:
 
@@ -1479,11 +517,9 @@ Core SHALL act as the sole authority for:
 
 No other module SHALL independently resolve multi-UTMSP conflicts.
 
----
+## **Negotiation Session**
 
-## **6.3 Negotiation Session** {#6.3-negotiation-session}
-
-### **6.3.1 Session Creation** {#6.3.1-session-creation}
+### **6.Session Creation**
 
 A negotiation session SHALL be created when:
 
@@ -1509,9 +545,7 @@ Each session SHALL be assigned:
 
 * initial\_snapshot\_hash
 
----
-
-### **6.3.2 Deterministic Snapshot** {#6.3.2-deterministic-snapshot}
+### **6.Deterministic Snapshot**
 
 Upon session creation, Core SHALL:
 
@@ -1527,9 +561,7 @@ Upon session creation, Core SHALL:
 
 This snapshot SHALL serve as deterministic baseline.
 
----
-
-## **6.4 NegotiationEnvelope Structure** {#6.4-negotiationenvelope-structure}
+## **NegotiationEnvelope Structure**
 
 Each negotiation message SHALL contain:
 
@@ -1559,9 +591,7 @@ Duplicate envelope\_id SHALL be rejected.
 
 Invalid signature SHALL invalidate envelope.
 
----
-
-## **6.5 State Machine** {#6.5-state-machine}
+## **State Machine**
 
 Core SHALL enforce the following states:
 
@@ -1583,15 +613,13 @@ Transitions SHALL be deterministic.
 
 Undefined states SHALL NOT exist.
 
----
+## **Round Discipline**
 
-## **6.6 Round Discipline** {#6.6-round-discipline}
-
-### **6.6.1 Maximum Rounds** {#6.6.1-maximum-rounds}
+### **6.Maximum Rounds**
 
 Maximum negotiation rounds SHALL be defined in ArbitrationPolicy.
 
-### **6.6.2 Round Ordering** {#6.6.2-round-ordering}
+### **6.Round Ordering**
 
 Messages SHALL be processed in deterministic order:
 
@@ -1601,15 +629,13 @@ Messages SHALL be processed in deterministic order:
 
 * Verified against nonce sequence.
 
-### **6.6.3 Round Timeout** {#6.6.3-round-timeout}
+### **6.Round Timeout**
 
 If no valid response is received within configured timeout:
 
 * Escalation SHALL occur.
 
----
-
-## **6.7 Convergence Detection** {#6.7-convergence-detection}
+## **Convergence Detection**
 
 Negotiation SHALL be considered CONVERGED when:
 
@@ -1621,9 +647,7 @@ Negotiation SHALL be considered CONVERGED when:
 
 Convergence SHALL generate AuditRecord.
 
----
-
-## **6.8 Escalation** {#6.8-escalation}
+## **Escalation**
 
 Escalation SHALL occur when:
 
@@ -1641,27 +665,23 @@ Upon escalation:
 
 State SHALL transition to ARBITRATION\_PENDING.
 
----
+## **Arbitration**
 
-## **6.9 Arbitration** {#6.9-arbitration}
-
-### **6.9.1 Arbitration Trigger** {#6.9.1-arbitration-trigger}
+### **6.Arbitration Trigger**
 
 Core SHALL invoke ArbitrationPolicy using deterministic input snapshot.
 
-### **6.9.2 Deterministic Ordering** {#6.9.2-deterministic-ordering}
+### **6.Deterministic Ordering**
 
 Identical input snapshot SHALL produce identical arbitration outcome.
 
 No randomness SHALL be used.
 
-### **6.9.3 Tie-Break** {#6.9.3-tie-break}
+### **6.Tie-Break**
 
 Tie-break SHALL follow ordering defined in Policy.
 
----
-
-## **6.10 Storm Compression Mode** {#6.10-storm-compression-mode}
+## **Storm Compression Mode**
 
 If N-way conflict cluster detected:
 
@@ -1675,9 +695,7 @@ Core SHALL:
 
 Storm Compression SHALL NOT alter Policy rules.
 
----
-
-## **6.11 Swarm Handling** {#6.11-swarm-handling}
+## **Swarm Handling**
 
 If swarm\_flag \= true:
 
@@ -1687,9 +705,7 @@ If swarm\_flag \= true:
 
 Swarm resolution SHALL apply to all swarm members.
 
----
-
-## **6.12 Emergency Freeze Window** {#6.12-emergency-freeze-window}
+## **Emergency Freeze Window**
 
 Upon EmergencyAirspaceDirective with priority\_override\_flag:
 
@@ -1703,9 +719,7 @@ Core SHALL:
 
 Freeze SHALL be time-bounded.
 
----
-
-## **6.13 Network Partition Handling** {#6.13-network-partition-handling}
+## **Network Partition Handling**
 
 If communication partition detected:
 
@@ -1723,9 +737,7 @@ Upon reconnection:
 
 State reconciliation SHALL occur using last audit-anchored state.
 
----
-
-## **6.14 Safety Deadlock** {#6.14-safety-deadlock}
+## **Safety Deadlock**
 
 If arbitration cannot produce safe resolution:
 
@@ -1739,9 +751,7 @@ Deadlock SHALL:
 
 * Preserve separation safety.
 
----
-
-## **6.15 Replay Protection** {#6.15-replay-protection}
+## **Replay Protection**
 
 Core SHALL reject:
 
@@ -1757,9 +767,7 @@ Core SHALL reject:
 
 Replay attempts SHALL generate AuditRecord.
 
----
-
-## **6.16 Audit Requirements** {#6.16-audit-requirements}
+## **Audit Requirements**
 
 The following SHALL generate AuditRecord:
 
@@ -1779,9 +787,7 @@ The following SHALL generate AuditRecord:
 
 Audit records SHALL be hash-linked.
 
----
-
-## **6.17 Performance Guarantees** {#6.17-performance-guarantees}
+## **Performance Guarantees**
 
 Core SHALL:
 
@@ -1793,9 +799,7 @@ Core SHALL:
 
 Core SHALL maintain minimum 99.95% uptime.
 
----
-
-## **6.18 Non-Responsibilities** {#6.18-non-responsibilities}
+## **Non-Responsibilities**
 
 Core SHALL NOT:
 
@@ -1809,9 +813,7 @@ Core SHALL NOT:
 
 * Delete historical audit entries.
 
----
-
-## **6.19 Certification Requirements** {#6.19-certification-requirements}
+## **Certification Requirements**
 
 Certification SHALL validate:
 
@@ -1829,13 +831,11 @@ Certification SHALL validate:
 
 * Replay protection enforcement.
 
-# **7 NIDSP-Policy v1.1** {#7-nidsp-policy-v1.1}
+# **7 NIDSP-Policy v1.1**
 
-## **Deterministic Arbitration Policy Framework** {#deterministic-arbitration-policy-framework}
+## **Deterministic Arbitration Policy Framework**
 
----
-
-## **7.1 Scope** {#7.1-scope}
+## **Scope**
 
 The Policy module SHALL define the deterministic rule set governing negotiation constraints and arbitration ordering within NIDSP.
 
@@ -1865,9 +865,7 @@ The Policy module SHALL NOT:
 
 * Embed non-deterministic logic.
 
----
-
-## **7.2 ArbitrationPolicy Object** {#7.2-arbitrationpolicy-object}
+## **ArbitrationPolicy Object**
 
 Each ArbitrationPolicy SHALL contain:
 
@@ -1899,11 +897,9 @@ Each ArbitrationPolicy SHALL contain:
 
 * digital\_signature (Designated Authority)
 
----
+## **Deterministic Ordering Rule Set**
 
-## **7.3 Deterministic Ordering Rule Set** {#7.3-deterministic-ordering-rule-set}
-
-### **7.3.1 Ordering Inputs** {#7.3.1-ordering-inputs}
+### **7.Ordering Inputs**
 
 Policy MAY consider the following deterministic inputs:
 
@@ -1927,9 +923,7 @@ Policy MAY consider the following deterministic inputs:
 
 All inputs SHALL be captured in immutable snapshot prior to evaluation.
 
----
-
-### **7.3.2 Ordering Requirements** {#7.3.2-ordering-requirements}
+### **7.Ordering Requirements**
 
 Ordering SHALL:
 
@@ -1941,9 +935,7 @@ Ordering SHALL:
 
 * Avoid random selection.
 
----
-
-### **7.3.3 Prohibited Ordering Logic** {#7.3.3-prohibited-ordering-logic}
+### **7.Prohibited Ordering Logic**
 
 Policy SHALL NOT:
 
@@ -1955,9 +947,7 @@ Policy SHALL NOT:
 
 * Allow UTMSP self-declared priority without authority validation.
 
----
-
-## **7.4 Tie-Break Rule** {#7.4-tie-break-rule}
+## **Tie-Break Rule**
 
 If ordering inputs result in equal priority score:
 
@@ -1971,9 +961,7 @@ Tie-break SHALL occur using:
 
 No undefined tie state SHALL exist.
 
----
-
-## **7.5 Risk Weighting Rule** {#7.5-risk-weighting-rule}
+## **Risk Weighting Rule**
 
 If risk\_weighting\_rule is enabled:
 
@@ -1987,9 +975,7 @@ Risk weighting SHALL NOT reduce regulatory separation threshold.
 
 Risk weighting SHALL remain deterministic.
 
----
-
-## **7.6 Swarm Priority Rule** {#7.6-swarm-priority-rule}
+## **Swarm Priority Rule**
 
 If swarm\_priority\_rule is enabled:
 
@@ -2001,9 +987,7 @@ If swarm\_priority\_rule is enabled:
 
 Swarm priority SHALL NOT bypass emergency precedence.
 
----
-
-## **7.7 Infrastructure Priority Rule** {#7.7-infrastructure-priority-rule}
+## **Infrastructure Priority Rule**
 
 If infrastructure\_priority\_rule is enabled:
 
@@ -2013,9 +997,7 @@ If infrastructure\_priority\_rule is enabled:
 
 Infrastructure priority SHALL NOT override Emergency override rule.
 
----
-
-## **7.8 Emergency Override Rule** {#7.8-emergency-override-rule}
+## **Emergency Override Rule**
 
 If emergency\_override\_flag \= true:
 
@@ -2027,9 +1009,7 @@ Policy SHALL:
 
 Emergency override SHALL be time-bounded.
 
----
-
-## **7.9 Negotiation Constraints** {#7.9-negotiation-constraints}
+## **Negotiation Constraints**
 
 Policy SHALL define:
 
@@ -2045,9 +1025,7 @@ Policy SHALL define:
 
 Constraints SHALL be strictly enforced by Core.
 
----
-
-## **7.10 Policy Immutability** {#7.10-policy-immutability}
+## **Policy Immutability**
 
 During active negotiation:
 
@@ -2057,9 +1035,7 @@ During active negotiation:
 
 * New policy versions SHALL apply only to new negotiation sessions.
 
----
-
-## **7.11 Policy Versioning** {#7.11-policy-versioning}
+## **Policy Versioning**
 
 Each policy version SHALL:
 
@@ -2073,9 +1049,7 @@ Each policy version SHALL:
 
 Expired policies SHALL NOT be used in new sessions.
 
----
-
-## **7.12 Policy Integrity** {#7.12-policy-integrity}
+## **Policy Integrity**
 
 Policy SHALL be:
 
@@ -2087,9 +1061,7 @@ Policy SHALL be:
 
 Tampered policy SHALL invalidate negotiation.
 
----
-
-## **7.13 Policy Activation & Deactivation** {#7.13-policy-activation-&-deactivation}
+## **Policy Activation & Deactivation**
 
 Activation SHALL:
 
@@ -2103,9 +1075,7 @@ Deactivation SHALL:
 
 * Preserve historical record.
 
----
-
-## **7.14 Surge Prioritization Integration** {#7.14-surge-prioritization-integration}
+## **Surge Prioritization Integration**
 
 If Surge Prioritization Mode is activated:
 
@@ -2121,9 +1091,7 @@ Policy SHALL temporarily enforce:
 
 Surge prioritization SHALL be deterministic and auditable.
 
----
-
-## **7.15 Certification Requirements** {#7.15-certification-requirements}
+## **Certification Requirements**
 
 Certification SHALL verify:
 
@@ -2143,9 +1111,7 @@ Certification SHALL verify:
 
 Certification SHALL include identical-input replay testing.
 
----
-
-## **7.16 Non-Responsibilities** {#7.16-non-responsibilities}
+## **Non-Responsibilities**
 
 Policy SHALL NOT:
 
@@ -2161,15 +1127,13 @@ Policy SHALL NOT:
 
 * Override Emergency precedence rules.
 
-# 
 
-# **8 NIDSP-Registry v1.0** {#8-nidsp-registry-v1.0}
 
-## **National UIN and Asset Registry Governance** {#national-uin-and-asset-registry-governance}
+# **8 NIDSP-Registry v1.0**
 
----
+## **National UIN and Asset Registry Governance**
 
-## **8.1 Scope** {#8.1-scope}
+## **Scope**
 
 The Registry module SHALL define the governance, lifecycle, and interoperability rules for unmanned aircraft identifiers (UIN), asset binding, and custodial continuity across UTMSPs.
 
@@ -2199,11 +1163,9 @@ The Registry module SHALL NOT:
 
 * Permit deletion of historical records.
 
----
+## **UIN Namespace**
 
-## **8.2 UIN Namespace** {#8.2-uin-namespace}
-
-### **8.2.1 UIN Structure** {#8.2.1-uin-structure}
+### **8.UIN Structure**
 
 Each unmanned aircraft SHALL be assigned a globally unique UIN.
 
@@ -2223,9 +1185,7 @@ UIN format SHALL be:
 
 * Machine-parseable
 
----
-
-### **8.2.2 UIN Integrity** {#8.2.2-uin-integrity}
+### **8.UIN Integrity**
 
 Duplicate UIN issuance SHALL be prohibited.
 
@@ -2233,9 +1193,7 @@ Registry SHALL validate uniqueness prior to issuance.
 
 Tampering or reuse SHALL trigger Compliance event.
 
----
-
-## **8.3 Asset Binding** {#8.3-asset-binding}
+## **Asset Binding**
 
 Each UIN SHALL be bound to:
 
@@ -2251,11 +1209,9 @@ Each UIN SHALL be bound to:
 
 Binding SHALL be cryptographically verifiable.
 
----
+## **Custodial Continuity**
 
-## **8.4 Custodial Continuity** {#8.4-custodial-continuity}
-
-### **8.4.1 Operator Transfer** {#8.4.1-operator-transfer}
+### **8.Operator Transfer**
 
 When aircraft changes operator:
 
@@ -2267,7 +1223,7 @@ When aircraft changes operator:
 
 * AuditRecord SHALL be generated.
 
-### **8.4.2 UTMSP Portability** {#8.4.2-utmsp-portability}
+### **8.UTMSP Portability**
 
 Aircraft SHALL be portable between UTMSPs without requiring new UIN issuance.
 
@@ -2279,9 +1235,7 @@ Portability SHALL:
 
 * Not alter identity binding.
 
----
-
-## **8.5 Device Certificate Binding** {#8.5-device-certificate-binding}
+## **Device Certificate Binding**
 
 Each UIN SHALL be associated with:
 
@@ -2299,9 +1253,7 @@ Certificate SHALL:
 
 * Be checked prior to Tactical participation.
 
----
-
-## **8.6 Registry Lookup Requirements** {#8.6-registry-lookup-requirements}
+## **Registry Lookup Requirements**
 
 Registry SHALL support:
 
@@ -2315,11 +1267,9 @@ Registry SHALL support:
 
 Lookup latency SHALL comply with performance section.
 
----
+## **Registry Update Lifecycle**
 
-## **8.7 Registry Update Lifecycle** {#8.7-registry-update-lifecycle}
-
-### **8.7.1 Creation** {#8.7.1-creation}
+### **8.Creation**
 
 UIN issuance SHALL:
 
@@ -2329,7 +1279,7 @@ UIN issuance SHALL:
 
 * Be audit-anchored.
 
-### **8.7.2 Update** {#8.7.2-update}
+### **8.Update**
 
 Registry update SHALL:
 
@@ -2339,7 +1289,7 @@ Registry update SHALL:
 
 * Generate AuditRecord.
 
-### **8.7.3 Suspension** {#8.7.3-suspension}
+### **8.Suspension**
 
 Suspension SHALL:
 
@@ -2349,7 +1299,7 @@ Suspension SHALL:
 
 * Be auditable.
 
-### **8.7.4 Revocation** {#8.7.4-revocation}
+### **8.Revocation**
 
 Revocation SHALL:
 
@@ -2361,9 +1311,7 @@ Revocation SHALL:
 
 Historical records SHALL remain preserved.
 
----
-
-## **8.8 Registry and Identity Integration** {#8.8-registry-and-identity-integration}
+## **Registry and Identity Integration**
 
 Registry SHALL validate:
 
@@ -2375,9 +1323,7 @@ Registry SHALL validate:
 
 Registry SHALL reject binding attempts from revoked identities.
 
----
-
-## **8.9 Registry and Tactical Integration** {#8.9-registry-and-tactical-integration}
+## **Registry and Tactical Integration**
 
 Prior to accepting TelemetryObject:
 
@@ -2391,9 +1337,7 @@ Tactical SHALL verify:
 
 Invalid UIN SHALL be rejected.
 
----
-
-## **8.10 Registry and Risk Integration** {#8.10-registry-and-risk-integration}
+## **Registry and Risk Integration**
 
 RiskClass MAY reference UIN.
 
@@ -2401,9 +1345,7 @@ Registry SHALL preserve aircraft model and configuration metadata necessary for 
 
 Registry SHALL NOT compute RiskClass.
 
----
-
-## **8.11 Audit Requirements** {#8.11-audit-requirements}
+## **Audit Requirements**
 
 The following SHALL generate AuditRecord:
 
@@ -2423,9 +1365,7 @@ Audit records SHALL be hash-linked.
 
 Deletion SHALL NOT be permitted.
 
----
-
-## **8.12 Data Integrity Requirements** {#8.12-data-integrity-requirements}
+## **Data Integrity Requirements**
 
 Registry SHALL:
 
@@ -2439,9 +1379,7 @@ Registry SHALL:
 
 Corrupted registry entry SHALL trigger degraded mode for affected aircraft.
 
----
-
-## **8.13 Performance Requirements** {#8.13-performance-requirements}
+## **Performance Requirements**
 
 Registry lookup SHALL complete within:
 
@@ -2453,9 +1391,7 @@ Registry SHALL support:
 
 * Concurrent lookups under peak telemetry load.
 
----
-
-## **8.14 Certification Requirements** {#8.14-certification-requirements}
+## **Certification Requirements**
 
 Certification SHALL verify:
 
@@ -2473,9 +1409,7 @@ Certification SHALL verify:
 
 Testing SHALL include high-volume lookup simulation.
 
----
-
-## **8.15 Non-Responsibilities** {#8.15-non-responsibilities}
+## **Non-Responsibilities**
 
 Registry SHALL NOT:
 
@@ -2491,15 +1425,13 @@ Registry SHALL NOT:
 
 * Override Emergency directive.
 
-# 
 
-# **9 NIDSP-Identity v1.0** {#9-nidsp-identity-v1.0}
 
-## **Actor Identity, Role, and Authorization Governance** {#actor-identity,-role,-and-authorization-governance}
+# **9 NIDSP-Identity v1.0**
 
----
+## **Actor Identity, Role, and Authorization Governance**
 
-## **9.1 Scope** {#9.1-scope}
+## **Scope**
 
 The Identity module SHALL define the lifecycle, structure, validation, authorization, and revocation governance of all actors participating in the NIDSP ecosystem.
 
@@ -2531,9 +1463,7 @@ The Identity module SHALL NOT:
 
 * Modify Infrastructure objects.
 
----
-
-## **9.2 Actor Categories** {#9.2-actor-categories}
+## **Actor Categories**
 
 The following actor categories SHALL be recognized:
 
@@ -2555,9 +1485,7 @@ Each actor SHALL possess exactly one primary IdentityRecord.
 
 An actor MAY hold multiple roles, but each role SHALL be explicitly declared and authorized.
 
----
-
-## **9.3 IdentityRecord Structure** {#9.3-identityrecord-structure}
+## **IdentityRecord Structure**
 
 Each IdentityRecord SHALL include:
 
@@ -2593,9 +1521,7 @@ IdentityRecord SHALL be versioned.
 
 identity\_id SHALL remain immutable throughout lifecycle.
 
----
-
-## **9.4 Role Classification** {#9.4-role-classification}
+## **Role Classification**
 
 Each role SHALL define:
 
@@ -2617,9 +1543,7 @@ Unauthorized role change SHALL be rejected.
 
 Role definitions SHALL be versioned and signed.
 
----
-
-## **9.5 Authorization Scope** {#9.5-authorization-scope}
+## **Authorization Scope**
 
 AuthorizationScope SHALL define operational boundaries applicable to identity.
 
@@ -2641,9 +1565,7 @@ Planning and Tactical modules SHALL validate AuthorizationScope prior to operati
 
 Violation SHALL trigger Compliance event.
 
----
-
-## **9.6 Credential Binding** {#9.6-credential-binding}
+## **Credential Binding**
 
 Each IdentityRecord SHALL be bound to:
 
@@ -2665,11 +1587,9 @@ All signed messages SHALL be validated against stored certificate fingerprint.
 
 Expired or revoked certificates SHALL invalidate operational participation.
 
----
+## **Identity Lifecycle**
 
-## **9.7 Identity Lifecycle** {#9.7-identity-lifecycle}
-
-### **9.7.1 Creation** {#9.7.1-creation}
+### **9.Creation**
 
 IdentityRecord SHALL be created by authorized issuing authority.
 
@@ -2683,9 +1603,7 @@ Creation SHALL:
 
 * Generate AuditRecord
 
----
-
-### **9.7.2 Update** {#9.7.2-update}
+### **9.Update**
 
 Identity update SHALL:
 
@@ -2697,9 +1615,7 @@ Identity update SHALL:
 
 * Generate AuditRecord
 
----
-
-### **9.7.3 Suspension** {#9.7.3-suspension}
+### **9.Suspension**
 
 Suspension SHALL:
 
@@ -2711,9 +1627,7 @@ Suspension SHALL:
 
 * Generate AuditRecord
 
----
-
-### **9.7.4 Revocation** {#9.7.4-revocation}
+### **9.Revocation**
 
 Revocation SHALL:
 
@@ -2729,9 +1643,7 @@ Revocation SHALL:
 
 Historical records SHALL remain immutable.
 
----
-
-## **9.8 Mid-Flight Revocation Handling** {#9.8-mid-flight-revocation-handling}
+## **Mid-Flight Revocation Handling**
 
 If identity is revoked during active flight:
 
@@ -2745,9 +1657,7 @@ If identity is revoked during active flight:
 
 Completed arbitration outcomes SHALL remain immutable.
 
----
-
-## **9.9 Swarm Identity Binding** {#9.9-swarm-identity-binding}
+## **Swarm Identity Binding**
 
 Swarm SHALL reference:
 
@@ -2759,9 +1669,7 @@ All identities SHALL be active and authorized.
 
 Swarm participation SHALL NOT expand AuthorizationScope.
 
----
-
-## **9.10 Infrastructure Identity Binding** {#9.10-infrastructure-identity-binding}
+## **Infrastructure Identity Binding**
 
 Infrastructure objects SHALL reference:
 
@@ -2771,33 +1679,29 @@ Unauthorized identities SHALL NOT create or modify infrastructure.
 
 Ownership transfer SHALL require signed update and AuditRecord.
 
----
+## **Identity Integration with Other Modules**
 
-## **9.11 Identity Integration with Other Modules** {#9.11-identity-integration-with-other-modules}
-
-### **Registry Integration** {#registry-integration}
+### **Registry Integration**
 
 Registry SHALL validate active Identity prior to UIN binding.
 
-### **Planning Integration** {#planning-integration}
+### **Planning Integration**
 
 Planning SHALL validate AuthorizationScope.
 
-### **Tactical Integration** {#tactical-integration}
+### **Tactical Integration**
 
 Tactical SHALL validate certificate and identity status for each TelemetryObject.
 
-### **Core Integration** {#core-integration}
+### **Core Integration**
 
 Core SHALL reject NegotiationEnvelope from revoked identity.
 
-### **Emergency Integration** {#emergency-integration}
+### **Emergency Integration**
 
 Only authorized identities SHALL issue EmergencyAirspaceDirective.
 
----
-
-## **9.12 Revocation Propagation Requirements** {#9.12-revocation-propagation-requirements}
+## **Revocation Propagation Requirements**
 
 Revocation SHALL propagate to:
 
@@ -2815,9 +1719,7 @@ Propagation delay SHALL comply with performance norms.
 
 Messages from revoked identity SHALL be rejected.
 
----
-
-## **9.13 Audit Requirements** {#9.13-audit-requirements}
+## **Audit Requirements**
 
 The following SHALL generate AuditRecord:
 
@@ -2839,9 +1741,7 @@ Audit records SHALL be hash-linked.
 
 Deletion SHALL NOT be permitted.
 
----
-
-## **9.14 Data Integrity & Security** {#9.14-data-integrity-&-security}
+## **Data Integrity & Security**
 
 Identity data SHALL:
 
@@ -2855,9 +1755,7 @@ Identity data SHALL:
 
 Compromised identity SHALL trigger Compliance escalation.
 
----
-
-## **9.15 Performance Requirements** {#9.15-performance-requirements}
+## **Performance Requirements**
 
 Identity validation SHALL complete within:
 
@@ -2867,9 +1765,7 @@ Revocation check SHALL complete within:
 
 * 1000 milliseconds
 
----
-
-## **9.16 Certification Requirements** {#9.16-certification-requirements}
+## **Certification Requirements**
 
 Certification SHALL verify:
 
@@ -2885,9 +1781,7 @@ Certification SHALL verify:
 
 * Deterministic validation behavior under load
 
----
-
-## **9.17 Non-Responsibilities** {#9.17-non-responsibilities}
+## **Non-Responsibilities**
 
 Identity SHALL NOT:
 
@@ -2901,15 +1795,13 @@ Identity SHALL NOT:
 
 * Delete historical audit records
 
-# 
 
-# **10 NIDSP-Planning v1.1** {#10-nidsp-planning-v1.1}
 
-## **Flight Planning and Permission Abstraction Governance** {#flight-planning-and-permission-abstraction-governance}
+# **10 NIDSP-Planning v1.1**
 
----
+## **Flight Planning and Permission Abstraction Governance**
 
-## **10.1 Scope** {#10.1-scope}
+## **Scope**
 
 The Planning module SHALL define the structured submission, validation, and negotiation initiation process for flight operations within the NIDSP ecosystem.
 
@@ -2941,170 +1833,120 @@ The Planning module SHALL NOT:
 
 * Bypass Identity validation.
 
----
-
-## **10.2 Flight Intent Submission** {#10.2-flight-intent-submission}
+## **Flight Intent Submission**
 
 Each flight operation SHALL begin with submission of FlightIntent.
 
 FlightIntent SHALL include:
 
 * flight\_id (UUID)
-
 * operator\_identity\_id
-
 * UIN
-
 * mission\_classification
-
 * OperationalVolume
-
 * requested\_time\_window
-
 * swarm\_flag (if applicable)
-
 * infrastructure\_reference (if applicable)
-
 * declared Risk parameters (if applicable)
-
 * digital\_signature
 
 FlightIntent SHALL be validated against Identity and Registry prior to acceptance.
 
----
-
-## **10.3 OperationalVolume Structure** {#10.3-operationalvolume-structure}
+## **OperationalVolume Structure**
 
 OperationalVolume SHALL define:
 
 * 3D geographic boundary (latitude, longitude, altitude)
-
 * time\_window
-
 * contingency\_buffer
-
 * maximum\_velocity
-
 * optional corridor alignment
 
 OperationalVolume SHALL:
 
 * Be deterministic.
-
 * Be machine-parseable.
-
 * Be immutable once negotiation begins.
 
 Modifications SHALL generate new version and AuditRecord.
 
----
-
-## **10.4 Authorization Validation** {#10.4-authorization-validation}
+## **Authorization Validation**
 
 Planning SHALL validate:
 
 * Operator Identity active status.
-
 * AuthorizationScope compatibility.
-
 * Swarm eligibility (if applicable).
-
 * Infrastructure interaction rights.
 
 Violation SHALL result in rejection and AuditRecord.
 
----
-
-## **10.5 Risk Injection** {#10.5-risk-injection}
+## **Risk Injection**
 
 Planning SHALL assign RiskClass during submission.
 
 RiskClass SHALL include:
 
 * ARC classification
-
 * SAIL level
-
 * GroundRiskClass
-
 * Operational Safety Objectives
 
 RiskClass SHALL be audit-anchored.
 
 RiskClass SHALL remain immutable during negotiation session.
 
----
-
-## **10.6 Infrastructure Validation** {#10.6-infrastructure-validation}
+## **10.6 Infrastructure Validation**
 
 Planning SHALL validate:
 
 * DroneCorridor geometry compliance.
-
 * DronePort availability.
-
 * ReservedVolume restrictions.
-
 * TemporaryInfrastructureZone restrictions.
 
 Conflict SHALL:
 
 * Trigger negotiation through Core.
-
 * Generate AuditRecord.
 
 Infrastructure SHALL NOT automatically grant permission.
 
----
-
-## **10.7 Swarm Planning Extension** {#10.7-swarm-planning-extension}
+## **10.7 Swarm Planning Extension**
 
 If swarm\_flag \= true:
 
 Planning SHALL:
 
 * Assign swarm\_id.
-
 * Validate participating\_identity\_ids.
-
 * Define shared\_operational\_volume.
-
 * Validate swarm\_size limit.
-
 * Inject swarm\_risk\_id.
 
 Swarm planning SHALL NOT expand AuthorizationScope.
 
----
-
-## **10.8 Advisory Integration** {#10.8-advisory-integration}
+## **10.8 Advisory Integration**
 
 Planning MAY request advisory input from Intelligence module.
 
 Advisory SHALL:
 
 * Be non-binding.
-
 * Provide density forecast.
-
 * Provide hazard notification.
-
 * Provide confidence indicator.
 
 Planning SHALL record advisory reference in AuditRecord.
 
 Advisory SHALL NOT override regulatory constraints.
 
----
-
-## **10.9 Conflict Detection and Escalation** {#10.9-conflict-detection-and-escalation}
+## **10.9 Conflict Detection and Escalation**
 
 Planning SHALL detect:
 
 * Overlapping OperationalVolume.
-
 * Infrastructure capacity exceedance.
-
 * Risk incompatibility.
 
 Upon detection:
@@ -3113,42 +1955,29 @@ Planning SHALL initiate negotiation session in Core.
 
 Planning SHALL NOT independently resolve multi-UTMSP conflicts.
 
----
-
-## **10.10 Negotiation Initiation** {#10.10-negotiation-initiation}
+## **10.10 Negotiation Initiation**
 
 When conflict exists:
 
 Planning SHALL:
 
 * Generate NegotiationEnvelope.
-
 * Submit immutable snapshot to Core.
-
 * Include Policy version reference.
-
 * Include RiskClass reference.
-
 * Include Infrastructure reference.
 
 Core SHALL assume authority after submission.
 
----
-
-## **10.11 Approval State** {#10.11-approval-state}
+## **10.11 Approval State**
 
 Planning SHALL support the following states:
 
 1. SUBMITTED
-
 2. VALIDATED
-
 3. NEGOTIATION\_PENDING
-
 4. APPROVED
-
 5. DENIED
-
 6. SUSPENDED
 
 State transitions SHALL generate AuditRecord.
@@ -3156,48 +1985,34 @@ State transitions SHALL generate AuditRecord.
 Approval SHALL require:
 
 * Identity validation
-
 * RiskClass assignment
-
 * Infrastructure validation
-
 * Core convergence or arbitration resolution
 
----
-
-## **10.12 Modification Handling** {#10.12-modification-handling}
+## **10.12 Modification Handling**
 
 FlightIntent modification SHALL:
 
 * Generate new version.
-
 * Trigger revalidation.
-
 * Trigger new negotiation if necessary.
-
 * Preserve previous version in audit chain.
 
 Modification SHALL NOT alter existing arbitration result retroactively.
 
----
-
-## **10.13 Emergency Interaction** {#10.13-emergency-interaction}
+## **10.13 Emergency Interaction**
 
 If EmergencyAirspaceDirective affects submitted or approved flight:
 
 Planning SHALL:
 
 * Revalidate against directive.
-
 * Initiate negotiation if required.
-
 * Suspend approval if mandated.
 
 Emergency revalidation SHALL be audit-anchored.
 
----
-
-## **10.14 Performance Requirements** {#10.14-performance-requirements}
+## **10.14 Performance Requirements**
 
 Planning validation SHALL complete within:
 
@@ -3209,131 +2024,86 @@ Conflict detection SHALL not exceed:
 
 Planning SHALL scale to national flight density levels.
 
----
-
-## **10.15 Audit Requirements** {#10.15-audit-requirements}
+## **10.15 Audit Requirements**
 
 The following SHALL generate AuditRecord:
 
 * FlightIntent submission
-
 * Validation success or rejection
-
 * RiskClass assignment
-
 * Infrastructure validation
-
 * Negotiation initiation
-
 * Approval
-
 * Denial
-
 * Modification
-
 * Emergency revalidation
 
 Audit records SHALL be hash-linked.
 
 Deletion SHALL NOT be permitted.
 
----
-
-## **10.16 Degraded Mode Handling** {#10.16-degraded-mode-handling}
+## **10.16 Degraded Mode Handling**
 
 If system enters degraded mode:
 
 * New non-critical flight submissions MAY be restricted.
-
 * Emergency flights SHALL remain permitted.
-
 * Approved flights SHALL maintain safety guarantees.
-
 * Arbitration SHALL not occur with incomplete input.
 
 Degraded mode activation SHALL generate AuditRecord.
 
----
-
-## **10.17 Certification Requirements** {#10.17-certification-requirements}
+## **10.17 Certification Requirements**
 
 Certification SHALL validate:
 
 * Deterministic OperationalVolume handling.
-
 * AuthorizationScope enforcement.
-
 * Infrastructure validation correctness.
-
 * Risk injection stability.
-
 * Swarm planning integrity.
-
 * Emergency revalidation correctness.
-
 * Performance bounds compliance.
 
----
-
-## **10.18 Non-Responsibilities** {#10.18-non-responsibilities}
+## **10.18 Non-Responsibilities**
 
 Planning SHALL NOT:
 
 * Execute arbitration.
-
 * Compute dynamic reroutes.
-
 * Modify RiskClass post-negotiation.
-
 * Override Emergency directives.
-
 * Delete historical planning records.
 
-# 
 
-# **11 NIDSP-Intelligence v1.1** {#11-nidsp-intelligence-v1.1}
+# **11 NIDSP-Intelligence v1.1**
 
-## **Advisory, Forecasting, and Hazard Information Layer** {#advisory,-forecasting,-and-hazard-information-layer}
+## **Advisory, Forecasting, and Hazard Information Layer**
 
----
-
-## **11.1 Scope** {#11.1-scope}
+## **11.1 Scope**
 
 The Intelligence module SHALL define the structured advisory and predictive data services available to Planning and Tactical modules within the NIDSP architecture.
 
 The Intelligence module SHALL:
 
 * Define DensityForecast object.
-
 * Define HazardObject schema.
-
 * Provide advisory enrichment to Planning.
-
 * Provide predictive advisory to Tactical.
-
 * Include confidence indicators.
-
 * Ensure deterministic data structure.
-
 * Anchor advisory generation in audit chain.
 
 The Intelligence module SHALL NOT:
 
 * Override ArbitrationPolicy.
-
 * Execute negotiation.
-
 * Modify RiskClass.
-
 * Issue flight permissions.
-
 * Override Emergency directives.
-
 * Perform conflict resolution.
 
----
-
-## **11.2 Purpose** {#11.2-purpose}
+## **11.2 Purpose**
 
 The purpose of the Intelligence module is to enhance situational awareness and proactive safety planning without compromising deterministic arbitration authority.
 
@@ -3341,197 +2111,135 @@ Intelligence SHALL function as advisory input only.
 
 All binding decisions SHALL remain under Planning, Tactical, Core, and Policy modules.
 
----
-
-## **11.3 Data Sources** {#11.3-data-sources}
+## **11.3 Data Sources**
 
 Intelligence MAY integrate:
 
 * Historical traffic density datasets
-
 * Real-time traffic telemetry aggregates
-
 * Weather data
-
 * Temporary hazard notifications
-
 * Infrastructure usage trends
-
 * Regulator-issued advisories
 
 All datasets SHALL:
 
 * Be versioned.
-
 * Be timestamped.
-
 * Be cryptographically verifiable where applicable.
 
----
-
-## **11.4 DensityForecast Object** {#11.4-densityforecast-object}
+## **11.4 DensityForecast Object**
 
 DensityForecast SHALL include:
 
 * forecast\_id (UUID)
-
 * geographic\_boundary
-
 * altitude\_range
-
 * time\_window
-
 * predicted\_traffic\_density
-
 * density\_classification (LOW, MEDIUM, HIGH, CRITICAL)
-
 * confidence\_score (0–1)
-
 * dataset\_version\_reference
-
 * generation\_timestamp
-
 * digital\_signature
 
 DensityForecast SHALL:
 
 * Be machine-parseable.
-
 * Be time-bounded.
-
 * Be advisory only.
 
----
-
-## **11.5 HazardObject Schema** {#11.5-hazardobject-schema}
+## **11.5 HazardObject Schema**
 
 HazardObject SHALL include:
 
 * hazard\_id (UUID)
-
 * hazard\_type (WEATHER, INFRASTRUCTURE, TEMPORARY\_RESTRICTION, OTHER)
-
 * geographic\_boundary
-
 * altitude\_range
-
 * time\_window
-
 * severity\_level
-
 * recommended\_action
-
 * issuing\_authority
-
 * digital\_signature
 
 HazardObject SHALL:
 
 * Be time-bounded.
-
 * Be cryptographically verifiable if regulator-issued.
-
 * Be advisory unless escalated via Emergency module.
 
----
-
-## **11.6 Advisory Integration with Planning** {#11.6-advisory-integration-with-planning}
+## **11.6 Advisory Integration with Planning**
 
 Planning MAY query Intelligence prior to flight approval.
 
 Planning SHALL:
 
 * Record advisory reference.
-
 * Not automatically deny flight solely based on advisory.
-
 * Consider advisory during OperationalVolume evaluation.
 
 Advisory SHALL NOT replace regulatory constraints.
 
----
-
-## **11.7 Advisory Integration with Tactical** {#11.7-advisory-integration-with-tactical}
+## **11.7 Advisory Integration with Tactical**
 
 Tactical MAY use Intelligence to:
 
 * Predict density escalation.
-
 * Issue INFORMATIVE or SUGGESTIVE advisory.
-
 * Preemptively suggest reroute.
 
 Intelligence SHALL NOT issue DIRECTIVE advisory.
 
 DIRECTIVE advisory SHALL originate from Tactical logic.
 
----
-
-## **11.8 Confidence Indicators** {#11.8-confidence-indicators}
+## **11.8 Confidence Indicators**
 
 All predictive data SHALL include confidence\_score.
 
 Confidence\_score SHALL:
 
 * Be deterministic for given dataset.
-
 * Be bounded between 0 and 1\.
-
 * Be auditable.
 
 Low-confidence forecasts SHALL NOT trigger binding restriction.
 
----
-
-## **11.9 Dataset Integrity Requirements** {#11.9-dataset-integrity-requirements}
+## **11.9 Dataset Integrity Requirements**
 
 All Intelligence datasets SHALL:
 
 * Be versioned.
-
 * Be hash-verified.
-
 * Be signed by issuing authority if regulator-controlled.
-
 * Be audit-anchored upon update.
 
 Corrupted dataset SHALL trigger degraded mode.
 
----
-
-## **11.10 Emergency Interaction** {#11.10-emergency-interaction}
+## **11.10 Emergency Interaction**
 
 If hazard escalates beyond advisory threshold:
 
 * Intelligence SHALL notify Emergency module.
-
 * Emergency module SHALL determine binding directive.
 
 Intelligence SHALL NOT independently escalate to binding restriction.
 
----
-
-## **11.11 Audit Requirements** {#11.11-audit-requirements}
+## **11.11 Audit Requirements**
 
 The following SHALL generate AuditRecord:
 
 * DensityForecast generation.
-
 * HazardObject issuance.
-
 * Dataset update.
-
 * Advisory referenced during Planning.
-
 * Advisory referenced during Tactical escalation.
 
 Audit records SHALL be hash-linked.
 
 Deletion SHALL NOT be permitted.
 
----
-
-## **11.12 Performance Requirements** {#11.12-performance-requirements}
+## **11.12 Performance Requirements**
 
 Forecast query SHALL complete within:
 
@@ -3543,9 +2251,7 @@ Hazard query SHALL complete within:
 
 Bulk forecast generation SHALL NOT block Tactical operations.
 
----
-
-## **11.13 Degraded Mode Handling** {#11.13-degraded-mode-handling}
+## **11.13 Degraded Mode Handling**
 
 If Intelligence becomes unavailable:
 
@@ -3559,9 +2265,7 @@ Intelligence failure SHALL NOT halt Core operation.
 
 Degraded state SHALL generate AuditRecord.
 
----
-
-## **11.14 Certification Requirements** {#11.14-certification-requirements}
+## **11.14 Certification Requirements**
 
 Certification SHALL verify:
 
@@ -3577,9 +2281,7 @@ Certification SHALL verify:
 
 * Performance bounds compliance.
 
----
-
-## **11.15 Non-Responsibilities** {#11.15-non-responsibilities}
+## **11.15 Non-Responsibilities**
 
 Intelligence SHALL NOT:
 
@@ -3595,15 +2297,13 @@ Intelligence SHALL NOT:
 
 * Modify Infrastructure geometry.
 
-# 
 
-# **12 NIDSP-Tactical v1.0** {#12-nidsp-tactical-v1.0}
 
-## **Real-Time Coordination and Conflict Advisory Layer** {#real-time-coordination-and-conflict-advisory-layer}
+# **12 NIDSP-Tactical v1.0**
 
----
+## **Real-Time Coordination and Conflict Advisory Layer**
 
-## **12.1 Scope** {#12.1-scope}
+## **12.1 Scope**
 
 The Tactical module SHALL define the real-time operational data exchange, conflict detection, advisory generation, and escalation mechanisms between UTMSPs.
 
@@ -3641,9 +2341,7 @@ The Tactical module SHALL NOT:
 
 * Delete audit records.
 
----
-
-## **12.2 Operational Context** {#12.2-operational-context}
+## **12.2 Operational Context**
 
 Tactical SHALL operate during:
 
@@ -3661,9 +2359,7 @@ Tactical SHALL operate during:
 
 Tactical SHALL remain functional independently of Planning once flight is active.
 
----
-
-## **12.3 TelemetryObject** {#12.3-telemetryobject}
+## **12.3 TelemetryObject**
 
 Each active flight SHALL transmit TelemetryObject containing:
 
@@ -3701,9 +2397,7 @@ TelemetryObject SHALL:
 
 * Be rejected if timestamp stale beyond threshold.
 
----
-
-## **12.4 Telemetry Validation** {#12.4-telemetry-validation}
+## **12.4 Telemetry Validation**
 
 Upon receipt, Tactical SHALL validate:
 
@@ -3721,9 +2415,7 @@ Upon receipt, Tactical SHALL validate:
 
 Invalid telemetry SHALL be rejected and audit-anchored.
 
----
-
-## **12.5 Conflict Detection** {#12.5-conflict-detection}
+## **12.5 Conflict Detection**
 
 Tactical SHALL continuously evaluate:
 
@@ -3741,9 +2433,7 @@ Tactical SHALL continuously evaluate:
 
 Conflict detection SHALL be deterministic.
 
----
-
-## **12.6 ConflictAlert Object** {#12.6-conflictalert-object}
+## **12.6 ConflictAlert Object**
 
 Upon predicted or detected violation:
 
@@ -3775,9 +2465,7 @@ Tactical SHALL generate ConflictAlert containing:
 
 ConflictAlert SHALL NOT contain arbitration decision.
 
----
-
-## **12.7 Advisory Classification** {#12.7-advisory-classification}
+## **12.7 Advisory Classification**
 
 Advisory SHALL be classified as:
 
@@ -3787,15 +2475,15 @@ Advisory SHALL be classified as:
 
 3. DIRECTIVE
 
-### **INFORMATIVE** {#informative}
+### **INFORMATIVE**
 
 Awareness only.
 
-### **SUGGESTIVE** {#suggestive}
+### **SUGGESTIVE**
 
 Voluntary maneuver proposal.
 
-### **DIRECTIVE** {#directive}
+### **DIRECTIVE**
 
 Mandatory maneuver required to preserve safety.
 
@@ -3803,9 +2491,7 @@ DIRECTIVE SHALL be based on separation threshold breach.
 
 DIRECTIVE SHALL NOT determine arbitration winner.
 
----
-
-## **12.8 DynamicReroute Object** {#12.8-dynamicreroute-object}
+## **12.8 DynamicReroute Object**
 
 DynamicReroute SHALL contain:
 
@@ -3835,9 +2521,7 @@ Reroute SHALL:
 
 Repeated incompatible reroutes SHALL trigger escalation.
 
----
-
-## **12.9 Escalation to Core** {#12.9-escalation-to-core}
+## **12.9 Escalation to Core**
 
 Escalation SHALL occur when:
 
@@ -3859,9 +2543,7 @@ Escalation SHALL:
 
 * Anchor escalation in audit chain.
 
----
-
-## **12.10 Swarm Integration** {#12.10-swarm-integration}
+## **12.10 Swarm Integration**
 
 If swarm\_flag \= true:
 
@@ -3875,9 +2557,7 @@ If swarm\_flag \= true:
 
 Partial reroute SHALL NOT occur unless explicitly permitted.
 
----
-
-## **12.11 Infrastructure Enforcement** {#12.11-infrastructure-enforcement}
+## **12.11 Infrastructure Enforcement**
 
 Tactical SHALL validate:
 
@@ -3893,9 +2573,7 @@ Capacity violation SHALL generate advisory within performance bounds.
 
 Emergency override SHALL supersede capacity limit.
 
----
-
-## **12.12 Emergency Enforcement** {#12.12-emergency-enforcement}
+## **12.12 Emergency Enforcement**
 
 If EmergencyAirspaceDirective active:
 
@@ -3911,9 +2589,7 @@ Tactical SHALL:
 
 Emergency precedence SHALL follow deterministic rule defined in Policy.
 
----
-
-## **12.13 Rate Limiting** {#12.13-rate-limiting}
+## **12.13 Rate Limiting**
 
 Tactical SHALL enforce:
 
@@ -3931,9 +2607,7 @@ Excess rate SHALL:
 
 Rate limiting SHALL NOT drop safety-critical messages.
 
----
-
-## **12.14 Network Partition Safe Mode** {#12.14-network-partition-safe-mode}
+## **12.14 Network Partition Safe Mode**
 
 If connectivity lost between UTMSPs or Core:
 
@@ -3951,9 +2625,7 @@ Upon reconnection:
 
 * State reconciliation SHALL occur using last audit snapshot.
 
----
-
-## **12.15 Replay Protection** {#12.15-replay-protection}
+## **12.15 Replay Protection**
 
 Tactical SHALL reject:
 
@@ -3969,9 +2641,7 @@ Tactical SHALL reject:
 
 Replay attempt SHALL generate AuditRecord.
 
----
-
-## **12.16 Audit Requirements** {#12.16-audit-requirements}
+## **12.16 Audit Requirements**
 
 The following SHALL generate AuditRecord:
 
@@ -3995,9 +2665,7 @@ Audit records SHALL be hash-linked.
 
 Deletion SHALL NOT be permitted.
 
----
-
-## **12.17 Performance Requirements** {#12.17-performance-requirements}
+## **12.17 Performance Requirements**
 
 Tactical SHALL ensure:
 
@@ -4011,9 +2679,7 @@ Tactical SHALL ensure:
 
 Tactical SHALL maintain minimum 99.9% uptime.
 
----
-
-## **12.18 Certification Requirements** {#12.18-certification-requirements}
+## **12.18 Certification Requirements**
 
 Certification SHALL validate:
 
@@ -4035,9 +2701,7 @@ Certification SHALL validate:
 
 High-density stress simulation SHALL be mandatory.
 
----
-
-## **12.19 Non-Responsibilities** {#12.19-non-responsibilities}
+## **12.19 Non-Responsibilities**
 
 Tactical SHALL NOT:
 
@@ -4053,15 +2717,13 @@ Tactical SHALL NOT:
 
 * Delete historical audit records.
 
-# 
 
-# **13 NIDSP-Risk v1.0** {#13-nidsp-risk-v1.0}
 
-## **Operational Risk Classification and Safety Threshold Governance** {#operational-risk-classification-and-safety-threshold-governance}
+# **13 NIDSP-Risk v1.0**
 
----
+## **Operational Risk Classification and Safety Threshold Governance**
 
-## **13.1 Scope** {#13.1-scope}
+## **13.1 Scope**
 
 The Risk module SHALL define the structured classification of operational air and ground risk and the binding of safety thresholds used by Planning, Tactical, and Policy modules.
 
@@ -4095,9 +2757,7 @@ The Risk module SHALL NOT:
 
 * Reduce regulatory separation minima.
 
----
-
-## **13.2 RiskClass Object** {#13.2-riskclass-object}
+## **13.2 RiskClass Object**
 
 Each planned flight SHALL reference a RiskClass.
 
@@ -4131,9 +2791,7 @@ RiskClass SHALL be immutable once negotiation session begins.
 
 Modification SHALL require new version and AuditRecord.
 
----
-
-## **13.3 ARC Classification** {#13.3-arc-classification}
+## **13.3 ARC Classification**
 
 ARC\_class SHALL represent air risk exposure classification.
 
@@ -4149,9 +2807,7 @@ ARC\_class SHALL:
 
 ARC\_class SHALL influence separation\_threshold\_reference but SHALL NOT alter regulatory minimum.
 
----
-
-## **13.4 SAIL Level** {#13.4-sail-level}
+## **13.4 SAIL Level**
 
 SAIL\_level SHALL represent integrity and assurance level of operation.
 
@@ -4167,9 +2823,7 @@ SAIL\_level SHALL determine:
 
 Higher SAIL SHALL NOT reduce safety threshold.
 
----
-
-## **13.5 GroundRiskClass** {#13.5-groundriskclass}
+## **13.5 GroundRiskClass**
 
 GroundRiskClass SHALL represent population exposure risk.
 
@@ -4189,9 +2843,7 @@ GroundRiskClass SHALL:
 
 * Remain deterministic.
 
----
-
-## **13.6 Operational Safety Objectives (OSO)** {#13.6-operational-safety-objectives-(oso)}
+## **13.6 Operational Safety Objectives (OSO)**
 
 OSO SHALL define safety constraints applicable to mission.
 
@@ -4209,9 +2861,7 @@ OSO MAY include:
 
 Violation of OSO SHALL trigger Compliance event.
 
----
-
-## **13.7 Separation Threshold Binding** {#13.7-separation-threshold-binding}
+## **13.7 Separation Threshold Binding**
 
 Risk module SHALL reference separation\_threshold\_reference.
 
@@ -4227,9 +2877,7 @@ Separation thresholds SHALL:
 
 Policy SHALL NOT configure separation below regulatory minimum.
 
----
-
-## **13.8 Swarm Risk Aggregation** {#13.8-swarm-risk-aggregation}
+## **13.8 Swarm Risk Aggregation**
 
 If swarm\_flag \= true:
 
@@ -4247,9 +2895,7 @@ swarm\_risk\_id SHALL consider:
 
 Swarm risk SHALL NOT reduce individual aircraft safety requirement.
 
----
-
-## **13.9 Risk Dataset Integrity** {#13.9-risk-dataset-integrity}
+## **13.9 Risk Dataset Integrity**
 
 All datasets used for ARC and GroundRiskClass SHALL:
 
@@ -4265,9 +2911,7 @@ If dataset integrity verification fails:
 
 System SHALL enter degraded mode.
 
----
-
-## **13.10 Policy Integration** {#13.10-policy-integration}
+## **13.10 Policy Integration**
 
 ArbitrationPolicy MAY reference:
 
@@ -4283,9 +2927,7 @@ RiskClass SHALL serve as deterministic input only.
 
 Risk module SHALL NOT determine arbitration outcome.
 
----
-
-## **13.11 Tactical Integration** {#13.11-tactical-integration}
+## **13.11 Tactical Integration**
 
 Tactical SHALL use RiskClass to:
 
@@ -4297,9 +2939,7 @@ Tactical SHALL use RiskClass to:
 
 Tactical SHALL NOT modify RiskClass.
 
----
-
-## **13.12 Emergency Interaction** {#13.12-emergency-interaction}
+## **13.12 Emergency Interaction**
 
 EmergencyAirspaceDirective MAY require temporary Risk override.
 
@@ -4315,26 +2955,22 @@ Override SHALL:
 
 Emergency override SHALL NOT retroactively alter completed arbitration.
 
----
+## **13.13 Risk Lifecycle**
 
-## **13.13 Risk Lifecycle** {#13.13-risk-lifecycle}
-
-### **Creation** {#creation}
+### **Creation**
 
 Assigned during Planning.
 
-### **Update** {#update}
+### **Update**
 
 Version increment required.  
  AuditRecord required.
 
-### **Expiry** {#expiry}
+### **Expiry**
 
 Expired RiskClass SHALL NOT be used for new negotiation.
 
----
-
-## **13.14 Degraded Mode Handling** {#13.14-degraded-mode-handling}
+## **13.14 Degraded Mode Handling**
 
 If Risk dataset unavailable:
 
@@ -4346,9 +2982,7 @@ If Risk dataset unavailable:
 
 Degraded mode SHALL be audit-anchored.
 
----
-
-## **13.15 Performance Requirements** {#13.15-performance-requirements}
+## **13.15 Performance Requirements**
 
 Risk evaluation SHALL complete within:
 
@@ -4356,9 +2990,7 @@ Risk evaluation SHALL complete within:
 
 Bulk risk recomputation SHALL NOT block Tactical operations.
 
----
-
-## **13.16 Audit Requirements** {#13.16-audit-requirements}
+## **13.16 Audit Requirements**
 
 The following SHALL generate AuditRecord:
 
@@ -4378,9 +3010,7 @@ Audit records SHALL be hash-linked.
 
 Deletion SHALL NOT be permitted.
 
----
-
-## **13.17 Certification Requirements** {#13.17-certification-requirements}
+## **13.17 Certification Requirements**
 
 Certification SHALL verify:
 
@@ -4402,9 +3032,7 @@ Certification SHALL verify:
 
 Identical dataset and inputs SHALL produce identical RiskClass.
 
----
-
-## **13.18 Non-Responsibilities** {#13.18-non-responsibilities}
+## **13.18 Non-Responsibilities**
 
 Risk SHALL NOT:
 
@@ -4420,15 +3048,13 @@ Risk SHALL NOT:
 
 * Reduce regulatory separation minima.
 
-# 
 
-# **14 NIDSP-Swarm v1.0** {#14-nidsp-swarm-v1.0}
 
-## **Coordinated Group Operations Governance** {#coordinated-group-operations-governance}
+# **14 NIDSP-Swarm v1.0**
 
----
+## **Coordinated Group Operations Governance**
 
-## **14.1 Scope** {#14.1-scope}
+## **14.1 Scope**
 
 The Swarm module SHALL define the abstraction, lifecycle, negotiation handling, risk integration, and safety constraints governing grouped unmanned aircraft operations.
 
@@ -4462,9 +3088,7 @@ The Swarm module SHALL NOT:
 
 * Delete historical audit records.
 
----
-
-## **14.2 Swarm Identifier Model** {#14.2-swarm-identifier-model}
+## **14.2 Swarm Identifier Model**
 
 Each swarm SHALL be assigned:
 
@@ -4488,9 +3112,7 @@ Each swarm SHALL be assigned:
 
 swarm\_id SHALL remain immutable for duration of swarm lifecycle.
 
----
-
-## **14.3 Swarm Topology Classification** {#14.3-swarm-topology-classification}
+## **14.3 Swarm Topology Classification**
 
 Swarm SHALL declare swarm\_topology\_type.
 
@@ -4514,9 +3136,7 @@ Topology classification SHALL influence:
 
 Topology SHALL NOT alter separation requirement relative to external traffic.
 
----
-
-## **14.4 Shared Operational Envelope** {#14.4-shared-operational-envelope}
+## **14.4 Shared Operational Envelope**
 
 Swarm SHALL define shared\_operational\_volume including:
 
@@ -4534,9 +3154,7 @@ shared\_operational\_volume SHALL NOT exceed AuthorizationScope of any participa
 
 Violation SHALL trigger Compliance event.
 
----
-
-## **14.5 Intra-Swarm Separation** {#14.5-intra-swarm-separation}
+## **14.5 Intra-Swarm Separation**
 
 Swarm SHALL define intra\_swarm\_separation\_minimum.
 
@@ -4552,9 +3170,7 @@ Tactical SHALL monitor intra-swarm compliance.
 
 Persistent violation SHALL escalate to Core.
 
----
-
-## **14.6 Swarm Risk Integration** {#14.6-swarm-risk-integration}
+## **14.6 Swarm Risk Integration**
 
 Risk module SHALL assign swarm\_risk\_id.
 
@@ -4570,9 +3186,7 @@ swarm\_risk\_id SHALL consider:
 
 Swarm risk SHALL NOT reduce individual aircraft separation from external traffic.
 
----
-
-## **14.7 Coordinated Negotiation Mode** {#14.7-coordinated-negotiation-mode}
+## **14.7 Coordinated Negotiation Mode**
 
 If swarm\_flag \= true:
 
@@ -4590,9 +3204,7 @@ Arbitration outcome SHALL apply uniformly to all swarm members.
 
 Partial arbitration SHALL NOT occur unless explicitly permitted by Policy.
 
----
-
-## **14.8 Swarm Arbitration Compression** {#14.8-swarm-arbitration-compression}
+## **14.8 Swarm Arbitration Compression**
 
 If multiple swarms intersect:
 
@@ -4608,9 +3220,7 @@ Compression SHALL:
 
 Compression SHALL NOT alter Policy ordering logic.
 
----
-
-## **14.9 Swarm Split Handling** {#14.9-swarm-split-handling}
+## **14.9 Swarm Split Handling**
 
 Swarm MAY split under:
 
@@ -4632,9 +3242,7 @@ Split SHALL:
 
 Split SHALL NOT bypass arbitration.
 
----
-
-## **14.10 Swarm Dissolution** {#14.10-swarm-dissolution}
+## **14.10 Swarm Dissolution**
 
 Swarm SHALL dissolve when:
 
@@ -4652,9 +3260,7 @@ Dissolution SHALL:
 
 * Maintain individual aircraft identity continuity.
 
----
-
-## **14.11 Infrastructure Interaction** {#14.11-infrastructure-interaction}
+## **14.11 Infrastructure Interaction**
 
 Swarm SHALL:
 
@@ -4668,9 +3274,7 @@ Swarm SHALL:
 
 Emergency override SHALL supersede normal corridor capacity.
 
----
-
-## **14.12 Tactical Integration** {#14.12-tactical-integration}
+## **14.12 Tactical Integration**
 
 Tactical SHALL:
 
@@ -4684,9 +3288,7 @@ Tactical SHALL:
 
 DynamicReroute affecting swarm SHALL apply to all members unless split permitted.
 
----
-
-## **14.13 Emergency Interaction** {#14.13-emergency-interaction}
+## **14.13 Emergency Interaction**
 
 EmergencyAirspaceDirective SHALL:
 
@@ -4698,9 +3300,7 @@ EmergencyAirspaceDirective SHALL:
 
 Emergency override SHALL be time-bounded and audit-anchored.
 
----
-
-## **14.14 Performance Requirements** {#14.14-performance-requirements}
+## **14.14 Performance Requirements**
 
 System SHALL support:
 
@@ -4712,9 +3312,7 @@ System SHALL support:
 
 Swarm operations SHALL NOT create exponential negotiation branching.
 
----
-
-## **14.15 Audit Requirements** {#14.15-audit-requirements}
+## **14.15 Audit Requirements**
 
 The following SHALL generate AuditRecord:
 
@@ -4736,9 +3334,7 @@ Audit records SHALL be hash-linked.
 
 Deletion SHALL NOT be permitted.
 
----
-
-## **14.16 Certification Requirements** {#14.16-certification-requirements}
+## **14.16 Certification Requirements**
 
 Certification SHALL validate:
 
@@ -4758,9 +3354,7 @@ Certification SHALL validate:
 
 High-density swarm stress simulation SHALL be mandatory.
 
----
-
-## **14.17 Non-Responsibilities** {#14.17-non-responsibilities}
+## **14.17 Non-Responsibilities**
 
 Swarm SHALL NOT:
 
@@ -4776,15 +3370,13 @@ Swarm SHALL NOT:
 
 * Delete historical records.
 
-# 
 
-# **15 NIDSP-Infrastructure v1.0** {#15-nidsp-infrastructure-v1.0}
 
-## **Persistent Airspace and Operational Object Governance** {#persistent-airspace-and-operational-object-governance}
+# **15 NIDSP-Infrastructure v1.0**
 
----
+## **Persistent Airspace and Operational Object Governance**
 
-## **15.1 Scope** {#15.1-scope}
+## **15.1 Scope**
 
 The Infrastructure module SHALL define the structure, lifecycle, priority classification, capacity management, and governance of persistent airspace and ground-linked operational objects within the NIDSP ecosystem.
 
@@ -4818,9 +3410,7 @@ The Infrastructure module SHALL NOT:
 
 * Delete historical records.
 
----
-
-## **15.2 Infrastructure Object Categories** {#15.2-infrastructure-object-categories}
+## **15.2 Infrastructure Object Categories**
 
 The following infrastructure object categories SHALL be recognized:
 
@@ -4844,11 +3434,9 @@ Each SHALL possess:
 
 All objects SHALL be registered in Registry.
 
----
+## **15.3 DroneCorridor**
 
-## **15.3 DroneCorridor** {#15.3-dronecorridor}
-
-### **15.3.1 Definition** {#15.3.1-definition}
+### **15.3.1 Definition**
 
 DroneCorridor SHALL represent structured, persistent 3D airspace lane.
 
@@ -4874,9 +3462,7 @@ DroneCorridor SHALL include:
 
 * digital\_signature
 
----
-
-### **15.3.2 Corridor Class** {#15.3.2-corridor-class}
+### **15.3.2 Corridor Class**
 
 corridor\_class MAY include:
 
@@ -4888,9 +3474,7 @@ corridor\_class MAY include:
 
 corridor\_class SHALL influence Policy input if configured.
 
----
-
-### **15.3.3 Capacity Management** {#15.3.3-capacity-management}
+### **15.3.3 Capacity Management**
 
 capacity\_limit SHALL define maximum concurrent flights.
 
@@ -4902,11 +3486,9 @@ Exceeding capacity SHALL:
 
 * NOT allow automatic bypass unless Emergency override active.
 
----
+## **15.4 DronePort**
 
-## **15.4 DronePort** {#15.4-droneport}
-
-### **15.4.1 Definition** {#15.4.1-definition}
+### **15.4.1 Definition**
 
 DronePort SHALL represent takeoff/landing facility.
 
@@ -4928,9 +3510,7 @@ DronePort SHALL include:
 
 * digital\_signature
 
----
-
-### **15.4.2 Occupancy Management** {#15.4.2-occupancy-management}
+### **15.4.2 Occupancy Management**
 
 occupancy\_state SHALL be updated in real time via Tactical.
 
@@ -4938,9 +3518,7 @@ Occupancy update latency SHALL not exceed performance bounds.
 
 Emergency override SHALL supersede capacity limit.
 
----
-
-## **15.5 ReservedVolume** {#15.5-reservedvolume}
+## **15.5 ReservedVolume**
 
 ReservedVolume SHALL represent exclusive airspace allocation.
 
@@ -4964,9 +3542,7 @@ Overlapping ReservedVolume conflicts SHALL escalate to Core.
 
 ReservedVolume SHALL NOT automatically win arbitration unless Policy defines priority rule.
 
----
-
-## **15.6 TemporaryInfrastructureZone** {#15.6-temporaryinfrastructurezone}
+## **15.6 TemporaryInfrastructureZone**
 
 TemporaryInfrastructureZone SHALL represent short-duration restriction.
 
@@ -4982,9 +3558,7 @@ TemporaryInfrastructureZone SHALL:
 
 Expired zones SHALL automatically deactivate.
 
----
-
-## **15.7 Priority Classification** {#15.7-priority-classification}
+## **15.7 Priority Classification**
 
 priority\_class SHALL be structured enumeration:
 
@@ -5000,11 +3574,9 @@ Policy MAY reference priority\_class as deterministic input.
 
 Emergency override SHALL supersede other classes.
 
----
+## **15.8 Infrastructure Lifecycle**
 
-## **15.8 Infrastructure Lifecycle** {#15.8-infrastructure-lifecycle}
-
-### **Creation** {#creation-1}
+### **Creation**
 
 Infrastructure SHALL be created by authorized identity.
 
@@ -5016,9 +3588,7 @@ Creation SHALL:
 
 * Generate AuditRecord.
 
----
-
-### **Modification** {#modification}
+### **Modification**
 
 Modification SHALL:
 
@@ -5030,9 +3600,7 @@ Modification SHALL:
 
 * Require digital signature.
 
----
-
-### **Deactivation** {#deactivation}
+### **Deactivation**
 
 Deactivation SHALL:
 
@@ -5042,9 +3610,7 @@ Deactivation SHALL:
 
 * Prevent new planning reference.
 
----
-
-## **15.9 Registry Integration** {#15.9-registry-integration}
+## **15.9 Registry Integration**
 
 All infrastructure SHALL:
 
@@ -5056,9 +3622,7 @@ All infrastructure SHALL:
 
 Ownership transfer SHALL generate AuditRecord.
 
----
-
-## **15.10 Planning Integration** {#15.10-planning-integration}
+## **15.10 Planning Integration**
 
 Planning SHALL validate:
 
@@ -5074,9 +3638,7 @@ Violation SHALL trigger negotiation.
 
 Infrastructure SHALL NOT grant automatic approval.
 
----
-
-## **15.11 Tactical Integration** {#15.11-tactical-integration}
+## **15.11 Tactical Integration**
 
 Tactical SHALL:
 
@@ -5090,9 +3652,7 @@ Tactical SHALL:
 
 * Escalate persistent violation to Core.
 
----
-
-## **15.12 Risk Integration** {#15.12-risk-integration}
+## **15.12 Risk Integration**
 
 Infrastructure MAY reference RiskClass.
 
@@ -5100,9 +3660,7 @@ Infrastructure SHALL NOT reduce minimum separation threshold.
 
 Infrastructure SHALL NOT override Risk dataset.
 
----
-
-## **15.13 Emergency Interaction** {#15.13-emergency-interaction}
+## **15.13 Emergency Interaction**
 
 EmergencyAirspaceDirective MAY:
 
@@ -5116,9 +3674,7 @@ EmergencyAirspaceDirective MAY:
 
 Emergency override SHALL be time-bounded and audit-anchored.
 
----
-
-## **15.14 Surge Mode Interaction** {#15.14-surge-mode-interaction}
+## **15.14 Surge Mode Interaction**
 
 During Surge Prioritization Mode:
 
@@ -5134,9 +3690,7 @@ Infrastructure capacity SHALL prioritize:
 
 Surge enforcement SHALL be deterministic.
 
----
-
-## **15.15 Performance Requirements** {#15.15-performance-requirements}
+## **15.15 Performance Requirements**
 
 Infrastructure validation SHALL complete within:
 
@@ -5148,9 +3702,7 @@ Occupancy update SHALL complete within:
 
 System SHALL scale to national corridor density.
 
----
-
-## **15.16 Audit Requirements** {#15.16-audit-requirements}
+## **15.16 Audit Requirements**
 
 The following SHALL generate AuditRecord:
 
@@ -5172,9 +3724,7 @@ Audit records SHALL be hash-linked.
 
 Deletion SHALL NOT be permitted.
 
----
-
-## **15.17 Certification Requirements** {#15.17-certification-requirements}
+## **15.17 Certification Requirements**
 
 Certification SHALL validate:
 
@@ -5194,9 +3744,7 @@ Certification SHALL validate:
 
 High-density corridor simulation SHALL be mandatory.
 
----
-
-## **15.18 Non-Responsibilities** {#15.18-non-responsibilities}
+## **15.18 Non-Responsibilities**
 
 Infrastructure SHALL NOT:
 
@@ -5212,15 +3760,13 @@ Infrastructure SHALL NOT:
 
 * Delete historical audit records.
 
-# 
 
-# **16 NIDSP-Emergency v1.0** {#16-nidsp-emergency-v1.0}
 
-## **Sovereign Emergency Override and ATC Coordination Governance** {#sovereign-emergency-override-and-atc-coordination-governance}
+# **16 NIDSP-Emergency v1.0**
 
----
+## **Sovereign Emergency Override and ATC Coordination Governance**
 
-## **16.1 Scope** {#16.1-scope}
+## **16.1 Scope**
 
 The Emergency module SHALL define the structured governance of sovereign airspace override, temporary restriction injection, emergency prioritization, and ATC coordination within the NIDSP architecture.
 
@@ -5252,9 +3798,7 @@ The Emergency module SHALL NOT:
 
 * Introduce non-deterministic behavior.
 
----
-
-## **16.2 EmergencyAirspaceDirective Object** {#16.2-emergencyairspacedirective-object}
+## **16.2 EmergencyAirspaceDirective Object**
 
 EmergencyAirspaceDirective SHALL include:
 
@@ -5286,9 +3830,7 @@ Unsigned directives SHALL be rejected.
 
 Directive SHALL be cryptographically verifiable under sovereign Root CA.
 
----
-
-## **16.3 Emergency Classification** {#16.3-emergency-classification}
+## **16.3 Emergency Classification**
 
 emergency\_class SHALL be structured enumeration:
 
@@ -5304,9 +3846,7 @@ emergency\_class SHALL be structured enumeration:
 
 Classification SHALL influence enforcement behavior.
 
----
-
-## **16.4 Deterministic Precedence Rule** {#16.4-deterministic-precedence-rule}
+## **16.4 Deterministic Precedence Rule**
 
 If multiple EmergencyAirspaceDirectives overlap:
 
@@ -5322,9 +3862,7 @@ Precedence rules SHALL be versioned and public.
 
 No undefined conflict state SHALL exist.
 
----
-
-## **16.5 Priority Override Behavior** {#16.5-priority-override-behavior}
+## **16.5 Priority Override Behavior**
 
 If priority\_override\_flag \= true:
 
@@ -5346,9 +3884,7 @@ Priority override SHALL:
 
 * Not modify completed arbitration outcomes retroactively.
 
----
-
-## **16.6 Negotiation Freeze Window** {#16.6-negotiation-freeze-window}
+## **16.6 Negotiation Freeze Window**
 
 Upon emergency affecting active negotiation:
 
@@ -5362,9 +3898,7 @@ Core SHALL:
 
 Freeze duration SHALL comply with performance bounds.
 
----
-
-## **16.7 Enforcement Levels** {#16.7-enforcement-levels}
+## **16.7 Enforcement Levels**
 
 enforcement\_level SHALL be structured enumeration:
 
@@ -5374,23 +3908,21 @@ enforcement\_level SHALL be structured enumeration:
 
 * IMMEDIATE\_TERMINATION
 
-### **ADVISORY\_ONLY** {#advisory_only}
+### **ADVISORY\_ONLY**
 
 Tactical SHALL issue advisory only.
 
-### **MANDATORY\_COMPLIANCE** {#mandatory_compliance}
+### **MANDATORY\_COMPLIANCE**
 
 Tactical SHALL issue DIRECTIVE advisory.
 
-### **IMMEDIATE\_TERMINATION** {#immediate_termination}
+### **IMMEDIATE\_TERMINATION**
 
 Tactical SHALL suspend operation in affected region and escalate to Core.
 
 Enforcement SHALL remain proportional to emergency\_class.
 
----
-
-## **16.8 Temporary Infrastructure Injection** {#16.8-temporary-infrastructure-injection}
+## **16.8 Temporary Infrastructure Injection**
 
 EmergencyAirspaceDirective MAY create TemporaryInfrastructureZone.
 
@@ -5406,9 +3938,7 @@ TemporaryInfrastructureZone SHALL:
 
 Expired directives SHALL automatically deactivate.
 
----
-
-## **16.9 Risk Interaction** {#16.9-risk-interaction}
+## **16.9 Risk Interaction**
 
 Emergency MAY trigger temporary RiskClass override.
 
@@ -5424,9 +3954,7 @@ Override SHALL:
 
 Emergency SHALL NOT reduce safety below regulatory minimum.
 
----
-
-## **16.10 Tactical Integration** {#16.10-tactical-integration}
+## **16.10 Tactical Integration**
 
 Tactical SHALL:
 
@@ -5440,9 +3968,7 @@ Tactical SHALL:
 
 Emergency enforcement SHALL comply with precedence rule.
 
----
-
-## **16.11 ATC Coordination Interface** {#16.11-atc-coordination-interface}
+## **16.11 ATC Coordination Interface**
 
 ATC SHALL be treated as authorized emergency issuer.
 
@@ -5456,11 +3982,9 @@ ATC-issued directives SHALL:
 
 ATC interface SHALL NOT execute arbitration logic.
 
----
+## **16.12 Emergency Lifecycle**
 
-## **16.12 Emergency Lifecycle** {#16.12-emergency-lifecycle}
-
-### **Activation** {#activation}
+### **Activation**
 
 Activation SHALL:
 
@@ -5472,9 +3996,7 @@ Activation SHALL:
 
 Propagation SHALL comply with performance norms.
 
----
-
-### **Update** {#update-1}
+### **Update**
 
 Update SHALL:
 
@@ -5484,9 +4006,7 @@ Update SHALL:
 
 * Generate AuditRecord.
 
----
-
-### **Deactivation** {#deactivation-1}
+### **Deactivation**
 
 Deactivation SHALL:
 
@@ -5496,9 +4016,7 @@ Deactivation SHALL:
 
 * Generate AuditRecord.
 
----
-
-## **16.13 Surge Interaction** {#16.13-surge-interaction}
+## **16.13 Surge Interaction**
 
 During Surge Prioritization Mode:
 
@@ -5506,9 +4024,7 @@ Emergency flights SHALL remain highest priority.
 
 Surge mode SHALL NOT override emergency precedence.
 
----
-
-## **16.14 Degraded Mode Handling** {#16.14-degraded-mode-handling}
+## **16.14 Degraded Mode Handling**
 
 If Emergency module partially unavailable:
 
@@ -5520,9 +4036,7 @@ If Emergency module partially unavailable:
 
 Degraded state SHALL generate AuditRecord.
 
----
-
-## **16.15 Performance Requirements** {#16.15-performance-requirements}
+## **16.15 Performance Requirements**
 
 Emergency directive propagation SHALL complete within:
 
@@ -5532,9 +4046,7 @@ Negotiation freeze SHALL activate within:
 
 * 2000 milliseconds.
 
----
-
-## **16.16 Audit Requirements** {#16.16-audit-requirements}
+## **16.16 Audit Requirements**
 
 The following SHALL generate AuditRecord:
 
@@ -5558,9 +4070,7 @@ Audit records SHALL be hash-linked.
 
 Deletion SHALL NOT be permitted.
 
----
-
-## **16.17 Certification Requirements** {#16.17-certification-requirements}
+## **16.17 Certification Requirements**
 
 Certification SHALL validate:
 
@@ -5582,9 +4092,7 @@ Certification SHALL validate:
 
 Large-scale emergency simulation SHALL be mandatory.
 
----
-
-## **16.18 Non-Responsibilities** {#16.18-non-responsibilities}
+## **16.18 Non-Responsibilities**
 
 Emergency SHALL NOT:
 
@@ -5598,15 +4106,13 @@ Emergency SHALL NOT:
 
 * Delete historical records.
 
-# 
 
-# **17 Security Requirements** {#17-security-requirements}
 
-## **Cryptographic Trust, Authentication, and Integrity Governance** {#cryptographic-trust,-authentication,-and-integrity-governance}
+# **17 Security Requirements**
 
----
+## **Cryptographic Trust, Authentication, and Integrity Governance**
 
-## **17.1 Scope** {#17.1-scope}
+## **17.1 Scope**
 
 This section defines the cryptographic, authentication, message integrity, replay protection, and trust governance requirements applicable to all NIDSP modules.
 
@@ -5644,9 +4150,7 @@ Security SHALL apply uniformly across:
 
 * Emergency
 
----
-
-## **17.2 Sovereign Root Certificate Authority** {#17.2-sovereign-root-certificate-authority}
+## **17.2 Sovereign Root Certificate Authority**
 
 All certificates used within NIDSP SHALL chain to a sovereign Root Certificate Authority (Root CA).
 
@@ -5662,9 +4166,7 @@ Root CA SHALL:
 
 No external trust anchor SHALL be permitted without regulator approval.
 
----
-
-## **17.3 X.509 Certificate Requirements** {#17.3-x.509-certificate-requirements}
+## **17.3 X.509 Certificate Requirements**
 
 All participating entities SHALL use X.509 certificates.
 
@@ -5692,9 +4194,7 @@ Certificates SHALL be validated prior to:
 
 * Emergency directive issuance.
 
----
-
-## **17.4 Mutual TLS (mTLS)** {#17.4-mutual-tls-(mtls)}
+## **17.4 Mutual TLS (mTLS)**
 
 All inter-UTMSP communication SHALL use mutual TLS.
 
@@ -5710,9 +4210,7 @@ mTLS SHALL:
 
 Unencrypted communication SHALL be prohibited.
 
----
-
-## **17.5 Digital Signature Requirements** {#17.5-digital-signature-requirements}
+## **17.5 Digital Signature Requirements**
 
 All state-changing messages SHALL be digitally signed.
 
@@ -5744,9 +4242,7 @@ Signature SHALL:
 
 * Fail deterministically if invalid.
 
----
-
-## **17.6 Message Integrity** {#17.6-message-integrity}
+## **17.6 Message Integrity**
 
 All messages SHALL include:
 
@@ -5762,9 +4258,7 @@ Tampered message SHALL be rejected.
 
 Integrity verification SHALL occur prior to processing.
 
----
-
-## **17.7 Replay Protection** {#17.7-replay-protection}
+## **17.7 Replay Protection**
 
 Replay protection SHALL include:
 
@@ -5784,9 +4278,7 @@ Replay attempt SHALL:
 
 * Trigger Compliance notification if persistent.
 
----
-
-## **17.8 Revocation Enforcement** {#17.8-revocation-enforcement}
+## **17.8 Revocation Enforcement**
 
 Revoked certificates SHALL:
 
@@ -5802,9 +4294,7 @@ Revocation status SHALL be checked within defined performance bounds.
 
 Revocation propagation SHALL comply with performance requirements.
 
----
-
-## **17.9 Deterministic Validation Behavior** {#17.9-deterministic-validation-behavior}
+## **17.9 Deterministic Validation Behavior**
 
 Security validation SHALL:
 
@@ -5816,9 +4306,7 @@ Security validation SHALL:
 
 * Be version-consistent across UTMSPs.
 
----
-
-## **17.10 Data at Rest Protection** {#17.10-data-at-rest-protection}
+## **17.10 Data at Rest Protection**
 
 Sensitive data SHALL:
 
@@ -5832,9 +4320,7 @@ Sensitive data SHALL:
 
 Critical modules SHALL implement strong authentication for update operations.
 
----
-
-## **17.11 Risk Dataset Protection** {#17.11-risk-dataset-protection}
+## **17.11 Risk Dataset Protection**
 
 Risk datasets SHALL:
 
@@ -5848,9 +4334,7 @@ Risk datasets SHALL:
 
 Dataset corruption SHALL trigger degraded mode.
 
----
-
-## **17.12 Policy Integrity** {#17.12-policy-integrity}
+## **17.12 Policy Integrity**
 
 ArbitrationPolicy SHALL:
 
@@ -5864,9 +4348,7 @@ ArbitrationPolicy SHALL:
 
 Policy tampering SHALL invalidate negotiation session.
 
----
-
-## **17.13 Audit Chain Integrity** {#17.13-audit-chain-integrity}
+## **17.13 Audit Chain Integrity**
 
 AuditRecord SHALL:
 
@@ -5880,9 +4362,7 @@ Audit modification SHALL be detectable.
 
 Deletion SHALL NOT be permitted.
 
----
-
-## **17.14 Compromise Handling** {#17.14-compromise-handling}
+## **17.14 Compromise Handling**
 
 If security compromise detected:
 
@@ -5898,9 +4378,7 @@ If security compromise detected:
 
 System SHALL maintain deterministic behavior during compromise containment.
 
----
-
-## **17.15 Partition and Recovery Security** {#17.15-partition-and-recovery-security}
+## **17.15 Partition and Recovery Security**
 
 During network partition:
 
@@ -5912,9 +4390,7 @@ During network partition:
 
 Security SHALL preserve audit integrity during partition.
 
----
-
-## **17.16 Performance Requirements** {#17.16-performance-requirements}
+## **17.16 Performance Requirements**
 
 Certificate validation SHALL complete within:
 
@@ -5930,9 +4406,7 @@ Signature verification SHALL complete within:
 
 Security validation SHALL NOT exceed Tactical latency thresholds.
 
----
-
-## **17.17 Certification Requirements** {#17.17-certification-requirements}
+## **17.17 Certification Requirements**
 
 Certification SHALL verify:
 
@@ -5954,9 +4428,7 @@ Certification SHALL verify:
 
 Security stress simulation SHALL be mandatory.
 
----
-
-## **17.18 Non-Responsibilities** {#17.18-non-responsibilities}
+## **17.18 Non-Responsibilities**
 
 Security framework SHALL NOT:
 
@@ -5972,15 +4444,13 @@ Security framework SHALL NOT:
 
 * Introduce non-deterministic behavior.
 
-# 
 
-# **18 Performance & Scalability Requirements** {#18-performance-&-scalability-requirements}
 
-## **Latency, Throughput, Availability, and Resilience Governance** {#latency,-throughput,-availability,-and-resilience-governance}
+# **18 Performance & Scalability Requirements**
 
----
+## **Latency, Throughput, Availability, and Resilience Governance**
 
-## **18.1 Scope** {#18.1-scope}
+## **18.1 Scope**
 
 This section defines mandatory performance, scalability, availability, and resilience requirements applicable to all NIDSP modules.
 
@@ -5998,9 +4468,7 @@ Performance SHALL ensure:
 
 These requirements SHALL be certifiable.
 
----
-
-## **18.2 General Principles** {#18.2-general-principles}
+## **18.2 General Principles**
 
 1. Increased load SHALL NOT alter arbitration outcome.
 
@@ -6012,11 +4480,9 @@ These requirements SHALL be certifiable.
 
 5. Load SHALL NOT introduce non-determinism.
 
----
+## **18.3 Latency Requirements**
 
-## **18.3 Latency Requirements** {#18.3-latency-requirements}
-
-### **18.3.1 Telemetry Processing** {#18.3.1-telemetry-processing}
+### **18.3.1 Telemetry Processing**
 
 End-to-end telemetry validation SHALL NOT exceed:
 
@@ -6024,25 +4490,19 @@ End-to-end telemetry validation SHALL NOT exceed:
 
 * 1000 milliseconds under certified peak load.
 
----
-
-### **18.3.2 ConflictAlert Propagation** {#18.3.2-conflictalert-propagation}
+### **18.3.2 ConflictAlert Propagation**
 
 ConflictAlert exchange between UTMSPs SHALL NOT exceed:
 
 * 1000 milliseconds under nominal load.
 
----
-
-### **18.3.3 Escalation to Core** {#18.3.3-escalation-to-core}
+### **18.3.3 Escalation to Core**
 
 Tactical escalation to Core SHALL NOT exceed:
 
 * 2000 milliseconds from conflict detection.
 
----
-
-### **18.3.4 Arbitration Completion** {#18.3.4-arbitration-completion}
+### **18.3.4 Arbitration Completion**
 
 Arbitration SHALL complete within:
 
@@ -6050,25 +4510,19 @@ Arbitration SHALL complete within:
 
 * Not exceed 10 seconds per negotiation session unless emergency freeze active.
 
----
-
-### **18.3.5 Emergency Directive Propagation** {#18.3.5-emergency-directive-propagation}
+### **18.3.5 Emergency Directive Propagation**
 
 EmergencyAirspaceDirective SHALL propagate nationally within:
 
 * 3000 milliseconds under certified peak load.
 
----
-
-### **18.3.6 Negotiation Freeze Activation** {#18.3.6-negotiation-freeze-activation}
+### **18.3.6 Negotiation Freeze Activation**
 
 Emergency freeze window SHALL activate within:
 
 * 2000 milliseconds of directive receipt.
 
----
-
-## **18.4 Throughput Requirements** {#18.4-throughput-requirements}
+## **18.4 Throughput Requirements**
 
 Each certified UTMSP SHALL support:
 
@@ -6080,9 +4534,7 @@ National system SHALL support:
 
 Throughput increase SHALL NOT degrade deterministic ordering.
 
----
-
-## **18.5 Swarm Scalability** {#18.5-swarm-scalability}
+## **18.5 Swarm Scalability**
 
 System SHALL support:
 
@@ -6092,9 +4544,7 @@ Swarm arbitration SHALL complete within same deterministic bounds as single-flig
 
 Swarm conflict detection SHALL not cause exponential negotiation branching.
 
----
-
-## **18.6 Infrastructure Capacity Handling** {#18.6-infrastructure-capacity-handling}
+## **18.6 Infrastructure Capacity Handling**
 
 Infrastructure validation SHALL complete within:
 
@@ -6108,9 +4558,7 @@ Capacity exceedance advisory SHALL be generated within:
 
 * 1000 milliseconds.
 
----
-
-## **18.7 Risk Evaluation Performance** {#18.7-risk-evaluation-performance}
+## **18.7 Risk Evaluation Performance**
 
 RiskClass assignment SHALL complete within:
 
@@ -6118,9 +4566,7 @@ RiskClass assignment SHALL complete within:
 
 Bulk risk recomputation SHALL NOT block Tactical or Core operations.
 
----
-
-## **18.8 Identity & Security Validation Performance** {#18.8-identity-&-security-validation-performance}
+## **18.8 Identity & Security Validation Performance**
 
 Certificate validation SHALL complete within:
 
@@ -6136,9 +4582,7 @@ Signature verification SHALL complete within:
 
 Security validation SHALL not exceed Tactical latency bounds.
 
----
-
-## **18.9 Availability Requirements** {#18.9-availability-requirements}
+## **18.9 Availability Requirements**
 
 Core SHALL maintain:
 
@@ -6152,9 +4596,7 @@ Emergency directive processing SHALL remain available during degraded network co
 
 Failover SHALL preserve audit continuity.
 
----
-
-## **18.10 Resilience Requirements** {#18.10-resilience-requirements}
+## **18.10 Resilience Requirements**
 
 System SHALL tolerate:
 
@@ -6174,9 +4616,7 @@ During partition:
 
 * Increased separation thresholds MAY apply.
 
----
-
-## **18.11 Surge Prioritization Mode** {#18.11-surge-prioritization-mode}
+## **18.11 Surge Prioritization Mode**
 
 If system load exceeds certified threshold:
 
@@ -6200,9 +4640,7 @@ Surge activation SHALL:
 
 * Preserve determinism.
 
----
-
-## **18.12 Storm Compression Activation** {#18.12-storm-compression-activation}
+## **18.12 Storm Compression Activation**
 
 If negotiation storm detected:
 
@@ -6218,9 +4656,7 @@ Compression SHALL:
 
 Storm Compression SHALL complete within defined arbitration bounds.
 
----
-
-## **18.13 Degraded Mode Operation** {#18.13-degraded-mode-operation}
+## **18.13 Degraded Mode Operation**
 
 If performance thresholds exceeded or critical dataset unavailable:
 
@@ -6240,9 +4676,7 @@ Degraded Mode SHALL:
 
 Degraded Mode SHALL generate AuditRecord.
 
----
-
-## **18.14 Deterministic Message Ordering** {#18.14-deterministic-message-ordering}
+## **18.14 Deterministic Message Ordering**
 
 Message ordering SHALL:
 
@@ -6256,9 +4690,7 @@ Message ordering SHALL:
 
 Load balancing SHALL NOT alter message ordering semantics.
 
----
-
-## **18.15 Failover Requirements** {#18.15-failover-requirements}
+## **18.15 Failover Requirements**
 
 Failover SHALL:
 
@@ -6272,9 +4704,7 @@ Failover SHALL:
 
 Recovery SHALL reconcile against last valid audit snapshot.
 
----
-
-## **18.16 Monitoring Requirements** {#18.16-monitoring-requirements}
+## **18.16 Monitoring Requirements**
 
 System SHALL continuously monitor:
 
@@ -6296,9 +4726,7 @@ System SHALL continuously monitor:
 
 Monitoring data SHALL be audit-anchored.
 
----
-
-## **18.17 Certification Requirements** {#18.17-certification-requirements}
+## **18.17 Certification Requirements**
 
 Certification SHALL include:
 
@@ -6330,9 +4758,7 @@ Certification SHALL verify:
 
 * Audit integrity.
 
----
-
-## **18.18 Non-Responsibilities** {#18.18-non-responsibilities}
+## **18.18 Non-Responsibilities**
 
 Performance requirements SHALL NOT mandate:
 
@@ -6346,15 +4772,13 @@ Performance requirements SHALL NOT mandate:
 
 Implementation SHALL meet requirements irrespective of technology choice.
 
-# 
 
-# **19 Operational Hardening & Extreme Condition Safeguards** {#19-operational-hardening-&-extreme-condition-safeguards}
 
-## **Deterministic Stability Under Adverse Conditions** {#deterministic-stability-under-adverse-conditions}
+# **19 Operational Hardening & Extreme Condition Safeguards**
 
----
+## **Deterministic Stability Under Adverse Conditions**
 
-## **19.1 Scope** {#19.1-scope}
+## **19.1 Scope**
 
 This section defines mandatory safeguards applicable during:
 
@@ -6388,9 +4812,7 @@ These safeguards SHALL preserve:
 
 * System stability
 
----
-
-## **19.2 Negotiation Storm Compression** {#19.2-negotiation-storm-compression}
+## **19.2 Negotiation Storm Compression**
 
 If the number of intersecting negotiations exceeds storm\_compression\_threshold defined in ArbitrationPolicy:
 
@@ -6410,9 +4832,7 @@ Storm Compression SHALL NOT modify ArbitrationPolicy logic.
 
 Activation SHALL generate AuditRecord.
 
----
-
-## **19.3 Swarm Arbitration Compression** {#19.3-swarm-arbitration-compression}
+## **19.3 Swarm Arbitration Compression**
 
 If multiple swarms intersect:
 
@@ -6428,9 +4848,7 @@ Swarm Arbitration Compression SHALL:
 
 Partial arbitration SHALL NOT occur unless explicitly enabled in Policy.
 
----
-
-## **19.4 Emergency Freeze Window** {#19.4-emergency-freeze-window}
+## **19.4 Emergency Freeze Window**
 
 Upon receipt of EmergencyAirspaceDirective with priority\_override\_flag \= true:
 
@@ -6446,9 +4864,7 @@ Core SHALL:
 
 Freeze SHALL be time-bounded and audit-anchored.
 
----
-
-## **19.5 Mid-Flight Identity Revocation Handling** {#19.5-mid-flight-identity-revocation-handling}
+## **19.5 Mid-Flight Identity Revocation Handling**
 
 If Identity is revoked during active operation:
 
@@ -6470,9 +4886,7 @@ Compliance Authority SHALL be notified.
 
 Event SHALL generate AuditRecord.
 
----
-
-## **19.6 Tactical Rate Limiting** {#19.6-tactical-rate-limiting}
+## **19.6 Tactical Rate Limiting**
 
 Tactical SHALL enforce:
 
@@ -6492,9 +4906,7 @@ Rate limiting SHALL:
 
 Excessive rate SHALL trigger Compliance event.
 
----
-
-## **19.7 Network Partition Safe Mode** {#19.7-network-partition-safe-mode}
+## **19.7 Network Partition Safe Mode**
 
 If partition detected between UTMSPs or Core:
 
@@ -6518,9 +4930,7 @@ Upon reconnection:
 
 Partition entry and exit SHALL generate AuditRecord.
 
----
-
-## **19.8 Emergency Directive Precedence Conflict** {#19.8-emergency-directive-precedence-conflict}
+## **19.8 Emergency Directive Precedence Conflict**
 
 If overlapping EmergencyAirspaceDirectives detected:
 
@@ -6530,9 +4940,7 @@ No undefined conflict state SHALL be permitted.
 
 Precedence resolution SHALL be audit-anchored.
 
----
-
-## **19.9 Risk Dataset Corruption Handling** {#19.9-risk-dataset-corruption-handling}
+## **19.9 Risk Dataset Corruption Handling**
 
 If Risk dataset fails integrity verification:
 
@@ -6548,9 +4956,7 @@ System SHALL:
 
 Corruption event SHALL generate AuditRecord.
 
----
-
-## **19.10 Surge Prioritization Mode** {#19.10-surge-prioritization-mode}
+## **19.10 Surge Prioritization Mode**
 
 If system load exceeds certified threshold:
 
@@ -6578,9 +4984,7 @@ Surge Mode SHALL:
 
 Activation SHALL generate AuditRecord.
 
----
-
-## **19.11 Degraded Mode Safety Guarantee** {#19.11-degraded-mode-safety-guarantee}
+## **19.11 Degraded Mode Safety Guarantee**
 
 In Degraded Mode:
 
@@ -6594,9 +4998,7 @@ In Degraded Mode:
 
 Degraded Mode SHALL generate AuditRecord.
 
----
-
-## **19.12 Compromise Containment** {#19.12-compromise-containment}
+## **19.12 Compromise Containment**
 
 If systemic compromise suspected:
 
@@ -6612,9 +5014,7 @@ System SHALL:
 
 Deterministic arbitration SHALL remain intact for unaffected entities.
 
----
-
-## **19.13 Failover Integrity Preservation** {#19.13-failover-integrity-preservation}
+## **19.13 Failover Integrity Preservation**
 
 During failover:
 
@@ -6628,9 +5028,7 @@ During failover:
 
 Failover events SHALL generate AuditRecord.
 
----
-
-## **19.14 Hardening Certification Requirements** {#19.14-hardening-certification-requirements}
+## **19.14 Hardening Certification Requirements**
 
 Certification SHALL simulate:
 
@@ -6664,9 +5062,7 @@ Certification SHALL verify:
 
 * Audit integrity continuity.
 
----
-
-## **19.15 Non-Responsibilities** {#19.15-non-responsibilities}
+## **19.15 Non-Responsibilities**
 
 Operational Hardening SHALL NOT:
 
@@ -6680,15 +5076,13 @@ Operational Hardening SHALL NOT:
 
 * Introduce probabilistic behavior.
 
-# 
 
-# **20 Certification Framework** {#20-certification-framework}
 
-## **Validation, Compliance, and Continuous Conformance Governance** {#validation,-compliance,-and-continuous-conformance-governance}
+# **20 Certification Framework**
 
----
+## **Validation, Compliance, and Continuous Conformance Governance**
 
-## **20.1 Scope** {#20.1-scope}
+## **20.1 Scope**
 
 This section defines the mandatory certification, validation, monitoring, audit, and re-certification requirements applicable to all UTMSPs and participating entities under NIDSP 1.1.
 
@@ -6710,9 +5104,7 @@ Certification SHALL ensure:
 
 Participation in interoperable operations SHALL require valid certification.
 
----
-
-## **20.2 Certification Authority** {#20.2-certification-authority}
+## **20.2 Certification Authority**
 
 Certification SHALL be conducted by:
 
@@ -6730,9 +5122,7 @@ Certification Authority SHALL:
 
 * Define certification validity period.
 
----
-
-## **20.3 Certification Scope** {#20.3-certification-scope}
+## **20.3 Certification Scope**
 
 Certification SHALL cover:
 
@@ -6764,9 +5154,7 @@ Certification SHALL cover:
 
 Partial certification SHALL NOT permit interoperability participation.
 
----
-
-## **20.4 Deterministic Validation Testing** {#20.4-deterministic-validation-testing}
+## **20.4 Deterministic Validation Testing**
 
 Certification SHALL include identical-input replay testing.
 
@@ -6786,9 +5174,7 @@ System SHALL produce identical arbitration outcome.
 
 Deviation SHALL result in certification failure.
 
----
-
-## **20.5 Performance Validation Testing** {#20.5-performance-validation-testing}
+## **20.5 Performance Validation Testing**
 
 Certification SHALL validate:
 
@@ -6810,9 +5196,7 @@ Testing SHALL include peak-load simulation.
 
 Failure to meet latency bounds SHALL result in certification denial.
 
----
-
-## **20.6 Stress & Resilience Simulation** {#20.6-stress-&-resilience-simulation}
+## **20.6 Stress & Resilience Simulation**
 
 Mandatory simulation scenarios SHALL include:
 
@@ -6838,9 +5222,7 @@ Mandatory simulation scenarios SHALL include:
 
 System SHALL preserve safety and determinism in all scenarios.
 
----
-
-## **20.7 Security Conformance Testing** {#20.7-security-conformance-testing}
+## **20.7 Security Conformance Testing**
 
 Security certification SHALL verify:
 
@@ -6860,9 +5242,7 @@ Security certification SHALL verify:
 
 Penetration testing SHALL be mandatory.
 
----
-
-## **20.8 Audit Integrity Validation** {#20.8-audit-integrity-validation}
+## **20.8 Audit Integrity Validation**
 
 Certification SHALL verify:
 
@@ -6878,9 +5258,7 @@ Certification SHALL verify:
 
 Audit continuity SHALL be tested across failover events.
 
----
-
-## **20.9 Continuous Monitoring Requirements** {#20.9-continuous-monitoring-requirements}
+## **20.9 Continuous Monitoring Requirements**
 
 Certified UTMSPs SHALL implement continuous monitoring of:
 
@@ -6904,9 +5282,7 @@ Monitoring data SHALL be auditable.
 
 Significant deviation SHALL trigger compliance review.
 
----
-
-## **20.10 Re-Certification Requirements** {#20.10-re-certification-requirements}
+## **20.10 Re-Certification Requirements**
 
 Re-certification SHALL be required upon:
 
@@ -6924,9 +5300,7 @@ Minor patching SHALL require declaration and audit.
 
 Certification validity SHALL be time-limited.
 
----
-
-## **20.11 Compliance Violations** {#20.11-compliance-violations}
+## **20.11 Compliance Violations**
 
 If certified entity violates specification:
 
@@ -6948,9 +5322,7 @@ Revocation SHALL:
 
 * Immediately suspend interoperability participation.
 
----
-
-## **20.12 Interoperability Testing** {#20.12-interoperability-testing}
+## **20.12 Interoperability Testing**
 
 All certified UTMSPs SHALL participate in:
 
@@ -6964,9 +5336,7 @@ All certified UTMSPs SHALL participate in:
 
 Interoperability SHALL be validated prior to operational launch.
 
----
-
-## **20.13 Transparency & Reporting** {#20.13-transparency-&-reporting}
+## **20.13 Transparency & Reporting**
 
 Certification Authority SHALL publish:
 
@@ -6980,9 +5350,7 @@ Certification Authority SHALL publish:
 
 Sensitive implementation details SHALL remain protected.
 
----
-
-## **20.14 Change Management Governance** {#20.14-change-management-governance}
+## **20.14 Change Management Governance**
 
 Specification updates SHALL:
 
@@ -7000,9 +5368,7 @@ Backward compatibility SHALL be defined where feasible.
 
 Migration SHALL NOT compromise safety or determinism.
 
----
-
-## **20.15 Non-Responsibilities** {#20.15-non-responsibilities}
+## **20.15 Non-Responsibilities**
 
 Certification framework SHALL NOT:
 
@@ -7018,11 +5384,11 @@ Certification framework SHALL NOT:
 
 * Delete audit records.
 
-# 
 
-# **ANNEXURE A — Data Object Schemas (Normative)** {#annexure-a-—-data-object-schemas-(normative)}
 
-## **A.1 General Requirements** {#a.1-general-requirements}
+# **ANNEXURE A — Data Object Schemas (Normative)**
+
+## **A.1 General Requirements**
 
 All objects defined in this annexure SHALL:
 
@@ -7038,9 +5404,7 @@ All objects defined in this annexure SHALL:
 
 * Reject unknown mandatory field omissions.
 
----
-
-## **A.2 NegotiationEnvelope Schema** {#a.2-negotiationenvelope-schema}
+## **A.2 NegotiationEnvelope Schema**
 
 Mandatory Fields:
 
@@ -7078,9 +5442,7 @@ Validation Rules:
 
 * digital\_signature MUST verify under sender certificate.
 
----
-
-## **A.3 TelemetryObject Schema** {#a.3-telemetryobject-schema}
+## **A.3 TelemetryObject Schema**
 
 Mandatory Fields:
 
@@ -7116,9 +5478,7 @@ Validation Rules:
 
 * UIN MUST exist in Registry.
 
----
-
-## **A.4 ConflictAlert Schema** {#a.4-conflictalert-schema}
+## **A.4 ConflictAlert Schema**
 
 Mandatory Fields:
 
@@ -7146,9 +5506,7 @@ Mandatory Fields:
 
 * digital\_signature
 
----
-
-## **A.5 RiskClass Schema** {#a.5-riskclass-schema}
+## **A.5 RiskClass Schema**
 
 Mandatory Fields:
 
@@ -7174,9 +5532,7 @@ Mandatory Fields:
 
 * digital\_signature
 
----
-
-## **A.6 EmergencyAirspaceDirective Schema** {#a.6-emergencyairspacedirective-schema}
+## **A.6 EmergencyAirspaceDirective Schema**
 
 Mandatory Fields:
 
@@ -7202,9 +5558,7 @@ Mandatory Fields:
 
 * digital\_signature
 
----
-
-## **A.7 AuditRecord Schema** {#a.7-auditrecord-schema}
+## **A.7 AuditRecord Schema**
 
 Mandatory Fields:
 
@@ -7224,11 +5578,9 @@ Mandatory Fields:
 
 AuditRecord SHALL form hash-linked chain.
 
----
+# **ANNEXURE B — State Machine Definitions (Normative)**
 
-# **ANNEXURE B — State Machine Definitions (Normative)** {#annexure-b-—-state-machine-definitions-(normative)}
-
-## **B.1 Core Negotiation State Machine** {#b.1-core-negotiation-state-machine}
+## **B.1 Core Negotiation State Machine**
 
 States:
 
@@ -7244,43 +5596,33 @@ Transitions SHALL be deterministic.
 
 Illegal transitions SHALL be rejected.
 
----
-
-## **B.2 Planning State Model** {#b.2-planning-state-model}
+## **B.2 Planning State Model**
 
 SUBMITTED → VALIDATED → NEGOTIATION\_PENDING → APPROVED  
  SUBMITTED → DENIED  
  APPROVED → SUSPENDED
 
----
-
-## **B.3 Tactical Advisory Escalation Model** {#b.3-tactical-advisory-escalation-model}
+## **B.3 Tactical Advisory Escalation Model**
 
 INFORMATIVE → SUGGESTIVE → DIRECTIVE → ESCALATED
 
 DIRECTIVE SHALL precede escalation unless separation threshold breached immediately.
 
----
-
-## **B.4 Emergency Lifecycle** {#b.4-emergency-lifecycle}
+## **B.4 Emergency Lifecycle**
 
 CREATED → ACTIVE → UPDATED → EXPIRED
 
 EXPIRED SHALL restore normal Policy ordering.
 
----
-
-## **B.5 Swarm Lifecycle** {#b.5-swarm-lifecycle}
+## **B.5 Swarm Lifecycle**
 
 CREATED → ACTIVE → SPLIT → ACTIVE → DISSOLVED
 
 Each split SHALL generate new swarm\_id.
 
----
+# **ANNEXURE C — Arbitration Worked Examples (Illustrative)**
 
-# **ANNEXURE C — Arbitration Worked Examples (Illustrative)** {#annexure-c-—-arbitration-worked-examples-(illustrative)}
-
-## **Example 1: Equal Risk Flights** {#example-1:-equal-risk-flights}
+## **Example 1: Equal Risk Flights**
 
 Inputs:
 
@@ -7294,9 +5636,7 @@ Outcome:
 
 * Ordered by UTMSP\_identifier lexicographically.
 
----
-
-## **Example 2: Emergency vs Normal** {#example-2:-emergency-vs-normal}
+## **Example 2: Emergency vs Normal**
 
 Inputs:
 
@@ -7306,9 +5646,7 @@ Outcome:
 
 * Flight A ordered highest.
 
----
-
-## **Example 3: Swarm vs Single** {#example-3:-swarm-vs-single}
+## **Example 3: Swarm vs Single**
 
 Inputs:
 
@@ -7323,9 +5661,7 @@ If swarm\_priority\_rule enabled:
 
 * Standard ordering.
 
----
-
-# **ANNEXURE D — Separation Threshold Reference (Normative)** {#annexure-d-—-separation-threshold-reference-(normative)}
+# **ANNEXURE D — Separation Threshold Reference (Normative)**
 
 | ARC Class | Minimum Horizontal Separation | Minimum Vertical Separation |
 | ----- | ----- | ----- |
@@ -7338,9 +5674,7 @@ Actual numeric values SHALL be regulator-defined and versioned.
 
 Swarm intra-separation SHALL not be less than regulator minimum.
 
----
-
-# **ANNEXURE E — Timing & Timeout Matrix (Normative)** {#annexure-e-—-timing-&-timeout-matrix-(normative)}
+# **ANNEXURE E — Timing & Timeout Matrix (Normative)**
 
 | Parameter | Maximum Bound |
 | ----- | ----- |
@@ -7354,9 +5688,7 @@ Swarm intra-separation SHALL not be less than regulator minimum.
 
 All SHALL be configurable but bounded.
 
----
-
-# **ANNEXURE F — Error Codes & Compliance Events (Normative)** {#annexure-f-—-error-codes-&-compliance-events-(normative)}
+# **ANNEXURE F — Error Codes & Compliance Events (Normative)**
 
 | Code | Description | Severity |
 | ----- | ----- | ----- |
@@ -7370,9 +5702,7 @@ All SHALL be configurable but bounded.
 
 All critical errors SHALL generate Compliance notification.
 
----
-
-# **ANNEXURE G — Degraded Mode Matrix (Normative)** {#annexure-g-—-degraded-mode-matrix-(normative)}
+# **ANNEXURE G — Degraded Mode Matrix (Normative)**
 
 | Condition | New Flights | Active Flights | Arbitration |
 | ----- | ----- | ----- | ----- |
@@ -7383,9 +5713,7 @@ All critical errors SHALL generate Compliance notification.
 
 Safety SHALL remain enforced.
 
----
-
-# **ANNEXURE H — Security Algorithm Requirements (Normative)** {#annexure-h-—-security-algorithm-requirements-(normative)}
+# **ANNEXURE H — Security Algorithm Requirements (Normative)**
 
 * TLS 1.3 minimum
 
@@ -7401,7 +5729,7 @@ Safety SHALL remain enforced.
 
 Algorithms SHALL be regulator-approved.
 
-# **ANNEXURE I — Certification Test Catalogue (Normative)** {#annexure-i-—-certification-test-catalogue-(normative)}
+# **ANNEXURE I — Certification Test Catalogue (Normative)**
 
 Mandatory Tests:
 
@@ -7427,11 +5755,9 @@ Mandatory Tests:
 
 All tests SHALL pass prior to certification issuance.
 
----
+# **ANNEXURE J — Migration & Version Governance (Normative)**
 
-# **ANNEXURE J — Migration & Version Governance (Normative)** {#annexure-j-—-migration-&-version-governance-(normative)}
-
-## **J.1 Policy Version Migration** {#j.1-policy-version-migration}
+## **J.1 Policy Version Migration**
 
 New Policy SHALL:
 
@@ -7441,9 +5767,7 @@ New Policy SHALL:
 
 * Be audit-anchored.
 
----
-
-## **J.2 Dataset Version Migration** {#j.2-dataset-version-migration}
+## **J.2 Dataset Version Migration**
 
 Risk dataset update SHALL:
 
@@ -7453,9 +5777,7 @@ Risk dataset update SHALL:
 
 * Trigger integrity validation.
 
----
-
-## **J.3 Backward Compatibility** {#j.3-backward-compatibility}
+## **J.3 Backward Compatibility**
 
 Interoperability SHALL require:
 
@@ -7465,7 +5787,7 @@ Interoperability SHALL require:
 
 * Grace period defined by regulator.
 
-# **ANNEXURE K — Spec Markdown** {#annexure-k-—-spec-markdown}
+# **ANNEXURE K — Spec Markdown**
 
 ```
 nidsp-sdk/
