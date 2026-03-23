@@ -1,0 +1,38 @@
+{
+  "type": {
+    "id": "{{uasTypeId}}",
+    "manufacturer": {
+      "legalEntity": {
+        "id": "{{legalEntityId}}",
+        "cin": "{{cin}}",
+        "name": "Test Company Pvt Ltd",
+        "regdAddress": {
+          "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "line1": "123 ABC Housing Society",
+          "line2": "Landmark",
+          "line3": "Bandra West",
+          "city": "Mumbai",
+          "state": "ANDHRA_PRADESH",
+          "pinCode": "400000",
+          "country": "IND"
+        },
+        "gstin": "{{gstin}}",
+        "timestamps": {}
+      },
+      "validity": {
+        "from": "2023-11-26T12:14:38.563Z",
+        "till": "2023-11-26T12:14:38.563Z"
+      },
+      "timestamps": {}
+    },
+    "propulsionCategory": "VTOL",
+    "weightCategory": "NANO",
+    "mtow": 0,
+    "photoUrl": "https://ispirt.github.io/pushpaka/",
+    "operation_category": "A",
+    "timestamps": {}
+  },
+  "oem_serial_number": "{{oemSerialNumber}}",
+  "timestamps": {},
+  "status": "REGISTERED"
+}
