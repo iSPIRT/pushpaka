@@ -1,0 +1,75 @@
+name: Java CI
+
+on:
+  pull_request:
+    paths:
+      - 'reference-implementation/**'
+  push:
+    branches: [master]
+    paths:
+      - 'reference-implementation/**'
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: secret
+          POSTGRES_DB: pushpaka
+        ports:
+          - 15432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      spicedb-migrate:
+        image: authzed/spicedb
+        env:
+          SPICEDB_DATASTORE_ENGINE: postgres
+          SPICEDB_DATASTORE_CONN_URI: "postgres://postgres:secret@postgres:5432/spicedb?sslmode=disable"
+        options: >-
+          --entrypoint spicedb
+
+      spicedb:
+        image: authzed/spicedb
+        env:
+          SPICEDB_GRPC_PRESHARED_KEY: somerandomkeyhere
+          SPICEDB_DATASTORE_ENGINE: postgres
+          SPICEDB_DATASTORE_CONN_URI: "postgres://postgres:secret@postgres:5432/spicedb?sslmode=disable"
+        ports:
+          - 50051:50051
+        options: >-
+          --health-cmd "grpc_health_probe -addr=:50051"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Compile
+        working-directory: reference-implementation
+        run: mvn compile -B
+
+      - name: Run tests
+        working-directory: reference-implementation
+        env:
+          DATABASE_URL: jdbc:postgresql://localhost:15432/pushpaka?sslmode=disable
+          DATABASE_USER: postgres
+          DATABASE_PASSWORD: secret
+          SPICEDB_TARGET: localhost:50051
+          SPICEDB_GRPC_PRESHARED_KEY: somerandomkeyhere
+        run: mvn test -B

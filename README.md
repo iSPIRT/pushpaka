@@ -4,83 +4,161 @@ Working-group publication repo for drone regulation and UTM standards in India.
 
 Published site: **https://ispirt.github.io/pushpaka/**
 
-## What's here
-
-- `docs/` — work items, meeting minutes, reference documents, OpenAPI specs
-- `reference-implementation/` — illustrative Java/Spring Boot services (registry + flight authorisation)
-- `.devcontainer/` — cross-platform dev environment (VS Code / GitHub Codespaces)
-
-## Dev environment (devcontainer)
-
-The fastest way to get a working environment — no local Java, Maven, or Docker knowledge required.
-
-### Requirements
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-- [VS Code](https://code.visualstudio.com/) + [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
-
-### First-time setup
-```bash
-cp .devcontainer/.env.example .devcontainer/.env
-# Edit .env if any default ports conflict with services already on your machine
-```
-
-### Start core stack (ref impl + Keycloak + SpiceDB + PostgreSQL)
-```bash
-docker compose -f .devcontainer/docker-compose.yml up
-```
-
-Or open in VS Code → **Reopen in Container** — everything starts automatically.
-
-### Default service ports
-| Service | Host port |
-|---------|-----------|
-| PostgreSQL | 15432 |
-| Keycloak | 18080 |
-| SpiceDB HTTP | 18081 |
-| Registry service | 8082 |
-| Flight authorisation | 8083 |
-
-### Start with ArduPilot SITL
-```bash
-docker compose -f .devcontainer/docker-compose.yml --profile sitl up
-# QGC connects from host on UDP:14550
-```
-
-### GitHub Codespaces
-Open this repo in Codespaces — the devcontainer starts automatically, no local setup needed.
-
 ---
 
-## Docs site
+## Working Group Docs
 
-### Requirements
+Work items, meeting minutes, OpenAPI specs, and reference documents live under `docs/` and are published as a static site via MkDocs.
 
-```
+### Preview locally
+
+```bash
 pip install -r requirements.txt
-```
-
-### Local preview
-
-```
 mkdocs serve
 ```
 
 ### Build (verify before deploying)
 
-```
+```bash
 mkdocs build --strict
 ```
 
 ### Deploy
 
-GitHub Actions auto-deploys the `docs` site on push to the `dev` branch. To deploy manually:
+GitHub Actions auto-deploys to GitHub Pages on push to the `dev` branch. To deploy manually:
 
-```
+```bash
 mkdocs gh-deploy
 ```
+
+---
+
+## Specifications
+
+OpenAPI specifications are the **source of truth** for all API contracts.
+
+| Spec | Location |
+|------|----------|
+| UAS Registry | `docs/openapi/registry.yaml` |
+| Flight Authorisation | `docs/openapi/flight-authorisation.yaml` |
+
+The file `reference-implementation/openapi.yaml` is a downstream copy used for code generation — do not edit it directly.
+
+To browse interactively, run the reference implementation (see below) and open:
+
+```
+http://localhost:8082/swagger-ui.html   # Registry
+http://localhost:8083/swagger-ui.html   # Flight authorisation
+```
+
+---
+
+## Reference Implementation
+
+An **illustrative** Java/Spring Boot implementation of the registry and flight authorisation services. Scope is intentionally limited to demonstrating the I05 UTM ConOps — it is not a production system.
+
+### Stack
+
+| Service | Host port |
+|---------|-----------|
+| PostgreSQL | 15432 |
+| Keycloak | 18080 |
+| SpiceDB HTTP | 18081 |
+| SpiceDB gRPC | 50051 |
+| Registry service | 8082 |
+| Flight authorisation | 8083 |
+
+### Requirements
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- [VS Code](https://code.visualstudio.com/) + [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+
+No local Java or Maven installation needed — the devcontainer provides everything.
+
+### First-time setup
+
+```bash
+cp .devcontainer/.env.example .devcontainer/.env
+# Edit .env if any default ports conflict with services already on your machine
+```
+
+### Start (VS Code)
+
+Open the repo in VS Code → **Reopen in Container**. All services start automatically.
+
+### Start (CLI)
+
+```bash
+docker compose -f .devcontainer/docker-compose.yml up
+```
+
+### GitHub Codespaces
+
+Open this repo in Codespaces — the devcontainer starts automatically, no local setup needed.
+
+### Build and test (inside devcontainer)
+
+```bash
+cd /workspace/reference-implementation
+
+mvn compile                        # Compile only
+mvn test                           # All tests
+mvn test -Dtest="EntityTests"      # Entity tests only
+mvn prettier:write                 # Format code
+```
+
+### Run services manually (inside devcontainer)
+
+```bash
+# Registry (port 8082)
+SPRING_PROFILES_ACTIVE=registry mvn compile exec:java \
+  -Dexec.mainClass="in.ispirt.pushpaka.registry.RegistryService"
+
+# Flight authorisation (port 8083)
+SPRING_PROFILES_ACTIVE=flightauthorisation mvn compile exec:java \
+  -Dexec.mainClass="in.ispirt.pushpaka.flightauthorisation.FlightAuthorisationService"
+```
+
+### Environment variables
+
+All connection details are read from environment. See `.devcontainer/.env.example` for the full list. Key variables:
+
+| Variable | Default | Used by |
+|----------|---------|---------|
+| `DATABASE_URL` | `jdbc:postgresql://localhost:15432/pushpaka?sslmode=disable` | Hibernate |
+| `DATABASE_USER` | `postgres` | Hibernate |
+| `DATABASE_PASSWORD` | `secret` | Hibernate |
+| `KEYCLOAK_URL` | `http://localhost:18080` | Spring OAuth2 |
+| `SPICEDB_TARGET` | `localhost:50051` | SpiceDB gRPC client |
+| `SPICEDB_GRPC_PRESHARED_KEY` | `somerandomkeyhere` | SpiceDB auth |
+
+---
+
+## Simulation (SITL + QGC)
+
+ArduPilot Software-in-the-Loop simulation and QGroundControl integration for end-to-end UTM flight scenario testing.
+
+### Start with ArduPilot SITL
+
+```bash
+docker compose -f .devcontainer/docker-compose.yml --profile sitl up
+```
+
+| Endpoint | Protocol | Purpose |
+|----------|----------|---------|
+| `localhost:5760` | TCP | MAVLink (autopilot stream) |
+| `localhost:14550` | UDP | QGC connection |
+
+### QGroundControl
+
+Download QGC from [qgroundcontrol.com](https://qgroundcontrol.com). Connect to `localhost:14550` (UDP) — QGC auto-detects the SITL vehicle.
+
+For Keycloak OAuth integration details see [`docs/integrations.md`](docs/integrations.md).
+
+---
 
 ## Contributing
 
 Issues and tasks are tracked in [GitHub Issues](https://github.com/iSPIRT/pushpaka/issues).
-Branch naming follows work item IDs (e.g. `i08`) or rebaseline phase IDs (e.g. `rb-01-docs`).
-See `CLAUDE.md` for full project context.
+Branch naming follows work item IDs (e.g. `i08`) or rebaseline phase IDs (e.g. `rb-03-refimpl`).
+See `CLAUDE.md` for full project context and open decisions.
