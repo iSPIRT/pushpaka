@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import in.ispirt.pushpaka.authorisation.ResourceType;
 import in.ispirt.pushpaka.authorisation.utils.AuthZ;
 import in.ispirt.pushpaka.authorisation.utils.SpicedbClient;
+import in.ispirt.pushpaka.dao.seeds.Seeds;
 import java.util.ArrayList;
 import java.util.Set;
 import org.junit.jupiter.api.AfterAll;
@@ -24,7 +25,7 @@ public class AuthZTest {
   public static void setup() {
     authZ = new AuthZ();
     spicedbClient = authZ.getSpicedbClient();
-    authZ.setCaaResourceID("caa-authority");
+    authZ.setCaaResourceID(Seeds.SPICEDB_CAA_RESOURCE_ID);
     // Schema must be loaded before any permission checks can succeed.
     // testWriteSchema verifies this succeeded; we load here to guarantee ordering.
     spicedbClient.writeSchema(SpicedbClient.SPICEDDB_PERMISSION_FILE);
@@ -53,7 +54,7 @@ public class AuthZTest {
   public void testCreatePlatformUser() {
     // platform:digital-sky-platform#administrator@user:platform-user
 
-    boolean isSuccess = authZ.createPlatformAdmin("platform-user");
+    boolean isSuccess = authZ.createPlatformAdmin(Seeds.SPICEDB_PLATFORM_USER_ID);
     assertTrue(isSuccess);
   }
 
@@ -72,8 +73,8 @@ public class AuthZTest {
   public void testCreateCAAAdministrator() {
     // caa:caa-authority#administrator@user:caa-user
 
-    String caaResourceAdminID = "caa-user";
-    String platformAdminId = "platform-user";
+    String caaResourceAdminID = Seeds.SPICEDB_CAA_ADMIN_USER_ID;
+    String platformAdminId = Seeds.SPICEDB_PLATFORM_USER_ID;
 
     boolean isSuccess = authZ.createCAAAdmin(
       authZ.getCaaResourceID(),
@@ -88,8 +89,8 @@ public class AuthZTest {
   @Order(5)
   public void testCreateManufacturerAdministrator() {
     // manufacturer:manufacturer-1#administrator@user:manufacturer-user
-    String manufacturerResourceID = "manufacturer-1";
-    String manufacturerAdminUserID = "manufacturer-user";
+    String manufacturerResourceID = Seeds.SPICEDB_MANUFACTURER_RESOURCE_ID;
+    String manufacturerAdminUserID = Seeds.SPICEDB_MANUFACTURER_ADMIN_USER_ID;
 
     boolean isSuccess = authZ.createResoureTypeAdmin(
       ResourceType.MANUFACTURER,
@@ -104,8 +105,8 @@ public class AuthZTest {
   @Test
   @Order(6)
   public void testCreateTraderAdministrator() {
-    String traderResourceID = "trader-1";
-    String traderAdminUserID = "trader-user";
+    String traderResourceID = Seeds.SPICEDB_TRADER_RESOURCE_ID;
+    String traderAdminUserID = Seeds.SPICEDB_TRADER_ADMIN_USER_ID;
 
     boolean isSuccess = authZ.createResoureTypeAdmin(
       ResourceType.TRADER,
@@ -120,8 +121,8 @@ public class AuthZTest {
   @Test
   @Order(7)
   public void testCreateDSSPAdministrator() {
-    String dsspResourceID = "dssp-1";
-    String dsspAdminUserID = "dssp-user";
+    String dsspResourceID = Seeds.SPICEDB_DSSP_RESOURCE_ID;
+    String dsspAdminUserID = Seeds.SPICEDB_DSSP_ADMIN_USER_ID;
 
     boolean isSuccess = authZ.createResoureTypeAdmin(
       ResourceType.DSSP,
@@ -136,8 +137,8 @@ public class AuthZTest {
   @Test
   @Order(8)
   public void testCreateRepairAgencyAdministrator() {
-    String repairAgencyResourceID = "repairagency-1";
-    String repairAgencyAdminUserID = "repairagency-user";
+    String repairAgencyResourceID = Seeds.SPICEDB_REPAIR_AGENCY_RESOURCE_ID;
+    String repairAgencyAdminUserID = Seeds.SPICEDB_REPAIR_AGENCY_ADMIN_USER_ID;
 
     boolean isSuccess = authZ.createResoureTypeAdmin(
       ResourceType.REPAIRAGENCY,
@@ -155,8 +156,8 @@ public class AuthZTest {
     // operator:operator-1#administrator@user:operator-user
     // operator:operator-1#regulator@caa:caa-authority
 
-    String operatorResourceID = "operator-1";
-    String operatorAdminUserID = "operator-user";
+    String operatorResourceID = Seeds.SPICEDB_OPERATOR_RESOURCE_ID;
+    String operatorAdminUserID = Seeds.SPICEDB_OPERATOR_ADMIN_USER_ID;
 
     boolean isSuccess = authZ.createResoureTypeAdmin(
       ResourceType.OPERATOR,
@@ -171,8 +172,8 @@ public class AuthZTest {
   @Test
   @Order(10)
   public void testIsResourceAdministrator() {
-    String operatorResourceID = "operator-1";
-    String operatorAdminUserID = "operator-user";
+    String operatorResourceID = Seeds.SPICEDB_OPERATOR_RESOURCE_ID;
+    String operatorAdminUserID = Seeds.SPICEDB_OPERATOR_ADMIN_USER_ID;
 
     boolean isSuccess = authZ.checkIsResourceAdmin(
       ResourceType.OPERATOR,
@@ -186,8 +187,8 @@ public class AuthZTest {
   @Test
   @Order(11)
   public void testIsResourceAdministratorNegative() {
-    String operatorResourceID = "operator-1";
-    String operatorAdminUserID = "operator-user-1";
+    String operatorResourceID = Seeds.SPICEDB_OPERATOR_RESOURCE_ID;
+    String operatorAdminUserID = "operator-user-1"; // intentionally wrong user for negative test
 
     boolean isSuccess = authZ.checkIsResourceAdmin(
       ResourceType.OPERATOR,
@@ -202,10 +203,10 @@ public class AuthZTest {
   @Order(12)
   public void testAddFirstPilotToOperator() {
     // pilot:default-pilot-group#member@user:pilot-user-2
-    String pilotResourceID = "pilot-resource-1";
-    String pilotUserID = "pilot-user-1";
-    String operatorResourceID = "operator-1";
-    String operatorAdminUserID = "operator-user";
+    String pilotResourceID = Seeds.SPICEDB_PILOT_RESOURCE_1_ID;
+    String pilotUserID = Seeds.SPICEDB_PILOT_USER_1_ID;
+    String operatorResourceID = Seeds.SPICEDB_OPERATOR_RESOURCE_ID;
+    String operatorAdminUserID = Seeds.SPICEDB_OPERATOR_ADMIN_USER_ID;
 
     boolean addPilot = authZ.addPilot(
       pilotResourceID,
@@ -231,10 +232,10 @@ public class AuthZTest {
   @Order(13)
   public void testAddSecondPilotToOperator() {
     // pilot:default-pilot-group#member@user:pilot-user-2
-    String pilotResourceID = "pilot-resource-2";
-    String pilotUserID = "pilot-user-2";
-    String operatorResourceID = "operator-1";
-    String operatorAdminUserID = "operator-user";
+    String pilotResourceID = Seeds.SPICEDB_PILOT_RESOURCE_2_ID;
+    String pilotUserID = Seeds.SPICEDB_PILOT_USER_2_ID;
+    String operatorResourceID = Seeds.SPICEDB_OPERATOR_RESOURCE_ID;
+    String operatorAdminUserID = Seeds.SPICEDB_OPERATOR_ADMIN_USER_ID;
 
     boolean addPilot = authZ.addPilot(
       pilotResourceID,
@@ -259,10 +260,9 @@ public class AuthZTest {
   @Test
   @Order(14)
   public void testRemoveFirstPilotToOperator() {
-    // pilot:default-pilot-group#member@user:pilot-user-
-    String pilotResourceID = "pilot-resource-1";
-    String operatorResourceID = "operator-1";
-    String operatorAdminUserID = "operator-user";
+    String pilotResourceID = Seeds.SPICEDB_PILOT_RESOURCE_1_ID;
+    String operatorResourceID = Seeds.SPICEDB_OPERATOR_RESOURCE_ID;
+    String operatorAdminUserID = Seeds.SPICEDB_OPERATOR_ADMIN_USER_ID;
 
     boolean isSuccess = authZ.removePilotFromOperator(
       pilotResourceID,
@@ -276,10 +276,9 @@ public class AuthZTest {
   @Test
   @Order(15)
   public void testAddPilotToOperatoNegative() {
-    // pilot:default-pilot-group#member@user:pilot-user-2
-    String pilotResourceID = "pilot-resource";
-    String operatorResourceID = "operator-1";
-    String operatorAdminUserID = "operator-user-1";
+    String pilotResourceID = "pilot-resource"; // intentionally unknown resource
+    String operatorResourceID = Seeds.SPICEDB_OPERATOR_RESOURCE_ID;
+    String operatorAdminUserID = "operator-user-1"; // intentionally wrong admin
 
     boolean isSuccess = authZ.addPilotToOperator(
       pilotResourceID,
@@ -293,8 +292,8 @@ public class AuthZTest {
   @Test
   @Order(16)
   public void testFlightOperationsAdminNegative() {
-    String pilotUserID = "pilot-user-3";
-    String operatorResourceID = "operator-1";
+    String pilotUserID = "pilot-user-3"; // intentionally unknown pilot
+    String operatorResourceID = Seeds.SPICEDB_OPERATOR_RESOURCE_ID;
 
     boolean isSuccess = authZ.isFlightOperationsAdmin(pilotUserID, operatorResourceID);
 
@@ -304,12 +303,12 @@ public class AuthZTest {
   @Test
   @Order(17)
   public void testCreateUASRelationships() {
-    String UASID = "uas-1";
-    String manufacturerResourceID = "manufacturer-1";
-    String manufacturerAdminUserID = "manufacturer-user";
+    String UASID = Seeds.SPICEDB_UAS_RESOURCE_ID;
+    String manufacturerResourceID = Seeds.SPICEDB_MANUFACTURER_RESOURCE_ID;
+    String manufacturerAdminUserID = Seeds.SPICEDB_MANUFACTURER_ADMIN_USER_ID;
 
-    String operatorResourceID = "operator-1";
-    String operatorAdminUserID = "operator-user";
+    String operatorResourceID = Seeds.SPICEDB_OPERATOR_RESOURCE_ID;
+    String operatorAdminUserID = Seeds.SPICEDB_OPERATOR_ADMIN_USER_ID;
 
     boolean isSuccess = authZ.createUASManufacturerRelationships(
       UASID,
@@ -331,9 +330,9 @@ public class AuthZTest {
   @Test
   @Order(18)
   public void testCreateUASTypeRelationships() {
-    String UASTypeID = "uastype-1";
-    String manufacturerResourceID = "manufacturer-1";
-    String manufacturerAdminUserID = "manufacturer-user";
+    String UASTypeID = Seeds.SPICEDB_UAS_TYPE_RESOURCE_ID;
+    String manufacturerResourceID = Seeds.SPICEDB_MANUFACTURER_RESOURCE_ID;
+    String manufacturerAdminUserID = Seeds.SPICEDB_MANUFACTURER_ADMIN_USER_ID;
 
     boolean isSuccess = authZ.createUASTypeRelationships(
       UASTypeID,
@@ -348,8 +347,8 @@ public class AuthZTest {
   @Test
   @Order(19)
   public void testApproveManufacturer() {
-    String manufacturerResourceID = "manufacturer-1";
-    String caaResourceAdminID = "caa-user";
+    String manufacturerResourceID = Seeds.SPICEDB_MANUFACTURER_RESOURCE_ID;
+    String caaResourceAdminID = Seeds.SPICEDB_CAA_ADMIN_USER_ID;
 
     boolean isApprover = authZ.approveResourceByRegulator(
       ResourceType.MANUFACTURER,
@@ -363,8 +362,8 @@ public class AuthZTest {
   @Test
   @Order(20)
   public void testApproveOperator() {
-    String operatorResourceID = "operator-1";
-    String caaResourceAdminID = "caa-user";
+    String operatorResourceID = Seeds.SPICEDB_OPERATOR_RESOURCE_ID;
+    String caaResourceAdminID = Seeds.SPICEDB_CAA_ADMIN_USER_ID;
 
     boolean isApprover = authZ.approveResourceByRegulator(
       ResourceType.OPERATOR,
@@ -378,8 +377,8 @@ public class AuthZTest {
   @Test
   @Order(21)
   public void testApproveDSSP() {
-    String dsspResourceID = "dssp-1";
-    String caaResourceAdminID = "caa-user";
+    String dsspResourceID = Seeds.SPICEDB_DSSP_RESOURCE_ID;
+    String caaResourceAdminID = Seeds.SPICEDB_CAA_ADMIN_USER_ID;
 
     boolean isApprover = authZ.approveResourceByRegulator(
       ResourceType.DSSP,
@@ -393,8 +392,8 @@ public class AuthZTest {
   @Test
   @Order(22)
   public void testApproveTrader() {
-    String traderResourceID = "trader-1";
-    String caaResourceAdminID = "caa-user";
+    String traderResourceID = Seeds.SPICEDB_TRADER_RESOURCE_ID;
+    String caaResourceAdminID = Seeds.SPICEDB_CAA_ADMIN_USER_ID;
 
     boolean isApprover = authZ.approveResourceByRegulator(
       ResourceType.TRADER,
@@ -408,8 +407,8 @@ public class AuthZTest {
   @Test
   @Order(23)
   public void testApproveRepairAgency() {
-    String repairAgencyResourceID = "repairagency-1";
-    String caaResourceAdminID = "caa-user";
+    String repairAgencyResourceID = Seeds.SPICEDB_REPAIR_AGENCY_RESOURCE_ID;
+    String caaResourceAdminID = Seeds.SPICEDB_CAA_ADMIN_USER_ID;
 
     boolean isApprover = authZ.approveResourceByRegulator(
       ResourceType.REPAIRAGENCY,
@@ -423,8 +422,8 @@ public class AuthZTest {
   @Test
   @Order(24)
   public void testLookupUASResourceOwnership() {
-    String UASID = "uas-1";
-    String manufacturerResourceID = "manufacturer-1";
+    String UASID = Seeds.SPICEDB_UAS_RESOURCE_ID;
+    String manufacturerResourceID = Seeds.SPICEDB_MANUFACTURER_RESOURCE_ID;
 
     boolean isSuccess = authZ.lookupUASResourceManufacturerOwnership(
       UASID,
@@ -437,8 +436,8 @@ public class AuthZTest {
   @Test
   @Order(25)
   public void testLookupUASResourceOwnershipNegative() {
-    String UASID = "uas";
-    String manufacturerResourceID = "manufacturer-1";
+    String UASID = "uas"; // intentionally unknown UAS
+    String manufacturerResourceID = Seeds.SPICEDB_MANUFACTURER_RESOURCE_ID;
 
     boolean isSuccess = authZ.lookupUASResourceManufacturerOwnership(
       UASID,
@@ -451,7 +450,7 @@ public class AuthZTest {
   @Test
   @Order(26)
   public void testLookupResourcesForRegulatorApprovals() {
-    String caaResourceAdminID = "caa-user";
+    String caaResourceAdminID = Seeds.SPICEDB_CAA_ADMIN_USER_ID;
 
     Set<String> resourceIdSetForApproval = authZ.lookupResourcesForRegulatorApproval(
       caaResourceAdminID
@@ -463,7 +462,7 @@ public class AuthZTest {
   @Test
   @Order(27)
   public void testPilotToOperators() {
-    String pilotResourceID = "pilot-resource-2";
+    String pilotResourceID = Seeds.SPICEDB_PILOT_RESOURCE_2_ID;
 
     Set<String> pilotToOperators = authZ.lookupPilotResource(pilotResourceID);
     System.out.println(pilotToOperators);
