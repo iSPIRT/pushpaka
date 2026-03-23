@@ -5,16 +5,11 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.dao.DaoInstance;
-import in.ispirt.pushpaka.dao.entities.*;
 import in.ispirt.pushpaka.models.Lease;
 import in.ispirt.pushpaka.models.ModelApiResponse;
 import in.ispirt.pushpaka.models.Sale;
-import in.ispirt.pushpaka.registry.utils.DaoException;
-import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -23,10 +18,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import javax.annotation.Generated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -36,7 +29,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.multipart.MultipartFile;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
@@ -53,14 +45,6 @@ public interface OwnershipApi {
    *            LEASE           *
    ******************************/
 
-  /**
-   * POST /lease : Add a new lease to the store
-   * Add a new lease to the store
-   *
-   * @param lease Create a new lease in the store (required)
-   * @return Successful operation (status code 200)
-   *         or Invalid input (status code 405)
-   */
   @Operation(
     operationId = "addLease",
     summary = "Add a new lease to the store",
@@ -93,28 +77,9 @@ public interface OwnershipApi {
       required = true
     ) @Valid @RequestBody Lease lease
   ) {
-    try {
-      in.ispirt.pushpaka.dao.entities.Lease le = Lease.fromOa(lease);
-      in.ispirt.pushpaka.dao.entities.Lease lec = in.ispirt.pushpaka.dao.entities.Lease.create(DaoInstance.getInstance().getSessionFactory(), le);
-      return ResponseEntity.ok(Lease.toOa(lec));
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-    }
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * DELETE /lease/{leaseId} : Deletes a lease
-   *
-   *
-   * @param leaseId Lease id to delete (required)
-   * @return Invalid lease value (status code 400)
-   */
   @Operation(
     operationId = "deleteLease",
     summary = "Deletes a lease",
@@ -133,26 +98,9 @@ public interface OwnershipApi {
       in = ParameterIn.PATH
     ) @PathVariable("leaseId") UUID leaseId
   ) {
-    try {
-      in.ispirt.pushpaka.dao.entities.Lease.delete(DaoInstance.getInstance().getSessionFactory(), leaseId);
-      return ResponseEntity.ok().build();
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * GET /lease/find : Finds Leases
-   *
-   * @return successful operation (status code 200)
-   *         or Invalid value (status code 400)
-   */
   @Operation(
     operationId = "findLeases",
     summary = "Finds Leases",
@@ -177,35 +125,9 @@ public interface OwnershipApi {
     produces = { "application/json" }
   )
   default ResponseEntity<List<Lease>> findLeases() {
-    try {
-      List<in.ispirt.pushpaka.dao.entities.Lease> les = in.ispirt.pushpaka.dao.entities.Lease.getAll(
-        DaoInstance.getInstance().getSessionFactory()
-      );
-      List<Lease> leso = les
-        .stream()
-        .map(x -> in.ispirt.pushpaka.models.Lease.toOa(x))
-        .collect(Collectors.toList());
-      return ResponseEntity.ok(leso);
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * GET /lease/{leaseId} : Find lease by ID
-   * Returns a single lease
-   *
-   * @param leaseId ID of lease to return (required)
-   * @return successful operation (status code 200)
-   *         or Invalid ID supplied (status code 400)
-   *         or Lease not found (status code 404)
-   */
   @Operation(
     operationId = "getLeaseById",
     summary = "Find lease by ID",
@@ -239,33 +161,9 @@ public interface OwnershipApi {
       in = ParameterIn.PATH
     ) @PathVariable("leaseId") UUID leaseId
   ) {
-    try {
-      in.ispirt.pushpaka.dao.entities.Lease le = in.ispirt.pushpaka.dao.entities.Lease.get(
-        DaoInstance.getInstance().getSessionFactory(),
-        leaseId
-      );
-      return ResponseEntity.ok(in.ispirt.pushpaka.models.Lease.toOa(le));
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * PUT /lease : Update an existing lease
-   * Update an existing lease by Id
-   *
-   * @param lease Update an existent lease in the store (required)
-   * @return Successful operation (status code 200)
-   *         or Invalid ID supplied (status code 400)
-   *         or Lease not found (status code 404)
-   *         or Validation exception (status code 405)
-   */
   @Operation(
     operationId = "updateLease",
     summary = "Update an existing lease",
@@ -300,37 +198,13 @@ public interface OwnershipApi {
       required = true
     ) @Valid @RequestBody Lease lease
   ) {
-    try {
-      in.ispirt.pushpaka.dao.entities.Lease le = Lease.fromOa(lease);
-      in.ispirt.pushpaka.dao.entities.Lease lec = in.ispirt.pushpaka.dao.entities.Lease.update(
-        DaoInstance.getInstance().getSessionFactory(),
-        le.getId(),
-        le
-      );
-      return ResponseEntity.ok(Lease.toOa(lec));
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
   /******************************
    *             SALE           *
    ******************************/
 
-  /**
-   * POST /sale : Add a new sale to the store
-   * Add a new sale to the store
-   *
-   * @param sale Create a new sale in the store (required)
-   * @return Successful operation (status code 200)
-   *         or Invalid input (status code 405)
-   */
   @Operation(
     operationId = "addSale",
     summary = "Add a new sale to the store",
@@ -363,28 +237,9 @@ public interface OwnershipApi {
       required = true
     ) @Valid @RequestBody Sale sale
   ) {
-    try {
-      in.ispirt.pushpaka.dao.entities.Sale le = Sale.fromOa(sale);
-      in.ispirt.pushpaka.dao.entities.Sale lec = in.ispirt.pushpaka.dao.entities.Sale.create(DaoInstance.getInstance().getSessionFactory(), le);
-      return ResponseEntity.ok(Sale.toOa(lec));
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-    }
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * DELETE /sale/{saleId} : Deletes a sale
-   *
-   *
-   * @param saleId Sale id to delete (required)
-   * @return Invalid sale value (status code 400)
-   */
   @Operation(
     operationId = "deleteSale",
     summary = "Deletes a sale",
@@ -403,26 +258,9 @@ public interface OwnershipApi {
       in = ParameterIn.PATH
     ) @PathVariable("saleId") UUID saleId
   ) {
-    try {
-      in.ispirt.pushpaka.dao.entities.Sale.delete(DaoInstance.getInstance().getSessionFactory(), saleId);
-      return ResponseEntity.ok().build();
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * GET /sale/find : Finds Sales
-   *
-   * @return successful operation (status code 200)
-   *         or Invalid value (status code 400)
-   */
   @Operation(
     operationId = "findSales",
     summary = "Finds Sales",
@@ -454,36 +292,9 @@ public interface OwnershipApi {
       in = ParameterIn.PATH
     ) @PathVariable("uasId") UUID uasId
   ) {
-    try {
-      List<in.ispirt.pushpaka.dao.entities.Sale> les = in.ispirt.pushpaka.dao.entities.Sale.getAll(
-        DaoInstance.getInstance().getSessionFactory(),
-        uasId
-      );
-      List<Sale> leso = les
-        .stream()
-        .map(x -> in.ispirt.pushpaka.models.Sale.toOa(x))
-        .collect(Collectors.toList());
-      return ResponseEntity.ok(leso);
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * GET /sale/{saleId} : Find sale by ID
-   * Returns a single sale
-   *
-   * @param saleId ID of sale to return (required)
-   * @return successful operation (status code 200)
-   *         or Invalid ID supplied (status code 400)
-   *         or Sale not found (status code 404)
-   */
   @Operation(
     operationId = "getSaleById",
     summary = "Find sale by ID",
@@ -517,30 +328,9 @@ public interface OwnershipApi {
       in = ParameterIn.PATH
     ) @PathVariable("saleId") UUID saleId
   ) {
-    try {
-      in.ispirt.pushpaka.dao.entities.Sale le = in.ispirt.pushpaka.dao.entities.Sale.get(DaoInstance.getInstance().getSessionFactory(), saleId);
-      return ResponseEntity.ok(in.ispirt.pushpaka.models.Sale.toOa(le));
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * PUT /sale : Update an existing sale
-   * Update an existing sale by Id
-   *
-   * @param sale Update an existent sale in the store (required)
-   * @return Successful operation (status code 200)
-   *         or Invalid ID supplied (status code 400)
-   *         or Sale not found (status code 404)
-   *         or Validation exception (status code 405)
-   */
   @Operation(
     operationId = "updateSale",
     summary = "Update an existing sale",
@@ -575,22 +365,6 @@ public interface OwnershipApi {
       required = true
     ) @Valid @RequestBody Sale sale
   ) {
-    try {
-      in.ispirt.pushpaka.dao.entities.Sale le = Sale.fromOa(sale);
-      in.ispirt.pushpaka.dao.entities.Sale lec = in.ispirt.pushpaka.dao.entities.Sale.update(
-        DaoInstance.getInstance().getSessionFactory(),
-        le.getId(),
-        le
-      );
-      return ResponseEntity.ok(Sale.toOa(lec));
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }

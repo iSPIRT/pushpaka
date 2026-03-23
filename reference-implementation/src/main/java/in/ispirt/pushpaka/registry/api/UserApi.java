@@ -90,27 +90,7 @@ public interface UserApi {
     ) User user,
     @Parameter(hidden = true) @AuthenticationPrincipal Jwt authentication
   ) {
-    Logging.info("JWT: " + authentication.toString());
-    try {
-      Person le = User.fromOa(user);
-      in.ispirt.pushpaka.dao.entities.Person lec = in.ispirt.pushpaka.dao.entities.Person.create(
-        DaoInstance.getInstance().getSessionFactory(),
-        le
-      );
-      return ResponseEntity.ok(User.toOa(lec));
-    } catch (ConstraintViolationException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
   /**

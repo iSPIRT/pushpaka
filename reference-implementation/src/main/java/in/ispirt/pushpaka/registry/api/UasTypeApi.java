@@ -5,11 +5,7 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.dao.DaoInstance;
-import in.ispirt.pushpaka.dao.entities.*;
 import in.ispirt.pushpaka.models.UasType;
-import in.ispirt.pushpaka.registry.utils.DaoException;
-import in.ispirt.pushpaka.utils.Logging;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -22,7 +18,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import javax.annotation.Generated;
 import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -46,14 +41,6 @@ public interface UasTypeApi {
     return Optional.empty();
   }
 
-  /**
-   * POST /uasType/approve : Approve a new uasType to the store
-   * Approve a new uasType to the store
-   *
-   * @param uasType Create a new uasType in the store (required)
-   * @return Successful operation (status code 200)
-   *         or Invalid input (status code 405)
-   */
   @Operation(
     operationId = "approveUasType",
     summary = "Approve a new uasType to the store",
@@ -91,34 +78,9 @@ public interface UasTypeApi {
       required = true
     ) @PathVariable("uasTypeId") UUID uasTypeId
   ) {
-    try {
-      Logging.info("Approve request; " + modelNumber + " " + uasTypeId.toString());
-      in.ispirt.pushpaka.dao.entities.UasType lec = in.ispirt.pushpaka.dao.entities.UasType.setModelNumber(
-        DaoInstance.getInstance().getSessionFactory(),
-        uasTypeId,
-        modelNumber
-      );
-      lec = in.ispirt.pushpaka.dao.entities.UasType.approve(DaoInstance.getInstance().getSessionFactory(), uasTypeId);
-      return ResponseEntity.ok(UasType.toOa(lec));
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-    }
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * POST /uasType : Add a new uasType to the store
-   * Add a new uasType to the store
-   *
-   * @param uasType Create a new uasType in the store (required)
-   * @return Successful operation (status code 200)
-   *         or Invalid input (status code 405)
-   */
   @Operation(
     operationId = "addUasType",
     summary = "Add a new uasType to the store",
@@ -151,31 +113,9 @@ public interface UasTypeApi {
       required = true
     ) @Valid @RequestBody UasType uasType
   ) {
-    try {
-      in.ispirt.pushpaka.dao.entities.UasType le = UasType.fromOa(uasType);
-      in.ispirt.pushpaka.dao.entities.UasType lec = in.ispirt.pushpaka.dao.entities.UasType.create(
-        DaoInstance.getInstance().getSessionFactory(),
-        le
-      );
-      return ResponseEntity.ok(UasType.toOa(lec));
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-    }
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * DELETE /uasType/{uasTypeId} : Deletes a uasType
-   *
-   *
-   * @param uasTypeId UasType id to delete (required)
-   * @return Invalid uasType value (status code 400)
-   */
   @Operation(
     operationId = "deleteUasType",
     summary = "Deletes a uasType",
@@ -194,26 +134,9 @@ public interface UasTypeApi {
       in = ParameterIn.PATH
     ) @PathVariable("uasTypeId") UUID uasTypeId
   ) {
-    try {
-      in.ispirt.pushpaka.dao.entities.UasType.delete(DaoInstance.getInstance().getSessionFactory(), uasTypeId);
-      return ResponseEntity.ok().build();
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * GET /uasType/find : Finds UasTypes
-   *
-   * @return successful operation (status code 200)
-   *         or Invalid value (status code 400)
-   */
   @Operation(
     operationId = "findUasTypes",
     summary = "Finds UasTypes",
@@ -238,35 +161,9 @@ public interface UasTypeApi {
     produces = { "application/json" }
   )
   default ResponseEntity<List<UasType>> findUasTypes() {
-    try {
-      List<in.ispirt.pushpaka.dao.entities.UasType> les = in.ispirt.pushpaka.dao.entities.UasType.getAll(
-        DaoInstance.getInstance().getSessionFactory()
-      );
-      List<UasType> leso = les
-        .stream()
-        .map(x -> in.ispirt.pushpaka.models.UasType.toOa(x))
-        .collect(Collectors.toList());
-      return ResponseEntity.ok(leso);
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * GET /uasType/{uasTypeId} : Find uasType by ID
-   * Returns a single uasType
-   *
-   * @param uasTypeId ID of uasType to return (required)
-   * @return successful operation (status code 200)
-   *         or Invalid ID supplied (status code 400)
-   *         or UasType not found (status code 404)
-   */
   @Operation(
     operationId = "getUasTypeById",
     summary = "Find uasType by ID",
@@ -300,33 +197,9 @@ public interface UasTypeApi {
       in = ParameterIn.PATH
     ) @PathVariable("uasTypeId") UUID uasTypeId
   ) {
-    try {
-      in.ispirt.pushpaka.dao.entities.UasType le = in.ispirt.pushpaka.dao.entities.UasType.get(
-        DaoInstance.getInstance().getSessionFactory(),
-        uasTypeId
-      );
-      return ResponseEntity.ok(in.ispirt.pushpaka.models.UasType.toOa(le));
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * PUT /uasType : Update an existing uasType
-   * Update an existing uasType by Id
-   *
-   * @param uasType Update an existent uasType in the store (required)
-   * @return Successful operation (status code 200)
-   *         or Invalid ID supplied (status code 400)
-   *         or UasType not found (status code 404)
-   *         or Validation exception (status code 405)
-   */
   @Operation(
     operationId = "updateUasType",
     summary = "Update an existing uasType",
@@ -361,21 +234,6 @@ public interface UasTypeApi {
       required = true
     ) @Valid @RequestBody UasType uasType
   ) {
-    try {
-      in.ispirt.pushpaka.dao.entities.UasType le = in.ispirt.pushpaka.dao.entities.UasType.update(
-        DaoInstance.getInstance().getSessionFactory(),
-        uasType.getId(),
-        UasType.fromOa(uasType)
-      );
-      return ResponseEntity.ok(in.ispirt.pushpaka.models.UasType.toOa(le));
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }
