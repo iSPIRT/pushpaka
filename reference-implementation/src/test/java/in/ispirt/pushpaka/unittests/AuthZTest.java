@@ -21,6 +21,9 @@ public class AuthZTest {
     authZ = new AuthZ();
     spicedbClient = authZ.getSpicedbClient();
     authZ.setCaaResourceID("caa-authority");
+    // Schema must be loaded before any permission checks can succeed.
+    // testWriteSchema verifies this succeeded; we load here to guarantee ordering.
+    spicedbClient.writeSchema(SpicedbClient.SPICEDDB_PERMISSION_FILE);
   }
 
   @AfterAll
