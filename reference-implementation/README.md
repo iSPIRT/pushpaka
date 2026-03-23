@@ -1,5 +1,15 @@
-DEMO Registry service
-=====================
+# Reference Implementation
+
+> **Scope:** This is an **illustrative** reference implementation. It exists to demonstrate the specifications defined in [I05 (UTM Concept of Operations)](../docs/work-items/i05/index.md). Its scope is intentionally limited to:
+>
+> - UAS Registry service
+> - Flight Authorisation service
+>
+> It is not a production system. Do not expand scope beyond registry and flight authorisation without an explicit working-group decision.
+>
+> **OpenAPI source of truth:** `docs/openapi/`. The file `reference-implementation/openapi.yaml` is a generated copy — do not edit it directly.
+
+---
 
 ## Dependencies
 
