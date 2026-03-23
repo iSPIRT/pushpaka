@@ -5,8 +5,8 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.dao.entities.*;
 import in.ispirt.pushpaka.models.Address;
 import in.ispirt.pushpaka.models.User;
 import in.ispirt.pushpaka.registry.utils.DaoException;
@@ -90,27 +90,7 @@ public interface UserApi {
     ) User user,
     @Parameter(hidden = true) @AuthenticationPrincipal Jwt authentication
   ) {
-    Logging.info("JWT: " + authentication.toString());
-    try {
-      Dao.Person le = User.fromOa(user);
-      Dao.Person lec = Dao.Person.create(
-        DaoInstance.getInstance().getSessionFactory(),
-        le
-      );
-      return ResponseEntity.ok(User.toOa(lec));
-    } catch (ConstraintViolationException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
   /**

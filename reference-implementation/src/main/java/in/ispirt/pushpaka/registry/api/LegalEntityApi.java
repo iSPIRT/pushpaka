@@ -5,8 +5,8 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.dao.entities.*;
 import in.ispirt.pushpaka.models.LegalEntity;
 import in.ispirt.pushpaka.registry.utils.DaoException;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
@@ -89,38 +89,7 @@ public interface LegalEntityApi {
       required = true
     ) @Valid @RequestBody LegalEntity legalEntity
   ) {
-    // getRequest()
-    //   .ifPresent(
-    //     request -> {
-    //       for (MediaType mediaType : MediaType.parseMediaTypes(
-    //         request.getHeader("Accept")
-    //       )) {
-    //         if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-    //           String exampleString =
-    //             "{ \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"manufacturer\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"legalEntity\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } }";
-    //           ApiUtil.setExampleResponse(request, "application/json", exampleString);
-
-    //           break;
-    //         }
-    //       }
-    //     }
-    //   );
-    try {
-      Dao.LegalEntity le = LegalEntity.fromOa(legalEntity);
-      Dao.LegalEntity lec = Dao.LegalEntity.create(
-        DaoInstance.getInstance().getSessionFactory(),
-        le
-      );
-      return ResponseEntity.ok(LegalEntity.toOa(lec));
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
   /**
@@ -150,22 +119,7 @@ public interface LegalEntityApi {
       in = ParameterIn.PATH
     ) @PathVariable("legalEntityId") UUID legalEntityId
   ) {
-    try {
-      Dao.LegalEntity.delete(
-        DaoInstance.getInstance().getSessionFactory(),
-        legalEntityId
-      );
-      return ResponseEntity.ok().build();
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
   /**
@@ -199,39 +153,7 @@ public interface LegalEntityApi {
     produces = { "application/json" }
   )
   default ResponseEntity<List<LegalEntity>> findLegalEntitys() {
-    // getRequest()
-    //   .ifPresent(
-    //     request -> {
-    //       for (MediaType mediaType : MediaType.parseMediaTypes(
-    //         request.getHeader("Accept")
-    //       )) {
-    //         if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-    //           String exampleString =
-    //             "[ { \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"manufacturer\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"legalEntity\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } }, { \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"manufacturer\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"legalEntity\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } } ]";
-    //           ApiUtil.setExampleResponse(request, "application/json", exampleString);
-    //           break;
-    //         }
-    //       }
-    //     }
-    //   );
-    try {
-      List<Dao.LegalEntity> les = Dao.LegalEntity.getAll(
-        DaoInstance.getInstance().getSessionFactory()
-      );
-      List<LegalEntity> leso = les
-        .stream()
-        .map(x -> in.ispirt.pushpaka.models.LegalEntity.toOa(x))
-        .collect(Collectors.toList());
-      return ResponseEntity.ok(leso);
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
   /**
@@ -277,36 +199,7 @@ public interface LegalEntityApi {
       in = ParameterIn.PATH
     ) @PathVariable("legalEntityId") UUID legalEntityId
   ) {
-    // getRequest()
-    //   .ifPresent(
-    //     request -> {
-    //       for (MediaType mediaType : MediaType.parseMediaTypes(
-    //         request.getHeader("Accept")
-    //       )) {
-    //         if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-    //           String exampleString =
-    //             "{ \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"manufacturer\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"legalEntity\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } }";
-    //           ApiUtil.setExampleResponse(request, "application/json", exampleString);
-    //           break;
-    //         }
-    //       }
-    //     }
-    //   );
-    try {
-      Dao.LegalEntity le = Dao.LegalEntity.get(
-        DaoInstance.getInstance().getSessionFactory(),
-        legalEntityId
-      );
-      return ResponseEntity.ok(in.ispirt.pushpaka.models.LegalEntity.toOa(le));
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
   /**
@@ -340,22 +233,6 @@ public interface LegalEntityApi {
       required = true
     ) @Valid @RequestBody LegalEntity legalEntity
   ) {
-    try {
-      Dao.LegalEntity le = Dao.LegalEntity.update(
-        DaoInstance.getInstance().getSessionFactory(),
-        legalEntityId,
-        LegalEntity.fromOa(legalEntity)
-      );
-      return ResponseEntity.ok(LegalEntity.toOa(le));
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }

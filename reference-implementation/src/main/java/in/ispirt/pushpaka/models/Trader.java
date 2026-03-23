@@ -2,7 +2,6 @@ package in.ispirt.pushpaka.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.models.LegalEntity;
 import in.ispirt.pushpaka.models.ObjectTimestamps;
 import in.ispirt.pushpaka.models.Validity;
@@ -190,7 +189,7 @@ public class Trader {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public static Trader toOa(Dao.Trader x) {
+  public static Trader toOa(in.ispirt.pushpaka.dao.entities.Trader x) {
     Validity vtimestamps = new Validity();
     vtimestamps.setFrom(x.getValidityStart());
     vtimestamps.setTill(x.getValidityEnd());
@@ -207,9 +206,9 @@ public class Trader {
     return le;
   }
 
-  public static Dao.Trader fromOa(Trader m) {
+  public static in.ispirt.pushpaka.dao.entities.Trader fromOa(Trader m) {
     OffsetDateTime n = OffsetDateTime.now();
-    Dao.Trader u = new Dao.Trader(
+    in.ispirt.pushpaka.dao.entities.Trader u = new in.ispirt.pushpaka.dao.entities.Trader(
       m.id,
       LegalEntity.fromOa(m.getLegalEntity()),
       n,

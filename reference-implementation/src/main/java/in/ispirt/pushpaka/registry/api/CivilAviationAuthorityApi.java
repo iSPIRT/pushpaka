@@ -5,15 +5,9 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.dao.Dao;
-import in.ispirt.pushpaka.dao.DaoInstance;
 import in.ispirt.pushpaka.models.CivilAviationAuthority;
-import in.ispirt.pushpaka.registry.utils.DaoException;
-import in.ispirt.pushpaka.utils.Logging;
-import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,10 +16,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import javax.annotation.Generated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -35,7 +27,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.multipart.MultipartFile;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
@@ -48,14 +39,6 @@ public interface CivilAviationAuthorityApi {
     return Optional.empty();
   }
 
-  /**
-   * POST /civilAviationAuthority : Add a new civilAviationAuthority to the store
-   * Add a new civilAviationAuthority to the store
-   *
-   * @param civilAviationAuthority Create a new civilAviationAuthority in the store (required)
-   * @return Successful operation (status code 200)
-   *         or Invalid input (status code 405)
-   */
   @Operation(
     operationId = "addCivilAviationAuthority",
     summary = "Add a new civilAviationAuthority to the store",
@@ -89,31 +72,9 @@ public interface CivilAviationAuthorityApi {
       required = true
     ) @Valid @RequestBody CivilAviationAuthority civilAviationAuthority
   ) {
-    try {
-      Dao.CivilAviationAuthority mm = Dao.CivilAviationAuthority.create(
-        DaoInstance.getInstance().getSessionFactory(),
-        CivilAviationAuthority.fromOa(civilAviationAuthority)
-      );
-      Logging.info("Create CivilAviationAuthority " + mm.getId().toString());
-      return ResponseEntity.ok(CivilAviationAuthority.toOa(mm));
-    } catch (DaoException e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * DELETE /civilAviationAuthority/{civilAviationAuthorityId} : Deletes a civilAviationAuthority
-   *
-   *
-   * @param civilAviationAuthorityId CivilAviationAuthority id to delete (required)
-   * @return Invalid civilAviationAuthority value (status code 400)
-   */
   @Operation(
     operationId = "deleteCivilAviationAuthority",
     summary = "Deletes a civilAviationAuthority",
@@ -139,29 +100,9 @@ public interface CivilAviationAuthorityApi {
       in = ParameterIn.PATH
     ) @PathVariable("civilAviationAuthorityId") UUID civilAviationAuthorityId
   ) {
-    try {
-      Dao.CivilAviationAuthority.delete(
-        DaoInstance.getInstance().getSessionFactory(),
-        civilAviationAuthorityId
-      );
-      return ResponseEntity.ok().build();
-    } catch (DaoException e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * GET /civilAviationAuthority/find : Finds CivilAviationAuthorities
-   *
-   * @return successful operation (status code 200)
-   *         or Invalid value (status code 400)
-   */
   @Operation(
     operationId = "findCivilAviationAuthorities",
     summary = "Finds CivilAviationAuthorities",
@@ -189,35 +130,9 @@ public interface CivilAviationAuthorityApi {
     produces = { "application/json" }
   )
   default ResponseEntity<List<CivilAviationAuthority>> findCivilAviationAuthorities() {
-    try {
-      List<Dao.CivilAviationAuthority> les = Dao.CivilAviationAuthority.getAll(
-        DaoInstance.getInstance().getSessionFactory()
-      );
-      List<CivilAviationAuthority> leso = les
-        .stream()
-        .map(x -> in.ispirt.pushpaka.models.CivilAviationAuthority.toOa(x))
-        .collect(Collectors.toList());
-      return ResponseEntity.ok(leso);
-    } catch (DaoException e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * GET /civilAviationAuthority/{civilAviationAuthorityId} : Find civilAviationAuthority by ID
-   * Returns a single civilAviationAuthority
-   *
-   * @param civilAviationAuthorityId ID of civilAviationAuthority to return (required)
-   * @return successful operation (status code 200)
-   *         or Invalid ID supplied (status code 400)
-   *         or CivilAviationAuthority not found (status code 404)
-   */
   @Operation(
     operationId = "getCivilAviationAuthorityById",
     summary = "Find civilAviationAuthority by ID",
@@ -252,32 +167,9 @@ public interface CivilAviationAuthorityApi {
       in = ParameterIn.PATH
     ) @PathVariable("civilAviationAuthorityId") UUID civilAviationAuthorityId
   ) {
-    try {
-      Dao.CivilAviationAuthority le = Dao.CivilAviationAuthority.get(
-        DaoInstance.getInstance().getSessionFactory(),
-        civilAviationAuthorityId
-      );
-      return ResponseEntity.ok(in.ispirt.pushpaka.models.CivilAviationAuthority.toOa(le));
-    } catch (DaoException e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * PUT /civilAviationAuthority/{civilAviationAuthorityId} : Updates a civilAviationAuthority in the store with form data
-   *
-   *
-   * @param civilAviationAuthorityId ID of civilAviationAuthority that needs to be updated (required)
-   * @param name Name of civilAviationAuthority that needs to be updated (optional)
-   * @param status Status of civilAviationAuthority that needs to be updated (optional)
-   * @return Invalid input (status code 405)
-   */
   @Operation(
     operationId = "updateCivilAviationAuthority",
     summary = "Updates a civilAviationAuthority in the store",
@@ -303,17 +195,6 @@ public interface CivilAviationAuthorityApi {
       required = true
     ) @Valid @RequestBody CivilAviationAuthority civilAviationAuthority
   ) {
-    try {
-      Dao.CivilAviationAuthority le = Dao.CivilAviationAuthority.update(
-        DaoInstance.getInstance().getSessionFactory(),
-        civilAviationAuthorityId,
-        CivilAviationAuthority.fromOa(civilAviationAuthority)
-      );
-      return ResponseEntity.ok(in.ispirt.pushpaka.models.CivilAviationAuthority.toOa(le));
-    } catch (DaoException e) {
-      Logging.severe("Exception: " + e.toString());
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
-    // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }

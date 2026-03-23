@@ -5,14 +5,9 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.dao.Dao;
-import in.ispirt.pushpaka.dao.DaoInstance;
 import in.ispirt.pushpaka.models.Pilot;
-import in.ispirt.pushpaka.registry.utils.DaoException;
-import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,10 +16,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import javax.annotation.Generated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -34,7 +27,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.multipart.MultipartFile;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
@@ -47,14 +39,6 @@ public interface PilotApi {
     return Optional.empty();
   }
 
-  /**
-   * POST /pilot : Add a new pilot to the store
-   * Add a new pilot to the store
-   *
-   * @param pilot Create a new pilot in the store (required)
-   * @return Successful operation (status code 200)
-   *         or Invalid input (status code 405)
-   */
   @Operation(
     operationId = "addPilot",
     summary = "Add a new pilot to the store",
@@ -88,31 +72,9 @@ public interface PilotApi {
       required = true
     ) @Valid @RequestBody Pilot pilot
   ) {
-    try {
-      System.out.println("Create Pilot " + pilot.toString());
-      Dao.Pilot mm = Dao.Pilot.create(
-        DaoInstance.getInstance().getSessionFactory(),
-        Pilot.fromOa(pilot)
-      );
-      return ResponseEntity.ok(Pilot.toOa(mm));
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * DELETE /pilot/{pilotId} : Deletes a pilot
-   *
-   *
-   * @param pilotId Pilot id to delete (required)
-   * @return Invalid pilot value (status code 400)
-   */
   @Operation(
     operationId = "deletePilot",
     summary = "Deletes a pilot",
@@ -132,27 +94,9 @@ public interface PilotApi {
       in = ParameterIn.PATH
     ) @PathVariable("pilotId") UUID pilotId
   ) {
-    try {
-      Dao.Pilot.delete(DaoInstance.getInstance().getSessionFactory(), pilotId);
-      return ResponseEntity.ok().build();
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * GET /pilot/find : Finds Pilots
-   *
-   * @return successful operation (status code 200)
-   *         or Invalid value (status code 400)
-   */
   @Operation(
     operationId = "findPilots",
     summary = "Finds Pilots",
@@ -178,50 +122,9 @@ public interface PilotApi {
     produces = { "application/json" }
   )
   default ResponseEntity<List<Pilot>> findPilots() {
-    // getRequest()
-    //   .ifPresent(
-    //     request -> {
-    //       for (MediaType mediaType : MediaType.parseMediaTypes(
-    //         request.getHeader("Accept")
-    //       )) {
-    //         if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-    //           String exampleString =
-    //             "[ { \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"pilot\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"pilot\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } }, { \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"pilot\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"pilot\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } } ]";
-    //           ApiUtil.setExampleResponse(request, "application/json", exampleString);
-    //           break;
-    //         }
-    //       }
-    //     }
-    //   );
-    try {
-      List<Dao.Pilot> les = Dao.Pilot.getAll(
-        DaoInstance.getInstance().getSessionFactory()
-      );
-      List<Pilot> leso = les
-        .stream()
-        .map(x -> in.ispirt.pushpaka.models.Pilot.toOa(x))
-        .collect(Collectors.toList());
-      return ResponseEntity.ok(leso);
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * GET /pilot/{pilotId} : Find pilot by ID
-   * Returns a single pilot
-   *
-   * @param pilotId ID of pilot to return (required)
-   * @return successful operation (status code 200)
-   *         or Invalid ID supplied (status code 400)
-   *         or Pilot not found (status code 404)
-   */
   @Operation(
     operationId = "getPilotById",
     summary = "Find pilot by ID",
@@ -256,47 +159,9 @@ public interface PilotApi {
       in = ParameterIn.PATH
     ) @PathVariable("pilotId") UUID pilotId
   ) {
-    // getRequest()
-    //   .ifPresent(
-    //     request -> {
-    //       for (MediaType mediaType : MediaType.parseMediaTypes(
-    //         request.getHeader("Accept")
-    //       )) {
-    //         if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-    //           String exampleString =
-    //             "{ \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"pilot\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"pilot\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } }";
-    //           ApiUtil.setExampleResponse(request, "application/json", exampleString);
-    //           break;
-    //         }
-    //       }
-    //     }
-    //   );
-    try {
-      Dao.Pilot le = Dao.Pilot.get(
-        DaoInstance.getInstance().getSessionFactory(),
-        pilotId
-      );
-      return ResponseEntity.ok(in.ispirt.pushpaka.models.Pilot.toOa(le));
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * PUT /pilot/{pilotId} : Updates a pilot in the store with form data
-   *
-   *
-   * @param pilotId ID of pilot that needs to be updated (required)
-   * @param name Name of pilot that needs to be updated (optional)
-   * @param status Status of pilot that needs to be updated (optional)
-   * @return Invalid input (status code 405)
-   */
   @Operation(
     operationId = "updatePilot",
     summary = "Updates a pilot in the store",
@@ -319,22 +184,6 @@ public interface PilotApi {
       required = true
     ) @Valid @RequestBody Pilot pilot
   ) {
-    try {
-      Dao.Pilot le = Dao.Pilot.update(
-        DaoInstance.getInstance().getSessionFactory(),
-        pilotId,
-        Pilot.fromOa(pilot)
-      );
-      return ResponseEntity.ok(in.ispirt.pushpaka.models.Pilot.toOa(le));
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }

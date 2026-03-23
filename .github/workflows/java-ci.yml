@@ -1,0 +1,83 @@
+name: Java CI
+
+on:
+  pull_request:
+    paths:
+      - 'reference-implementation/**'
+  push:
+    branches: [master]
+    paths:
+      - 'reference-implementation/**'
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: secret
+          POSTGRES_DB: pushpaka
+        ports:
+          - 15432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # ── SpiceDB setup ──────────────────────────────────────────────────────
+      # Service containers can't be ordered or given subcommands easily, so
+      # we run SpiceDB as explicit steps instead.
+
+      - name: Create spicedb database in Postgres
+        run: |
+          PGPASSWORD=secret psql -h localhost -p 15432 -U postgres \
+            -c "CREATE DATABASE spicedb;"
+
+      - name: Run SpiceDB migration
+        run: |
+          docker run --rm --network host \
+            -e SPICEDB_DATASTORE_ENGINE=postgres \
+            -e SPICEDB_DATASTORE_CONN_URI="postgres://postgres:secret@localhost:15432/spicedb?sslmode=disable" \
+            authzed/spicedb \
+            migrate head
+
+      - name: Start SpiceDB serve
+        run: |
+          docker run -d --name spicedb --network host \
+            -e SPICEDB_GRPC_PRESHARED_KEY=somerandomkeyhere \
+            -e SPICEDB_DATASTORE_ENGINE=postgres \
+            -e SPICEDB_DATASTORE_CONN_URI="postgres://postgres:secret@localhost:15432/spicedb?sslmode=disable" \
+            authzed/spicedb \
+            serve
+          # Wait for gRPC port to be ready
+          timeout 30 bash -c 'until nc -z localhost 50051; do sleep 1; done'
+
+      # ── Java build + test ──────────────────────────────────────────────────
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Compile
+        working-directory: reference-implementation
+        run: mvn compile -B
+
+      - name: Run tests
+        working-directory: reference-implementation
+        env:
+          DATABASE_URL: jdbc:postgresql://localhost:15432/pushpaka?sslmode=disable
+          DATABASE_USER: postgres
+          DATABASE_PASSWORD: secret
+          SPICEDB_TARGET: localhost:50051
+          SPICEDB_GRPC_PRESHARED_KEY: somerandomkeyhere
+        run: mvn test -B

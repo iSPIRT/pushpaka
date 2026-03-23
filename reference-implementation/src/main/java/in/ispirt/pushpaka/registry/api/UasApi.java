@@ -5,11 +5,7 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.dao.Dao;
-import in.ispirt.pushpaka.dao.DaoInstance;
 import in.ispirt.pushpaka.models.Uas;
-import in.ispirt.pushpaka.registry.utils.DaoException;
-import in.ispirt.pushpaka.utils.Logging;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -22,9 +18,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import javax.annotation.Generated;
-import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,14 +41,6 @@ public interface UasApi {
     return Optional.empty();
   }
 
-  /**
-   * POST /uas : Add a new uas to the store
-   * Add a new uas to the store
-   *
-   * @param uas Create a new uas in the store (required)
-   * @return Successful operation (status code 200)
-   *         or Invalid input (status code 405)
-   */
   @Operation(
     operationId = "addUas",
     summary = "Add a new uas to the store",
@@ -88,33 +74,9 @@ public interface UasApi {
       required = true
     ) @Valid @RequestBody Uas uas
   ) {
-    try {
-      Dao.Uas le = Uas.fromOa(uas);
-      Dao.Uas lec = Dao.Uas.create(DaoInstance.getInstance().getSessionFactory(), le);
-      return ResponseEntity.ok(Uas.toOa(lec));
-    } catch (ConstraintViolationException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * DELETE /uas/{uasId} : Deletes a uas
-   *
-   *
-   * @param uasId Uas id to delete (required)
-   * @param apiKey  (optional)
-   * @return Invalid uas value (status code 400)
-   */
   @Operation(
     operationId = "deleteUas",
     summary = "Deletes a uas",
@@ -137,26 +99,9 @@ public interface UasApi {
       in = ParameterIn.HEADER
     ) @RequestHeader(value = "api_key", required = false) String apiKey
   ) {
-    try {
-      Dao.Uas.delete(DaoInstance.getInstance().getSessionFactory(), uasId);
-      return ResponseEntity.ok().build();
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * GET /uas/find : Finds Uass
-   *
-   * @return successful operation (status code 200)
-   *         or Invalid value (status code 400)
-   */
   @Operation(
     operationId = "findUass",
     summary = "Finds Uass",
@@ -182,33 +127,9 @@ public interface UasApi {
     produces = { "application/json" }
   )
   default ResponseEntity<List<Uas>> findUass() {
-    try {
-      List<Dao.Uas> les = Dao.Uas.getAll(DaoInstance.getInstance().getSessionFactory());
-      List<Uas> leso = les
-        .stream()
-        .map(x -> in.ispirt.pushpaka.models.Uas.toOa(x))
-        .collect(Collectors.toList());
-      return ResponseEntity.ok(leso);
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * GET /uas/{uasId} : Find uas by ID
-   * Returns a single uas
-   *
-   * @param uasId ID of uas to return (required)
-   * @return successful operation (status code 200)
-   *         or Invalid ID supplied (status code 400)
-   *         or Uas not found (status code 404)
-   */
   @Operation(
     operationId = "getUasById",
     summary = "Find uas by ID",
@@ -243,30 +164,9 @@ public interface UasApi {
       in = ParameterIn.PATH
     ) @PathVariable("uasId") UUID uasId
   ) {
-    try {
-      Dao.Uas le = Dao.Uas.get(DaoInstance.getInstance().getSessionFactory(), uasId);
-      return ResponseEntity.ok(in.ispirt.pushpaka.models.Uas.toOa(le));
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * PUT /uas : Update an existing uas
-   * Update an existing uas by Id
-   *
-   * @param uas Update an existent uas in the store (required)
-   * @return Successful operation (status code 200)
-   *         or Invalid ID supplied (status code 400)
-   *         or Uas not found (status code 404)
-   *         or Validation exception (status code 405)
-   */
   @Operation(
     operationId = "updateUas",
     summary = "Update an existing uas",

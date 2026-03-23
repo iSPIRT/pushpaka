@@ -1,7 +1,6 @@
 package in.ispirt.pushpaka.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import in.ispirt.pushpaka.dao.Dao;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -374,10 +373,10 @@ public class UasType {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public static Dao.UasType fromOa(UasType u) {
+  public static in.ispirt.pushpaka.dao.entities.UasType fromOa(UasType u) {
     try {
       OffsetDateTime n = OffsetDateTime.now();
-      Dao.UasType uu = new Dao.UasType(
+      in.ispirt.pushpaka.dao.entities.UasType uu = new in.ispirt.pushpaka.dao.entities.UasType(
         u.id,
         Manufacturer.fromOa(u.manufacturer),
         u.modelNumber,
@@ -392,7 +391,7 @@ public class UasType {
       return uu;
     } catch (MalformedURLException e) {
       OffsetDateTime n = OffsetDateTime.now();
-      Dao.UasType uu = new Dao.UasType(
+      in.ispirt.pushpaka.dao.entities.UasType uu = new in.ispirt.pushpaka.dao.entities.UasType(
         u.id,
         Manufacturer.fromOa(u.manufacturer),
         u.modelNumber,
@@ -408,7 +407,7 @@ public class UasType {
     }
   }
 
-  public static UasType toOa(Dao.UasType u) {
+  public static UasType toOa(in.ispirt.pushpaka.dao.entities.UasType u) {
     ObjectTimestamps timestamps = new ObjectTimestamps(
       u.getTimestampCreated(),
       u.getTimestampUpdated()

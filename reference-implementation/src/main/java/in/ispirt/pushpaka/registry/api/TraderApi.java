@@ -5,15 +5,9 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.dao.Dao;
-import in.ispirt.pushpaka.dao.DaoInstance;
 import in.ispirt.pushpaka.models.Trader;
-import in.ispirt.pushpaka.registry.utils.DaoException;
-import in.ispirt.pushpaka.utils.Logging;
-import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,10 +16,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import javax.annotation.Generated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -35,7 +27,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.multipart.MultipartFile;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
@@ -48,14 +39,6 @@ public interface TraderApi {
     return Optional.empty();
   }
 
-  /**
-   * POST /trader : Add a new trader to the store
-   * Add a new trader to the store
-   *
-   * @param trader Create a new trader in the store (required)
-   * @return Successful operation (status code 200)
-   *         or Invalid input (status code 405)
-   */
   @Operation(
     operationId = "addTrader",
     summary = "Add a new trader to the store",
@@ -88,31 +71,9 @@ public interface TraderApi {
       required = true
     ) @Valid @RequestBody Trader trader
   ) {
-    try {
-      Dao.Trader mm = Dao.Trader.create(
-        DaoInstance.getInstance().getSessionFactory(),
-        Trader.fromOa(trader)
-      );
-      Logging.info("Created Trader " + mm.getId().toString());
-      return ResponseEntity.ok(Trader.toOa(mm));
-    } catch (DaoException e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * DELETE /trader/{traderId} : Deletes a trader
-   *
-   *
-   * @param traderId Trader id to delete (required)
-   * @return Invalid trader value (status code 400)
-   */
   @Operation(
     operationId = "deleteTrader",
     summary = "Deletes a trader",
@@ -131,27 +92,9 @@ public interface TraderApi {
       in = ParameterIn.PATH
     ) @PathVariable("traderId") UUID traderId
   ) {
-    try {
-      Dao.Trader.delete(DaoInstance.getInstance().getSessionFactory(), traderId);
-      return ResponseEntity.ok().build();
-      // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-    } catch (DaoException e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * GET /trader/find : Finds Traders
-   *
-   * @return successful operation (status code 200)
-   *         or Invalid value (status code 400)
-   */
   @Operation(
     operationId = "findTraders",
     summary = "Finds Traders",
@@ -176,50 +119,9 @@ public interface TraderApi {
     produces = { "application/json" }
   )
   default ResponseEntity<List<Trader>> findTraders() {
-    // getRequest()
-    //   .ifPresent(
-    //     request -> {
-    //       for (MediaType mediaType : MediaType.parseMediaTypes(
-    //         request.getHeader("Accept")
-    //       )) {
-    //         if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-    //           String exampleString =
-    //             "[ { \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"trader\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"trader\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } }, { \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"trader\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"trader\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } } ]";
-    //           ApiUtil.setExampleResponse(request, "application/json", exampleString);
-    //           break;
-    //         }
-    //       }
-    //     }
-    //   );
-    try {
-      List<Dao.Trader> les = Dao.Trader.getAll(
-        DaoInstance.getInstance().getSessionFactory()
-      );
-      List<Trader> leso = les
-        .stream()
-        .map(x -> in.ispirt.pushpaka.models.Trader.toOa(x))
-        .collect(Collectors.toList());
-      return ResponseEntity.ok(leso);
-    } catch (DaoException e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * GET /trader/{traderId} : Find trader by ID
-   * Returns a single trader
-   *
-   * @param traderId ID of trader to return (required)
-   * @return successful operation (status code 200)
-   *         or Invalid ID supplied (status code 400)
-   *         or Trader not found (status code 404)
-   */
   @Operation(
     operationId = "getTraderById",
     summary = "Find trader by ID",
@@ -253,47 +155,9 @@ public interface TraderApi {
       in = ParameterIn.PATH
     ) @PathVariable("traderId") UUID traderId
   ) {
-    // getRequest()
-    //   .ifPresent(
-    //     request -> {
-    //       for (MediaType mediaType : MediaType.parseMediaTypes(
-    //         request.getHeader("Accept")
-    //       )) {
-    //         if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-    //           String exampleString =
-    //             "{ \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"trader\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"trader\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } }";
-    //           ApiUtil.setExampleResponse(request, "application/json", exampleString);
-    //           break;
-    //         }
-    //       }
-    //     }
-    //   );
-    try {
-      Dao.Trader le = Dao.Trader.get(
-        DaoInstance.getInstance().getSessionFactory(),
-        traderId
-      );
-      return ResponseEntity.ok(in.ispirt.pushpaka.models.Trader.toOa(le));
-    } catch (DaoException e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * PUT /trader/{traderId} : Updates a trader in the store with form data
-   *
-   *
-   * @param traderId ID of trader that needs to be updated (required)
-   * @param name Name of trader that needs to be updated (optional)
-   * @param status Status of trader that needs to be updated (optional)
-   * @return Invalid input (status code 405)
-   */
   @Operation(
     operationId = "updateTrader",
     summary = "Updates a trader in the store",
@@ -315,22 +179,6 @@ public interface TraderApi {
       required = true
     ) @Valid @RequestBody Trader trader
   ) {
-    try {
-      Dao.Trader le = Dao.Trader.update(
-        DaoInstance.getInstance().getSessionFactory(),
-        traderId,
-        Trader.fromOa(trader)
-      );
-      return ResponseEntity.ok(in.ispirt.pushpaka.models.Trader.toOa(le));
-    } catch (DaoException e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }

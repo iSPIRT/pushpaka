@@ -5,15 +5,9 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.dao.Dao;
-import in.ispirt.pushpaka.dao.DaoInstance;
 import in.ispirt.pushpaka.models.DigitalSkyServiceProvider;
-import in.ispirt.pushpaka.registry.utils.DaoException;
-import in.ispirt.pushpaka.utils.Logging;
-import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,10 +16,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import javax.annotation.Generated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -35,7 +27,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.multipart.MultipartFile;
 
 @Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen",
@@ -48,14 +39,6 @@ public interface DigitalSkyServiceProviderApi {
     return Optional.empty();
   }
 
-  /**
-   * POST /digitalSkyServiceProvider : Add a new digitalSkyServiceProvider to the store
-   * Add a new digitalSkyServiceProvider to the store
-   *
-   * @param digitalSkyServiceProvider Create a new digitalSkyServiceProvider in the store (required)
-   * @return Successful operation (status code 200)
-   *         or Invalid input (status code 405)
-   */
   @Operation(
     operationId = "addDigitalSkyServiceProvider",
     summary = "Add a new digitalSkyServiceProvider to the store",
@@ -89,31 +72,9 @@ public interface DigitalSkyServiceProviderApi {
       required = true
     ) @Valid @RequestBody DigitalSkyServiceProvider digitalSkyServiceProvider
   ) {
-    try {
-      Dao.DigitalSkyServiceProvider mm = Dao.DigitalSkyServiceProvider.create(
-        DaoInstance.getInstance().getSessionFactory(),
-        DigitalSkyServiceProvider.fromOa(digitalSkyServiceProvider)
-      );
-      Logging.info("Create DigitalSkyServiceProvider " + mm.getId().toString());
-      return ResponseEntity.ok(DigitalSkyServiceProvider.toOa(mm));
-    } catch (DaoException e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * DELETE /digitalSkyServiceProvider/{digitalSkyServiceProviderId} : Deletes a digitalSkyServiceProvider
-   *
-   *
-   * @param digitalSkyServiceProviderId DigitalSkyServiceProvider id to delete (required)
-   * @return Invalid digitalSkyServiceProvider value (status code 400)
-   */
   @Operation(
     operationId = "deleteDigitalSkyServiceProvider",
     summary = "Deletes a digitalSkyServiceProvider",
@@ -139,30 +100,9 @@ public interface DigitalSkyServiceProviderApi {
       in = ParameterIn.PATH
     ) @PathVariable("digitalSkyServiceProviderId") UUID digitalSkyServiceProviderId
   ) {
-    try {
-      Dao.DigitalSkyServiceProvider.delete(
-        DaoInstance.getInstance().getSessionFactory(),
-        digitalSkyServiceProviderId
-      );
-      return ResponseEntity.ok().build();
-    } catch (DaoException e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * GET /digitalSkyServiceProvider/find : Finds DigitalSkyServiceProviders
-   *
-   * @return successful operation (status code 200)
-   *         or Invalid value (status code 400)
-   */
   @Operation(
     operationId = "findDigitalSkyServiceProviders",
     summary = "Finds DigitalSkyServiceProviders",
@@ -190,50 +130,9 @@ public interface DigitalSkyServiceProviderApi {
     produces = { "application/json" }
   )
   default ResponseEntity<List<DigitalSkyServiceProvider>> findDigitalSkyServiceProviders() {
-    // getRequest()
-    //   .ifPresent(
-    //     request -> {
-    //       for (MediaType mediaType : MediaType.parseMediaTypes(
-    //         request.getHeader("Accept")
-    //       )) {
-    //         if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-    //           String exampleString =
-    //             "[ { \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"digitalSkyServiceProvider\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"digitalSkyServiceProvider\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } }, { \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"digitalSkyServiceProvider\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"digitalSkyServiceProvider\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } } ]";
-    //           ApiUtil.setExampleResponse(request, "application/json", exampleString);
-    //           break;
-    //         }
-    //       }
-    //     }
-    //   );
-    try {
-      List<Dao.DigitalSkyServiceProvider> les = Dao.DigitalSkyServiceProvider.getAll(
-        DaoInstance.getInstance().getSessionFactory()
-      );
-      List<DigitalSkyServiceProvider> leso = les
-        .stream()
-        .map(x -> in.ispirt.pushpaka.models.DigitalSkyServiceProvider.toOa(x))
-        .collect(Collectors.toList());
-      return ResponseEntity.ok(leso);
-    } catch (DaoException e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * GET /digitalSkyServiceProvider/{digitalSkyServiceProviderId} : Find digitalSkyServiceProvider by ID
-   * Returns a single digitalSkyServiceProvider
-   *
-   * @param digitalSkyServiceProviderId ID of digitalSkyServiceProvider to return (required)
-   * @return successful operation (status code 200)
-   *         or Invalid ID supplied (status code 400)
-   *         or DigitalSkyServiceProvider not found (status code 404)
-   */
   @Operation(
     operationId = "getDigitalSkyServiceProviderById",
     summary = "Find digitalSkyServiceProvider by ID",
@@ -271,49 +170,9 @@ public interface DigitalSkyServiceProviderApi {
       in = ParameterIn.PATH
     ) @PathVariable("digitalSkyServiceProviderId") UUID digitalSkyServiceProviderId
   ) {
-    // getRequest()
-    //   .ifPresent(
-    //     request -> {
-    //       for (MediaType mediaType : MediaType.parseMediaTypes(
-    //         request.getHeader("Accept")
-    //       )) {
-    //         if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-    //           String exampleString =
-    //             "{ \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"digitalSkyServiceProvider\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"digitalSkyServiceProvider\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } }";
-    //           ApiUtil.setExampleResponse(request, "application/json", exampleString);
-    //           break;
-    //         }
-    //       }
-    //     }
-    //   );
-    try {
-      Dao.DigitalSkyServiceProvider le = Dao.DigitalSkyServiceProvider.get(
-        DaoInstance.getInstance().getSessionFactory(),
-        digitalSkyServiceProviderId
-      );
-      return ResponseEntity.ok(
-        in.ispirt.pushpaka.models.DigitalSkyServiceProvider.toOa(le)
-      );
-    } catch (DaoException e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  /**
-   * PUT /digitalSkyServiceProvider/{digitalSkyServiceProviderId} : Updates a digitalSkyServiceProvider in the store with form data
-   *
-   *
-   * @param digitalSkyServiceProviderId ID of digitalSkyServiceProvider that needs to be updated (required)
-   * @param name Name of digitalSkyServiceProvider that needs to be updated (optional)
-   * @param status Status of digitalSkyServiceProvider that needs to be updated (optional)
-   * @return Invalid input (status code 405)
-   */
   @Operation(
     operationId = "updateDigitalSkyServiceProvider",
     summary = "Updates a digitalSkyServiceProvider in the store",
@@ -339,24 +198,6 @@ public interface DigitalSkyServiceProviderApi {
       required = true
     ) @Valid @RequestBody DigitalSkyServiceProvider digitalSkyServiceProvider
   ) {
-    try {
-      Dao.DigitalSkyServiceProvider le = Dao.DigitalSkyServiceProvider.update(
-        DaoInstance.getInstance().getSessionFactory(),
-        digitalSkyServiceProviderId,
-        DigitalSkyServiceProvider.fromOa(digitalSkyServiceProvider)
-      );
-      return ResponseEntity.ok(
-        in.ispirt.pushpaka.models.DigitalSkyServiceProvider.toOa(le)
-      );
-    } catch (DaoException e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      Logging.severe("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }

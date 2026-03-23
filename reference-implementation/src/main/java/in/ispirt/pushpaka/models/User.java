@@ -2,7 +2,6 @@ package in.ispirt.pushpaka.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.models.ObjectTimestamps;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.net.URI;
@@ -326,7 +325,7 @@ public class User {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public static User toOa(Dao.Person u) {
+  public static User toOa(in.ispirt.pushpaka.dao.entities.Person u) {
     ObjectTimestamps ot = new ObjectTimestamps(
       u.getTimestampCreated(),
       u.getTimestampUpdated()
@@ -345,8 +344,8 @@ public class User {
     return uu;
   }
 
-  public static Dao.Person fromOa(User u) {
-    Dao.Person uu = new Dao.Person(
+  public static in.ispirt.pushpaka.dao.entities.Person fromOa(User u) {
+    in.ispirt.pushpaka.dao.entities.Person uu = new in.ispirt.pushpaka.dao.entities.Person(
       u.getId(),
       u.getPhone(),
       u.getAadharId(),

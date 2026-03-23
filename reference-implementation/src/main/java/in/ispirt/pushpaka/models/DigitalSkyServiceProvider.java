@@ -2,7 +2,6 @@ package in.ispirt.pushpaka.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.models.LegalEntity;
 import in.ispirt.pushpaka.models.ObjectTimestamps;
 import in.ispirt.pushpaka.models.Validity;
@@ -190,7 +189,7 @@ public class DigitalSkyServiceProvider {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public static DigitalSkyServiceProvider toOa(Dao.DigitalSkyServiceProvider x) {
+  public static DigitalSkyServiceProvider toOa(in.ispirt.pushpaka.dao.entities.DigitalSkyServiceProvider x) {
     Validity vtimestamps = new Validity();
     vtimestamps.setFrom(x.getValidityStart());
     vtimestamps.setTill(x.getValidityEnd());
@@ -207,9 +206,9 @@ public class DigitalSkyServiceProvider {
     return le;
   }
 
-  public static Dao.DigitalSkyServiceProvider fromOa(DigitalSkyServiceProvider m) {
+  public static in.ispirt.pushpaka.dao.entities.DigitalSkyServiceProvider fromOa(DigitalSkyServiceProvider m) {
     OffsetDateTime n = OffsetDateTime.now();
-    Dao.DigitalSkyServiceProvider u = new Dao.DigitalSkyServiceProvider(
+    in.ispirt.pushpaka.dao.entities.DigitalSkyServiceProvider u = new in.ispirt.pushpaka.dao.entities.DigitalSkyServiceProvider(
       m.id,
       LegalEntity.fromOa(m.getLegalEntity()),
       n,
