@@ -1,0 +1,20 @@
+{
+  "id": "{{id}}",
+  "firstName": "John",
+  "lastName": "James",
+  "email": "john@email.com",
+  "phone": "+919999999999",
+  "aadharId": "+919999999999",
+  "address": {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "line1": "123 ABC Housing Society",
+    "line2": "Landmark",
+    "line3": "Bandra West",
+    "city": "Mumbai",
+    "state": "ANDHRA_PRADESH",
+    "pinCode": "400000",
+    "country": "IND"
+  },
+  "timestamps": {},
+  "status": "ACTIVE"
+}

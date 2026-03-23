@@ -1,0 +1,17 @@
+{
+  "id": "{{id}}",
+  "cin": "CIN00000",
+  "name": "Test Company Pvt Ltd",
+  "regdAddress": {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "line1": "123 ABC Housing Society",
+    "line2": "Landmark",
+    "line3": "Bandra West",
+    "city": "Mumbai",
+    "state": "ANDHRA_PRADESH",
+    "pinCode": "400000",
+    "country": "IND"
+  },
+  "gstin": "GSTIN00000",
+  "timestamps": {}
+}
