@@ -37,9 +37,9 @@ This page summarises the current state of all active work in the Pushpaka workin
 |-------|------|--------|
 | Phase 0 | Strategic rebaseline & scope lock | Done |
 | Phase 1 | Docs, site & mkdocs-material migration | Done |
-| Phase 2 | Submodule removal | Pending |
+| Phase 2 | Submodule removal | Done |
+| Phase 4a | DevContainer | In progress |
 | Phase 3 | Reference implementation refactor | Pending |
-| Phase 4a | DevContainer | Pending |
 | Phase 4b | MAVLink bridge | Pending |
 | Phase 5 | I08 DPG-light framing | Pending |
 | Phase 6 | Governance | Pending |
