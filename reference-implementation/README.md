@@ -11,6 +11,27 @@
 
 ---
 
+## M0 Scope Boundary
+
+The reference implementation targets **M0** — the minimum viable slice needed to demonstrate the
+core UTM data-flow end to end. Functionality outside M0 should not be implemented until M0 is
+stable and the working group explicitly decides to expand.
+
+| Feature | In M0 | Notes |
+|---------|-------|-------|
+| User registration (create / read / update / delete) | Yes | Maps to `User` API / `Person` DB entity |
+| Legal Entity registration | Yes | Operator entity |
+| UAS Type management (add / update / delete) | Yes | CRUD only |
+| UAS Type approval workflow (`approveUasType`) | Yes | CAA admin action; transitions PENDING → APPROVED |
+| UAS registration (link UAS to owner) | Yes | |
+| Flight Plan submission | Yes | Triggers AUT issuance |
+| AUT issuance | Yes | Core UTM output |
+| Trader / Sale marketplace | No | Out of scope for M0 |
+| Advanced airspace rules / constraints | No | Out of scope for M0 |
+| Remote ID broadcast | No | Future phase |
+
+---
+
 ## Dependencies
 
 1. `docker`, `docker-compose`  
