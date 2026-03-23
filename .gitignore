@@ -8,3 +8,4 @@ docs/aut/.vscode
 .vagrant
 .idea
 .venv
+.devcontainer/.env

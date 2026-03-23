@@ -4,8 +4,6 @@
   "service": "devcontainer",
   "workspaceFolder": "/workspace",
 
-  "features": {},
-
   "customizations": {
     "vscode": {
       "extensions": [
@@ -30,25 +28,25 @@
   },
 
   "forwardPorts": [
-    8080,
-    8081,
+    15432,
+    18080,
+    18081,
     8082,
     8083,
-    5432,
-    9090,
+    19090,
     50051,
     5760
   ],
 
   "portsAttributes": {
-    "8080": { "label": "Keycloak" },
-    "8081": { "label": "SpiceDB HTTP" },
-    "8082": { "label": "Registry Service" },
-    "8083": { "label": "Flight Authorisation Service" },
-    "5432": { "label": "PostgreSQL" },
-    "9090": { "label": "SpiceDB gRPC" },
+    "15432": { "label": "PostgreSQL" },
+    "18080": { "label": "Keycloak" },
+    "18081": { "label": "SpiceDB HTTP" },
+    "8082":  { "label": "Registry Service" },
+    "8083":  { "label": "Flight Authorisation Service" },
+    "19090": { "label": "SpiceDB gRPC" },
     "50051": { "label": "SpiceDB gRPC (alt)" },
-    "5760": { "label": "ArduPilot SITL MAVLink (sitl profile)" }
+    "5760":  { "label": "ArduPilot SITL MAVLink TCP (sitl profile)" }
   },
 
   "postCreateCommand": "pip install -r requirements.txt",

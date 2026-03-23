@@ -1,20 +1,17 @@
-FROM mcr.microsoft.com/devcontainers/base:ubuntu-22.04
+# Java 17 + Maven devcontainer base
+FROM mcr.microsoft.com/devcontainers/java:17
 
-# ── System deps ───────────────────────────────────────────────────────────────
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl zip unzip git python3 python3-pip \
+# ── Maven ─────────────────────────────────────────────────────────────────────
+USER root
+RUN apt-get update && apt-get install -y --no-install-recommends maven \
     && rm -rf /var/lib/apt/lists/*
 
-# ── SDKMAN → Java 17 + Maven 3 ───────────────────────────────────────────────
-USER vscode
-RUN curl -s "https://get.sdkman.io" | bash && \
-    bash -c "source /home/vscode/.sdkman/bin/sdkman-init.sh && \
-    sdk install java 17.0.10-tem && \
-    sdk install maven 3.9.6"
-
-# ── Python / mkdocs-material ──────────────────────────────────────────────────
-USER root
-RUN pip3 install --no-cache-dir mkdocs mkdocs-material
+# ── Python / mkdocs-material (venv to satisfy PEP 668) ───────────────────────
+RUN apt-get update && apt-get install -y --no-install-recommends python3 python3-venv \
+    && rm -rf /var/lib/apt/lists/* \
+    && python3 -m venv /opt/mkdocs-venv \
+    && /opt/mkdocs-venv/bin/pip install --no-cache-dir mkdocs mkdocs-material \
+    && ln -s /opt/mkdocs-venv/bin/mkdocs /usr/local/bin/mkdocs
 
 USER vscode
 WORKDIR /workspace
