@@ -6,6 +6,43 @@ Published site: **https://ispirt.github.io/pushpaka/**
 
 ---
 
+## Repository Structure
+
+```
+pushpaka/
+├── docs/                          # PRIMARY OUTPUT — MkDocs knowledge base
+│   ├── work-items/                # Work item specs I01–I08
+│   ├── openapi/                   # SOURCE-OF-TRUTH OpenAPI specs
+│   │   ├── registry.yaml          #   UAS registry (v1.0.17)
+│   │   └── flight-authorisation.yaml #   Flight permits and airspace tokens
+│   ├── minutes/                   # Working-group meeting records
+│   ├── ref/                       # Reference and background documents
+│   └── index.md                   # Microsite homepage
+├── reference-implementation/      # Illustrative Java/Spring Boot services (I05 scope only)
+│   ├── src/main/java/             #   Registry + flight-auth service code
+│   │   └── in/ispirt/pushpaka/
+│   │       ├── dao/               #   Hibernate entities + DaoInstance singleton
+│   │       ├── registry/          #   Registry service (controllers, services, config)
+│   │       ├── flightauthorisation/ # Flight authorisation service
+│   │       └── authorisation/     #   SpiceDB AuthZ client
+│   ├── src/test/java/             #   Unit, entity, authZ, and integration tests
+│   ├── src/main/resources/        #   Hibernate config, Spring properties, SpiceDB schema
+│   ├── docker/                    #   Keycloak, SpiceDB, PostgreSQL service configs
+│   ├── docker-compose.yaml        #   Full dev stack
+│   ├── openapi.yaml               #   DOWNSTREAM COPY — generated from docs/openapi/
+│   └── pom.xml                    #   Maven build (Java 17, Spring Boot 2.7.6)
+├── ardupilot/                     # Submodule — pure upstream ArduPilot, no patches
+├── qgroundcontrol/                # Submodule — pure upstream QGC, no patches
+├── mkdocs.yml                     # Docs site config (theme: pulse)
+├── requirements.txt               # Python deps for MkDocs
+├── Vagrantfile                    # ArduPilot dev VM (needs audit)
+└── .github/workflows/
+    ├── main.yml                   # Docs CI — strict build + auto-deploy to GH Pages
+    └── java-ci.yml                # Java CI — runs tests on PRs touching reference-impl
+```
+
+---
+
 ## Working Group Docs
 
 Work items, meeting minutes, OpenAPI specs, and reference documents live under `docs/` and are published as a static site via MkDocs.
