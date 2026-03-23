@@ -29,9 +29,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
-  // @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
-  String jwkSetUri =
-    "http://localhost:8080/realms/pushpaka/protocol/openid-connect/certs";
+  @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
+  String jwkSetUri;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

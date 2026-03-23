@@ -19,9 +19,18 @@ public class DaoInstance {
   // restricted to this class itself
   private DaoInstance() {
     _dao = new Dao();
+    String dbUrl = System.getenv().getOrDefault(
+      "DATABASE_URL",
+      "jdbc:postgresql://localhost:15432/pushpaka?sslmode=disable"
+    );
+    String dbUser = System.getenv().getOrDefault("DATABASE_USER", "postgres");
+    String dbPassword = System.getenv().getOrDefault("DATABASE_PASSWORD", "secret");
     sessionFactory =
       new Configuration()
         .configure("hibernate.cfg.xml")
+        .setProperty("hibernate.connection.url", dbUrl)
+        .setProperty("hibernate.connection.username", dbUser)
+        .setProperty("hibernate.connection.password", dbPassword)
         .addAnnotatedClass(Dao.LegalEntity.class)
         .addAnnotatedClass(Dao.Manufacturer.class)
         .addAnnotatedClass(Dao.UasType.class)
