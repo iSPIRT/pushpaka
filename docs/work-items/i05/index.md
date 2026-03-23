@@ -1,3 +1,7 @@
+---
+status: published
+---
+
 # UTM Concept of Operations
 
 ID: `I05`  
