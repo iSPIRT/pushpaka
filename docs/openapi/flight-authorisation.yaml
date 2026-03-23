@@ -1,0 +1,667 @@
+openapi: 3.0.1
+info:
+  title: Pushpaka Flight Authorisation
+  description: "Flight Authorisation Service allows registered entities to create\
+    \ flight plans, receive authorisation tokens"
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: sayandeep@ispirt.in
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.17
+servers:
+- url: http://localhost:8083/
+tags:
+- name: flightPlans
+  description: flightPlans
+- name: airspaceUsageTokens
+  description: AirspaceUsageTokens
+paths:
+  /api/v1/flightPlan/{FlightPlanId}:
+    get:
+      tags:
+      - flightPlans
+      summary: Find FlightPlan by ID
+      description: Returns a single FlightPlan
+      operationId: getFlightPlanById
+      parameters:
+      - name: FlightPlanId
+        in: path
+        description: ID of FlightPlan to return
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlightPlan'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlightPlan'
+        "404":
+          description: FlightPlan not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlightPlan'
+      security:
+      - jwt: []
+    put:
+      tags:
+      - flightPlans
+      summary: Updates a FlightPlan in the store
+      operationId: updateFlightPlan
+      parameters:
+      - name: FlightPlanId
+        in: path
+        description: ID of FlightPlan that needs to be updated
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FlightPlan'
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FlightPlan'
+      security:
+      - jwt: []
+    delete:
+      tags:
+      - flightPlans
+      summary: Deletes a FlightPlan
+      operationId: deleteFlightPlan
+      parameters:
+      - name: FlightPlanId
+        in: path
+        description: FlightPlan id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "400":
+          description: Invalid FlightPlan value
+      security:
+      - jwt: []
+  /api/v1/airspaceUsageToken/{AirspaceUsageTokenId}:
+    get:
+      tags:
+      - airspaceUsageTokens
+      summary: Find AirspaceUsageToken by ID
+      description: Returns a single AirspaceUsageToken
+      operationId: getAirspaceUsageTokenById
+      parameters:
+      - name: AirspaceUsageTokenId
+        in: path
+        description: ID of AirspaceUsageToken to return
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AirspaceUsageToken'
+        "400":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AirspaceUsageToken'
+        "404":
+          description: AirspaceUsageToken not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AirspaceUsageToken'
+      security:
+      - jwt: []
+    put:
+      tags:
+      - airspaceUsageTokens
+      summary: Updates a AirspaceUsageToken in the store
+      operationId: updateAirspaceUsageToken
+      parameters:
+      - name: AirspaceUsageTokenId
+        in: path
+        description: ID of AirspaceUsageToken that needs to be updated
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AirspaceUsageToken'
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AirspaceUsageToken'
+      security:
+      - jwt: []
+    delete:
+      tags:
+      - airspaceUsageTokens
+      summary: Deletes a AirspaceUsageToken
+      operationId: deleteAirspaceUsageToken
+      parameters:
+      - name: AirspaceUsageTokenId
+        in: path
+        description: AirspaceUsageToken id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "400":
+          description: Invalid AirspaceUsageToken value
+      security:
+      - jwt: []
+  /api/v1/flightPlan:
+    post:
+      tags:
+      - flightPlans
+      summary: Add a new FlightPlan to the store
+      description: Add a new FlightPlan to the store
+      operationId: addFlightPlan
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FlightPlan'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlightPlan'
+        "405":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlightPlan'
+      security:
+      - jwt: []
+  /api/v1/airspaceUsageToken:
+    post:
+      tags:
+      - airspaceUsageTokens
+      summary: Add a new AirspaceUsageToken to the store
+      description: Add a new AirspaceUsageToken to the store
+      operationId: addAirspaceUsageToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AirspaceUsageToken'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AirspaceUsageToken'
+        "405":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AirspaceUsageToken'
+      security:
+      - jwt: []
+  /api/v1/flightPlan/find:
+    get:
+      tags:
+      - flightPlans
+      summary: Finds flightPlans
+      operationId: findflightPlans
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FlightPlan'
+        "400":
+          description: Invalid value
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FlightPlan'
+      security:
+      - jwt: []
+  /api/v1/airspaceUsageToken/find:
+    get:
+      tags:
+      - airspaceUsageTokens
+      summary: Finds AirspaceUsageTokens
+      operationId: findAirspaceUsageTokens
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AirspaceUsageToken'
+        "400":
+          description: Invalid value
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AirspaceUsageToken'
+      security:
+      - jwt: []
+components:
+  schemas:
+    Address:
+      required:
+      - city
+      - country
+      - id
+      - line1
+      - line2
+      - line3
+      - pinCode
+      - state
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        line1:
+          type: string
+          example: 123 ABC Housing Society
+        line2:
+          type: string
+          example: Landmark
+        line3:
+          type: string
+          example: Bandra West
+        city:
+          type: string
+          example: Mumbai
+        state:
+          type: string
+          enum:
+          - ANDHRA_PRADESH
+          - ARUNACHAL_PRADESH
+          - ASSAM
+          - BIHAR
+          - CHHATTISGARH
+          - GOA
+          - GUJARAT
+          - HARYANA
+          - HIMACHAL_PRADESH
+          - JHARKHAND
+          - KARNATAKA
+          - KERALA
+          - MADHYA_PRADESH
+          - MAHARASHTRA
+          - MANIPUR
+          - MEGHALAYA
+          - MIZORAM
+          - NAGALAND
+          - ODISHA
+          - PUNJAB
+          - RAJASTHAN
+          - SIKKIM
+          - TAMIL_NADU
+          - TELANGANA
+          - TRIPURA
+          - UTTARAKHAND
+          - UTTAR_PRADESH
+          - WEST_BENGAL
+          - ANDAMAN_NICOBAR_ISLANDS
+          - CHANDIGARH
+          - DADRA_NAGAR_HAVELI_DAMAN_DIU
+          - NCT
+          - JAMMU_KASHMIR
+          - LADAKH
+          - LAKSHADWEEP
+          - PUDUCHERRY
+        pinCode:
+          type: string
+          example: "400000"
+        country:
+          type: string
+          example: IND
+          enum:
+          - IND
+          - USA
+    FlightPlan:
+      required:
+      - end_time
+      - id
+      - pilot
+      - start_time
+      - uas
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        uas:
+          $ref: '#/components/schemas/Uas'
+        pilot:
+          $ref: '#/components/schemas/Pilot'
+        start_time:
+          type: string
+          format: date-time
+        end_time:
+          type: string
+          format: date-time
+    LegalEntity:
+      required:
+      - cin
+      - id
+      - name
+      - regdAddress
+      - timestamps
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        cin:
+          type: string
+          example: CIN00000
+        name:
+          type: string
+          example: Test Company Pvt Ltd
+        regdAddress:
+          $ref: '#/components/schemas/Address'
+        gstin:
+          type: string
+          example: GSTIN00000
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+    Manufacturer:
+      required:
+      - id
+      - legalEntity
+      - timestamps
+      - validity
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        legalEntity:
+          $ref: '#/components/schemas/LegalEntity'
+        validity:
+          $ref: '#/components/schemas/Validity'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+    ObjectTimestamps:
+      required:
+      - created
+      - updated
+      type: object
+      properties:
+        created:
+          type: string
+          format: date-time
+        updated:
+          type: string
+          format: date-time
+    Pilot:
+      required:
+      - id
+      - timestamps
+      - user
+      - validity
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          $ref: '#/components/schemas/User'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+        validity:
+          $ref: '#/components/schemas/Validity'
+    Uas:
+      required:
+      - human_readable_id
+      - id
+      - oem_serial_number
+      - status
+      - timestamps
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        type:
+          $ref: '#/components/schemas/UasType'
+        oem_serial_number:
+          maximum: 65535
+          minimum: 0
+          type: integer
+          format: int32
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+        status:
+          type: string
+          enum:
+          - REGISTERED
+          - ACTIVE
+          - GROUNDED
+        human_readable_id:
+          type: string
+          readOnly: true
+    UasType:
+      required:
+      - approved
+      - id
+      - manufacturer
+      - model_number
+      - mtow
+      - operation_category
+      - propulsionCategory
+      - timestamps
+      - weightCategory
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        model_number:
+          maximum: 4095
+          minimum: 0
+          type: integer
+          format: int32
+          readOnly: true
+        manufacturer:
+          $ref: '#/components/schemas/Manufacturer'
+        propulsionCategory:
+          type: string
+          enum:
+          - VTOL
+          - FIXED_WING
+          - HYBRID
+        weightCategory:
+          type: string
+          enum:
+          - NANO
+          - SMALL
+          - MICRO
+          - MEDIUM
+          - LARGE
+        mtow:
+          type: number
+          description: maximum take off weight in kilograms
+          format: float
+        photoUrl:
+          type: string
+          format: uri
+          example: https://ispirt.github.io/pushpaka/
+        approved:
+          type: boolean
+          readOnly: true
+        operation_category:
+          type: string
+          enum:
+          - A
+          - B
+          - C
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+    User:
+      required:
+      - email
+      - firstName
+      - id
+      - lastName
+      - timestamps
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          example: e66b7c9e-79f5-44b0-9642-59ca20b7af63
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        phone:
+          type: string
+          example: +919999999999
+        aadharId:
+          type: string
+          example: +919999999999
+        address:
+          $ref: '#/components/schemas/Address'
+        timestamps:
+          $ref: '#/components/schemas/ObjectTimestamps'
+        status:
+          type: string
+          description: User Status
+          example: ACTIVE
+          enum:
+          - ACTIVE
+          - INACTIVE
+    Validity:
+      required:
+      - from
+      type: object
+      properties:
+        from:
+          type: string
+          format: date-time
+        till:
+          type: string
+          format: date-time
+    AirspaceUsageToken:
+      required:
+      - attentuations
+      - end_time
+      - id
+      - issuer
+      - start_time
+      - state
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        uas:
+          $ref: '#/components/schemas/Uas'
+        pilot:
+          $ref: '#/components/schemas/Pilot'
+        flight_plan:
+          $ref: '#/components/schemas/FlightPlan'
+        issuer:
+          type: string
+        start_time:
+          type: string
+          format: date-time
+        end_time:
+          type: string
+          format: date-time
+        state:
+          type: string
+          enum:
+          - CREATED
+          - INUSE
+          - TERMINATED
+        attentuations:
+          $ref: '#/components/schemas/AirspaceUsageTokenAttenuations'
+    AirspaceUsageTokenAttenuations:
+      type: object
+      properties:
+        geocage:
+          $ref: '#/components/schemas/GeocageData'
+        waypoints:
+          $ref: '#/components/schemas/GeospatialData'
+        emergencyTermination:
+          type: boolean
+    GeocageData:
+      type: object
+      properties:
+        radius:
+          type: number
+          format: double
+    GeospatialData:
+      type: object
+      properties:
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+  securitySchemes:
+    jwt:
+      type: http
+      scheme: bearer
