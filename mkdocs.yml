@@ -35,5 +35,6 @@ nav:
   - API Specifications: openapi/README.md
   - Minutes: minutes/index.md
   - Reference Documents: ref/index.md
+  - Integrations: integrations.md
   - Nomenclature: nomenclature.md
   - Bibliography: bibliography.md
