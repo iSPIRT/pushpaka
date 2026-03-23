@@ -29,30 +29,38 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
-      spicedb-migrate:
-        image: authzed/spicedb
-        env:
-          SPICEDB_DATASTORE_ENGINE: postgres
-          SPICEDB_DATASTORE_CONN_URI: "postgres://postgres:secret@postgres:5432/spicedb?sslmode=disable"
-        options: >-
-          --entrypoint spicedb
-
-      spicedb:
-        image: authzed/spicedb
-        env:
-          SPICEDB_GRPC_PRESHARED_KEY: somerandomkeyhere
-          SPICEDB_DATASTORE_ENGINE: postgres
-          SPICEDB_DATASTORE_CONN_URI: "postgres://postgres:secret@postgres:5432/spicedb?sslmode=disable"
-        ports:
-          - 50051:50051
-        options: >-
-          --health-cmd "grpc_health_probe -addr=:50051"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
       - uses: actions/checkout@v4
+
+      # ── SpiceDB setup ──────────────────────────────────────────────────────
+      # Service containers can't be ordered or given subcommands easily, so
+      # we run SpiceDB as explicit steps instead.
+
+      - name: Create spicedb database in Postgres
+        run: |
+          PGPASSWORD=secret psql -h localhost -p 15432 -U postgres \
+            -c "CREATE DATABASE spicedb;"
+
+      - name: Run SpiceDB migration
+        run: |
+          docker run --rm --network host \
+            -e SPICEDB_DATASTORE_ENGINE=postgres \
+            -e SPICEDB_DATASTORE_CONN_URI="postgres://postgres:secret@localhost:15432/spicedb?sslmode=disable" \
+            authzed/spicedb \
+            migrate head
+
+      - name: Start SpiceDB serve
+        run: |
+          docker run -d --name spicedb --network host \
+            -e SPICEDB_GRPC_PRESHARED_KEY=somerandomkeyhere \
+            -e SPICEDB_DATASTORE_ENGINE=postgres \
+            -e SPICEDB_DATASTORE_CONN_URI="postgres://postgres:secret@localhost:15432/spicedb?sslmode=disable" \
+            authzed/spicedb \
+            serve
+          # Wait for gRPC port to be ready
+          timeout 30 bash -c 'until nc -z localhost 50051; do sleep 1; done'
+
+      # ── Java build + test ──────────────────────────────────────────────────
 
       - uses: actions/setup-java@v4
         with:
