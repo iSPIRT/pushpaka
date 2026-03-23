@@ -5,10 +5,7 @@
  */
 package in.ispirt.pushpaka.flightauthorisation.api;
 
-import in.ispirt.pushpaka.dao.DaoInstance;
-import in.ispirt.pushpaka.dao.entities.*;
 import in.ispirt.pushpaka.models.FlightPlan;
-import in.ispirt.pushpaka.registry.utils.DaoException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -21,7 +18,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import javax.annotation.Generated;
 import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -87,22 +83,7 @@ public interface FlightPlanApi {
     ) @Valid @RequestBody FlightPlan FlightPlan,
     @Parameter(hidden = true) @AuthenticationPrincipal Jwt authentication
   ) {
-    try {
-      System.out.println("Create FlightPlan " + FlightPlan.toString());
-      in.ispirt.pushpaka.dao.entities.FlightPlan mm = in.ispirt.pushpaka.dao.entities.FlightPlan.create(
-        DaoInstance.getInstance().getSessionFactory(),
-        FlightPlan.fromOa(FlightPlan)
-      );
-      return ResponseEntity.ok(FlightPlan.toOa(mm));
-      // } catch (DaoException e) {
-      //   System.err.println("Exception: " + e.toString());
-      //   e.printStackTrace(System.err);
-      //   return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
   /**
@@ -130,19 +111,7 @@ public interface FlightPlanApi {
       in = ParameterIn.PATH
     ) @PathVariable("FlightPlanId") UUID FlightPlanId
   ) {
-    try {
-      in.ispirt.pushpaka.dao.entities.FlightPlan.delete(DaoInstance.getInstance().getSessionFactory(), FlightPlanId);
-      return ResponseEntity.ok().build();
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
   /**
@@ -175,39 +144,7 @@ public interface FlightPlanApi {
     produces = { "application/json" }
   )
   default ResponseEntity<List<FlightPlan>> findflightPlans() {
-    // getRequest()
-    //   .ifPresent(
-    //     request -> {
-    //       for (MediaType mediaType : MediaType.parseMediaTypes(
-    //         request.getHeader("Accept")
-    //       )) {
-    //         if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-    //           String exampleString =
-    //             "[ { \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"FlightPlan\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"FlightPlan\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } }, { \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"FlightPlan\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"FlightPlan\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } } ]";
-    //           ApiUtil.setExampleResponse(request, "application/json", exampleString);
-    //           break;
-    //         }
-    //       }
-    //     }
-    //   );
-    try {
-      List<in.ispirt.pushpaka.dao.entities.FlightPlan> les = in.ispirt.pushpaka.dao.entities.FlightPlan.getAll(
-        DaoInstance.getInstance().getSessionFactory()
-      );
-      List<FlightPlan> leso = les
-        .stream()
-        .map(x -> in.ispirt.pushpaka.models.FlightPlan.toOa(x))
-        .collect(Collectors.toList());
-      return ResponseEntity.ok(leso);
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
   /**
@@ -252,36 +189,7 @@ public interface FlightPlanApi {
       in = ParameterIn.PATH
     ) @PathVariable("FlightPlanId") UUID FlightPlanId
   ) {
-    // getRequest()
-    //   .ifPresent(
-    //     request -> {
-    //       for (MediaType mediaType : MediaType.parseMediaTypes(
-    //         request.getHeader("Accept")
-    //       )) {
-    //         if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-    //           String exampleString =
-    //             "{ \"oemSerialNumber\" : \"oemSerialNumber\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : { \"photoUrl\" : \"https://openapi-generator.tech\", \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"modelNumber\" : \"modelNumber\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"mtow\" : 6.0274563, \"FlightPlan\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"validity\" : { \"till\" : \"2000-01-23T04:56:07.000+00:00\", \"from\" : \"2000-01-23T04:56:07.000+00:00\" }, \"FlightPlan\" : { \"timestamps\" : { \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"updated\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"cin\" : \"cin\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"regdAddress\" : { \"city\" : \"Mumbai\", \"pinCode\" : 172074.45705867198, \"line3\" : \"Bandra West\", \"line2\" : \"Landmark\", \"line1\" : \"123 ABC Housing Society\" }, \"gstin\" : \"gstin\" } }, \"supportedOperationCategories\" : [ null, null ] } }";
-    //           ApiUtil.setExampleResponse(request, "application/json", exampleString);
-    //           break;
-    //         }
-    //       }
-    //     }
-    //   );
-    try {
-      in.ispirt.pushpaka.dao.entities.FlightPlan le = in.ispirt.pushpaka.dao.entities.FlightPlan.get(
-        DaoInstance.getInstance().getSessionFactory(),
-        FlightPlanId
-      );
-      return ResponseEntity.ok(in.ispirt.pushpaka.models.FlightPlan.toOa(le));
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
   /**
@@ -314,22 +222,6 @@ public interface FlightPlanApi {
       required = true
     ) @Valid @RequestBody FlightPlan FlightPlan
   ) {
-    try {
-      in.ispirt.pushpaka.dao.entities.FlightPlan le = in.ispirt.pushpaka.dao.entities.FlightPlan.update(
-        DaoInstance.getInstance().getSessionFactory(),
-        FlightPlanId,
-        FlightPlan.fromOa(FlightPlan)
-      );
-      return ResponseEntity.ok(in.ispirt.pushpaka.models.FlightPlan.toOa(le));
-    } catch (DaoException e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      System.err.println("Exception: " + e.toString());
-      e.printStackTrace(System.err);
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }
