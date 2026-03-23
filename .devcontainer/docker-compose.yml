@@ -1,0 +1,116 @@
+version: "3.8"
+
+services:
+
+  # ── Dev container ────────────────────────────────────────────────────────────
+  devcontainer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ..:/workspace:cached
+    command: sleep infinity
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-secret}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - SPICEDB_GRPC_PRESHARED_KEY=${SPICEDB_GRPC_PRESHARED_KEY:-somerandomkeyhere}
+    depends_on:
+      - database
+      - keycloak
+      - spicedb
+    networks:
+      - pushpaka
+
+  # ── Core stack ───────────────────────────────────────────────────────────────
+  database:
+    image: postgres:15
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ../reference-implementation/docker/pg-init-scripts:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secret}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_MULTIPLE_DATABASES: "'keycloak,postgres: spicedb,postgres: pushpaka,postgres'"
+    networks:
+      - pushpaka
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0.1
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      DB_VENDOR: postgres
+      DB_ADDR: database
+      DB_DATABASE: keycloak
+      DB_USER: ${POSTGRES_USER:-postgres}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-secret}
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    command: start-dev
+    depends_on:
+      - database
+    networks:
+      - pushpaka
+
+  migrate:
+    image: authzed/spicedb
+    command: migrate head
+    restart: on-failure
+    environment:
+      SPICEDB_DATASTORE_ENGINE: postgres
+      SPICEDB_DATASTORE_CONN_URI: "postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-secret}@database:5432/spicedb?sslmode=disable"
+    depends_on:
+      - database
+    networks:
+      - pushpaka
+
+  spicedb:
+    image: authzed/spicedb
+    command: serve
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+      - "9090:9090"
+      - "50051:50051"
+    environment:
+      SPICEDB_GRPC_PRESHARED_KEY: ${SPICEDB_GRPC_PRESHARED_KEY:-somerandomkeyhere}
+      SPICEDB_DATASTORE_ENGINE: postgres
+      SPICEDB_DATASTORE_CONN_URI: "postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-secret}@database:5432/spicedb?sslmode=disable"
+    depends_on:
+      - migrate
+    networks:
+      - pushpaka
+
+  # ── SITL profile ─────────────────────────────────────────────────────────────
+  # Start with: docker compose --profile sitl up
+  ardupilot-sitl:
+    profiles:
+      - sitl
+    image: ardupilot/ardupilot-dev-base:latest
+    restart: unless-stopped
+    ports:
+      - "5760:5760"   # MAVLink TCP
+      - "14550:14550/udp"  # MAVLink UDP (QGC default)
+    command: >
+      bash -c "
+        cd /ardupilot &&
+        sim_vehicle.py -v ArduCopter --no-rebuild --map --console
+        --out=udp:0.0.0.0:14550
+        --out=tcp:0.0.0.0:5760
+      "
+    volumes:
+      - sitl_eeprom:/ardupilot/eeprom
+    networks:
+      - pushpaka
+
+volumes:
+  postgres_data:
+  sitl_eeprom:
+
+networks:
+  pushpaka:
+    driver: bridge

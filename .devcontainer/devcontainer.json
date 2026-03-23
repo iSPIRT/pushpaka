@@ -1,0 +1,57 @@
+{
+  "name": "Pushpaka Dev Environment",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "devcontainer",
+  "workspaceFolder": "/workspace",
+
+  "features": {},
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "redhat.java",
+        "vscjava.vscode-maven",
+        "vscjava.vscode-java-debug",
+        "42crunch.vscode-openapi",
+        "yzhang.markdown-all-in-one",
+        "davidanson.vscode-markdownlint",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "java.configuration.runtimes": [
+          {
+            "name": "JavaSE-17",
+            "path": "/usr/local/sdkman/candidates/java/current"
+          }
+        ],
+        "maven.executable.path": "/usr/local/sdkman/candidates/maven/current/bin/mvn"
+      }
+    }
+  },
+
+  "forwardPorts": [
+    8080,
+    8081,
+    8082,
+    8083,
+    5432,
+    9090,
+    50051,
+    5760
+  ],
+
+  "portsAttributes": {
+    "8080": { "label": "Keycloak" },
+    "8081": { "label": "SpiceDB HTTP" },
+    "8082": { "label": "Registry Service" },
+    "8083": { "label": "Flight Authorisation Service" },
+    "5432": { "label": "PostgreSQL" },
+    "9090": { "label": "SpiceDB gRPC" },
+    "50051": { "label": "SpiceDB gRPC (alt)" },
+    "5760": { "label": "ArduPilot SITL MAVLink (sitl profile)" }
+  },
+
+  "postCreateCommand": "pip install -r requirements.txt",
+
+  "remoteUser": "vscode"
+}

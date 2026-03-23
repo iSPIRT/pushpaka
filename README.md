@@ -8,7 +8,32 @@ Published site: **https://ispirt.github.io/pushpaka/**
 
 - `docs/` — work items, meeting minutes, reference documents, OpenAPI specs
 - `reference-implementation/` — illustrative Java/Spring Boot services (registry + flight authorisation)
-- `qgroundcontrol/` — QGroundControl fork with Keycloak authentication integration
+- `.devcontainer/` — cross-platform dev environment (VS Code / GitHub Codespaces)
+
+## Dev environment (devcontainer)
+
+The fastest way to get a working environment — no local Java, Maven, or Docker knowledge required.
+
+### Requirements
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- [VS Code](https://code.visualstudio.com/) + [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+
+### Start core stack (ref impl + Keycloak + SpiceDB + PostgreSQL)
+```
+docker compose -f .devcontainer/docker-compose.yml up
+```
+
+Or open in VS Code and click **Reopen in Container** — everything starts automatically.
+
+### Start with ArduPilot SITL
+```
+docker compose -f .devcontainer/docker-compose.yml --profile sitl up
+```
+
+### GitHub Codespaces
+Open this repo in Codespaces — the devcontainer starts automatically, no local setup needed.
+
+---
 
 ## Docs site
 
