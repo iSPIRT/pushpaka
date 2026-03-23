@@ -1,7 +1,6 @@
 package in.ispirt.pushpaka.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import in.ispirt.pushpaka.dao.Dao;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.OffsetDateTime;
 import java.util.Objects;
@@ -203,7 +202,7 @@ public class CivilAviationAuthority {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public static CivilAviationAuthority toOa(Dao.CivilAviationAuthority x) {
+  public static CivilAviationAuthority toOa(in.ispirt.pushpaka.dao.entities.CivilAviationAuthority x) {
     Validity vtimestamps = new Validity();
     vtimestamps.setFrom(x.getValidityStart());
     vtimestamps.setTill(x.getValidityEnd());
@@ -221,9 +220,9 @@ public class CivilAviationAuthority {
     return le;
   }
 
-  public static Dao.CivilAviationAuthority fromOa(CivilAviationAuthority m) {
+  public static in.ispirt.pushpaka.dao.entities.CivilAviationAuthority fromOa(CivilAviationAuthority m) {
     OffsetDateTime n = OffsetDateTime.now();
-    Dao.CivilAviationAuthority u = new Dao.CivilAviationAuthority(
+    in.ispirt.pushpaka.dao.entities.CivilAviationAuthority u = new in.ispirt.pushpaka.dao.entities.CivilAviationAuthority(
       m.id,
       LegalEntity.fromOa(m.getLegalEntity()),
       n,

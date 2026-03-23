@@ -2,7 +2,6 @@ package in.ispirt.pushpaka.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import in.ispirt.pushpaka.dao.Dao;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.net.URI;
 import java.time.OffsetDateTime;
@@ -142,7 +141,7 @@ public class Lease {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public static Lease toOa(Dao.Lease u) {
+  public static Lease toOa(in.ispirt.pushpaka.dao.entities.Lease u) {
     Validity vt = new Validity(u.getValidityStart(), u.getValidityEnd());
     ObjectTimestamps ot = new ObjectTimestamps(
       u.getTimestampCreated(),
@@ -152,8 +151,8 @@ public class Lease {
     return uu;
   }
 
-  public static Dao.Lease fromOa(Lease u) {
-    Dao.Lease uu = new Dao.Lease(
+  public static in.ispirt.pushpaka.dao.entities.Lease fromOa(Lease u) {
+    in.ispirt.pushpaka.dao.entities.Lease uu = new in.ispirt.pushpaka.dao.entities.Lease(
       u.getId(),
       u.getTimestamps().getCreated(),
       u.getTimestamps().getUpdated(),

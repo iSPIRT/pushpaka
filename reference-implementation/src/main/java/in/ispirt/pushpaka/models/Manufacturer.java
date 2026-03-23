@@ -2,7 +2,6 @@ package in.ispirt.pushpaka.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.models.LegalEntity;
 import in.ispirt.pushpaka.models.ObjectTimestamps;
 import in.ispirt.pushpaka.models.Validity;
@@ -190,7 +189,7 @@ public class Manufacturer {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public static Manufacturer toOa(Dao.Manufacturer x) {
+  public static Manufacturer toOa(in.ispirt.pushpaka.dao.entities.Manufacturer x) {
     Validity vtimestamps = new Validity();
     vtimestamps.setFrom(x.getValidityStart());
     vtimestamps.setTill(x.getValidityEnd());
@@ -207,9 +206,9 @@ public class Manufacturer {
     return le;
   }
 
-  public static Dao.Manufacturer fromOa(Manufacturer m) {
+  public static in.ispirt.pushpaka.dao.entities.Manufacturer fromOa(Manufacturer m) {
     OffsetDateTime n = OffsetDateTime.now();
-    Dao.Manufacturer u = new Dao.Manufacturer(
+    in.ispirt.pushpaka.dao.entities.Manufacturer u = new in.ispirt.pushpaka.dao.entities.Manufacturer(
       m.id,
       LegalEntity.fromOa(m.getLegalEntity()),
       n,

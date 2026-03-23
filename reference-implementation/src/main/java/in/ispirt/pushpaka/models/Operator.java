@@ -2,7 +2,6 @@ package in.ispirt.pushpaka.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.models.LegalEntity;
 import in.ispirt.pushpaka.models.ObjectTimestamps;
 import in.ispirt.pushpaka.models.Validity;
@@ -190,7 +189,7 @@ public class Operator {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public static Operator toOa(Dao.Operator x) {
+  public static Operator toOa(in.ispirt.pushpaka.dao.entities.Operator x) {
     Validity vtimestamps = new Validity();
     vtimestamps.setFrom(x.getValidityStart());
     vtimestamps.setTill(x.getValidityEnd());
@@ -207,9 +206,9 @@ public class Operator {
     return le;
   }
 
-  public static Dao.Operator fromOa(Operator m) {
+  public static in.ispirt.pushpaka.dao.entities.Operator fromOa(Operator m) {
     OffsetDateTime n = OffsetDateTime.now();
-    Dao.Operator u = new Dao.Operator(
+    in.ispirt.pushpaka.dao.entities.Operator u = new in.ispirt.pushpaka.dao.entities.Operator(
       m.id,
       LegalEntity.fromOa(m.getLegalEntity()),
       n,

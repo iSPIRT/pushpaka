@@ -2,7 +2,6 @@ package in.ispirt.pushpaka.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.models.LegalEntity;
 import in.ispirt.pushpaka.models.ObjectTimestamps;
 import in.ispirt.pushpaka.models.Validity;
@@ -190,7 +189,7 @@ public class RepairAgency {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public static RepairAgency toOa(Dao.RepairAgency x) {
+  public static RepairAgency toOa(in.ispirt.pushpaka.dao.entities.RepairAgency x) {
     Validity vtimestamps = new Validity();
     vtimestamps.setFrom(x.getValidityStart());
     vtimestamps.setTill(x.getValidityEnd());
@@ -207,9 +206,9 @@ public class RepairAgency {
     return le;
   }
 
-  public static Dao.RepairAgency fromOa(RepairAgency m) {
+  public static in.ispirt.pushpaka.dao.entities.RepairAgency fromOa(RepairAgency m) {
     OffsetDateTime n = OffsetDateTime.now();
-    Dao.RepairAgency u = new Dao.RepairAgency(
+    in.ispirt.pushpaka.dao.entities.RepairAgency u = new in.ispirt.pushpaka.dao.entities.RepairAgency(
       m.id,
       LegalEntity.fromOa(m.getLegalEntity()),
       n,

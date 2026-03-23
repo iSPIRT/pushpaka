@@ -5,8 +5,8 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.dao.entities.*;
 import in.ispirt.pushpaka.models.Uas;
 import in.ispirt.pushpaka.registry.utils.DaoException;
 import in.ispirt.pushpaka.utils.Logging;
@@ -89,8 +89,8 @@ public interface UasApi {
     ) @Valid @RequestBody Uas uas
   ) {
     try {
-      Dao.Uas le = Uas.fromOa(uas);
-      Dao.Uas lec = Dao.Uas.create(DaoInstance.getInstance().getSessionFactory(), le);
+      in.ispirt.pushpaka.dao.entities.Uas le = Uas.fromOa(uas);
+      in.ispirt.pushpaka.dao.entities.Uas lec = in.ispirt.pushpaka.dao.entities.Uas.create(DaoInstance.getInstance().getSessionFactory(), le);
       return ResponseEntity.ok(Uas.toOa(lec));
     } catch (ConstraintViolationException e) {
       System.err.println("Exception: " + e.toString());
@@ -138,7 +138,7 @@ public interface UasApi {
     ) @RequestHeader(value = "api_key", required = false) String apiKey
   ) {
     try {
-      Dao.Uas.delete(DaoInstance.getInstance().getSessionFactory(), uasId);
+      in.ispirt.pushpaka.dao.entities.Uas.delete(DaoInstance.getInstance().getSessionFactory(), uasId);
       return ResponseEntity.ok().build();
     } catch (DaoException e) {
       System.err.println("Exception: " + e.toString());
@@ -183,7 +183,7 @@ public interface UasApi {
   )
   default ResponseEntity<List<Uas>> findUass() {
     try {
-      List<Dao.Uas> les = Dao.Uas.getAll(DaoInstance.getInstance().getSessionFactory());
+      List<in.ispirt.pushpaka.dao.entities.Uas> les = in.ispirt.pushpaka.dao.entities.Uas.getAll(DaoInstance.getInstance().getSessionFactory());
       List<Uas> leso = les
         .stream()
         .map(x -> in.ispirt.pushpaka.models.Uas.toOa(x))
@@ -244,7 +244,7 @@ public interface UasApi {
     ) @PathVariable("uasId") UUID uasId
   ) {
     try {
-      Dao.Uas le = Dao.Uas.get(DaoInstance.getInstance().getSessionFactory(), uasId);
+      in.ispirt.pushpaka.dao.entities.Uas le = in.ispirt.pushpaka.dao.entities.Uas.get(DaoInstance.getInstance().getSessionFactory(), uasId);
       return ResponseEntity.ok(in.ispirt.pushpaka.models.Uas.toOa(le));
     } catch (DaoException e) {
       System.err.println("Exception: " + e.toString());

@@ -5,8 +5,8 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.dao.entities.*;
 import in.ispirt.pushpaka.models.Operator;
 import in.ispirt.pushpaka.registry.utils.DaoException;
 import in.ispirt.pushpaka.utils.Logging;
@@ -90,7 +90,7 @@ public interface OperatorApi {
     ) @Valid @RequestBody Operator operator
   ) {
     try {
-      Dao.Operator mm = Dao.Operator.create(
+      in.ispirt.pushpaka.dao.entities.Operator mm = in.ispirt.pushpaka.dao.entities.Operator.create(
         DaoInstance.getInstance().getSessionFactory(),
         Operator.fromOa(operator)
       );
@@ -134,7 +134,7 @@ public interface OperatorApi {
     ) @PathVariable("operatorId") UUID operatorId
   ) {
     try {
-      Dao.Operator.delete(DaoInstance.getInstance().getSessionFactory(), operatorId);
+      in.ispirt.pushpaka.dao.entities.Operator.delete(DaoInstance.getInstance().getSessionFactory(), operatorId);
       return ResponseEntity.ok().build();
     } catch (DaoException e) {
       Logging.severe("Exception: " + e.toString());
@@ -195,7 +195,7 @@ public interface OperatorApi {
     //     }
     //   );
     try {
-      List<Dao.Operator> les = Dao.Operator.getAll(
+      List<in.ispirt.pushpaka.dao.entities.Operator> les = in.ispirt.pushpaka.dao.entities.Operator.getAll(
         DaoInstance.getInstance().getSessionFactory()
       );
       List<Operator> leso = les
@@ -273,7 +273,7 @@ public interface OperatorApi {
     //     }
     //   );
     try {
-      Dao.Operator le = Dao.Operator.get(
+      in.ispirt.pushpaka.dao.entities.Operator le = in.ispirt.pushpaka.dao.entities.Operator.get(
         DaoInstance.getInstance().getSessionFactory(),
         operatorId
       );
@@ -321,7 +321,7 @@ public interface OperatorApi {
     ) @Valid @RequestBody Operator operator
   ) {
     try {
-      Dao.Operator le = Dao.Operator.update(
+      in.ispirt.pushpaka.dao.entities.Operator le = in.ispirt.pushpaka.dao.entities.Operator.update(
         DaoInstance.getInstance().getSessionFactory(),
         operatorId,
         Operator.fromOa(operator)

@@ -5,8 +5,8 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.dao.entities.*;
 import in.ispirt.pushpaka.models.RepairAgency;
 import in.ispirt.pushpaka.registry.utils.DaoException;
 import in.ispirt.pushpaka.utils.Logging;
@@ -89,7 +89,7 @@ public interface RepairAgencyApi {
     ) @Valid @RequestBody RepairAgency repairAgency
   ) {
     try {
-      Dao.RepairAgency mm = Dao.RepairAgency.create(
+      in.ispirt.pushpaka.dao.entities.RepairAgency mm = in.ispirt.pushpaka.dao.entities.RepairAgency.create(
         DaoInstance.getInstance().getSessionFactory(),
         RepairAgency.fromOa(repairAgency)
       );
@@ -132,7 +132,7 @@ public interface RepairAgencyApi {
     ) @PathVariable("repairAgencyId") UUID repairAgencyId
   ) {
     try {
-      Dao.RepairAgency.delete(
+      in.ispirt.pushpaka.dao.entities.RepairAgency.delete(
         DaoInstance.getInstance().getSessionFactory(),
         repairAgencyId
       );
@@ -195,7 +195,7 @@ public interface RepairAgencyApi {
     //     }
     //   );
     try {
-      List<Dao.RepairAgency> les = Dao.RepairAgency.getAll(
+      List<in.ispirt.pushpaka.dao.entities.RepairAgency> les = in.ispirt.pushpaka.dao.entities.RepairAgency.getAll(
         DaoInstance.getInstance().getSessionFactory()
       );
       List<RepairAgency> leso = les
@@ -272,7 +272,7 @@ public interface RepairAgencyApi {
     //     }
     //   );
     try {
-      Dao.RepairAgency le = Dao.RepairAgency.get(
+      in.ispirt.pushpaka.dao.entities.RepairAgency le = in.ispirt.pushpaka.dao.entities.RepairAgency.get(
         DaoInstance.getInstance().getSessionFactory(),
         repairAgencyId
       );
@@ -319,7 +319,7 @@ public interface RepairAgencyApi {
     ) @Valid @RequestBody RepairAgency repairAgency
   ) {
     try {
-      Dao.RepairAgency le = Dao.RepairAgency.update(
+      in.ispirt.pushpaka.dao.entities.RepairAgency le = in.ispirt.pushpaka.dao.entities.RepairAgency.update(
         DaoInstance.getInstance().getSessionFactory(),
         repairAgencyId,
         RepairAgency.fromOa(repairAgency)

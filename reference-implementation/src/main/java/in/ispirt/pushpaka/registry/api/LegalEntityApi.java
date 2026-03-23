@@ -5,8 +5,8 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.dao.entities.*;
 import in.ispirt.pushpaka.models.LegalEntity;
 import in.ispirt.pushpaka.registry.utils.DaoException;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
@@ -106,8 +106,8 @@ public interface LegalEntityApi {
     //     }
     //   );
     try {
-      Dao.LegalEntity le = LegalEntity.fromOa(legalEntity);
-      Dao.LegalEntity lec = Dao.LegalEntity.create(
+      in.ispirt.pushpaka.dao.entities.LegalEntity le = LegalEntity.fromOa(legalEntity);
+      in.ispirt.pushpaka.dao.entities.LegalEntity lec = in.ispirt.pushpaka.dao.entities.LegalEntity.create(
         DaoInstance.getInstance().getSessionFactory(),
         le
       );
@@ -151,7 +151,7 @@ public interface LegalEntityApi {
     ) @PathVariable("legalEntityId") UUID legalEntityId
   ) {
     try {
-      Dao.LegalEntity.delete(
+      in.ispirt.pushpaka.dao.entities.LegalEntity.delete(
         DaoInstance.getInstance().getSessionFactory(),
         legalEntityId
       );
@@ -215,7 +215,7 @@ public interface LegalEntityApi {
     //     }
     //   );
     try {
-      List<Dao.LegalEntity> les = Dao.LegalEntity.getAll(
+      List<in.ispirt.pushpaka.dao.entities.LegalEntity> les = in.ispirt.pushpaka.dao.entities.LegalEntity.getAll(
         DaoInstance.getInstance().getSessionFactory()
       );
       List<LegalEntity> leso = les
@@ -293,7 +293,7 @@ public interface LegalEntityApi {
     //     }
     //   );
     try {
-      Dao.LegalEntity le = Dao.LegalEntity.get(
+      in.ispirt.pushpaka.dao.entities.LegalEntity le = in.ispirt.pushpaka.dao.entities.LegalEntity.get(
         DaoInstance.getInstance().getSessionFactory(),
         legalEntityId
       );
@@ -341,7 +341,7 @@ public interface LegalEntityApi {
     ) @Valid @RequestBody LegalEntity legalEntity
   ) {
     try {
-      Dao.LegalEntity le = Dao.LegalEntity.update(
+      in.ispirt.pushpaka.dao.entities.LegalEntity le = in.ispirt.pushpaka.dao.entities.LegalEntity.update(
         DaoInstance.getInstance().getSessionFactory(),
         legalEntityId,
         LegalEntity.fromOa(legalEntity)

@@ -2,7 +2,6 @@ package in.ispirt.pushpaka.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import in.ispirt.pushpaka.dao.Dao;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.net.URI;
 import java.time.OffsetDateTime;
@@ -265,7 +264,7 @@ public class Sale {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public static Sale toOa(Dao.Sale u) {
+  public static Sale toOa(in.ispirt.pushpaka.dao.entities.Sale u) {
     User su = null;
     User bu = null;
     LegalEntity sle = null;
@@ -294,18 +293,18 @@ public class Sale {
     return uu;
   }
 
-  public static Dao.Sale fromOa(Sale u) {
-    Dao.Person su = null;
-    Dao.Person bu = null;
-    Dao.LegalEntity sle = null;
-    Dao.LegalEntity ble = null;
+  public static in.ispirt.pushpaka.dao.entities.Sale fromOa(Sale u) {
+    in.ispirt.pushpaka.dao.entities.Person su = null;
+    in.ispirt.pushpaka.dao.entities.Person bu = null;
+    in.ispirt.pushpaka.dao.entities.LegalEntity sle = null;
+    in.ispirt.pushpaka.dao.entities.LegalEntity ble = null;
     if (u.getSellerUser() != null) su = User.fromOa(u.getSellerUser());
     if (u.getBuyerUser() != null) bu = User.fromOa(u.getBuyerUser());
     if (u.getSellerLegalEntity() != null) sle =
       LegalEntity.fromOa(u.getSellerLegalEntity());
     if (u.getBuyerLegalEntity() != null) ble =
       LegalEntity.fromOa(u.getBuyerLegalEntity());
-    Dao.Sale uu = new Dao.Sale(
+    in.ispirt.pushpaka.dao.entities.Sale uu = new in.ispirt.pushpaka.dao.entities.Sale(
       u.getId(),
       Uas.fromOa(u.getUas()),
       u.getTimestamps().getCreated(),

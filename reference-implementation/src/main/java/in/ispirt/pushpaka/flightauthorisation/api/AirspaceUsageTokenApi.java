@@ -5,8 +5,8 @@
  */
 package in.ispirt.pushpaka.flightauthorisation.api;
 
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.dao.entities.*;
 import in.ispirt.pushpaka.models.AirspaceUsageToken;
 import in.ispirt.pushpaka.registry.utils.DaoException;
 import in.ispirt.pushpaka.utils.Logging;
@@ -87,7 +87,7 @@ public interface AirspaceUsageTokenApi {
   ) {
     try {
       Logging.info("Create AirspaceUsageToken " + aut.toString());
-      Dao.AirspaceUsageToken mm = Dao.AirspaceUsageToken.create(
+      in.ispirt.pushpaka.dao.entities.AirspaceUsageToken mm = in.ispirt.pushpaka.dao.entities.AirspaceUsageToken.create(
         DaoInstance.getInstance().getSessionFactory(),
         AirspaceUsageToken.fromOa(aut)
       );
@@ -132,7 +132,7 @@ public interface AirspaceUsageTokenApi {
     ) @PathVariable("AirspaceUsageTokenId") UUID AirspaceUsageTokenId
   ) {
     try {
-      Dao.AirspaceUsageToken.delete(
+      in.ispirt.pushpaka.dao.entities.AirspaceUsageToken.delete(
         DaoInstance.getInstance().getSessionFactory(),
         AirspaceUsageTokenId
       );
@@ -197,7 +197,7 @@ public interface AirspaceUsageTokenApi {
     //     }
     //   );
     try {
-      List<Dao.AirspaceUsageToken> les = Dao.AirspaceUsageToken.getAll(
+      List<in.ispirt.pushpaka.dao.entities.AirspaceUsageToken> les = in.ispirt.pushpaka.dao.entities.AirspaceUsageToken.getAll(
         DaoInstance.getInstance().getSessionFactory()
       );
       List<AirspaceUsageToken> leso = les
@@ -274,7 +274,7 @@ public interface AirspaceUsageTokenApi {
     //     }
     //   );
     try {
-      Dao.AirspaceUsageToken le = Dao.AirspaceUsageToken.get(
+      in.ispirt.pushpaka.dao.entities.AirspaceUsageToken le = in.ispirt.pushpaka.dao.entities.AirspaceUsageToken.get(
         DaoInstance.getInstance().getSessionFactory(),
         AirspaceUsageTokenId
       );
@@ -324,7 +324,7 @@ public interface AirspaceUsageTokenApi {
     ) @Valid @RequestBody AirspaceUsageToken AirspaceUsageToken
   ) {
     try {
-      Dao.AirspaceUsageToken le = Dao.AirspaceUsageToken.update(
+      in.ispirt.pushpaka.dao.entities.AirspaceUsageToken le = in.ispirt.pushpaka.dao.entities.AirspaceUsageToken.update(
         DaoInstance.getInstance().getSessionFactory(),
         AirspaceUsageTokenId,
         AirspaceUsageToken.fromOa(AirspaceUsageToken)

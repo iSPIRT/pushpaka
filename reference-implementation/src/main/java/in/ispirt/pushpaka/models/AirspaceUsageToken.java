@@ -13,7 +13,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import in.ispirt.pushpaka.dao.Dao;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.io.IOException;
@@ -181,8 +180,8 @@ public class AirspaceUsageToken {
     return Objects.hash(id);
   }
 
-  public static Dao.AirspaceUsageToken fromOa(AirspaceUsageToken a) {
-    Dao.AirspaceUsageToken u = new Dao.AirspaceUsageToken(a.getId());
+  public static in.ispirt.pushpaka.dao.entities.AirspaceUsageToken fromOa(AirspaceUsageToken a) {
+    in.ispirt.pushpaka.dao.entities.AirspaceUsageToken u = new in.ispirt.pushpaka.dao.entities.AirspaceUsageToken(a.getId());
     if (a.getUas().getType().getOperationCategory() != OperationCategory.C) {
       u.setUas(Uas.fromOa(a.getUas()));
       u.setPilot(Pilot.fromOa(a.getPilot()));
@@ -192,7 +191,7 @@ public class AirspaceUsageToken {
     return u;
   }
 
-  public static AirspaceUsageToken toOa(Dao.AirspaceUsageToken x) {
+  public static AirspaceUsageToken toOa(in.ispirt.pushpaka.dao.entities.AirspaceUsageToken x) {
     AirspaceUsageToken le = new AirspaceUsageToken(x.getId());
     if (x.getUas().getUasType().getOperationCategory() != OperationCategory.C) {
       le.setId(x.getId());

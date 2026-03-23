@@ -2,7 +2,6 @@ package in.ispirt.pushpaka.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.utils.Logging;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Objects;
@@ -241,7 +240,7 @@ public class Uas {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public static Uas toOa(Dao.Uas u) {
+  public static Uas toOa(in.ispirt.pushpaka.dao.entities.Uas u) {
     ObjectTimestamps ot = new ObjectTimestamps(
       u.getTimestampCreated(),
       u.getTimestampUpdated()
@@ -260,8 +259,8 @@ public class Uas {
     return uu;
   }
 
-  public static Dao.Uas fromOa(Uas u) {
-    Dao.Uas uu = new Dao.Uas(
+  public static in.ispirt.pushpaka.dao.entities.Uas fromOa(Uas u) {
+    in.ispirt.pushpaka.dao.entities.Uas uu = new in.ispirt.pushpaka.dao.entities.Uas(
       u.id,
       UasType.fromOa(u.type),
       u.oemSerialNumber,

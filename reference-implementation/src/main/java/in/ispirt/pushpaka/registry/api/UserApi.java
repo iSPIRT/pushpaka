@@ -5,8 +5,8 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.dao.entities.*;
 import in.ispirt.pushpaka.models.Address;
 import in.ispirt.pushpaka.models.User;
 import in.ispirt.pushpaka.registry.utils.DaoException;
@@ -92,8 +92,8 @@ public interface UserApi {
   ) {
     Logging.info("JWT: " + authentication.toString());
     try {
-      Dao.Person le = User.fromOa(user);
-      Dao.Person lec = Dao.Person.create(
+      Person le = User.fromOa(user);
+      in.ispirt.pushpaka.dao.entities.Person lec = in.ispirt.pushpaka.dao.entities.Person.create(
         DaoInstance.getInstance().getSessionFactory(),
         le
       );

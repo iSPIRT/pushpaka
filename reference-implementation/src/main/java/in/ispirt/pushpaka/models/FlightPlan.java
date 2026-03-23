@@ -1,7 +1,6 @@
 package in.ispirt.pushpaka.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.models.Pilot;
 import in.ispirt.pushpaka.models.Uas;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -144,8 +143,8 @@ public class FlightPlan {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public static Dao.FlightPlan fromOa(FlightPlan a) {
-    Dao.FlightPlan u = new Dao.FlightPlan(
+  public static in.ispirt.pushpaka.dao.entities.FlightPlan fromOa(FlightPlan a) {
+    in.ispirt.pushpaka.dao.entities.FlightPlan u = new in.ispirt.pushpaka.dao.entities.FlightPlan(
       a.getId(),
       Uas.fromOa(a.getUas()),
       Pilot.fromOa(a.getPilot()),
@@ -155,7 +154,7 @@ public class FlightPlan {
     return u;
   }
 
-  public static FlightPlan toOa(Dao.FlightPlan x) {
+  public static FlightPlan toOa(in.ispirt.pushpaka.dao.entities.FlightPlan x) {
     FlightPlan le = new FlightPlan(
       x.getId(),
       Uas.toOa(x.getUas()),

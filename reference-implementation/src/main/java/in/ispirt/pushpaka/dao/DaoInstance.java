@@ -1,5 +1,21 @@
 package in.ispirt.pushpaka.dao;
 
+import in.ispirt.pushpaka.dao.entities.Address;
+import in.ispirt.pushpaka.dao.entities.AirspaceUsageToken;
+import in.ispirt.pushpaka.dao.entities.CivilAviationAuthority;
+import in.ispirt.pushpaka.dao.entities.DigitalSkyServiceProvider;
+import in.ispirt.pushpaka.dao.entities.FlightPlan;
+import in.ispirt.pushpaka.dao.entities.Lease;
+import in.ispirt.pushpaka.dao.entities.LegalEntity;
+import in.ispirt.pushpaka.dao.entities.Manufacturer;
+import in.ispirt.pushpaka.dao.entities.Operator;
+import in.ispirt.pushpaka.dao.entities.Person;
+import in.ispirt.pushpaka.dao.entities.Pilot;
+import in.ispirt.pushpaka.dao.entities.RepairAgency;
+import in.ispirt.pushpaka.dao.entities.Sale;
+import in.ispirt.pushpaka.dao.entities.Trader;
+import in.ispirt.pushpaka.dao.entities.Uas;
+import in.ispirt.pushpaka.dao.entities.UasType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -31,21 +47,21 @@ public class DaoInstance {
         .setProperty("hibernate.connection.url", dbUrl)
         .setProperty("hibernate.connection.username", dbUser)
         .setProperty("hibernate.connection.password", dbPassword)
-        .addAnnotatedClass(Dao.LegalEntity.class)
-        .addAnnotatedClass(Dao.Manufacturer.class)
-        .addAnnotatedClass(Dao.UasType.class)
-        .addAnnotatedClass(Dao.Sale.class)
-        .addAnnotatedClass(Dao.Uas.class)
-        .addAnnotatedClass(Dao.Person.class)
-        .addAnnotatedClass(Dao.Pilot.class)
-        .addAnnotatedClass(Dao.Address.class)
-        .addAnnotatedClass(Dao.CivilAviationAuthority.class)
-        .addAnnotatedClass(Dao.Operator.class)
-        .addAnnotatedClass(Dao.DigitalSkyServiceProvider.class)
-        .addAnnotatedClass(Dao.RepairAgency.class)
-        .addAnnotatedClass(Dao.Trader.class)
-        .addAnnotatedClass(Dao.FlightPlan.class)
-        .addAnnotatedClass(Dao.AirspaceUsageToken.class)
+        .addAnnotatedClass(LegalEntity.class)
+        .addAnnotatedClass(Manufacturer.class)
+        .addAnnotatedClass(UasType.class)
+        .addAnnotatedClass(Sale.class)
+        .addAnnotatedClass(Uas.class)
+        .addAnnotatedClass(Person.class)
+        .addAnnotatedClass(Pilot.class)
+        .addAnnotatedClass(Address.class)
+        .addAnnotatedClass(CivilAviationAuthority.class)
+        .addAnnotatedClass(Operator.class)
+        .addAnnotatedClass(DigitalSkyServiceProvider.class)
+        .addAnnotatedClass(RepairAgency.class)
+        .addAnnotatedClass(Trader.class)
+        .addAnnotatedClass(FlightPlan.class)
+        .addAnnotatedClass(AirspaceUsageToken.class)
         .buildSessionFactory();
     session = sessionFactory.openSession();
   }

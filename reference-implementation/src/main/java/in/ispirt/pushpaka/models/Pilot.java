@@ -2,7 +2,6 @@ package in.ispirt.pushpaka.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.models.ObjectTimestamps;
 import in.ispirt.pushpaka.models.User;
 import in.ispirt.pushpaka.models.Validity;
@@ -189,7 +188,7 @@ public class Pilot {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public static Pilot toOa(Dao.Pilot u) {
+  public static Pilot toOa(in.ispirt.pushpaka.dao.entities.Pilot u) {
     Validity vt = new Validity(u.getValidityStart(), u.getValidityEnd());
     ObjectTimestamps ot = new ObjectTimestamps(
       u.getTimestampCreated(),
@@ -199,8 +198,8 @@ public class Pilot {
     return uu;
   }
 
-  public static Dao.Pilot fromOa(Pilot u) {
-    Dao.Pilot uu = new Dao.Pilot(
+  public static in.ispirt.pushpaka.dao.entities.Pilot fromOa(Pilot u) {
+    in.ispirt.pushpaka.dao.entities.Pilot uu = new in.ispirt.pushpaka.dao.entities.Pilot(
       u.getId(),
       User.fromOa(u.getUser()),
       u.getTimestamps().getCreated(),

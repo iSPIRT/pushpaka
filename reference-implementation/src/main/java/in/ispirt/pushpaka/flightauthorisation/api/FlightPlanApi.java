@@ -5,8 +5,8 @@
  */
 package in.ispirt.pushpaka.flightauthorisation.api;
 
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.dao.entities.*;
 import in.ispirt.pushpaka.models.FlightPlan;
 import in.ispirt.pushpaka.registry.utils.DaoException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -89,7 +89,7 @@ public interface FlightPlanApi {
   ) {
     try {
       System.out.println("Create FlightPlan " + FlightPlan.toString());
-      Dao.FlightPlan mm = Dao.FlightPlan.create(
+      in.ispirt.pushpaka.dao.entities.FlightPlan mm = in.ispirt.pushpaka.dao.entities.FlightPlan.create(
         DaoInstance.getInstance().getSessionFactory(),
         FlightPlan.fromOa(FlightPlan)
       );
@@ -131,7 +131,7 @@ public interface FlightPlanApi {
     ) @PathVariable("FlightPlanId") UUID FlightPlanId
   ) {
     try {
-      Dao.FlightPlan.delete(DaoInstance.getInstance().getSessionFactory(), FlightPlanId);
+      in.ispirt.pushpaka.dao.entities.FlightPlan.delete(DaoInstance.getInstance().getSessionFactory(), FlightPlanId);
       return ResponseEntity.ok().build();
     } catch (DaoException e) {
       System.err.println("Exception: " + e.toString());
@@ -191,7 +191,7 @@ public interface FlightPlanApi {
     //     }
     //   );
     try {
-      List<Dao.FlightPlan> les = Dao.FlightPlan.getAll(
+      List<in.ispirt.pushpaka.dao.entities.FlightPlan> les = in.ispirt.pushpaka.dao.entities.FlightPlan.getAll(
         DaoInstance.getInstance().getSessionFactory()
       );
       List<FlightPlan> leso = les
@@ -268,7 +268,7 @@ public interface FlightPlanApi {
     //     }
     //   );
     try {
-      Dao.FlightPlan le = Dao.FlightPlan.get(
+      in.ispirt.pushpaka.dao.entities.FlightPlan le = in.ispirt.pushpaka.dao.entities.FlightPlan.get(
         DaoInstance.getInstance().getSessionFactory(),
         FlightPlanId
       );
@@ -315,7 +315,7 @@ public interface FlightPlanApi {
     ) @Valid @RequestBody FlightPlan FlightPlan
   ) {
     try {
-      Dao.FlightPlan le = Dao.FlightPlan.update(
+      in.ispirt.pushpaka.dao.entities.FlightPlan le = in.ispirt.pushpaka.dao.entities.FlightPlan.update(
         DaoInstance.getInstance().getSessionFactory(),
         FlightPlanId,
         FlightPlan.fromOa(FlightPlan)

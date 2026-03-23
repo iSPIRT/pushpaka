@@ -5,8 +5,8 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.dao.entities.*;
 import in.ispirt.pushpaka.models.Manufacturer;
 import in.ispirt.pushpaka.registry.utils.DaoException;
 import in.ispirt.pushpaka.utils.Logging;
@@ -90,7 +90,7 @@ public interface ManufacturerApi {
     ) @Valid @RequestBody Manufacturer manufacturer
   ) {
     try {
-      Dao.Manufacturer mm = Dao.Manufacturer.create(
+      in.ispirt.pushpaka.dao.entities.Manufacturer mm = in.ispirt.pushpaka.dao.entities.Manufacturer.create(
         DaoInstance.getInstance().getSessionFactory(),
         Manufacturer.fromOa(manufacturer)
       );
@@ -134,7 +134,7 @@ public interface ManufacturerApi {
     ) @PathVariable("manufacturerId") UUID manufacturerId
   ) {
     try {
-      Dao.Manufacturer.delete(
+      in.ispirt.pushpaka.dao.entities.Manufacturer.delete(
         DaoInstance.getInstance().getSessionFactory(),
         manufacturerId
       );
@@ -198,7 +198,7 @@ public interface ManufacturerApi {
     //     }
     //   );
     try {
-      List<Dao.Manufacturer> les = Dao.Manufacturer.getAll(
+      List<in.ispirt.pushpaka.dao.entities.Manufacturer> les = in.ispirt.pushpaka.dao.entities.Manufacturer.getAll(
         DaoInstance.getInstance().getSessionFactory()
       );
       List<Manufacturer> leso = les
@@ -276,7 +276,7 @@ public interface ManufacturerApi {
     //     }
     //   );
     try {
-      Dao.Manufacturer le = Dao.Manufacturer.get(
+      in.ispirt.pushpaka.dao.entities.Manufacturer le = in.ispirt.pushpaka.dao.entities.Manufacturer.get(
         DaoInstance.getInstance().getSessionFactory(),
         manufacturerId
       );
@@ -324,7 +324,7 @@ public interface ManufacturerApi {
     ) @Valid @RequestBody Manufacturer manufacturer
   ) {
     try {
-      Dao.Manufacturer le = Dao.Manufacturer.update(
+      in.ispirt.pushpaka.dao.entities.Manufacturer le = in.ispirt.pushpaka.dao.entities.Manufacturer.update(
         DaoInstance.getInstance().getSessionFactory(),
         manufacturerId,
         Manufacturer.fromOa(manufacturer)

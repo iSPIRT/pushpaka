@@ -1,7 +1,6 @@
 package in.ispirt.pushpaka.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import in.ispirt.pushpaka.dao.Dao;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -285,8 +284,8 @@ public class Address {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public static Dao.Address fromOa(Address a) {
-    Dao.Address u = new Dao.Address(
+  public static in.ispirt.pushpaka.dao.entities.Address fromOa(Address a) {
+    in.ispirt.pushpaka.dao.entities.Address u = new in.ispirt.pushpaka.dao.entities.Address(
       a.getId(),
       a.getLine1(),
       a.getLine2(),
@@ -299,7 +298,7 @@ public class Address {
     return u;
   }
 
-  public static Address toOa(Dao.Address x) {
+  public static Address toOa(in.ispirt.pushpaka.dao.entities.Address x) {
     Address le = new Address(
       x.getId(),
       x.getLine1(),

@@ -5,8 +5,8 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.dao.entities.*;
 import in.ispirt.pushpaka.models.Pilot;
 import in.ispirt.pushpaka.registry.utils.DaoException;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
@@ -90,7 +90,7 @@ public interface PilotApi {
   ) {
     try {
       System.out.println("Create Pilot " + pilot.toString());
-      Dao.Pilot mm = Dao.Pilot.create(
+      in.ispirt.pushpaka.dao.entities.Pilot mm = in.ispirt.pushpaka.dao.entities.Pilot.create(
         DaoInstance.getInstance().getSessionFactory(),
         Pilot.fromOa(pilot)
       );
@@ -133,7 +133,7 @@ public interface PilotApi {
     ) @PathVariable("pilotId") UUID pilotId
   ) {
     try {
-      Dao.Pilot.delete(DaoInstance.getInstance().getSessionFactory(), pilotId);
+      in.ispirt.pushpaka.dao.entities.Pilot.delete(DaoInstance.getInstance().getSessionFactory(), pilotId);
       return ResponseEntity.ok().build();
     } catch (DaoException e) {
       System.err.println("Exception: " + e.toString());
@@ -194,7 +194,7 @@ public interface PilotApi {
     //     }
     //   );
     try {
-      List<Dao.Pilot> les = Dao.Pilot.getAll(
+      List<in.ispirt.pushpaka.dao.entities.Pilot> les = in.ispirt.pushpaka.dao.entities.Pilot.getAll(
         DaoInstance.getInstance().getSessionFactory()
       );
       List<Pilot> leso = les
@@ -272,7 +272,7 @@ public interface PilotApi {
     //     }
     //   );
     try {
-      Dao.Pilot le = Dao.Pilot.get(
+      in.ispirt.pushpaka.dao.entities.Pilot le = in.ispirt.pushpaka.dao.entities.Pilot.get(
         DaoInstance.getInstance().getSessionFactory(),
         pilotId
       );
@@ -320,7 +320,7 @@ public interface PilotApi {
     ) @Valid @RequestBody Pilot pilot
   ) {
     try {
-      Dao.Pilot le = Dao.Pilot.update(
+      in.ispirt.pushpaka.dao.entities.Pilot le = in.ispirt.pushpaka.dao.entities.Pilot.update(
         DaoInstance.getInstance().getSessionFactory(),
         pilotId,
         Pilot.fromOa(pilot)

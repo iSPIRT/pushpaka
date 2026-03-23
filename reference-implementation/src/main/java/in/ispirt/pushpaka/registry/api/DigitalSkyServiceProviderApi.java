@@ -5,8 +5,8 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.dao.entities.*;
 import in.ispirt.pushpaka.models.DigitalSkyServiceProvider;
 import in.ispirt.pushpaka.registry.utils.DaoException;
 import in.ispirt.pushpaka.utils.Logging;
@@ -90,7 +90,7 @@ public interface DigitalSkyServiceProviderApi {
     ) @Valid @RequestBody DigitalSkyServiceProvider digitalSkyServiceProvider
   ) {
     try {
-      Dao.DigitalSkyServiceProvider mm = Dao.DigitalSkyServiceProvider.create(
+      in.ispirt.pushpaka.dao.entities.DigitalSkyServiceProvider mm = in.ispirt.pushpaka.dao.entities.DigitalSkyServiceProvider.create(
         DaoInstance.getInstance().getSessionFactory(),
         DigitalSkyServiceProvider.fromOa(digitalSkyServiceProvider)
       );
@@ -140,7 +140,7 @@ public interface DigitalSkyServiceProviderApi {
     ) @PathVariable("digitalSkyServiceProviderId") UUID digitalSkyServiceProviderId
   ) {
     try {
-      Dao.DigitalSkyServiceProvider.delete(
+      in.ispirt.pushpaka.dao.entities.DigitalSkyServiceProvider.delete(
         DaoInstance.getInstance().getSessionFactory(),
         digitalSkyServiceProviderId
       );
@@ -206,7 +206,7 @@ public interface DigitalSkyServiceProviderApi {
     //     }
     //   );
     try {
-      List<Dao.DigitalSkyServiceProvider> les = Dao.DigitalSkyServiceProvider.getAll(
+      List<in.ispirt.pushpaka.dao.entities.DigitalSkyServiceProvider> les = in.ispirt.pushpaka.dao.entities.DigitalSkyServiceProvider.getAll(
         DaoInstance.getInstance().getSessionFactory()
       );
       List<DigitalSkyServiceProvider> leso = les
@@ -287,7 +287,7 @@ public interface DigitalSkyServiceProviderApi {
     //     }
     //   );
     try {
-      Dao.DigitalSkyServiceProvider le = Dao.DigitalSkyServiceProvider.get(
+      in.ispirt.pushpaka.dao.entities.DigitalSkyServiceProvider le = in.ispirt.pushpaka.dao.entities.DigitalSkyServiceProvider.get(
         DaoInstance.getInstance().getSessionFactory(),
         digitalSkyServiceProviderId
       );
@@ -340,7 +340,7 @@ public interface DigitalSkyServiceProviderApi {
     ) @Valid @RequestBody DigitalSkyServiceProvider digitalSkyServiceProvider
   ) {
     try {
-      Dao.DigitalSkyServiceProvider le = Dao.DigitalSkyServiceProvider.update(
+      in.ispirt.pushpaka.dao.entities.DigitalSkyServiceProvider le = in.ispirt.pushpaka.dao.entities.DigitalSkyServiceProvider.update(
         DaoInstance.getInstance().getSessionFactory(),
         digitalSkyServiceProviderId,
         DigitalSkyServiceProvider.fromOa(digitalSkyServiceProvider)

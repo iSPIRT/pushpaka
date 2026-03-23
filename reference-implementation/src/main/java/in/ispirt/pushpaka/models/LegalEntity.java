@@ -2,7 +2,6 @@ package in.ispirt.pushpaka.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.models.Address;
 import in.ispirt.pushpaka.models.ObjectTimestamps;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -249,9 +248,9 @@ public class LegalEntity {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public static Dao.LegalEntity fromOa(LegalEntity le) {
+  public static in.ispirt.pushpaka.dao.entities.LegalEntity fromOa(LegalEntity le) {
     OffsetDateTime n = OffsetDateTime.now();
-    Dao.LegalEntity u = new Dao.LegalEntity(
+    in.ispirt.pushpaka.dao.entities.LegalEntity u = new in.ispirt.pushpaka.dao.entities.LegalEntity(
       le.getId(),
       le.getName(),
       Address.fromOa(le.getRegdAddress()),
@@ -263,7 +262,7 @@ public class LegalEntity {
     return u;
   }
 
-  public static LegalEntity toOa(Dao.LegalEntity x) {
+  public static LegalEntity toOa(in.ispirt.pushpaka.dao.entities.LegalEntity x) {
     ObjectTimestamps timestamps = new ObjectTimestamps(
       x.getTimestampCreated(),
       x.getTimestampUpdated()

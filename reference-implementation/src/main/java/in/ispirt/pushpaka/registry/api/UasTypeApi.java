@@ -5,8 +5,8 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.dao.entities.*;
 import in.ispirt.pushpaka.models.UasType;
 import in.ispirt.pushpaka.registry.utils.DaoException;
 import in.ispirt.pushpaka.utils.Logging;
@@ -93,12 +93,12 @@ public interface UasTypeApi {
   ) {
     try {
       Logging.info("Approve request; " + modelNumber + " " + uasTypeId.toString());
-      Dao.UasType lec = Dao.UasType.setModelNumber(
+      in.ispirt.pushpaka.dao.entities.UasType lec = in.ispirt.pushpaka.dao.entities.UasType.setModelNumber(
         DaoInstance.getInstance().getSessionFactory(),
         uasTypeId,
         modelNumber
       );
-      lec = Dao.UasType.approve(DaoInstance.getInstance().getSessionFactory(), uasTypeId);
+      lec = in.ispirt.pushpaka.dao.entities.UasType.approve(DaoInstance.getInstance().getSessionFactory(), uasTypeId);
       return ResponseEntity.ok(UasType.toOa(lec));
     } catch (DaoException e) {
       System.err.println("Exception: " + e.toString());
@@ -152,8 +152,8 @@ public interface UasTypeApi {
     ) @Valid @RequestBody UasType uasType
   ) {
     try {
-      Dao.UasType le = UasType.fromOa(uasType);
-      Dao.UasType lec = Dao.UasType.create(
+      in.ispirt.pushpaka.dao.entities.UasType le = UasType.fromOa(uasType);
+      in.ispirt.pushpaka.dao.entities.UasType lec = in.ispirt.pushpaka.dao.entities.UasType.create(
         DaoInstance.getInstance().getSessionFactory(),
         le
       );
@@ -195,7 +195,7 @@ public interface UasTypeApi {
     ) @PathVariable("uasTypeId") UUID uasTypeId
   ) {
     try {
-      Dao.UasType.delete(DaoInstance.getInstance().getSessionFactory(), uasTypeId);
+      in.ispirt.pushpaka.dao.entities.UasType.delete(DaoInstance.getInstance().getSessionFactory(), uasTypeId);
       return ResponseEntity.ok().build();
     } catch (DaoException e) {
       System.err.println("Exception: " + e.toString());
@@ -239,7 +239,7 @@ public interface UasTypeApi {
   )
   default ResponseEntity<List<UasType>> findUasTypes() {
     try {
-      List<Dao.UasType> les = Dao.UasType.getAll(
+      List<in.ispirt.pushpaka.dao.entities.UasType> les = in.ispirt.pushpaka.dao.entities.UasType.getAll(
         DaoInstance.getInstance().getSessionFactory()
       );
       List<UasType> leso = les
@@ -301,7 +301,7 @@ public interface UasTypeApi {
     ) @PathVariable("uasTypeId") UUID uasTypeId
   ) {
     try {
-      Dao.UasType le = Dao.UasType.get(
+      in.ispirt.pushpaka.dao.entities.UasType le = in.ispirt.pushpaka.dao.entities.UasType.get(
         DaoInstance.getInstance().getSessionFactory(),
         uasTypeId
       );
@@ -362,7 +362,7 @@ public interface UasTypeApi {
     ) @Valid @RequestBody UasType uasType
   ) {
     try {
-      Dao.UasType le = Dao.UasType.update(
+      in.ispirt.pushpaka.dao.entities.UasType le = in.ispirt.pushpaka.dao.entities.UasType.update(
         DaoInstance.getInstance().getSessionFactory(),
         uasType.getId(),
         UasType.fromOa(uasType)

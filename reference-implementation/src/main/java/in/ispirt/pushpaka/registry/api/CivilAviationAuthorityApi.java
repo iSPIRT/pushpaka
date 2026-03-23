@@ -5,8 +5,8 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.dao.entities.*;
 import in.ispirt.pushpaka.models.CivilAviationAuthority;
 import in.ispirt.pushpaka.registry.utils.DaoException;
 import in.ispirt.pushpaka.utils.Logging;
@@ -90,7 +90,7 @@ public interface CivilAviationAuthorityApi {
     ) @Valid @RequestBody CivilAviationAuthority civilAviationAuthority
   ) {
     try {
-      Dao.CivilAviationAuthority mm = Dao.CivilAviationAuthority.create(
+      in.ispirt.pushpaka.dao.entities.CivilAviationAuthority mm = in.ispirt.pushpaka.dao.entities.CivilAviationAuthority.create(
         DaoInstance.getInstance().getSessionFactory(),
         CivilAviationAuthority.fromOa(civilAviationAuthority)
       );
@@ -140,7 +140,7 @@ public interface CivilAviationAuthorityApi {
     ) @PathVariable("civilAviationAuthorityId") UUID civilAviationAuthorityId
   ) {
     try {
-      Dao.CivilAviationAuthority.delete(
+      in.ispirt.pushpaka.dao.entities.CivilAviationAuthority.delete(
         DaoInstance.getInstance().getSessionFactory(),
         civilAviationAuthorityId
       );
@@ -190,7 +190,7 @@ public interface CivilAviationAuthorityApi {
   )
   default ResponseEntity<List<CivilAviationAuthority>> findCivilAviationAuthorities() {
     try {
-      List<Dao.CivilAviationAuthority> les = Dao.CivilAviationAuthority.getAll(
+      List<in.ispirt.pushpaka.dao.entities.CivilAviationAuthority> les = in.ispirt.pushpaka.dao.entities.CivilAviationAuthority.getAll(
         DaoInstance.getInstance().getSessionFactory()
       );
       List<CivilAviationAuthority> leso = les
@@ -253,7 +253,7 @@ public interface CivilAviationAuthorityApi {
     ) @PathVariable("civilAviationAuthorityId") UUID civilAviationAuthorityId
   ) {
     try {
-      Dao.CivilAviationAuthority le = Dao.CivilAviationAuthority.get(
+      in.ispirt.pushpaka.dao.entities.CivilAviationAuthority le = in.ispirt.pushpaka.dao.entities.CivilAviationAuthority.get(
         DaoInstance.getInstance().getSessionFactory(),
         civilAviationAuthorityId
       );
@@ -304,7 +304,7 @@ public interface CivilAviationAuthorityApi {
     ) @Valid @RequestBody CivilAviationAuthority civilAviationAuthority
   ) {
     try {
-      Dao.CivilAviationAuthority le = Dao.CivilAviationAuthority.update(
+      in.ispirt.pushpaka.dao.entities.CivilAviationAuthority le = in.ispirt.pushpaka.dao.entities.CivilAviationAuthority.update(
         DaoInstance.getInstance().getSessionFactory(),
         civilAviationAuthorityId,
         CivilAviationAuthority.fromOa(civilAviationAuthority)

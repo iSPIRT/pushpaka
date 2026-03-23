@@ -5,8 +5,8 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.dao.entities.*;
 import in.ispirt.pushpaka.models.Trader;
 import in.ispirt.pushpaka.registry.utils.DaoException;
 import in.ispirt.pushpaka.utils.Logging;
@@ -89,7 +89,7 @@ public interface TraderApi {
     ) @Valid @RequestBody Trader trader
   ) {
     try {
-      Dao.Trader mm = Dao.Trader.create(
+      in.ispirt.pushpaka.dao.entities.Trader mm = in.ispirt.pushpaka.dao.entities.Trader.create(
         DaoInstance.getInstance().getSessionFactory(),
         Trader.fromOa(trader)
       );
@@ -132,7 +132,7 @@ public interface TraderApi {
     ) @PathVariable("traderId") UUID traderId
   ) {
     try {
-      Dao.Trader.delete(DaoInstance.getInstance().getSessionFactory(), traderId);
+      in.ispirt.pushpaka.dao.entities.Trader.delete(DaoInstance.getInstance().getSessionFactory(), traderId);
       return ResponseEntity.ok().build();
       // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     } catch (DaoException e) {
@@ -192,7 +192,7 @@ public interface TraderApi {
     //     }
     //   );
     try {
-      List<Dao.Trader> les = Dao.Trader.getAll(
+      List<in.ispirt.pushpaka.dao.entities.Trader> les = in.ispirt.pushpaka.dao.entities.Trader.getAll(
         DaoInstance.getInstance().getSessionFactory()
       );
       List<Trader> leso = les
@@ -269,7 +269,7 @@ public interface TraderApi {
     //     }
     //   );
     try {
-      Dao.Trader le = Dao.Trader.get(
+      in.ispirt.pushpaka.dao.entities.Trader le = in.ispirt.pushpaka.dao.entities.Trader.get(
         DaoInstance.getInstance().getSessionFactory(),
         traderId
       );
@@ -316,7 +316,7 @@ public interface TraderApi {
     ) @Valid @RequestBody Trader trader
   ) {
     try {
-      Dao.Trader le = Dao.Trader.update(
+      in.ispirt.pushpaka.dao.entities.Trader le = in.ispirt.pushpaka.dao.entities.Trader.update(
         DaoInstance.getInstance().getSessionFactory(),
         traderId,
         Trader.fromOa(trader)

@@ -5,8 +5,8 @@
  */
 package in.ispirt.pushpaka.registry.api;
 
-import in.ispirt.pushpaka.dao.Dao;
 import in.ispirt.pushpaka.dao.DaoInstance;
+import in.ispirt.pushpaka.dao.entities.*;
 import in.ispirt.pushpaka.models.Lease;
 import in.ispirt.pushpaka.models.ModelApiResponse;
 import in.ispirt.pushpaka.models.Sale;
@@ -94,8 +94,8 @@ public interface OwnershipApi {
     ) @Valid @RequestBody Lease lease
   ) {
     try {
-      Dao.Lease le = Lease.fromOa(lease);
-      Dao.Lease lec = Dao.Lease.create(DaoInstance.getInstance().getSessionFactory(), le);
+      in.ispirt.pushpaka.dao.entities.Lease le = Lease.fromOa(lease);
+      in.ispirt.pushpaka.dao.entities.Lease lec = in.ispirt.pushpaka.dao.entities.Lease.create(DaoInstance.getInstance().getSessionFactory(), le);
       return ResponseEntity.ok(Lease.toOa(lec));
     } catch (DaoException e) {
       System.err.println("Exception: " + e.toString());
@@ -134,7 +134,7 @@ public interface OwnershipApi {
     ) @PathVariable("leaseId") UUID leaseId
   ) {
     try {
-      Dao.Lease.delete(DaoInstance.getInstance().getSessionFactory(), leaseId);
+      in.ispirt.pushpaka.dao.entities.Lease.delete(DaoInstance.getInstance().getSessionFactory(), leaseId);
       return ResponseEntity.ok().build();
     } catch (DaoException e) {
       System.err.println("Exception: " + e.toString());
@@ -178,7 +178,7 @@ public interface OwnershipApi {
   )
   default ResponseEntity<List<Lease>> findLeases() {
     try {
-      List<Dao.Lease> les = Dao.Lease.getAll(
+      List<in.ispirt.pushpaka.dao.entities.Lease> les = in.ispirt.pushpaka.dao.entities.Lease.getAll(
         DaoInstance.getInstance().getSessionFactory()
       );
       List<Lease> leso = les
@@ -240,7 +240,7 @@ public interface OwnershipApi {
     ) @PathVariable("leaseId") UUID leaseId
   ) {
     try {
-      Dao.Lease le = Dao.Lease.get(
+      in.ispirt.pushpaka.dao.entities.Lease le = in.ispirt.pushpaka.dao.entities.Lease.get(
         DaoInstance.getInstance().getSessionFactory(),
         leaseId
       );
@@ -301,8 +301,8 @@ public interface OwnershipApi {
     ) @Valid @RequestBody Lease lease
   ) {
     try {
-      Dao.Lease le = Lease.fromOa(lease);
-      Dao.Lease lec = Dao.Lease.update(
+      in.ispirt.pushpaka.dao.entities.Lease le = Lease.fromOa(lease);
+      in.ispirt.pushpaka.dao.entities.Lease lec = in.ispirt.pushpaka.dao.entities.Lease.update(
         DaoInstance.getInstance().getSessionFactory(),
         le.getId(),
         le
@@ -364,8 +364,8 @@ public interface OwnershipApi {
     ) @Valid @RequestBody Sale sale
   ) {
     try {
-      Dao.Sale le = Sale.fromOa(sale);
-      Dao.Sale lec = Dao.Sale.create(DaoInstance.getInstance().getSessionFactory(), le);
+      in.ispirt.pushpaka.dao.entities.Sale le = Sale.fromOa(sale);
+      in.ispirt.pushpaka.dao.entities.Sale lec = in.ispirt.pushpaka.dao.entities.Sale.create(DaoInstance.getInstance().getSessionFactory(), le);
       return ResponseEntity.ok(Sale.toOa(lec));
     } catch (DaoException e) {
       System.err.println("Exception: " + e.toString());
@@ -404,7 +404,7 @@ public interface OwnershipApi {
     ) @PathVariable("saleId") UUID saleId
   ) {
     try {
-      Dao.Sale.delete(DaoInstance.getInstance().getSessionFactory(), saleId);
+      in.ispirt.pushpaka.dao.entities.Sale.delete(DaoInstance.getInstance().getSessionFactory(), saleId);
       return ResponseEntity.ok().build();
     } catch (DaoException e) {
       System.err.println("Exception: " + e.toString());
@@ -455,7 +455,7 @@ public interface OwnershipApi {
     ) @PathVariable("uasId") UUID uasId
   ) {
     try {
-      List<Dao.Sale> les = Dao.Sale.getAll(
+      List<in.ispirt.pushpaka.dao.entities.Sale> les = in.ispirt.pushpaka.dao.entities.Sale.getAll(
         DaoInstance.getInstance().getSessionFactory(),
         uasId
       );
@@ -518,7 +518,7 @@ public interface OwnershipApi {
     ) @PathVariable("saleId") UUID saleId
   ) {
     try {
-      Dao.Sale le = Dao.Sale.get(DaoInstance.getInstance().getSessionFactory(), saleId);
+      in.ispirt.pushpaka.dao.entities.Sale le = in.ispirt.pushpaka.dao.entities.Sale.get(DaoInstance.getInstance().getSessionFactory(), saleId);
       return ResponseEntity.ok(in.ispirt.pushpaka.models.Sale.toOa(le));
     } catch (DaoException e) {
       System.err.println("Exception: " + e.toString());
@@ -576,8 +576,8 @@ public interface OwnershipApi {
     ) @Valid @RequestBody Sale sale
   ) {
     try {
-      Dao.Sale le = Sale.fromOa(sale);
-      Dao.Sale lec = Dao.Sale.update(
+      in.ispirt.pushpaka.dao.entities.Sale le = Sale.fromOa(sale);
+      in.ispirt.pushpaka.dao.entities.Sale lec = in.ispirt.pushpaka.dao.entities.Sale.update(
         DaoInstance.getInstance().getSessionFactory(),
         le.getId(),
         le
