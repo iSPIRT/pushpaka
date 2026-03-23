@@ -22,10 +22,17 @@ pushpaka/
 │   ├── src/main/java/             #   Registry + flight-auth service code
 │   │   └── in/ispirt/pushpaka/
 │   │       ├── dao/               #   Hibernate entities + DaoInstance singleton
+│   │       │   ├── entities/      #     16 JPA entity classes
+│   │       │   └── seeds/         #     Seeds.java (fixture constants) + SeedLoader.java
 │   │       ├── registry/          #   Registry service (controllers, services, config)
 │   │       ├── flightauthorisation/ # Flight authorisation service
 │   │       └── authorisation/     #   SpiceDB AuthZ client
-│   ├── src/test/java/             #   Unit, entity, authZ, and integration tests
+│   ├── src/test/java/
+│   │   └── in/ispirt/pushpaka/
+│   │       ├── unittests/         #   AuthZTest (30 SpiceDB tests), AutTest (AUT generation)
+│   │       └── integration/       #   DemoScenario1–5 + TestUtils (HTTP end-to-end)
+│   ├── src/test/resources/
+│   │   └── fixtures/              #   16 JSON request-body templates ({{placeholder}} tokens)
 │   ├── src/main/resources/        #   Hibernate config, Spring properties, SpiceDB schema
 │   ├── docker/                    #   Keycloak, SpiceDB, PostgreSQL service configs
 │   ├── docker-compose.yaml        #   Full dev stack
@@ -143,6 +150,92 @@ mvn test                           # All tests
 mvn test -Dtest="EntityTests"      # Entity tests only
 mvn prettier:write                 # Format code
 ```
+
+### Testing
+
+The test suite has two tiers — **unit/authZ tests** that run in CI, and **integration tests** that require the full stack.
+
+#### AuthZTest (runs in CI)
+
+`unittests/AuthZTest.java` — 30 ordered JUnit 5 tests covering the SpiceDB authorisation layer end-to-end:
+
+| Group | What is tested |
+|-------|---------------|
+| Schema | SpiceDB schema write |
+| Identities | Platform user, CAA, Manufacturer, Trader, DSSP, Repair Agency, Operator administrator creation |
+| Membership | Pilot–Operator association (add, remove, negative cases) |
+| Approvals | CAA approves Manufacturer, Operator, DSSP, Trader, Repair Agency |
+| Lookups | UAS ownership, regulator lookup, bulk relationship export |
+
+Tests are stateful and ordered; each builds on the prior state. Run with:
+
+```bash
+mvn test -Dtest="AuthZTest"
+```
+
+#### AutTest (runs in CI)
+
+`unittests/AutTest.java` — smoke test for AUT (Airspace Usage Token) generation logic. Verifies the token can be created with valid parameters.
+
+#### DemoScenario1–5 (manual only, requires full stack + Keycloak)
+
+`integration/DemoScenario*.java` — HTTP-level end-to-end tests against live services. Not run in CI.
+
+| Scenario | What it exercises |
+|----------|------------------|
+| DemoScenario1 | Full entity registration: CAA, Manufacturer, Operator, Pilot, DSSP, Repair Agency, Trader, UAS, UAS Sale |
+| DemoScenario2 | AUT generation for BVLOS operation |
+| DemoScenario3 | AUT generation for VLOS operation |
+| DemoScenario4 | AUT generation for EVLOS operation |
+| DemoScenario5 | Flight plan submission, conflict rejection, AUT + signing key verification, kill-switch, temporary flight restriction |
+
+Run a specific scenario (full stack must be up):
+
+```bash
+mvn test -Dtest="DemoScenario1"
+```
+
+#### Fixtures
+
+Request payloads are stored as JSON templates in `src/test/resources/fixtures/` — one file per entity type (e.g. `manufacturer.json`, `uas-type.json`). Placeholder tokens like `{{manufacturerId}}` are filled at runtime by `TestUtils.fill()`. This keeps test logic readable and the payloads auditable without parsing Java strings.
+
+---
+
+### Keycloak
+
+Keycloak is used as the identity provider. It issues JWTs that the services validate via Spring OAuth2 resource server.
+
+| Detail | Value |
+|--------|-------|
+| Admin console | `http://localhost:18080` (admin / admin) |
+| Realm | `pushpaka` |
+| Client ID | `backend` |
+| Token endpoint | `http://localhost:18080/realms/pushpaka/protocol/openid-connect/token` |
+
+The test realm is seeded from `docker/keycloak-realm-pushpaka-test.json`. Pre-configured test users (all with password `test`):
+
+| Username | Role |
+|----------|------|
+| `test.platform.admin@test.com` | Platform administrator |
+| `test.caa.admin@test.com` | Civil Aviation Authority admin |
+| `test.manufacturer.0.admin@test.com` | Manufacturer admin |
+| `test.operator.0.admin@test.com` | Operator admin |
+| `test.pilot.0@test.com` | Pilot |
+| `test.dssp.0.admin@test.com` | DSSP admin |
+| `test.repair.agency.0.admin@test.com` | Repair Agency admin |
+| `test.trader.0.admin@test.com` | Trader admin |
+| `test.uas.0.owner@test.com` | UAS owner |
+
+To get a JWT manually (e.g. for Swagger UI or `curl` testing):
+
+```bash
+curl -s -X POST http://localhost:18080/realms/pushpaka/protocol/openid-connect/token \
+  -d "grant_type=password&client_id=backend" \
+  -d "username=test.caa.admin@test.com&password=test" \
+  | python3 -m json.tool | grep access_token
+```
+
+---
 
 ### Run services manually (inside devcontainer)
 
