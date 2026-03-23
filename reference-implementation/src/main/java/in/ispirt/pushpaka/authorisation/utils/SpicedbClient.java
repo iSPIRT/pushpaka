@@ -38,8 +38,13 @@ public class SpicedbClient {
   static final Operation OPERATION_TOUCH = RelationshipUpdate.Operation.OPERATION_TOUCH;
   static final Operation OPERATION_DELETE = RelationshipUpdate.Operation.OPERATION_DELETE;
 
-  public static final String SPICEDDB_TARGET = "localhost:50051";
-  public static final String SPICEDB_TOKEN = "somerandomkeyhere";
+  // Read from env; defaults align with devcontainer .env.example.
+  // SPICEDB_TARGET format: "host:port" (gRPC plaintext).
+  // SPICEDB_GRPC_PRESHARED_KEY must match the value in docker-compose.yml.
+  public static final String SPICEDDB_TARGET = System.getenv()
+    .getOrDefault("SPICEDB_TARGET", "localhost:50051");
+  public static final String SPICEDB_TOKEN = System.getenv()
+    .getOrDefault("SPICEDB_GRPC_PRESHARED_KEY", "somerandomkeyhere");
   public static final String SPICEDDB_PERMISSION_FILE =
     "src/main/resources/spicedb_permissions.txt";
 
