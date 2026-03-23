@@ -10,8 +10,12 @@ import java.util.ArrayList;
 import java.util.Set;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AuthZTest {
   public static AuthZ authZ;
   public static SpicedbClient spicedbClient;
@@ -32,6 +36,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(1)
   public void testWriteSchema() {
     boolean isSuccess = spicedbClient.writeSchema(SpicedbClient.SPICEDDB_PERMISSION_FILE);
     String schemaText = spicedbClient.readSchema();
@@ -44,6 +49,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(2)
   public void testCreatePlatformUser() {
     // platform:digital-sky-platform#administrator@user:platform-user
 
@@ -52,6 +58,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(3)
   public void testAssociateCAAToPlatform() {
     // caa:caa-authority#platform@platform:digital-sky-platform
 
@@ -61,6 +68,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(4)
   public void testCreateCAAAdministrator() {
     // caa:caa-authority#administrator@user:caa-user
 
@@ -77,6 +85,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(5)
   public void testCreateManufacturerAdministrator() {
     // manufacturer:manufacturer-1#administrator@user:manufacturer-user
     String manufacturerResourceID = "manufacturer-1";
@@ -93,8 +102,8 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(6)
   public void testCreateTraderAdministrator() {
-    // manufacturer:manufacturer-1#administrator@user:manufacturer-user
     String traderResourceID = "trader-1";
     String traderAdminUserID = "trader-user";
 
@@ -109,8 +118,8 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(7)
   public void testCreateDSSPAdministrator() {
-    // manufacturer:manufacturer-1#administrator@user:manufacturer-user
     String dsspResourceID = "dssp-1";
     String dsspAdminUserID = "dssp-user";
 
@@ -125,8 +134,8 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(8)
   public void testCreateRepairAgencyAdministrator() {
-    // manufacturer:manufacturer-1#administrator@user:manufacturer-user
     String repairAgencyResourceID = "repairagency-1";
     String repairAgencyAdminUserID = "repairagency-user";
 
@@ -141,6 +150,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(9)
   public void testCreateOperatorAdministrator() {
     // operator:operator-1#administrator@user:operator-user
     // operator:operator-1#regulator@caa:caa-authority
@@ -159,6 +169,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(10)
   public void testIsResourceAdministrator() {
     String operatorResourceID = "operator-1";
     String operatorAdminUserID = "operator-user";
@@ -173,6 +184,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(11)
   public void testIsResourceAdministratorNegative() {
     String operatorResourceID = "operator-1";
     String operatorAdminUserID = "operator-user-1";
@@ -187,6 +199,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(12)
   public void testAddFirstPilotToOperator() {
     // pilot:default-pilot-group#member@user:pilot-user-2
     String pilotResourceID = "pilot-resource-1";
@@ -215,6 +228,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(13)
   public void testAddSecondPilotToOperator() {
     // pilot:default-pilot-group#member@user:pilot-user-2
     String pilotResourceID = "pilot-resource-2";
@@ -243,6 +257,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(14)
   public void testRemoveFirstPilotToOperator() {
     // pilot:default-pilot-group#member@user:pilot-user-
     String pilotResourceID = "pilot-resource-1";
@@ -259,6 +274,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(15)
   public void testAddPilotToOperatoNegative() {
     // pilot:default-pilot-group#member@user:pilot-user-2
     String pilotResourceID = "pilot-resource";
@@ -275,6 +291,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(16)
   public void testFlightOperationsAdminNegative() {
     String pilotUserID = "pilot-user-3";
     String operatorResourceID = "operator-1";
@@ -285,6 +302,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(17)
   public void testCreateUASRelationships() {
     String UASID = "uas-1";
     String manufacturerResourceID = "manufacturer-1";
@@ -311,6 +329,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(18)
   public void testCreateUASTypeRelationships() {
     String UASTypeID = "uastype-1";
     String manufacturerResourceID = "manufacturer-1";
@@ -327,6 +346,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(19)
   public void testApproveManufacturer() {
     String manufacturerResourceID = "manufacturer-1";
     String caaResourceAdminID = "caa-user";
@@ -341,6 +361,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(20)
   public void testApproveOperator() {
     String operatorResourceID = "operator-1";
     String caaResourceAdminID = "caa-user";
@@ -355,6 +376,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(21)
   public void testApproveDSSP() {
     String dsspResourceID = "dssp-1";
     String caaResourceAdminID = "caa-user";
@@ -369,6 +391,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(22)
   public void testApproveTrader() {
     String traderResourceID = "trader-1";
     String caaResourceAdminID = "caa-user";
@@ -383,6 +406,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(23)
   public void testApproveRepairAgency() {
     String repairAgencyResourceID = "repairagency-1";
     String caaResourceAdminID = "caa-user";
@@ -397,6 +421,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(24)
   public void testLookupUASResourceOwnership() {
     String UASID = "uas-1";
     String manufacturerResourceID = "manufacturer-1";
@@ -410,6 +435,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(25)
   public void testLookupUASResourceOwnershipNegative() {
     String UASID = "uas";
     String manufacturerResourceID = "manufacturer-1";
@@ -423,6 +449,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(26)
   public void testLookupResourcesForRegulatorApprovals() {
     String caaResourceAdminID = "caa-user";
 
@@ -434,6 +461,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(27)
   public void testPilotToOperators() {
     String pilotResourceID = "pilot-resource-2";
 
@@ -443,6 +471,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(28)
   public void testLookupRegulator() {
     boolean isSuccess = authZ.lookupRegulator(authZ.getCaaResourceID());
 
@@ -450,6 +479,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(29)
   public void testBulkExportRelationshipsCount() {
     int relationshipCount = authZ.lookupRelationshipsCount();
 
@@ -457,6 +487,7 @@ public class AuthZTest {
   }
 
   @Test
+  @Order(30)
   public void testBulkExportRelationships() {
     ArrayList<String> relationships = authZ.lookupRelationship();
     int relationshipsCount = relationships.size();
