@@ -1050,38 +1050,33 @@ paths:
     post:
       tags:
       - uasTypes
-      summary: Approve a new uasType to the store
-      description: Approve a new uasType to the store
+      summary: Approve a UAS type
+      description: >
+        Transitions a UAS type from PENDING status to APPROVED. Only users
+        holding the `caa_admin` role (Civil Aviation Authority staff) may call
+        this endpoint. The UAS type must exist and be in PENDING state.
       operationId: approveUasType
       parameters:
-      - name: uas_type_id
+      - name: uasTypeId
         in: path
-        description: UasType ID for the new uasType in the store
+        description: UUID of the UAS type to approve
         required: true
         schema:
           type: string
           format: uuid
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: integer
-              description: Model Number assigned to new uasType in the store
-              format: int32
-        required: true
       responses:
         "200":
-          description: Successful operation
+          description: UAS type approved successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UasType'
-        "405":
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UasType'
+        "400":
+          description: UAS type is not in a state that allows approval (e.g. already APPROVED or REJECTED)
+        "403":
+          description: Caller does not hold the `caa_admin` role
+        "404":
+          description: UAS type not found
       security:
       - jwt: []
   /api/v1/trader:
@@ -1935,6 +1930,10 @@ components:
           type: string
           format: date-time
     User:
+      description: >
+        A registered individual user of the UTM system. Corresponds to the
+        `Person` table in the reference-implementation database schema.
+        The name divergence is historical; `User` is the canonical API term.
       required:
       - email
       - firstName
