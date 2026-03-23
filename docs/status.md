@@ -10,7 +10,7 @@ This page summarises the current state of all active work in the Pushpaka workin
 | I02 | Commentary on Draft Rules 2021 | Published | Published on iSpirt blog. |
 | I03 | Draft Rules Change Requests | Archived | Aborted. |
 | I04 | Commentary on Drone Rules 2021 | Archived | Aborted. |
-| [I05](./work-items/i05/index.md) | UTM Concept of Operations | Published | Timeline framing under revision. |
+| [I05](./work-items/i05/index.md) | UTM Concept of Operations | Draft | Under active revision (2025–ongoing). Working version in Google Doc. Repo copy is a 2021–22 snapshot. |
 | [I06](./work-items/i06.md) | UTM Technical Standards | Paused | Skeletal draft only. Awaiting direction. |
 | [I07](./work-items/i07.md) | Feedback Sessions: ConOps V1 | Published | Session recordings and materials available. |
 | [I08](./work-items/i08.md) | NIDSP Specification | Draft | Actively being written. DPG-light framing to be added. |
@@ -36,7 +36,7 @@ This page summarises the current state of all active work in the Pushpaka workin
 | Phase | Name | Status |
 |-------|------|--------|
 | Phase 0 | Strategic rebaseline & scope lock | Done |
-| Phase 1 | Docs, site & mkdocs-material migration | In progress |
+| Phase 1 | Docs, site & mkdocs-material migration | Done |
 | Phase 2 | Submodule removal | Pending |
 | Phase 3 | Reference implementation refactor | Pending |
 | Phase 4a | DevContainer | Pending |

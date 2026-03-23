@@ -1,12 +1,18 @@
 ---
-status: published
+status: draft
 ---
 
 # UTM Concept of Operations
 
-ID: `I05`  
-Status: `WORKING DRAFT`  
-Version: `1`  
+ID: `I05`
+Status: `DRAFT` (under active revision)
+Version: `1`
+
+> **Active version:** This document is being actively revised by the working group (2025–ongoing).
+> The current working version is maintained as a Google Doc:
+> **[Open active document](https://docs.google.com/document/d/1-hlAliCmXgrtSWt8fiKezEe7GXCXsHdj/edit?usp=sharing&ouid=104110979524276137277&rtpof=true&sd=true)**
+>
+> The content below is a snapshot from the original 2021–22 publication. Timelines and milestones are under revision and should not be treated as current.
 
 **Authors**
 
