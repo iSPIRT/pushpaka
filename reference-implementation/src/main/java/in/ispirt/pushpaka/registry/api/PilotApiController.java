@@ -11,7 +11,10 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +40,23 @@ public class PilotApiController implements PilotApi {
   @Override
   public Optional<NativeWebRequest> getRequest() {
     return Optional.ofNullable(request);
+  }
+
+  // Not part of the generated PilotApi interface — returns the calling pilot's own profile.
+  @GetMapping("/pilots/me")
+  public ResponseEntity<Pilot> getMyPilotProfile(@AuthenticationPrincipal Jwt authentication) {
+    try {
+      UUID personId = UUID.fromString(authentication.getSubject());
+      return ResponseEntity.ok(pilotService.getByPersonId(personId));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @Override

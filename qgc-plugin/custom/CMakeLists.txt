@@ -10,6 +10,7 @@ set_property(DIRECTORY ${CMAKE_SOURCE_DIR}
 
 # Qt components required by this plugin (picked up by QGC's find_package)
 set(CUSTOM_QT_COMPONENTS
+    Network
     NetworkAuth
     CACHE INTERNAL "" FORCE
 )
@@ -25,6 +26,8 @@ qt_add_library(PushpakaModule STATIC)
 set(CUSTOM_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/PushpakaPlugin.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/PushpakaPlugin.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/RegistryClient.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/RegistryClient.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UserAuthentication.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UserAuthentication.cpp
     CACHE INTERNAL "" FORCE
@@ -32,6 +35,7 @@ set(CUSTOM_SOURCES
 
 set(CUSTOM_LIBRARIES
     PushpakaModule
+    Qt6::Network
     Qt6::NetworkAuth
     CACHE INTERNAL "" FORCE
 )
