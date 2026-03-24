@@ -38,22 +38,16 @@ jobs:
         with:
           submodules: false   # we init manually for cache control
 
-      # ── Cache Qt installation ──────────────────────────────────────────────
-      - name: Cache Qt 6.8.3
-        uses: actions/cache@v4
-        id: cache-qt
-        with:
-          path: /opt/Qt
-          key: qt-6.8.3-linux-gcc_64-networkauth
-
+      # ── Install Qt via jurplel/install-qt-action (handles aqtinstall quirks) ─
       - name: Install Qt 6.8.3
-        if: steps.cache-qt.outputs.cache-hit != 'true'
-        run: |
-          pip3 install aqtinstall
-          aqt install-qt linux desktop 6.8.3 gcc_64 \
-            --outputdir /opt/Qt \
-            -m qtnetworkauth qtmultimedia qtpositioning \
-               qtlocation qtwebsockets qtshadertools qt5compat
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.8.3'
+          host: 'linux'
+          target: 'desktop'
+          arch: 'linux_gcc_64'
+          modules: 'qt5compat qtnetworkauth qtmultimedia qtpositioning qtwebsockets qtshadertools'
+          cache: true
 
       # ── Cache QGC submodule tree (keyed on pinned commit SHA) ─────────────
       - name: Get QGC submodule SHA
@@ -96,7 +90,6 @@ jobs:
           cmake -S qgc-plugin/qgroundcontrol \
                 -B qgc-plugin/build \
                 -G Ninja \
-                -DCMAKE_PREFIX_PATH=/opt/Qt/6.8.3/gcc_64 \
                 -DCMAKE_BUILD_TYPE=Debug \
           2>&1 | tee cmake_output.txt || true
 
