@@ -46,7 +46,7 @@ jobs:
           host: 'linux'
           target: 'desktop'
           arch: 'linux_gcc_64'
-          modules: 'qt5compat qtcharts qtnetworkauth qtmultimedia qtpositioning qtwebsockets qtshadertools qtspeech qtlocation qtquick3d'
+          modules: 'qt5compat qtcharts qtlocation qtmultimedia qtnetworkauth qtpositioning qtquick3d qtsensors qtserialport qtshadertools qtspeech qtsvg qtwebsockets'
           cache: true
 
       # ── Cache QGC submodule tree (keyed on pinned commit SHA) ─────────────
