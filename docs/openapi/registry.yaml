@@ -453,6 +453,26 @@ paths:
           description: Invalid repairAgency value
       security:
       - jwt: []
+  /api/v1/pilots/me:
+    get:
+      tags:
+      - pilot
+      summary: Get the calling pilot's own profile
+      description: >
+        Returns the Pilot record whose Person ID matches the JWT subject claim.
+        Use this after login to obtain the pilotId needed for flight plan submission.
+      operationId: getMyPilotProfile
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pilot'
+        "404":
+          description: No pilot found for the authenticated user
+      security:
+      - jwt: []
   /api/v1/pilot/{pilotId}:
     get:
       tags:

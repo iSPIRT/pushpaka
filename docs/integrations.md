@@ -35,38 +35,42 @@ Provides the operator-facing UI for flight planning, monitoring, and control.
 **Upstream repo:** https://github.com/mavlink/qgroundcontrol
 
 **Relationship to Pushpaka:**
-QGroundControl was forked and extended with Keycloak-based user authentication,
-allowing the GCS to authenticate operators against the Pushpaka identity provider
-before flight operations.
+Pushpaka extends QGroundControl using its official **Custom Build** mechanism — a
+`custom/` directory that is overlaid at build time without forking or patching the
+QGC source tree. The plugin is maintained in this repo under `qgc-plugin/`.
 
-### Pushpaka-specific work: Keycloak OAuth integration
+### Architecture: Custom Build plugin
 
-Commit: `Add UserAuthentication via Keycloak using Qt OAuth` (2024-07-19, Sayandeep Purkayasth)
+The `qgc-plugin/custom/` directory is a self-contained QGC custom build that adds:
 
-**Files added/modified:**
-
-| File | Purpose |
-|------|---------|
-| `src/UserAuthentication.h` | Qt `QObject` exposing `isAuthenticated` property and `authorise()` slot |
-| `src/UserAuthentication.cpp` | OAuth2 Authorization Code Flow via `QOAuth2AuthorizationCodeFlow`; connects to Keycloak at `http://localhost:8080/realms/digitalsky` |
-| `src/ui/toolbar/UserAuthentication.qml` | QML element placeholder (stub, imports `UserAuthentication`) |
-| `src/ui/toolbar/MainStatusIndicator.qml` | UI toolbar hook for auth status |
-| `src/QGCApplication.h`, `src/main.cc`, `src/api/QGCCorePlugin.cc` | Integration points wiring `UserAuthentication` into the QGC application lifecycle |
-| `src/CMakeLists.txt`, `qgroundcontrol.pro`, `qgroundcontrol.qrc` | Build system additions |
+| Component | Purpose |
+|-----------|---------|
+| `PushpakaPlugin` (`QGCCorePlugin` subclass) | Top-level plugin; wires all components together; exposes properties to QML |
+| `UserAuthentication` | OAuth2 Authorization Code Flow via Keycloak; exposes `isAuthenticated` and `authorise()` to QML |
+| `RegistryClient` | HTTP client for the Pushpaka Registry (port 8082); fetches pilot profile and UAS list after login |
+| `FlightAuthorisationClient` | HTTP client for the Flight Authorisation service (port 8083); submits flight plans and retrieves signed AUTs |
+| `PushpakaStatusIndicator.qml` | Toolbar status indicator (injected via `toolBarIndicators()` override); shows auth/AUT state; opens login or flight plan panel on click |
+| `FlightPlanPanel.qml` | Popup panel for submitting flight plans (UAS selection, start/end time, submit button, busy indicator) |
 
 **Key implementation details:**
-- Uses Qt's `QOAuth2AuthorizationCodeFlow` (Authorization Code Flow)
-- Keycloak realm: `pushpaka`
-- Client ID: `backend`
-- Keycloak URL: `http://localhost:18080`
-- Redirect: local HTTP reply handler on port 8000
-- `isAuthenticated` property bindable from QML for UI reactivity
-- Browser-based auth flow via `QDesktopServices::openUrl`
+- No fork of QGC — upstream is a git submodule at `qgc-plugin/qgroundcontrol`; `custom/` is symlinked/placed at `qgc-plugin/qgroundcontrol/custom`
+- OAuth2: Keycloak realm `pushpaka`, client `utm-client`, redirect handler on `http://localhost:8000`
+- Registry URL: env var `REGISTRY_URL`, default `http://localhost:8082`
+- Flight authorisation URL: env var `FLIGHT_AUTH_URL`, default `http://localhost:8083`
+- Toolbar indicator injected via `QGCCorePlugin::toolBarIndicators()` override
+- Flight plan submission is a two-call chain: `POST /api/v1/flightPlan` → `GET /api/v1/airspace-usage-tokens/by-flight-plan/{fpId}` → signed JWT returned and stored
 
-**Status:** In progress. Proof-of-concept OAuth integration exists. Full wiring to registry and flight-auth APIs is active work (see [#67](https://github.com/iSPIRT/pushpaka/issues/67)).
+**Status:** Active — login, pilot/UAS fetch, flight plan submission, and AUT receipt are implemented (issues [#67](https://github.com/iSPIRT/pushpaka/issues/67), [#74](https://github.com/iSPIRT/pushpaka/issues/74), [#75](https://github.com/iSPIRT/pushpaka/issues/75)).
 
-**To work on this:**
-1. Fork `https://github.com/mavlink/qgroundcontrol`
-2. Re-apply the changes above against a current upstream commit
-3. Start the devcontainer stack (`docker compose -f .devcontainer/docker-compose.yml up`)
-4. Keycloak is available at `http://localhost:18080`, realm `pushpaka`, client `backend`
+**Manual test instructions:** See [QGC Integration Testing](ref/qgc-testing.md).
+
+**To build:**
+```bash
+cd qgc-plugin
+# Symlink the custom build into the QGC source tree
+ln -s $(pwd)/custom qgroundcontrol/custom
+
+cd qgroundcontrol
+cmake -B build -DCMAKE_BUILD_TYPE=Debug
+cmake --build build --target QGroundControl -j$(nproc)
+```
