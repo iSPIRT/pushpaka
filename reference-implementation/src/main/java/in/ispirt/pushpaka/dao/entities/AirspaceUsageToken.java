@@ -114,6 +114,31 @@ public class AirspaceUsageToken {
     }
   }
 
+  public static AirspaceUsageToken createForFlightPlan(SessionFactory sf, AirspaceUsageToken a)
+    throws DaoException {
+    Session s = sf.openSession();
+    Transaction t = null;
+    try {
+      t = s.beginTransaction();
+      FlightPlan fp = FlightPlan.get(sf, a.getFlightPlan().getId());
+      Pilot pilot = Pilot.get(sf, a.getPilot().getId());
+      Uas uas = Uas.get(sf, a.getUas().getId());
+      a.setFlightPlan(fp);
+      a.setPilot(pilot);
+      a.setUas(uas);
+      s.save(a);
+      s.flush();
+      t.commit();
+      s.refresh(a);
+      return a;
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new DaoException(DaoException.Code.UNKNOWN, "AirspaceUsageToken createForFlightPlan");
+    } finally {
+      s.close();
+    }
+  }
+
   public static List<AirspaceUsageToken> getAll(SessionFactory sf) throws DaoException {
     Session s = sf.openSession();
     Transaction t = null;

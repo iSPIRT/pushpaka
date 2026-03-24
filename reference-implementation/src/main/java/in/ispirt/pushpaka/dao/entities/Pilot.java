@@ -182,6 +182,26 @@ public class Pilot {
     }
   }
 
+  public static Pilot getByPersonId(SessionFactory sf, UUID personId) throws DaoException {
+    Session s = sf.openSession();
+    Transaction t = null;
+    try {
+      t = s.beginTransaction();
+      Pilot p = s
+        .createQuery("from Pilot where user.id = :personId", Pilot.class)
+        .setParameter("personId", personId)
+        .uniqueResult();
+      t.commit();
+      return p;
+    } catch (Exception e) {
+      e.printStackTrace();
+      if (t != null) t.rollback();
+      throw new DaoException(DaoException.Code.UNKNOWN, "Pilot getByPersonId");
+    } finally {
+      s.close();
+    }
+  }
+
   public static void delete(SessionFactory sf, UUID id) throws DaoException {
     Session s = sf.openSession();
     Transaction t = null;
