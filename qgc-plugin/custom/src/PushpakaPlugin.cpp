@@ -1,7 +1,9 @@
 #include "PushpakaPlugin.h"
 
 #include <QtCore/QCoreApplication>
+#include <QtCore/QUrl>
 
+#include "FlightAuthorisationClient.h"
 #include "RegistryClient.h"
 #include "UserAuthentication.h"
 
@@ -24,13 +26,16 @@ void PushpakaPlugin::init()
 
     _userAuth = new UserAuthentication(this);
     _registry = new RegistryClient(this);
+    _flightAuth = new FlightAuthorisationClient(this);
 
-    // When the user logs in, fetch pilot profile + UAS list from the registry.
+    // On login: fetch pilot profile + UAS list; propagate token to flight auth client.
     connect(_userAuth, &UserAuthentication::authenticationChanged, this, [this]() {
         if (!_userAuth->isAuthenticated()) {
             return;
         }
-        _registry->setAccessToken(_userAuth->accessToken());
+        const QString token = _userAuth->accessToken();
+        _registry->setAccessToken(token);
+        _flightAuth->setAccessToken(token);
         _registry->fetchPilotMe();
         _registry->fetchUasList();
     });
@@ -50,6 +55,35 @@ void PushpakaPlugin::init()
         _registry, &RegistryClient::fetchFailed, this, [](const QString& op, const QString& err) {
             qWarning("[pushpaka] registry fetch failed: %s — %s", qPrintable(op), qPrintable(err));
         });
+
+    connect(_flightAuth, &FlightAuthorisationClient::autReceived, this,
+            [this](const QString& signedJwt) {
+                _autJwt = signedJwt;
+                _hasValidAut = true;
+                emit autChanged();
+            });
+
+    connect(_flightAuth, &FlightAuthorisationClient::submitFailed, this, [](const QString& err) {
+        qWarning("[pushpaka] flight plan submission failed: %s", qPrintable(err));
+    });
 }
 
 void PushpakaPlugin::cleanup() { QGCCorePlugin::cleanup(); }
+
+const QVariantList& PushpakaPlugin::toolBarIndicators()
+{
+    if (_toolBarIndicators.isEmpty()) {
+        _toolBarIndicators.append(QVariant::fromValue(
+            QUrl::fromUserInput(QStringLiteral("qrc:/pushpaka/qml/PushpakaStatusIndicator.qml"))));
+        for (const QVariant& v : QGCCorePlugin::toolBarIndicators()) {
+            _toolBarIndicators.append(v);
+        }
+    }
+    return _toolBarIndicators;
+}
+
+void PushpakaPlugin::submitFlightPlan(const QString& uasId, const QString& startTime,
+                                      const QString& endTime)
+{
+    _flightAuth->submitFlightPlan(_pilotId, uasId, startTime, endTime);
+}

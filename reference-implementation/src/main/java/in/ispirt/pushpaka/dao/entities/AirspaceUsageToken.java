@@ -76,6 +76,17 @@ public class AirspaceUsageToken {
     this.uas = id;
   }
 
+  @Column(name = "signed_jwt", length = 4096)
+  public String signedJwt;
+
+  public String getSignedJwt() {
+    return signedJwt;
+  }
+
+  public void setSignedJwt(String signedJwt) {
+    this.signedJwt = signedJwt;
+  }
+
   // Hibernate needs a default (no-arg) constructor to create model objects.
   public AirspaceUsageToken() {}
 
@@ -134,6 +145,29 @@ public class AirspaceUsageToken {
     } catch (Exception e) {
       e.printStackTrace();
       throw new DaoException(DaoException.Code.UNKNOWN, "AirspaceUsageToken createForFlightPlan");
+    } finally {
+      s.close();
+    }
+  }
+
+  public static AirspaceUsageToken getByFlightPlanId(SessionFactory sf, UUID flightPlanId)
+    throws DaoException {
+    Session s = sf.openSession();
+    Transaction t = null;
+    try {
+      t = s.beginTransaction();
+      AirspaceUsageToken aut = s
+        .createQuery(
+          "from AirspaceUsageToken where flightPlan.id = :fpId",
+          AirspaceUsageToken.class
+        )
+        .setParameter("fpId", flightPlanId)
+        .uniqueResult();
+      t.commit();
+      return aut;
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new DaoException(DaoException.Code.UNKNOWN, "AirspaceUsageToken getByFlightPlanId");
     } finally {
       s.close();
     }

@@ -24,6 +24,8 @@ set(QGC_RESOURCES ${QGC_RESOURCES} ${CUSTOM_RESOURCES} CACHE STRING "" FORCE)
 qt_add_library(PushpakaModule STATIC)
 
 set(CUSTOM_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/FlightAuthorisationClient.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/FlightAuthorisationClient.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/PushpakaPlugin.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/PushpakaPlugin.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/RegistryClient.h

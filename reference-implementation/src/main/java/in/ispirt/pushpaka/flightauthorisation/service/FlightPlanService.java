@@ -53,6 +53,7 @@ public class FlightPlanService {
       autEntity.setFlightPlan(new in.ispirt.pushpaka.dao.entities.FlightPlan(saved.getId()));
       autEntity.setPilot(new in.ispirt.pushpaka.dao.entities.Pilot(saved.getPilot().getId()));
       autEntity.setUas(uasRef);
+      autEntity.setSignedJwt(autJwt);
       in.ispirt.pushpaka.dao.entities.AirspaceUsageToken.createForFlightPlan(sf(), autEntity);
 
       Logging.info("AUT issued for FlightPlan " + saved.getId() + " jwt=" + autJwt);

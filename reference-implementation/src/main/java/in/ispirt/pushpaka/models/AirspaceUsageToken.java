@@ -37,6 +37,7 @@ public class AirspaceUsageToken {
   private OffsetDateTime endTime;
   private AirspaceUsageTokenState state;
   private AirspaceUsageTokenAttenuations attenuations;
+  private String signedJwt;
 
   @NotNull
   @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -129,6 +130,16 @@ public class AirspaceUsageToken {
     this.attenuations = attenuations;
   }
 
+  @Schema(name = "signed_jwt", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("signed_jwt")
+  public String getSignedJwt() {
+    return signedJwt;
+  }
+
+  public void setSignedJwt(String signedJwt) {
+    this.signedJwt = signedJwt;
+  }
+
   public String toJsonString() {
 //    Gson gson = new GsonBuilder().setPrettyPrinting().create();
 //    JsonElement jsonElement = gson.toJsonTree(this);
@@ -200,6 +211,7 @@ public class AirspaceUsageToken {
     } else {
       le.setFlightPlan(FlightPlan.toOa(x.getFlightPlan()));
     }
+    le.setSignedJwt(x.getSignedJwt());
     return le;
   }
 }
