@@ -25,7 +25,7 @@ extra:
 nav:
   - Home: index.md
   - Status: status.md
-  - Work Items:
+  - Publication Work Items:
     - Overview: work-items/index.md
     - I01 — ConOps V1: work-items/i01.md
     - I05 — UTM ConOps: work-items/i05/index.md

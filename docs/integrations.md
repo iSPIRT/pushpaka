@@ -23,8 +23,7 @@ will sit between ArduPilot SITL and the registry/flight-authorisation REST APIs,
 allowing firmware to remain unmodified.
 
 **Development environment:**
-The `Vagrantfile` previously provided an Ubuntu 22.04 VM for ArduPilot builds.
-This will be replaced by a `.devcontainer/` setup in Phase 4a.
+A `.devcontainer/` setup provides the full dev stack. The `Vagrantfile` is retained for reference but superseded by the devcontainer.
 
 ---
 
@@ -57,16 +56,17 @@ Commit: `Add UserAuthentication via Keycloak using Qt OAuth` (2024-07-19, Sayand
 
 **Key implementation details:**
 - Uses Qt's `QOAuth2AuthorizationCodeFlow` (Authorization Code Flow)
-- Keycloak realm: `digitalsky`
-- Client ID: `qgc`
+- Keycloak realm: `pushpaka`
+- Client ID: `backend`
+- Keycloak URL: `http://localhost:18080`
 - Redirect: local HTTP reply handler on port 8000
 - `isAuthenticated` property bindable from QML for UI reactivity
 - Browser-based auth flow via `QDesktopServices::openUrl`
 
-**Status:** Proof-of-concept / early integration. The QML element is a stub.
-Full integration is deferred to Phase 4a (DevContainer) when the full stack is wired together.
+**Status:** In progress. Proof-of-concept OAuth integration exists. Full wiring to registry and flight-auth APIs is active work (see [#67](https://github.com/iSPIRT/pushpaka/issues/67)).
 
-**To resume this work:**
+**To work on this:**
 1. Fork `https://github.com/mavlink/qgroundcontrol`
 2. Re-apply the changes above against a current upstream commit
-3. Wire into the devcontainer compose stack (Keycloak endpoint will need updating from `localhost:8080` to service name)
+3. Start the devcontainer stack (`docker compose -f .devcontainer/docker-compose.yml up`)
+4. Keycloak is available at `http://localhost:18080`, realm `pushpaka`, client `backend`
