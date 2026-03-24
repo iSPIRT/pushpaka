@@ -1,8 +1,9 @@
 # Current Status
 
-This page summarises the current state of all active work in the Pushpaka working group.
+This page summarises the current state of publication work items and API specifications.
+Engineering tasks and code work are tracked in [GitHub Issues](https://github.com/iSPIRT/pushpaka/issues).
 
-## Work Items
+## Publication Work Items
 
 | ID | Name | Status | Notes |
 |----|------|--------|-------|
@@ -24,22 +25,12 @@ This page summarises the current state of all active work in the Pushpaka workin
 
 ## Reference Implementation
 
+Illustrative Java/Spring Boot implementation of the registry and flight authorisation services. Scoped to I05 — not a production system.
+
 | Component | Status | Notes |
 |-----------|--------|-------|
-| Registry service (Java) | Illustrative | Scoped to I05. Not a production system. |
-| Flight Authorisation service (Java) | Illustrative | Scoped to I05. Not a production system. |
-| DevContainer / SITL integration | Planned | Replaces Vagrantfile. Scheduled for Phase 4. |
-| MAVLink bridge | Planned | Scheduled for Phase 4. |
-
-## Repo Rebaseline Progress
-
-| Phase | Name | Status |
-|-------|------|--------|
-| Phase 0 | Strategic rebaseline & scope lock | Done |
-| Phase 1 | Docs, site & mkdocs-material migration | Done |
-| Phase 2 | Submodule removal | Done |
-| Phase 4a | DevContainer | In progress |
-| Phase 3 | Reference implementation refactor | Pending |
-| Phase 4b | MAVLink bridge | Pending |
-| Phase 5 | I08 DPG-light framing | Pending |
-| Phase 6 | Governance | Pending |
+| Registry service (Java) | Active | Service layer, entity model, SpiceDB AuthZ wired. |
+| Flight Authorisation service (Java) | Active | Flight plan and AUT endpoints available. |
+| DevContainer | Done | Full dev stack via `.devcontainer/` (Postgres, Keycloak, SpiceDB). |
+| QGC integration | In progress | Keycloak auth + registry + flight-auth from QGroundControl. |
+| MAVLink bridge | Planned | ArduPilot SITL ↔ Pushpaka APIs. |
