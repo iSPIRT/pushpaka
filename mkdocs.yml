@@ -34,7 +34,9 @@ nav:
     - I08 — NIDSP Spec: work-items/i08.md
   - API Specifications: openapi/README.md
   - Minutes: minutes/index.md
-  - Reference Documents: ref/index.md
+  - Reference Documents:
+    - Overview: ref/index.md
+    - QGC Integration Testing: ref/qgc-testing.md
   - Integrations: integrations.md
   - Nomenclature: nomenclature.md
   - Bibliography: bibliography.md

@@ -263,6 +263,32 @@ paths:
                   $ref: '#/components/schemas/FlightPlan'
       security:
       - jwt: []
+  /api/v1/airspace-usage-tokens/by-flight-plan/{flightPlanId}:
+    get:
+      tags:
+      - airspaceUsageTokens
+      summary: Find AirspaceUsageToken by FlightPlan ID
+      description: Returns the AirspaceUsageToken issued for a given FlightPlan
+      operationId: getAirspaceUsageTokenByFlightPlanId
+      parameters:
+      - name: flightPlanId
+        in: path
+        description: ID of the FlightPlan whose AUT is to be returned
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AirspaceUsageToken'
+        "404":
+          description: AirspaceUsageToken not found for the given FlightPlan
+      security:
+      - jwt: []
   /api/v1/airspaceUsageToken/find:
     get:
       tags:
@@ -637,6 +663,13 @@ components:
           - TERMINATED
         attentuations:
           $ref: '#/components/schemas/AirspaceUsageTokenAttenuations'
+        signed_jwt:
+          type: string
+          description: >
+            RSA-signed JWT issued by the Pushpaka UTM authority when the flight
+            plan is approved. Present only when the AUT has been issued; absent
+            for manually created AUT records.
+          readOnly: true
     AirspaceUsageTokenAttenuations:
       type: object
       properties:
