@@ -1,16 +1,12 @@
 #include "PushpakaPlugin.h"
-#include "UserAuthentication.h"
 
 #include <QtCore/QCoreApplication>
 
-PushpakaPlugin::PushpakaPlugin(QObject* parent)
-    : QGCCorePlugin(parent)
-{
-}
+#include "UserAuthentication.h"
 
-PushpakaPlugin::~PushpakaPlugin()
-{
-}
+PushpakaPlugin::PushpakaPlugin(QObject* parent) : QGCCorePlugin(parent) {}
+
+PushpakaPlugin::~PushpakaPlugin() {}
 
 QGCCorePlugin* PushpakaPlugin::instance()
 {
@@ -27,7 +23,4 @@ void PushpakaPlugin::init()
     _userAuth = new UserAuthentication(this);
 }
 
-void PushpakaPlugin::cleanup()
-{
-    QGCCorePlugin::cleanup();
-}
+void PushpakaPlugin::cleanup() { QGCCorePlugin::cleanup(); }

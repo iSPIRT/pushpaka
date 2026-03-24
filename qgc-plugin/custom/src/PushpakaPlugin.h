@@ -23,7 +23,7 @@ public:
     static QGCCorePlugin* instance();
 
     // QGCCorePlugin overrides
-    void init()    override;
+    void init() override;
     void cleanup() override;
 
     UserAuthentication* userAuthentication() const { return _userAuth; }

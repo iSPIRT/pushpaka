@@ -19,10 +19,8 @@ UserAuthentication::UserAuthentication(QObject* parent) : QObject(parent)
 
     connect(_oauth, &QOAuth2AuthorizationCodeFlow::authorizeWithBrowser,
             &QDesktopServices::openUrl);
-    connect(_oauth, &QOAuth2AuthorizationCodeFlow::granted, this,
-            &UserAuthentication::_onGranted);
-    connect(_oauth, &QOAuth2AuthorizationCodeFlow::error, this,
-            &UserAuthentication::_onError);
+    connect(_oauth, &QOAuth2AuthorizationCodeFlow::granted, this, &UserAuthentication::_onGranted);
+    connect(_oauth, &QOAuth2AuthorizationCodeFlow::error, this, &UserAuthentication::_onError);
 }
 
 void UserAuthentication::authorise()
@@ -47,8 +45,8 @@ void UserAuthentication::_onGranted()
     emit authenticationChanged();
 }
 
-void UserAuthentication::_onError(
-        const QString& error, const QString& errorDescription, const QUrl& /*uri*/)
+void UserAuthentication::_onError(const QString& error, const QString& errorDescription,
+                                  const QUrl& /*uri*/)
 {
     _isAuthenticated = false;
     _accessToken.clear();
@@ -59,6 +57,6 @@ void UserAuthentication::_onError(
 QString UserAuthentication::_keycloakBase() const
 {
     const QString host =
-            QProcessEnvironment::systemEnvironment().value("KEYCLOAK_URL", DEFAULT_KEYCLOAK_URL);
+        QProcessEnvironment::systemEnvironment().value("KEYCLOAK_URL", DEFAULT_KEYCLOAK_URL);
     return host + "/realms/" + REALM;
 }

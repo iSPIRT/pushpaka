@@ -88,7 +88,7 @@ jobs:
 
       # ── Wire custom/ and run configure ────────────────────────────────────
       - name: Link custom/ into QGC source tree
-        run: ln -s $(pwd)/qgc-plugin/custom qgc-plugin/qgroundcontrol/custom
+        run: ln -s "$(realpath qgc-plugin/custom)" qgc-plugin/qgroundcontrol/custom
 
       - name: CMake configure
         id: cmake
