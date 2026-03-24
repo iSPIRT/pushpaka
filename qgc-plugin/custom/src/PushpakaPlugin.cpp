@@ -41,17 +41,15 @@ void PushpakaPlugin::init()
                 emit pilotChanged();
             });
 
-    connect(_registry, &RegistryClient::uasListFetched, this,
-            [this](const QVariantList& uasList) {
-                _uasList = uasList;
-                emit uasListChanged();
-            });
+    connect(_registry, &RegistryClient::uasListFetched, this, [this](const QVariantList& uasList) {
+        _uasList = uasList;
+        emit uasListChanged();
+    });
 
-    connect(_registry, &RegistryClient::fetchFailed, this,
-            [](const QString& op, const QString& err) {
-                qWarning("[pushpaka] registry fetch failed: %s — %s",
-                         qPrintable(op), qPrintable(err));
-            });
+    connect(
+        _registry, &RegistryClient::fetchFailed, this, [](const QString& op, const QString& err) {
+            qWarning("[pushpaka] registry fetch failed: %s — %s", qPrintable(op), qPrintable(err));
+        });
 }
 
 void PushpakaPlugin::cleanup() { QGCCorePlugin::cleanup(); }

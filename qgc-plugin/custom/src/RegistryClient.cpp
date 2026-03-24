@@ -6,22 +6,20 @@
 #include <QtCore/QProcessEnvironment>
 
 RegistryClient::RegistryClient(QObject* parent)
-    : QObject(parent)
-    , _nam(new QNetworkAccessManager(this))
+    : QObject(parent), _nam(new QNetworkAccessManager(this))
 {
 }
 
 QString RegistryClient::_registryBase() const
 {
-    return QProcessEnvironment::systemEnvironment().value(
-        QStringLiteral("REGISTRY_URL"), QStringLiteral(DEFAULT_REGISTRY_URL));
+    return QProcessEnvironment::systemEnvironment().value(QStringLiteral("REGISTRY_URL"),
+                                                          QStringLiteral(DEFAULT_REGISTRY_URL));
 }
 
 QNetworkRequest RegistryClient::_authorizedRequest(const QUrl& url) const
 {
     QNetworkRequest req(url);
-    req.setRawHeader("Authorization",
-                     QStringLiteral("Bearer %1").arg(_accessToken).toUtf8());
+    req.setRawHeader("Authorization", QStringLiteral("Bearer %1").arg(_accessToken).toUtf8());
     req.setRawHeader("Accept", "application/json");
     return req;
 }
@@ -36,8 +34,7 @@ void RegistryClient::fetchPilotMe()
             emit fetchFailed(QStringLiteral("pilots/me"), reply->errorString());
             return;
         }
-        QJsonObject obj =
-            QJsonDocument::fromJson(reply->readAll()).object();
+        QJsonObject obj = QJsonDocument::fromJson(reply->readAll()).object();
         QString pilotId = obj.value(QStringLiteral("id")).toString();
         emit pilotFetched(pilotId, pilotId);
     });
@@ -53,8 +50,7 @@ void RegistryClient::fetchUasList()
             emit fetchFailed(QStringLiteral("uas"), reply->errorString());
             return;
         }
-        QVariantList uasList =
-            QJsonDocument::fromJson(reply->readAll()).array().toVariantList();
+        QVariantList uasList = QJsonDocument::fromJson(reply->readAll()).array().toVariantList();
         emit uasListFetched(uasList);
     });
 }

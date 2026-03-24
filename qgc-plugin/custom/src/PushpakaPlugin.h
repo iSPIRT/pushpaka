@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QVariantList>
+
 #include "QGCCorePlugin.h"
 
 class UserAuthentication;
