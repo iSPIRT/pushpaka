@@ -38,6 +38,15 @@ public class PilotService {
     return in.ispirt.pushpaka.models.Pilot.toOa(entity);
   }
 
+  public Pilot getByPersonId(UUID personId) throws DaoException {
+    in.ispirt.pushpaka.dao.entities.Pilot entity =
+      in.ispirt.pushpaka.dao.entities.Pilot.getByPersonId(sf(), personId);
+    if (entity == null) {
+      throw new DaoException(DaoException.Code.NOT_FOUND, "Pilot");
+    }
+    return in.ispirt.pushpaka.models.Pilot.toOa(entity);
+  }
+
   public Pilot update(UUID pilotId, Pilot pilot) throws DaoException {
     in.ispirt.pushpaka.dao.entities.Pilot updated =
       in.ispirt.pushpaka.dao.entities.Pilot.update(sf(), pilotId, Pilot.fromOa(pilot));
