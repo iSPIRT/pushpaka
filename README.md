@@ -38,8 +38,13 @@ pushpaka/
 │   ├── docker-compose.yaml        #   Full dev stack
 │   ├── openapi.yaml               #   DOWNSTREAM COPY — generated from docs/openapi/
 │   └── pom.xml                    #   Maven build (Java 17, Spring Boot 2.7.6)
-├── ardupilot/                     # Submodule — pure upstream ArduPilot, no patches
-├── qgroundcontrol/                # Submodule — pure upstream QGC, no patches
+├── qgc-plugin/                    # QGroundControl UTM enforcement plugin (issue #67)
+│   ├── qgroundcontrol/            #   Upstream QGC v5.0.8 submodule (unmodified)
+│   ├── custom/                    #   Pushpaka plugin code (QGC Custom Build)
+│   │   ├── src/                   #     PushpakaPlugin, UserAuthentication (Keycloak)
+│   │   └── qml/                   #     AUT status indicator and panels
+│   ├── .devcontainer/             #   Qt 6 + CMake build environment
+│   └── setup.sh                   #   Wires custom/ into QGC source tree + configures build
 ├── mkdocs.yml                     # Docs site config (theme: pulse)
 ├── requirements.txt               # Python deps for MkDocs
 ├── Vagrantfile                    # ArduPilot dev VM (needs audit)

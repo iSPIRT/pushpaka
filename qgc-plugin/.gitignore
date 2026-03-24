@@ -1,0 +1,3 @@
+build/
+# Symlink created by setup.sh — intentionally not tracked inside the submodule
+qgroundcontrol/custom

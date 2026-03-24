@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/pushpaka">
+        <file>qml/PushpakaStatusIndicator.qml</file>
+    </qresource>
+</RCC>
