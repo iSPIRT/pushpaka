@@ -41,6 +41,15 @@ public class AirspaceUsageTokenService {
     return in.ispirt.pushpaka.models.AirspaceUsageToken.toOa(entity);
   }
 
+  public AirspaceUsageToken getByFlightPlanId(UUID flightPlanId) throws DaoException {
+    in.ispirt.pushpaka.dao.entities.AirspaceUsageToken entity =
+      in.ispirt.pushpaka.dao.entities.AirspaceUsageToken.getByFlightPlanId(sf(), flightPlanId);
+    if (entity == null) {
+      throw new DaoException(DaoException.Code.NOT_FOUND, "AirspaceUsageToken");
+    }
+    return in.ispirt.pushpaka.models.AirspaceUsageToken.toOa(entity);
+  }
+
   public AirspaceUsageToken update(UUID autId, AirspaceUsageToken aut) throws DaoException {
     in.ispirt.pushpaka.dao.entities.AirspaceUsageToken updated =
       in.ispirt.pushpaka.dao.entities.AirspaceUsageToken.update(

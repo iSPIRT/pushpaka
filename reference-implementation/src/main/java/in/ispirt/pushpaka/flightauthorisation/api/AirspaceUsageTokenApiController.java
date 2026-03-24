@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +41,24 @@ public class AirspaceUsageTokenApiController implements AirspaceUsageTokenApi {
   @Override
   public Optional<NativeWebRequest> getRequest() {
     return Optional.ofNullable(request);
+  }
+
+  // Returns the AUT (including signed_jwt) linked to the given flight plan.
+  @GetMapping("/airspace-usage-tokens/by-flight-plan/{flightPlanId}")
+  public ResponseEntity<AirspaceUsageToken> getAutByFlightPlan(
+    @PathVariable("flightPlanId") UUID flightPlanId
+  ) {
+    try {
+      return ResponseEntity.ok(airspaceUsageTokenService.getByFlightPlanId(flightPlanId));
+    } catch (DaoException e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    } catch (Exception e) {
+      System.err.println("Exception: " + e.toString());
+      e.printStackTrace(System.err);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @Override

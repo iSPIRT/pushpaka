@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 
 // Pushpaka UTM status indicator for the QGC toolbar.
-// Shows: Not logged in / Logged in (no AUT) / AUT valid / AUT expired
-// Wired up in PushpakaPlugin::init() — expanded in #75.
+// Shows: Not logged in / Logged in (no AUT) / AUT valid
+// Click: triggers login if not authenticated, opens FlightPlanPanel otherwise.
 Rectangle {
     id: root
     width: statusText.implicitWidth + 16
@@ -11,12 +11,13 @@ Rectangle {
     radius: 4
     color: _bgColor()
 
-    property bool  authenticated: false  // bound to UserAuthentication.isAuthenticated
-    property bool  autValid:      false  // bound to AUT state (#75)
+    property var _plugin: QGroundControl.corePlugin
+    property bool authenticated: _plugin.userAuthentication.isAuthenticated
+    property bool autValid: _plugin.hasValidAut
 
     function _bgColor() {
         if (!authenticated) return "#555555"
-        if (!autValid)      return "#cc6600"
+        if (!autValid) return "#cc6600"
         return "#007700"
     }
 
@@ -27,13 +28,23 @@ Rectangle {
         font.pixelSize: 12
         text: {
             if (!root.authenticated) return "UTM: Login"
-            if (!root.autValid)      return "UTM: No AUT"
+            if (!root.autValid) return "UTM: No AUT"
             return "UTM: AUT Valid"
         }
     }
 
     MouseArea {
         anchors.fill: parent
-        // TODO (#74/#75): open login / flight plan panel on click
+        onClicked: {
+            if (!root.authenticated) {
+                root._plugin.userAuthentication.authorise()
+            } else {
+                flightPlanPanel.open()
+            }
+        }
+    }
+
+    FlightPlanPanel {
+        id: flightPlanPanel
     }
 }

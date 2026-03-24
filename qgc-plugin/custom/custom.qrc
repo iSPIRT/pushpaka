@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/pushpaka">
         <file>qml/PushpakaStatusIndicator.qml</file>
+        <file>qml/FlightPlanPanel.qml</file>
     </qresource>
 </RCC>
