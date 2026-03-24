@@ -1,0 +1,107 @@
+name: QGC Plugin CI
+
+on:
+  push:
+    paths:
+      - 'qgc-plugin/custom/**'
+      - 'qgc-plugin/setup.sh'
+      - '.github/workflows/qgc-ci.yml'
+  pull_request:
+    paths:
+      - 'qgc-plugin/custom/**'
+      - 'qgc-plugin/setup.sh'
+      - '.github/workflows/qgc-ci.yml'
+
+jobs:
+  # ── Job 1: Fast format check (< 1 min, no Qt needed) ─────────────────────
+  clang-format:
+    name: C++ format check
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install clang-format
+        run: sudo apt-get install -y clang-format
+
+      - name: Check formatting
+        run: |
+          find qgc-plugin/custom/src -name '*.h' -o -name '*.cpp' \
+            | xargs clang-format --dry-run --Werror \
+                    --style=file:qgc-plugin/custom/.clang-format
+
+  # ── Job 2: CMake configure check (~10 min, cached after first run) ────────
+  cmake-configure:
+    name: QGC cmake configure (plugin detection)
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: false   # we init manually for cache control
+
+      # ── Install Qt via jurplel/install-qt-action (handles aqtinstall quirks) ─
+      - name: Install Qt 6.8.3
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.8.3'
+          host: 'linux'
+          target: 'desktop'
+          arch: 'linux_gcc_64'
+          modules: 'qt5compat qtcharts qtlocation qtmultimedia qtnetworkauth qtpositioning qtquick3d qtsensors qtserialport qtshadertools qtspeech qtwebsockets'
+          cache: true
+
+      # ── Cache QGC submodule tree (keyed on pinned commit SHA) ─────────────
+      - name: Get QGC submodule SHA
+        id: qgc-sha
+        run: |
+          echo "sha=$(git ls-tree HEAD qgc-plugin/qgroundcontrol | awk '{print $3}')" \
+            >> $GITHUB_OUTPUT
+
+      - name: Cache QGC submodule
+        uses: actions/cache@v4
+        id: cache-qgc
+        with:
+          path: qgc-plugin/qgroundcontrol
+          key: qgc-submodule-${{ steps.qgc-sha.outputs.sha }}
+
+      - name: Initialise QGC submodule (shallow + recursive)
+        if: steps.cache-qgc.outputs.cache-hit != 'true'
+        run: |
+          git submodule update --init --depth 1 qgc-plugin/qgroundcontrol
+          git -C qgc-plugin/qgroundcontrol submodule update \
+            --init --depth 1 --recursive
+
+      # ── System deps for cmake configure ───────────────────────────────────
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y \
+            cmake ninja-build \
+            libgl1-mesa-dev libvulkan-dev libxkbcommon-dev \
+            libunwind-dev \
+            libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+
+      # ── Wire custom/ and run configure ────────────────────────────────────
+      - name: Link custom/ into QGC source tree
+        run: ln -s "$(realpath qgc-plugin/custom)" qgc-plugin/qgroundcontrol/custom
+
+      - name: CMake configure
+        id: cmake
+        run: |
+          cmake -S qgc-plugin/qgroundcontrol \
+                -B qgc-plugin/build \
+                -G Ninja \
+                -DCMAKE_BUILD_TYPE=Debug \
+          2>&1 | tee cmake_output.txt || true
+
+      - name: Verify plugin was detected
+        run: |
+          grep "Adding Pushpaka UTM Plugin" cmake_output.txt \
+            && echo "✓ Pushpaka plugin detected by QGC build system" \
+            || (echo "✗ Plugin NOT detected — check CMakeLists.txt" && exit 1)
+
+      - name: Upload cmake output (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cmake-output
+          path: cmake_output.txt
