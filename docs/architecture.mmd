@@ -1,0 +1,36 @@
+flowchart LR
+
+    subgraph operator["Operator Workstation"]
+        QGC["QGroundControl\n(Pushpaka Plugin)"]
+    end
+
+    subgraph identity["Identity"]
+        KC["Keycloak\nport 18080"]
+    end
+
+    subgraph services["Backend Services"]
+        REG["Registry Service\nport 8082"]
+        FA["Flight Auth Service\nport 8083"]
+    end
+
+    subgraph storage["Storage & AuthZ"]
+        PG[("PostgreSQL\nport 15432")]
+        SDB["SpiceDB\nport 50051"]
+    end
+
+    subgraph sitl["SITL — optional"]
+        ARDUPILOT["ArduPilot SITL\nUDP :14550  TCP :5760"]
+        BRIDGE["MAVLink Bridge\nbridge.py"]
+    end
+
+    QGC -->|"OAuth2\nAuthorisation Code"| KC
+    QGC -->|"REST\nGET /pilots/me\nGET /uas"| REG
+    QGC -->|"REST\nPOST /flightPlan\nGET /airspace-usage-tokens/..."| FA
+    QGC -->|"MAVLink UDP :14550"| ARDUPILOT
+
+    REG --> PG
+    REG -->|"AuthZ checks"| SDB
+    FA --> PG
+
+    BRIDGE -->|"MAVLink TCP :5760\nHEARTBEAT + ARM intercept"| ARDUPILOT
+    BRIDGE -->|"REST\nGET /airspaceUsageToken/find"| FA
