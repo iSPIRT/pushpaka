@@ -70,6 +70,7 @@ AUT_ACTIVE_STATES = {"CREATED", "INUSE"}
 
 # ── Bridge ────────────────────────────────────────────────────────────────────
 
+
 class PushpakaBridge:
     def __init__(
         self,
@@ -147,7 +148,10 @@ class PushpakaBridge:
             name = MAV_STATE_NAMES.get(status, str(status))
             log.info(
                 "HEARTBEAT  state=%-16s  armed=%s  type=%d  autopilot=%d",
-                name, armed, msg.type, msg.autopilot,
+                name,
+                armed,
+                msg.type,
+                msg.autopilot,
             )
             self._last_system_status = status
 
@@ -165,7 +169,7 @@ class PushpakaBridge:
         if msg.command != mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM:
             return
 
-        arm_requested = (msg.param1 == 1.0)
+        arm_requested = msg.param1 == 1.0
         if not arm_requested:
             return  # disarm commands pass through
 
@@ -202,10 +206,14 @@ class PushpakaBridge:
             self._conn.target_system,
             self._conn.target_component,
             mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM,
-            0,       # confirmation
-            0,       # param1: 0 = disarm
-            21196,   # param2: magic number to force disarm (matches ArduPilot)
-            0, 0, 0, 0, 0,
+            0,  # confirmation
+            0,  # param1: 0 = disarm
+            21196,  # param2: magic number to force disarm (matches ArduPilot)
+            0,
+            0,
+            0,
+            0,
+            0,
         )
 
     # ── Helpers ───────────────────────────────────────────────────────────────
@@ -229,6 +237,7 @@ class PushpakaBridge:
 
 # ── Entry point ───────────────────────────────────────────────────────────────
 
+
 def main():
     parser = argparse.ArgumentParser(description="Pushpaka MAVLink bridge")
     parser.add_argument("--sitl-host", default="localhost")
@@ -238,7 +247,7 @@ def main():
         "--require-aut",
         action="store_true",
         help="Block ARM if no active AUT found in flight-auth service. "
-             "Set PUSHPAKA_TOKEN env var with a valid bearer token.",
+        "Set PUSHPAKA_TOKEN env var with a valid bearer token.",
     )
     parser.add_argument("--verbose", action="store_true")
     args = parser.parse_args()
