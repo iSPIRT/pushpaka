@@ -6,10 +6,11 @@
 #
 # Usage:
 #   ./e2e-smoke.sh              # boot + smoke + launch QGC
+#   ./e2e-smoke.sh --sitl       # same + start SITL + start MAVLink bridge
 #   ./e2e-smoke.sh --no-qgc     # boot + smoke only (no QGC launch)
 #   ./e2e-smoke.sh --teardown   # stop services and docker stack
 #
-# Requirements: docker, mvn (Java 17), curl, jq
+# Requirements: docker, mvn (Java 17), curl, jq, python3 (for --sitl)
 
 set -euo pipefail
 
@@ -35,11 +36,13 @@ PILOT_PASS="${PUSHPAKA_PASSWORD:-test}"
 
 LAUNCH_QGC=true
 TEARDOWN=false
+WITH_SITL=false
 
 for arg in "$@"; do
   case $arg in
     --no-qgc)   LAUNCH_QGC=false ;;
     --teardown) TEARDOWN=true ;;
+    --sitl)     WITH_SITL=true ;;
   esac
 done
 
@@ -117,8 +120,12 @@ if [[ "$TEARDOWN" == "true" ]]; then
     kill "$(cat "$LOG_DIR/flightauth.pid")" 2>/dev/null && echo "  Flight auth stopped" || true
     rm -f "$LOG_DIR/flightauth.pid"
   fi
+  if [[ -f "$LOG_DIR/bridge.pid" ]]; then
+    kill "$(cat "$LOG_DIR/bridge.pid")" 2>/dev/null && echo "  MAVLink bridge stopped" || true
+    rm -f "$LOG_DIR/bridge.pid"
+  fi
   cd "$REPO_ROOT"
-  docker compose -f "$DEVCONTAINER_DIR/docker-compose.yml" down
+  docker compose -f "$DEVCONTAINER_DIR/docker-compose.yml" --profile sitl down
   echo "  Docker stack stopped"
   exit 0
 fi
@@ -134,7 +141,11 @@ echo ""
 echo -e "${BOLD}Phase 1 — Boot docker stack${RESET}"
 
 cd "$REPO_ROOT"
-docker compose -f "$DEVCONTAINER_DIR/docker-compose.yml" up -d --remove-orphans
+if [[ "$WITH_SITL" == "true" ]]; then
+  docker compose -f "$DEVCONTAINER_DIR/docker-compose.yml" --profile sitl up -d --remove-orphans
+else
+  docker compose -f "$DEVCONTAINER_DIR/docker-compose.yml" up -d --remove-orphans
+fi
 echo "  Containers started"
 
 # Wait for Postgres
@@ -156,6 +167,15 @@ else
   echo -e "\n${RED}Keycloak failed to start. Check docker logs.${RESET}"
   docker compose -f "$DEVCONTAINER_DIR/docker-compose.yml" logs keycloak | tail -20
   exit 1
+fi
+
+# Wait for SITL MAVLink port
+if [[ "$WITH_SITL" == "true" ]]; then
+  if wait_for_port "SITL (MAVLink)" "localhost" "5760" 60; then
+    record "SITL reachable (port 5760)" "PASS"
+  else
+    record "SITL reachable (port 5760)" "FAIL" "SITL container may not have started"
+  fi
 fi
 
 echo ""
@@ -232,6 +252,20 @@ else
 fi
 
 AUTH_HEADER="Authorization: Bearer $TOKEN"
+
+# Start MAVLink bridge if --sitl and token available
+if [[ "$WITH_SITL" == "true" && -n "$TOKEN" ]]; then
+  echo "  Starting MAVLink bridge (logs → tmp/bridge.log)"
+  PUSHPAKA_TOKEN="$TOKEN" python3 "$REPO_ROOT/sitl-bridge/bridge.py" --require-aut \
+    > "$LOG_DIR/bridge.log" 2>&1 &
+  echo $! > "$LOG_DIR/bridge.pid"
+  sleep 2
+  if kill -0 "$(cat "$LOG_DIR/bridge.pid")" 2>/dev/null; then
+    record "MAVLink bridge startup" "PASS"
+  else
+    record "MAVLink bridge startup" "FAIL" "check tmp/bridge.log"
+  fi
+fi
 
 if [[ -n "$TOKEN" ]]; then
   # GET /api/v1/uas/find
@@ -368,6 +402,15 @@ if [[ "$LAUNCH_QGC" == "true" ]]; then
   echo "  5. Click again — the Flight Plan Panel opens"
   echo "  6. Select a UAS, enter start/end time, click Submit"
   echo "  7. Indicator turns green (valid AUT issued)"
+  if [[ "$WITH_SITL" == "true" ]]; then
+    echo ""
+    echo -e "  ${CYAN}SITL steps:${RESET}"
+    echo "  8. In QGC: Settings → Comm Links → Add → UDP port 14550 → Connect"
+    echo "  9. Attempt ARM without AUT → should be blocked + dialog shown"
+    echo "  10. Complete steps 2–7 above to get AUT"
+    echo "  11. Attempt ARM again → should succeed (indicator is green)"
+    echo "  12. Check bridge log: tmp/bridge.log for ARM decisions"
+  fi
   echo ""
   echo -e "  Full guide: ${CYAN}docs/ref/qgc-testing.md${RESET}"
   echo ""
@@ -375,6 +418,7 @@ fi
 
 echo -e "  Logs:  $LOG_DIR/registry.log"
 echo -e "         $LOG_DIR/flightauth.log"
+[[ "$WITH_SITL" == "true" ]] && echo -e "         $LOG_DIR/bridge.log"
 echo -e "  Stop:  $0 --teardown"
 echo ""
 

@@ -294,20 +294,30 @@ Options:
 
 For the full manual QGC walkthrough (login → flight plan → AUT → green indicator) see [`docs/ref/qgc-testing.md`](docs/ref/qgc-testing.md).
 
-### ArduPilot SITL (optional)
+### With ArduPilot SITL
 
-To add a simulated vehicle:
+To add a simulated vehicle and test ARM enforcement end-to-end:
 
 ```bash
-docker compose -f .devcontainer/docker-compose.yml --profile sitl up
+# 1. Start SITL alongside the core stack
+docker compose -f .devcontainer/docker-compose.yml --profile sitl up -d
+
+# 2. Start the MAVLink bridge (blocks ARM without active AUT)
+export PUSHPAKA_TOKEN=<keycloak-bearer-token>
+python3 sitl-bridge/bridge.py --require-aut
 ```
 
 | Endpoint | Protocol | Purpose |
 |----------|----------|---------|
-| `localhost:5760` | TCP | MAVLink (autopilot stream) |
-| `localhost:14550` | UDP | QGC connection |
+| `localhost:5760` | TCP | MAVLink — bridge connects here |
+| `localhost:14550` | UDP | QGC connects here |
 
-QGC auto-detects the SITL vehicle on `localhost:14550` (UDP).
+See [`docs/ref/qgc-testing.md`](docs/ref/qgc-testing.md) for the full SITL ARM enforcement scenario (steps 9–14).
+
+### Windows
+
+`e2e-smoke.sh` requires bash. On Windows use **WSL** or **Git Bash**.
+`sitl-bridge/bridge.py` and `sitl-bridge/bridge.py --require-aut` run natively on Windows.
 
 ---
 
