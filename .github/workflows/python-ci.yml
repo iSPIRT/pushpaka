@@ -1,0 +1,33 @@
+name: Python CI
+
+on:
+  pull_request:
+    paths:
+      - 'sitl-bridge/**'
+  push:
+    branches: [master]
+    paths:
+      - 'sitl-bridge/**'
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install ruff
+        run: pip install ruff
+
+      - name: Lint (ruff check)
+        working-directory: sitl-bridge
+        run: ruff check .
+
+      - name: Format check (ruff format)
+        working-directory: sitl-bridge
+        run: ruff format --check .

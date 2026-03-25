@@ -3,12 +3,12 @@
 Connects to an ArduPilot SITL instance via MAVLink and bridges flight events
 to the Pushpaka REST APIs.
 
-## Current capability
+## Capability
 
 | Phase | What |
 |-------|------|
-| 39a (this) | Connect to SITL, log HEARTBEAT and armed-state changes |
-| 39b (next) | Intercept ARM commands; deny via `COMMAND_ACK` if no valid AUT |
+| 39a | Connect to SITL, log HEARTBEAT and armed-state changes |
+| 39b | Intercept ARM commands; send immediate DISARM if no active AUT found |
 
 ## Requirements
 
@@ -26,14 +26,32 @@ pip install -r requirements.txt
 ## Run
 
 ```bash
-# Default: SITL at localhost:5760, flight-auth at localhost:8083
+# 39a — connect and log only
 python3 bridge.py
 
-# Custom endpoints
+# 39b — enable ARM enforcement
+# Get a Keycloak token first (see README root for curl snippet)
+export PUSHPAKA_TOKEN=<keycloak-bearer-token>
+python3 bridge.py --require-aut
+
+# All options
 python3 bridge.py --sitl-host localhost --sitl-port 5760 \
                   --flight-auth-url http://localhost:8083 \
-                  --verbose
+                  --require-aut --verbose
 ```
+
+### ARM enforcement behaviour
+
+When `--require-aut` is set:
+
+| Condition | Result |
+|-----------|--------|
+| Active AUT found (`CREATED` or `INUSE`) | ARM passes through |
+| No active AUT | Bridge sends immediate DISARM to SITL + logs warning |
+| `PUSHPAKA_TOKEN` not set | ARM always blocked (fail-safe) |
+| Flight-auth service unreachable | ARM always blocked (fail-safe) |
+
+This mirrors the QGC plugin's reactive disarm behaviour (issue #76).
 
 ## Start SITL first
 
@@ -62,5 +80,5 @@ bridge.py  ───────────────────────
   stdout log
 ```
 
-The bridge is a passive listener in 39a. In 39b it will actively respond to
-ARM commands with `COMMAND_ACK MAV_RESULT_DENIED` when no AUT is present.
+The bridge listens passively by default. With `--require-aut` it reacts to
+ARM commands by sending an immediate DISARM when no active AUT is present.
