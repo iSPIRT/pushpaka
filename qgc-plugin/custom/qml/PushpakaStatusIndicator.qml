@@ -4,6 +4,8 @@ import QtQuick.Controls
 // Pushpaka UTM status indicator for the QGC toolbar.
 // Shows: Not logged in / Logged in (no AUT) / AUT valid
 // Click: triggers login if not authenticated, opens FlightPlanPanel otherwise.
+// ARM pre-check (#76): watches active vehicle armed state; reactively disarms
+// and shows a warning if pilot attempts to arm without a valid AUT.
 Rectangle {
     id: root
     width: statusText.implicitWidth + 16
@@ -41,6 +43,34 @@ Rectangle {
             } else {
                 flightPlanPanel.open()
             }
+        }
+    }
+
+    // ARM pre-check: watch the active vehicle's armed state.
+    // If the vehicle arms without a valid AUT, immediately disarm and warn.
+    Connections {
+        target: QGroundControl.multiVehicleManager.activeVehicle
+        ignoreUnknownSignals: true
+
+        function onArmedChanged(armed) {
+            if (armed && !root.autValid) {
+                QGroundControl.multiVehicleManager.activeVehicle.setArmed(false, false)
+                armBlockedDialog.open()
+            }
+        }
+    }
+
+    Dialog {
+        id: armBlockedDialog
+        title: "Arming blocked — no valid AUT"
+        modal: true
+        anchors.centerIn: Overlay.overlay
+        standardButtons: Dialog.Ok
+
+        Label {
+            text: "A valid Airspace Usage Token is required before arming.\n\nClick the UTM indicator to log in and submit a flight plan."
+            wrapMode: Text.WordWrap
+            width: 320
         }
     }
 
