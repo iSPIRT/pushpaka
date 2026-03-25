@@ -269,11 +269,34 @@ All connection details are read from environment. See `.devcontainer/.env.exampl
 
 ---
 
-## Simulation (SITL + QGC)
+## Simulation (QGC + SITL)
 
-ArduPilot Software-in-the-Loop simulation and QGroundControl integration for end-to-end UTM flight scenario testing.
+End-to-end UTM simulation: boot the full stack, run API smoke checks, and launch QGroundControl for manual flight authorisation testing.
 
-### Start with ArduPilot SITL
+### Quick start
+
+```bash
+./reference-implementation/src/test/scripts/e2e-smoke.sh
+```
+
+This single script:
+1. Starts the docker stack (Postgres, Keycloak, SpiceDB)
+2. Starts the Registry (port 8082) and Flight Auth (port 8083) services
+3. Runs API smoke checks (token fetch, `/pilots/me`, flight plan, AUT)
+4. Launches the QGC binary
+5. Prints the manual QGC checklist
+
+Options:
+```bash
+./reference-implementation/src/test/scripts/e2e-smoke.sh --no-qgc   # backend only
+./reference-implementation/src/test/scripts/e2e-smoke.sh --teardown # stop everything
+```
+
+For the full manual QGC walkthrough (login → flight plan → AUT → green indicator) see [`docs/ref/qgc-testing.md`](docs/ref/qgc-testing.md).
+
+### ArduPilot SITL (optional)
+
+To add a simulated vehicle:
 
 ```bash
 docker compose -f .devcontainer/docker-compose.yml --profile sitl up
@@ -284,11 +307,7 @@ docker compose -f .devcontainer/docker-compose.yml --profile sitl up
 | `localhost:5760` | TCP | MAVLink (autopilot stream) |
 | `localhost:14550` | UDP | QGC connection |
 
-### QGroundControl
-
-Download QGC from [qgroundcontrol.com](https://qgroundcontrol.com). Connect to `localhost:14550` (UDP) — QGC auto-detects the SITL vehicle.
-
-For Keycloak OAuth integration details see [`docs/integrations.md`](docs/integrations.md).
+QGC auto-detects the SITL vehicle on `localhost:14550` (UDP).
 
 ---
 
