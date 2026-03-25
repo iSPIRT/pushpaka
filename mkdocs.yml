@@ -29,6 +29,7 @@ nav:
     - Overview: work-items/index.md
     - I01 — ConOps V1: work-items/i01.md
     - I05 — UTM ConOps: work-items/i05/index.md
+    - I05 — State of the Art: work-items/i05/state-of-the-art.md
     - I06 — UTM Technical Standards: work-items/i06.md
     - I07 — Feedback Sessions: work-items/i07.md
     - I08 — NIDSP Spec: work-items/i08.md

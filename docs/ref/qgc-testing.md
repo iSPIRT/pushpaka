@@ -86,8 +86,8 @@ cd qgc-plugin/qgroundcontrol
 2. Click the indicator. A browser window opens at the Keycloak login page
    (`http://localhost:18080/realms/pushpaka/...`).
 
-3. Log in with a seeded pilot account (default fixture: `pilot@example.com` /
-   `password` — check `Seeds.java` for current values).
+3. Log in with the seeded pilot account: `test.pilot.0@test.com` / `test`
+   (from `docker/keycloak-realm-pushpaka-test.json`).
 
 4. After successful login, the browser redirects to `http://localhost:8000`
    (the OAuth callback handler). The QGC window regains focus.
@@ -141,6 +141,68 @@ curl http://localhost:8083/api/v1/airspace-usage-tokens/by-flight-plan/<flight-p
 
 The response includes a `signed_jwt` field containing the RSA-signed JWT issued
 by the Pushpaka UTM authority.
+
+---
+
+## SITL scenario (optional — full ARM enforcement test)
+
+This scenario extends the basic QGC test with an ArduPilot SITL vehicle to
+verify that ARM is blocked without an AUT and allowed once one is issued.
+
+### 9. Start SITL
+
+```bash
+# From repo root — starts the ArduPilot SITL container in addition to the core stack
+docker compose -f .devcontainer/docker-compose.yml --profile sitl up -d
+```
+
+SITL exposes MAVLink on `localhost:5760` (TCP, bridge) and `localhost:14550` (UDP, QGC).
+
+### 10. Start the MAVLink bridge
+
+```bash
+# Get a token first
+TOKEN=$(curl -s -X POST http://localhost:18080/realms/pushpaka/protocol/openid-connect/token \
+  -d "grant_type=password&client_id=backend&username=test.pilot.0@test.com&password=test" \
+  | jq -r .access_token)
+
+export PUSHPAKA_TOKEN=$TOKEN
+python3 sitl-bridge/bridge.py --require-aut
+```
+
+The bridge logs HEARTBEAT state and enforces AUT on ARM commands.
+
+### 11. Connect QGC to SITL
+
+In QGC: **Application Settings → Comm Links → Add** → UDP, port 14550.
+QGC auto-detects the ArduCopter vehicle on connection.
+
+### 12. Attempt ARM without AUT
+
+In QGC, attempt to arm the vehicle (Fly view → Arm slider or MAVLink console).
+
+Expected:
+- QGC plugin: indicator stays amber; reactive disarm fires immediately + dialog shown
+- Bridge: logs `ARM BLOCKED — no active AUT; sending disarm`
+
+### 13. Get AUT and ARM successfully
+
+1. Click the UTM indicator → log in → submit a flight plan
+2. Indicator turns green (AUT issued)
+3. Attempt ARM again
+
+Expected:
+- QGC plugin: ARM proceeds (indicator is green, `hasValidAut = true`)
+- Bridge: logs `ARM allowed — valid AUT found`
+- Vehicle arms normally in SITL
+
+### 14. Verify in bridge log
+
+```
+ARM command received — checking AUT …
+ARM allowed — valid AUT found
+Vehicle ARMED
+```
 
 ---
 
