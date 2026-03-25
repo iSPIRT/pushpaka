@@ -17,7 +17,9 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../../../../.." && pwd)"
 REF_IMPL_DIR="$REPO_ROOT/reference-implementation"
-QGC_DIR="$REPO_ROOT/qgc-plugin/qgroundcontrol"
+QGC_PLUGIN_DIR="$REPO_ROOT/qgc-plugin"
+QGC_DIR="$QGC_PLUGIN_DIR/qgroundcontrol"
+QGC_BUILD_DIR="$QGC_PLUGIN_DIR/build"
 DEVCONTAINER_DIR="$REPO_ROOT/.devcontainer"
 LOG_DIR="$REF_IMPL_DIR/tmp"
 mkdir -p "$LOG_DIR"
@@ -300,11 +302,26 @@ echo ""
 if [[ "$LAUNCH_QGC" == "true" ]]; then
   echo -e "${BOLD}Phase 4 — Launch QGroundControl${RESET}"
 
-  # Detect platform binary
-  if [[ "$(uname)" == "Darwin" ]]; then
-    QGC_BIN="$QGC_DIR/build/QGroundControl.app/Contents/MacOS/QGroundControl"
+  # Check plugin is wired in (custom/ symlink must exist in QGC source tree)
+  CUSTOM_LINK="$QGC_DIR/custom"
+  if [[ -L "$CUSTOM_LINK" && "$(readlink "$CUSTOM_LINK")" == "$QGC_PLUGIN_DIR/custom" ]]; then
+    record "Pushpaka plugin wired (custom/ symlink)" "PASS"
+  elif [[ -L "$CUSTOM_LINK" ]]; then
+    record "Pushpaka plugin wired (custom/ symlink)" "WARN" "symlink points to unexpected target: $(readlink "$CUSTOM_LINK")"
+  elif [[ -d "$CUSTOM_LINK" ]]; then
+    record "Pushpaka plugin wired (custom/ symlink)" "WARN" "custom/ is a directory not a symlink — re-run qgc-plugin/setup.sh"
   else
-    QGC_BIN="$QGC_DIR/build/QGroundControl"
+    record "Pushpaka plugin wired (custom/ symlink)" "FAIL" "custom/ not present — run: bash $QGC_PLUGIN_DIR/setup.sh"
+    echo -e "\n${RED}Plugin not wired. Run setup first:${RESET}"
+    echo "  bash $QGC_PLUGIN_DIR/setup.sh"
+    echo ""
+  fi
+
+  # Detect platform binary (build dir is qgc-plugin/build/, not qgc-plugin/qgroundcontrol/build/)
+  if [[ "$(uname)" == "Darwin" ]]; then
+    QGC_BIN="$QGC_BUILD_DIR/QGroundControl.app/Contents/MacOS/QGroundControl"
+  else
+    QGC_BIN="$QGC_BUILD_DIR/QGroundControl"
   fi
 
   if [[ -x "$QGC_BIN" ]]; then
@@ -318,7 +335,7 @@ if [[ "$LAUNCH_QGC" == "true" ]]; then
       record "QGC launch" "FAIL" "process exited immediately"
     fi
   else
-    record "QGC launch" "WARN" "binary not found at $QGC_BIN — build QGC first (see qgc-plugin/)"
+    record "QGC launch" "WARN" "binary not found at $QGC_BUILD_DIR — build first: cmake --build $QGC_BUILD_DIR"
   fi
   echo ""
 fi
