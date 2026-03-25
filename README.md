@@ -45,12 +45,12 @@ pushpaka/
 │   │   └── qml/                   #     AUT status indicator and panels
 │   ├── .devcontainer/             #   Qt 6 + CMake build environment
 │   └── setup.sh                   #   Wires custom/ into QGC source tree + configures build
-├── mkdocs.yml                     # Docs site config (theme: pulse)
+├── mkdocs.yml                     # Docs site config (theme: material)
 ├── requirements.txt               # Python deps for MkDocs
-├── Vagrantfile                    # ArduPilot dev VM (needs audit)
 └── .github/workflows/
     ├── main.yml                   # Docs CI — strict build + auto-deploy to GH Pages
-    └── java-ci.yml                # Java CI — runs tests on PRs touching reference-impl
+    ├── java-ci.yml                # Java CI — runs tests on PRs touching reference-impl
+    └── python-ci.yml              # Python CI — ruff lint + format check for sitl-bridge
 ```
 
 ---
