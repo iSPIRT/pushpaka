@@ -2,7 +2,7 @@ name: Docs
 
 on:
   push:
-    branches: [master, dev]
+    branches: ['**']
   workflow_dispatch:
 
 jobs:
@@ -22,7 +22,7 @@ jobs:
         run: mkdocs build --strict
 
       - name: Deploy to GitHub Pages
-        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev'
+        if: github.ref == 'refs/heads/master'
         run: mkdocs gh-deploy --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

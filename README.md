@@ -119,7 +119,7 @@ mkdocs build --strict
 
 ### Deploy
 
-GitHub Actions auto-deploys to GitHub Pages on push to the `dev` branch. To deploy manually:
+GitHub Actions auto-deploys to GitHub Pages on push to the `master` branch. To deploy manually:
 
 ```bash
 mkdocs gh-deploy
