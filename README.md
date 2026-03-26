@@ -180,6 +180,8 @@ cp .devcontainer/.env.example .devcontainer/.env
 
 Open the repo in VS Code → **Reopen in Container**. All services start automatically.
 
+> **After pulling changes to `.devcontainer/`** use **Rebuild Container** (`Ctrl+Shift+P` → *Dev Containers: Rebuild Container*) so the updated image is applied.
+
 ### Start (CLI)
 
 ```bash
