@@ -6,12 +6,11 @@ USER root
 RUN apt-get update && apt-get install -y --no-install-recommends maven \
     && rm -rf /var/lib/apt/lists/*
 
-# ── Python / mkdocs-material (venv to satisfy PEP 668) ───────────────────────
-RUN apt-get update && apt-get install -y --no-install-recommends python3 python3-venv \
+# ── Python / pip (for mkdocs + sitl-bridge deps) ─────────────────────────────
+RUN apt-get update && apt-get install -y --no-install-recommends python3 python3-pip \
     && rm -rf /var/lib/apt/lists/* \
-    && python3 -m venv /opt/mkdocs-venv \
-    && /opt/mkdocs-venv/bin/pip install --no-cache-dir mkdocs mkdocs-material \
-    && ln -s /opt/mkdocs-venv/bin/mkdocs /usr/local/bin/mkdocs
+    && ln -s /usr/bin/python3 /usr/local/bin/python \
+    && ln -s /usr/bin/pip3 /usr/local/bin/pip
 
 USER vscode
 WORKDIR /workspace

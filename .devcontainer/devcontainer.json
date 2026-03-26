@@ -49,7 +49,7 @@
     "5760":  { "label": "ArduPilot SITL MAVLink TCP (sitl profile)" }
   },
 
-  "postCreateCommand": "pip install -r requirements.txt",
+  "postCreateCommand": "pip install -r requirements.txt -r sitl-bridge/requirements.txt",
 
   "remoteUser": "vscode"
 }
