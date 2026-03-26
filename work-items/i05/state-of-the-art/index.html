@@ -1,0 +1,1643 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://ispirt.github.io/pushpaka/work-items/i05/state-of-the-art/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../../i06/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>I05 — State of the Art - Pushpaka</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#state-of-the-art-in-utm" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Pushpaka" class="md-header__button md-logo" aria-label="Pushpaka" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pushpaka
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              I05 — State of the Art
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/iSPIRT/pushpaka" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    iSPIRT/pushpaka
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../status/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Status
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+  Publication Work Items
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../openapi/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  API Specifications
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../minutes/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Minutes
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../ref/" class="md-tabs__link">
+          
+  
+  
+  Reference Documents
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../integrations/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Integrations
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../nomenclature/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Nomenclature
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../bibliography/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Bibliography
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Pushpaka" class="md-nav__button md-logo" aria-label="Pushpaka" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Pushpaka
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/iSPIRT/pushpaka" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    iSPIRT/pushpaka
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../status/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Status
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Publication Work Items
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Publication Work Items
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../i01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I01 — ConOps V1
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--published" title="Published and stable">
+    </span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I05 — UTM ConOps
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--draft" title="Work in progress">
+    </span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I05 — State of the Art
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I05 — State of the Art
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#gutma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GUTMA
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GUTMA">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-insights-from-gutma-architecture-document" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Insights from GUTMA Architecture document
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#swiss-conops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Swiss ConOps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Swiss ConOps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-insights-from-swiss-conops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Insights from Swiss ConOps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#european-union-aviation-safety-agency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        European Union Aviation Safety Agency
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="European Union Aviation Safety Agency">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#u-space-specifications" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        U-Space Specifications
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#icao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ICAO
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#federal-aviation-authority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Federal Aviation Authority
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Federal Aviation Authority">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#utm-specification-v1v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTM Specification v1/v2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unmanned-aerial-mobility-specification-v1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unmanned Aerial Mobility Specification v1
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#japan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Japan
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#china" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        China
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#india" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        India
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../i06/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I06 — UTM Technical Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--paused" title="Work paused — awaiting direction">
+    </span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../i07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I07 — Feedback Sessions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--published" title="Published and stable">
+    </span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../i08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I08 — NIDSP Spec
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--draft" title="Work in progress">
+    </span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../openapi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Specifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../minutes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Minutes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference Documents
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference Documents
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ref/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ref/qgc-testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    QGC Integration Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../integrations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../nomenclature/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Nomenclature
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bibliography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bibliography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#gutma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GUTMA
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GUTMA">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-insights-from-gutma-architecture-document" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Insights from GUTMA Architecture document
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#swiss-conops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Swiss ConOps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Swiss ConOps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-insights-from-swiss-conops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Insights from Swiss ConOps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#european-union-aviation-safety-agency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        European Union Aviation Safety Agency
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="European Union Aviation Safety Agency">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#u-space-specifications" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        U-Space Specifications
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#icao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ICAO
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#federal-aviation-authority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Federal Aviation Authority
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Federal Aviation Authority">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#utm-specification-v1v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTM Specification v1/v2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unmanned-aerial-mobility-specification-v1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unmanned Aerial Mobility Specification v1
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#japan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Japan
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#china" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        China
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#india" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        India
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="state-of-the-art-in-utm">State of the art in UTM</h1>
+<p><a href="../">Go back</a></p>
+<div class="toc">
+<ul>
+<li><a href="#state-of-the-art-in-utm">State of the art in UTM</a><ul>
+<li><a href="#gutma">GUTMA</a><ul>
+<li><a href="#key-insights-from-gutma-architecture-document">Key Insights from GUTMA Architecture document</a></li>
+</ul>
+</li>
+<li><a href="#swiss-conops">Swiss ConOps</a><ul>
+<li><a href="#key-insights-from-swiss-conops">Key Insights from Swiss ConOps</a></li>
+</ul>
+</li>
+<li><a href="#european-union-aviation-safety-agency">European Union Aviation Safety Agency</a><ul>
+<li><a href="#u-space-specifications">U-Space Specifications</a></li>
+</ul>
+</li>
+<li><a href="#icao">ICAO</a></li>
+<li><a href="#federal-aviation-authority">Federal Aviation Authority</a><ul>
+<li><a href="#utm-specification-v1v2">UTM Specification v1/v2</a></li>
+<li><a href="#unmanned-aerial-mobility-specification-v1">Unmanned Aerial Mobility Specification v1</a></li>
+</ul>
+</li>
+<li><a href="#japan">Japan</a></li>
+<li><a href="#china">China</a></li>
+<li><a href="#india">India</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>The following contains a review of existing efforts by different agencies / stakeholders. Some of them have not been updated for a couple of years and we highlight key elements of the the related documents / concepts. </p>
+<h2 id="gutma">GUTMA</h2>
+<p>Given that GUTMA is mainly a industry organization and not a authority, they maintain opinions on the architectures for UTM. The main document reviewed is the <a href="https://www.gutma.org/docs/Global_UTM_Architecture_V1.pdf">UTM Architecture</a> and the <a href="https://gutma.org/designing-utm-for-global-success/">Designing UTM for Global Success</a> documents. GUTMA recognizes UTM as a "system of systems" with many active and passive stakeholders:
+<img alt="GUTMA-UTM-System" src="../../images/gutma-utm-system.jpg" />
+Source:  Page 13, Illustration 2 of UTM Architecture document.</p>
+<p>The figure above illustrates the key players in the eco-system and is useful in understanding the scope of a UTM system. In a digital context, all the interactions will happen via APIs since a number of the interactions will be done by computers with little or no human oversight unless there is an emergency.</p>
+<h3 id="key-insights-from-gutma-architecture-document">Key Insights from GUTMA Architecture document</h3>
+<ul>
+<li>The document identifies roles and use-cases (Pages 17-19, UTM Architecture) which is a good starting point for understanding how these stakeholders will interact with these services.</li>
+<li>The document does not specify technical architectures for UTM and is a good starting point to get a overview of the eco-system. </li>
+<li>Given that the authors are not in a standards making organization or authority they do not specify or recommend standards that could be adopted. </li>
+</ul>
+<h2 id="swiss-conops">Swiss ConOps</h2>
+<p>A <a href="https://www.bazl.admin.ch/bazl/en/home/good-to-know/drohnen/wichtigsten-regeln/uspace.html">U-Space Concept of Operations for Switzerland</a> was first published in 2019 and updated in 2020. This document, focuses on the specifics and layout a advanced architecture. In Switzerland Skyguide the ANSP works in co-ordination with the Civil Agencies to form the "Common Information Function" (Section 6.1)
+<img alt="Swiss-U-Space-Architecture" src="../../images/swiss-u-space-architecture.jpg" />
+(Source: Swiss ConOps Document, link above)</p>
+<h3 id="key-insights-from-swiss-conops">Key Insights from Swiss ConOps</h3>
+<ul>
+<li>The ConOps recognizes two main types of USP services: Vertically integrated and "USP as a service". Both of these talk to a common interoperability framework and exchange data.
+<img alt="USP-Service-Type" src="../../images/usp-types.jpg" />
+(Source: Swiss ConOps Document, link above)</li>
+<li>The ConOps talks about a incremental framework of approval with selected services and providers in a collaborative fashion by leveraging standards. The incremental process will start with a voluntary stage and after the publication of U-Space rules, technical tools, processes will be explored.</li>
+<li>The Swiss ConOps references the ASTM standard for Network Remote-ID and Tracking and the inter-operability between USSes.</li>
+</ul>
+<h2 id="european-union-aviation-safety-agency">European Union Aviation Safety Agency</h2>
+<p>The EU recently published a legislative framework for U-Space. The regulation details the roles and responsibilities of the different stakeholders in the U-Space / UTM eco-system. The EU through its ConOps has classified operations and airspaces and equipment guidelines for U-Space, a example image is below. 
+<img alt="EU-Drone-rules" src="../../images/eu-drone-rules.jpg" />
+Source : <a href="https://dronerules.eu/sl/professional/eu_regulations_updates">Dronerules.eu</a></p>
+<h3 id="u-space-specifications">U-Space Specifications</h3>
+<ul>
+<li>EU works as a federation and it is left to the member states to design the U-Space for drone operations.</li>
+<li>The new U-Space regulation calls for a creation of <code>U-Space Service Providers (USSP)</code> that will be certified to provide U-Space services. </li>
+<li>The EU has identified four mandatory services that must be provided by USSPs:</li>
+<li>Geo-awareness</li>
+<li>Traffic Information</li>
+<li>Flight Authorization</li>
+<li>Network Identification</li>
+<li>The exist standards for these services e.g. <a href="https://eurocae.net/news/posts/2020/june/ed-269-minimum-operational-performance-standard-for-uas-geo-fencing/">ED-269</a> for Geo-awareness, <a href="https://www.astm.org/f3411-19.html">ASTM F3411-19</a> etc. It can be reasonable to assume that these or similar standards will be adopted to by authorities to enable standardized certification.</li>
+<li>Once the implementing regulation comes into force in January 2023, we can assume that there will be activity and interest in this space from the EU.</li>
+<li>Drone operators and ANSPs will have to establish contracts wtih a certified USSP.</li>
+</ul>
+<h2 id="icao">ICAO</h2>
+<p>(AG)</p>
+<h2 id="federal-aviation-authority">Federal Aviation Authority</h2>
+<h3 id="utm-specification-v1v2">UTM Specification v1/v2</h3>
+<p>(SP)</p>
+<h3 id="unmanned-aerial-mobility-specification-v1">Unmanned Aerial Mobility Specification v1</h3>
+<p>(MS)</p>
+<h2 id="japan">Japan</h2>
+<p>(GT)</p>
+<h2 id="china">China</h2>
+<p>(??)</p>
+<h2 id="india">India</h2>
+<p>In November 2020, the MoCA published a <a href="../../ref/draft-utm-policy/">National UTM Policy Discussion Draft</a>. It describes a fairly comprehensive traffic management ecosystem and details the stakeholders, components, services provided by UTMSPs and DigitalSky at a high level. The <a href="../../ref/draft-utm-policy/#utm-architecture">Architecture</a> is clearly inspired by the JARUS UTM architecture <a href="../../../bibliography/#NASA-UTM-1"><code>NASA-UTM-1</code></a>. The section on <a href="../../ref/draft-utm-policy/#real-time-identification-and-tracking-of-uas">Identification and Tracking of UAS</a> seems to be inspired by ASTM Remote ID standard <a href="../../../bibliography/#ASTM-F3411-19"><code>ASTM-F3411-19</code></a>. For Risk Assessment of unmanned operations, the ICAO Safety Management System <a href="../../../bibliography/#ICAO-Annex19"><code>ICAO-Annex19</code></a> The draft also discusses <a href="../../ref/draft-utm-policy/#utm-operational-scenarios">eleven operational scenarios</a> modelled on SORA standard scenarios (see <a href="../../../bibliography/#JARUS-SORA"><code>JARUS-SORA</code></a>, <a href="../../../bibliography/#JARUS-SORA-STS01"><code>JARUS-SORA-STS01</code></a>, <a href="../../../bibliography/#JARUS-SORA-STS02"><code>JARUS-SORA-STS02</code></a>), although not as well defined from a risk assessment point-of-view. The scenarios seem to be geared towards enabling particular business cases based on operational constraints that are too broad for actual standardisation. The section on <a href="../../ref/draft-utm-policy/#airspace-classification-of-utm-airspace">Airspace classification for UTM operations</a> proposed three classes U1 through U3 where different combinations of flight rules, viz. Unmanned (<a href="../../../nomenclature/#UFR"><code>UFR</code></a>), Visual (<a href="../../../nomenclature/#VFR"><code>VFR</code></a>) and Instrument (<a href="../../../nomenclature/#IFR"><code>IFR</code></a>) Flight Rules may apply. The draft also describes strategies for <a href="../../ref/draft-utm-policy/#utm-deployment-plan">UTM deployment</a> and models for <a href="../../ref/draft-utm-policy/#utm-service-charges">UTM monetisation</a>.</p>
+<p>While the discussion draft covers almost all the aspects of UTM policy making, several proposals seem unrealistic given the current socio-politic and economic conditions in India. A few of these issues are outlined below.</p>
+<ol>
+<li><strong>Roadmapping absent</strong><br />
+Establishing a complex ecosytem such as that for a UTM, with a large number of stakeholder types and participants, requires a well reasoned roadmap for development and operationalisation of government owned infrastructure. For instance such environments in the USA and EU have evolved organically over several years and with full-time active participation of regulators, industry, innovators and the academia. Bootstrapping an Indian UTM ecosystem development with knowhow from abroad will still require an adoption period.</li>
+<li><strong>Limited Technical knowhow</strong></li>
+<li><strong>Limited Market capacity</strong></li>
+<li><strong>Limited incentives for innovation</strong></li>
+<li><strong>Technical standards absent</strong><br />
+While a policy provides a birds-eye view of the development of a UTM ecosystem, it is ultimately technical standards and specifications that bring such a policy closer to reality. Unfortunately, while there are a lot of working and research groups with limited scopes all across India, their is a clear lack of effort on the development of such standards which can be easily adopted by the DGCA, QCI and AAI (as building blocks for the DigitalSky platform).</li>
+<li><strong>DigitalSky capabilities</strong><br />
+In the discussion draft, it has been proposed that DigitalSky support the entire spectrum of services that a UTM SP can or may provide. While this is a great goal to strive towards, such a monopolistic approach is often unrealistic particularly given the immense amount of innovation and research in the field of unmanned aviation. With new technologies emanating from the academia and the industry every so often, the burden to adopt these on a state-run infrastructure would be immense dooming it to repeat past failures. In addition, it would only deincentivise private and academic innovation in the UTM. It would be much more realistic to adopt a grounded approach, limiting the scope of DigitalSky to regulatory and interaction with government and other state-run bodies. It is notable that such an approach has has worked well in the EU and USA.</li>
+<li><strong>Key open issues</strong><ol>
+<li>Remote ID &amp; Tracking<ol>
+<li>Technical standards not specified</li>
+</ol>
+</li>
+<li>Authentication &amp; Network Security<ol>
+<li>RA/CA to be implemented under DigitalSky: completely unnecessary and increases complexity</li>
+</ol>
+</li>
+<li>Safety and Risk Assessment<ol>
+<li>SORA vs ICAO SMS<br />
+SMS maybe too generic for UA operations; UTM Policy should also include JARUS SORA</li>
+<li>Standard Scenarios<ol>
+<li>seem closer to business scenarios rather than operational scenarios</li>
+<li>operational limits/criteria not defined</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>ATM-UTM Integration<ol>
+<li>Technical standards<br />
+UFII-ATM-ANSP integration needs to be planned</li>
+</ol>
+</li>
+<li>UTM Business Rules: No implementable details on <ol>
+<li>Separation standards</li>
+<li>Terrain &amp; Obstacle clearance standards for<ol>
+<li>DAA</li>
+<li>UTM based service</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Deployment<ol>
+<li>Choice of Single-per-region/Multiple-per-region/Hybrid<br />
+We should policy favour maximum participants to foster innovation</li>
+</ol>
+</li>
+<li>Pricing models<br />
+    Only pricing models for UTMs to register themselves and manage particular airspaces should be specified; the pricing models for clients of UTM services should be market driven. Criteria for pricing UTM registration and operational fees charged by AAI/DGCA/etc. may include: list of services provided, airspace area under management, operations supported by UTM, etc.</li>
+</ol>
+</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.highlight", "search.suggest"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
