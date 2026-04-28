@@ -1,0 +1,2256 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://ispirt.github.io/pushpaka/work-items/i05/">
+      
+      
+        <link rel="prev" href="../i01/">
+      
+      
+        <link rel="next" href="state-of-the-art/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>I05 — UTM ConOps - Pushpaka</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#utm-concept-of-operations" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Pushpaka" class="md-header__button md-logo" aria-label="Pushpaka" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pushpaka
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              I05 — UTM ConOps
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/iSPIRT/pushpaka" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    iSPIRT/pushpaka
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../status/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Status
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Publication Work Items
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../openapi/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  API Specifications
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../minutes/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Minutes
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../ref/" class="md-tabs__link">
+          
+  
+  
+  Reference Documents
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../integrations/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Integrations
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../nomenclature/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Nomenclature
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../bibliography/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Bibliography
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Pushpaka" class="md-nav__button md-logo" aria-label="Pushpaka" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Pushpaka
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/iSPIRT/pushpaka" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    iSPIRT/pushpaka
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../status/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Status
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Publication Work Items
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Publication Work Items
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../i01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I01 — ConOps V1
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--published" title="Published and stable">
+    </span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I05 — UTM ConOps
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--draft" title="Work in progress">
+    </span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I05 — UTM ConOps
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--draft" title="Work in progress">
+    </span>
+  
+
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#state-of-the-art" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State of the art
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Actors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use cases
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Use cases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manufacturer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manufacturer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pilot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pilot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operator
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insurer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Insurer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#civil-aviation-authority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Civil Aviation Authority
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-consumer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Consumer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uas-ownership-etc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UAS Ownership, etc.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#law-enforcement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Law Enforcement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-agencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Agencies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#air-navigation-service-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Air Navigation Service Provider
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#military" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Military
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bcas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BCAS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#general-public" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        General Public
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#governmentsemi-governmental-bodies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Government/Semi-Governmental Bodies
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utm-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTM Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="UTM Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#considerations-for-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Considerations for design
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Services
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#registration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Registration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rules-of-business" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rules of business
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rules of business">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#high-priority-activities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High Priority activities
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ecosystem-evolution-timeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ecosystem Evolution Timeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ecosystem Evolution Timeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phases-high-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phases (high level)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phases-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phases (detail)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="state-of-the-art/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I05 — State of the Art
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../i06/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I06 — UTM Technical Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--paused" title="Work paused — awaiting direction">
+    </span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../i07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I07 — Feedback Sessions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--published" title="Published and stable">
+    </span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../i08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I08 — NIDSP Spec
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--draft" title="Work in progress">
+    </span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../openapi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Specifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../minutes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Minutes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference Documents
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference Documents
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/qgc-testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    QGC Integration Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integrations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../nomenclature/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Nomenclature
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bibliography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bibliography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#state-of-the-art" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State of the art
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Actors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use cases
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Use cases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manufacturer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manufacturer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pilot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pilot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operator
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insurer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Insurer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#civil-aviation-authority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Civil Aviation Authority
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-consumer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Consumer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uas-ownership-etc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UAS Ownership, etc.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#law-enforcement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Law Enforcement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-agencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Agencies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#air-navigation-service-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Air Navigation Service Provider
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#military" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Military
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bcas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BCAS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#general-public" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        General Public
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#governmentsemi-governmental-bodies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Government/Semi-Governmental Bodies
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utm-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTM Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="UTM Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#considerations-for-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Considerations for design
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Services
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#registration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Registration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rules-of-business" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rules of business
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rules of business">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#high-priority-activities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High Priority activities
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ecosystem-evolution-timeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ecosystem Evolution Timeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ecosystem Evolution Timeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phases-high-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phases (high level)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phases-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phases (detail)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="utm-concept-of-operations">UTM Concept of Operations</h1>
+<p>ID: <code>I05</code>
+Status: <code>DRAFT</code> (under active revision)
+Version: <code>1</code></p>
+<blockquote>
+<p><strong>Active version:</strong> This document is being actively revised by the working group (2025–ongoing).
+The current working version is maintained as a Google Doc:
+<strong><a href="https://docs.google.com/document/d/1-hlAliCmXgrtSWt8fiKezEe7GXCXsHdj/edit?usp=sharing&amp;ouid=104110979524276137277&amp;rtpof=true&amp;sd=true">Open active document</a></strong></p>
+<p>The content below is a snapshot from the original 2021–22 publication. Timelines and milestones are under revision and should not be treated as current.</p>
+</blockquote>
+<p><strong>Authors</strong></p>
+<ul>
+<li>Sayandeep Purkayasth (<a href="mailto:sayandeep@deepcyan.ai?subject=Pushpaka I05 UTM Policy Comments">corresponding</a>)</li>
+<li>Hrishikesh Ballal</li>
+<li>Siddharth Shetty</li>
+<li>Manish Shukla</li>
+<li>Amit Garg</li>
+<li>Siddharth Ravikumar</li>
+<li>George Thomas</li>
+</ul>
+<p><strong>Outline</strong>  </p>
+<div class="toc">
+<ul>
+<li><a href="#utm-concept-of-operations">UTM Concept of Operations</a><ul>
+<li><a href="#state-of-the-art">State of the art</a></li>
+<li><a href="#actors">Actors</a></li>
+<li><a href="#use-cases">Use cases</a><ul>
+<li><a href="#manufacturer">Manufacturer</a></li>
+<li><a href="#pilot">Pilot</a></li>
+<li><a href="#operator">Operator</a></li>
+<li><a href="#insurer">Insurer</a></li>
+<li><a href="#civil-aviation-authority">Civil Aviation Authority</a></li>
+<li><a href="#data-consumer">Data Consumer</a></li>
+<li><a href="#uas-ownership-etc">UAS Ownership, etc.</a></li>
+<li><a href="#law-enforcement">Law Enforcement</a></li>
+<li><a href="#security-agencies">Security Agencies</a></li>
+<li><a href="#air-navigation-service-provider">Air Navigation Service Provider</a></li>
+<li><a href="#military">Military</a></li>
+<li><a href="#bcas">BCAS</a></li>
+<li><a href="#general-public">General Public</a></li>
+<li><a href="#governmentsemi-governmental-bodies">Government/Semi-Governmental Bodies</a></li>
+</ul>
+</li>
+<li><a href="#utm-architecture">UTM Architecture</a><ul>
+<li><a href="#considerations-for-design">Considerations for design</a></li>
+<li><a href="#services">Services</a><ul>
+<li><a href="#registration">Registration</a></li>
+<li><a href="#operations">Operations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#rules-of-business">Rules of business</a><ul>
+<li><a href="#high-priority-activities">High Priority activities</a></li>
+</ul>
+</li>
+<li><a href="#ecosystem-evolution-timeline">Ecosystem Evolution Timeline</a><ul>
+<li><a href="#phases-high-level">Phases (high level)</a></li>
+<li><a href="#phases-detail">Phases (detail)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="state-of-the-art">State of the art</h2>
+<p>See <a href="state-of-the-art/">here</a>.</p>
+<h2 id="actors">Actors</h2>
+<ol>
+<li>Manufacturer</li>
+<li>Pilot</li>
+<li>Operator</li>
+<li>Insurer</li>
+<li>Civil Aviation Authority</li>
+<li>Data Consumer</li>
+<li>UAS Owner</li>
+<li>Law Enforcement</li>
+<li>Security Agencies</li>
+<li>Air Navigation Service Provider</li>
+<li>Disaster Management Agencies</li>
+<li>Military</li>
+<li>BCAS</li>
+<li>General Public</li>
+<li>Other UTM-SP or instances thereof</li>
+<li>Pilot Certifier</li>
+<li>UAS Type Certifier</li>
+<li>UAS Testing Agency</li>
+</ol>
+<h2 id="use-cases">Use cases</h2>
+<h3 id="manufacturer">Manufacturer</h3>
+<ol>
+<li>Manage Registration with CAA</li>
+</ol>
+<h3 id="pilot">Pilot</h3>
+<ol>
+<li>Manage Registration with CAA</li>
+<li>Plan a Flight</li>
+<li>Apply for Flight Permit</li>
+</ol>
+<h3 id="operator">Operator</h3>
+<ol>
+<li>Manage Registration with CAA</li>
+<li>Manage Pilots</li>
+<li>Manage UASs</li>
+</ol>
+<h3 id="insurer">Insurer</h3>
+<ol>
+<li>Accident Investigations</li>
+</ol>
+<h3 id="civil-aviation-authority">Civil Aviation Authority</h3>
+<p>i.e. DGCA</p>
+<ol>
+<li>Audit<ol>
+<li>Pilot</li>
+<li>Operator</li>
+</ol>
+</li>
+<li>Manage registration<ol>
+<li>Manufacturer</li>
+<li>Pilot</li>
+<li>Operator</li>
+</ol>
+</li>
+</ol>
+<h3 id="data-consumer">Data Consumer</h3>
+<p>Consumer for data collected by a UAS during an operation.</p>
+<ol>
+<li>Data access</li>
+</ol>
+<h3 id="uas-ownership-etc">UAS Ownership, etc.</h3>
+<ol>
+<li>Lease</li>
+<li>Rent</li>
+<li>Transfer</li>
+<li>Buy</li>
+<li>Scrap</li>
+</ol>
+<h3 id="law-enforcement">Law Enforcement</h3>
+<ol>
+<li>Find Pilot/Operator against FIR</li>
+<li>Track UAS</li>
+<li>Find Rogue UAS</li>
+<li>Counter UAS action</li>
+</ol>
+<h3 id="security-agencies">Security Agencies</h3>
+<ol>
+<li>Find Pilot/Operator against FIR</li>
+<li>Track UAS</li>
+<li>Find rogue UAS</li>
+<li>Counter UAS action</li>
+</ol>
+<h3 id="air-navigation-service-provider">Air Navigation Service Provider</h3>
+<p>i.e. AAI</p>
+<ol>
+<li>Flight permission in controlled airspace</li>
+<li>Traffic Management<ol>
+<li>Deconfliction</li>
+</ol>
+</li>
+</ol>
+<h3 id="military">Military</h3>
+<p>i.e. IAF, Navy, Coast Guard, HAL</p>
+<ol>
+<li>Permission in applicable military controlled airspace</li>
+<li>Traffic Management<ol>
+<li>Deconfliction</li>
+</ol>
+</li>
+</ol>
+<h3 id="bcas">BCAS</h3>
+<ol>
+<li>Counter UAS action</li>
+</ol>
+<h3 id="general-public">General Public</h3>
+<ol>
+<li>Legal action against Drone Pilot/Operator</li>
+<li>Raise claim against accident</li>
+</ol>
+<h3 id="governmentsemi-governmental-bodies">Government/Semi-Governmental Bodies</h3>
+<ol>
+<li>UIDAI</li>
+<li>AERA</li>
+<li>DGFT</li>
+<li>CIN MCA/RoC</li>
+<li>GSTIN</li>
+<li>MoF</li>
+<li>QCI-CB</li>
+<li>Passport, VISA/OCI (MEA)</li>
+<li>WPC</li>
+<li>Driving License RTO</li>
+<li>Bharatkosh MoF</li>
+</ol>
+<h2 id="utm-architecture">UTM Architecture</h2>
+<h3 id="considerations-for-design">Considerations for design</h3>
+<h3 id="services">Services</h3>
+<h4 id="registration">Registration</h4>
+<ol>
+<li>Manufacturer Profile Management</li>
+<li>Pilot Profile Management</li>
+<li>UIN Application</li>
+<li>Permission Management</li>
+<li>Operator Profile Management</li>
+<li>RPAS Acquisition/Transfer</li>
+<li>UAOP Application</li>
+</ol>
+<h4 id="operations">Operations</h4>
+<ol>
+<li>Flight Awareness</li>
+<li>Strategic Deconfliction</li>
+<li>Conflict Advisory and Alert</li>
+<li>Communication and Navigation</li>
+<li>Weather</li>
+<li>Dynamic Airspace Density</li>
+<li>Discovery</li>
+<li>Messaging</li>
+<li>Airspace Authorisation</li>
+<li>Incident Reporting</li>
+<li>Log Management</li>
+<li>Flight Planning</li>
+<li>Flight Notification</li>
+<li>Dynamic Reroute</li>
+<li>Conformance Monitoring</li>
+<li>Risk Reduction</li>
+<li>Surveillance</li>
+<li>Airspace Organization and Management</li>
+<li>Mapping</li>
+<li>Restriction Management</li>
+<li>Drone Swarm Management</li>
+<li>Drone Port Management</li>
+<li>Drone Corridor Management</li>
+<li>Anti-drone measures /c-UAS</li>
+<li>Emergency Management</li>
+<li>Interface with ATC</li>
+</ol>
+<h2 id="rules-of-business">Rules of business</h2>
+<h3 id="high-priority-activities">High Priority activities</h3>
+<pre><code>923/2012 are:
+</code></pre>
+<ul>
+<li>police and customs missions </li>
+<li>traffic surveillance and pursuit missions </li>
+<li>environmental control missions conducted by, or on behalf of public authorities </li>
+<li>search and rescue </li>
+<li>medical flights </li>
+<li>evacuations </li>
+<li>firefighting </li>
+<li>exemptions required to ensure the security of flights by heads of State, Ministers and comparable State functionaries</li>
+</ul>
+<h2 id="ecosystem-evolution-timeline">Ecosystem Evolution Timeline</h2>
+<h3 id="phases-high-level">Phases (high level)</h3>
+<table>
+<thead>
+<tr>
+<th>Milestone</th>
+<th>Services</th>
+<th>Timeline</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M0</td>
+<td>Registration, Restriction Management V0, Incident Reporting</td>
+<td>Till Feb 2022</td>
+</tr>
+<tr>
+<td>M1</td>
+<td>Communication and Navigation, Flight Awareness, Permission Management, Discovery, Airspace Authorisation, Messaging</td>
+<td>Feb 2022 - Feb 2023</td>
+</tr>
+<tr>
+<td>M2</td>
+<td>Flight Notification, Strategic Deconfliction, Conflict Advisory and Alert, Dynamic Airspace Density, Weather</td>
+<td>Feb 2023 - Feb 2024</td>
+</tr>
+<tr>
+<td>M3</td>
+<td>Emergency Management, Conformance Monitoring, Restriction Management V1, Log Management, Interface with ATC, Swarm Management, Corridor Management</td>
+<td>Feb 2024 - Feb 2025</td>
+</tr>
+</tbody>
+</table>
+<h3 id="phases-detail">Phases (detail)</h3>
+<table>
+<thead>
+<tr>
+<th>Milestone</th>
+<th>Service</th>
+<th>Description</th>
+<th>Timeline</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M0</td>
+<td>Registration</td>
+<td>Pilot, Manufacturer Org., Training Org., Operator Org. registration and profile management</td>
+<td>Till Feb 2022</td>
+</tr>
+<tr>
+<td></td>
+<td>Restriction Management V0</td>
+<td>Airspace Rules</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Incident Reporting</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>M1</td>
+<td>Communication and Navigation</td>
+<td></td>
+<td>Till Feb 2023</td>
+</tr>
+<tr>
+<td></td>
+<td>Flight Awareness</td>
+<td>Get info about flights in Volume of Interest</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Permission Management</td>
+<td>Allow UTMs to issue flight permits</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Discovery</td>
+<td>Allow UTMs to discover each other</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Airspace Authorisation</td>
+<td>Integration with Non-CAA authorities for seeking flight permission</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Messaging</td>
+<td>Allow Pilots/Ops to create/search TFR/NOTAM/UVR</td>
+<td></td>
+</tr>
+<tr>
+<td>M2</td>
+<td>Flight Notification</td>
+<td>Get flights in AOI</td>
+<td>Till Feb 2024</td>
+</tr>
+<tr>
+<td></td>
+<td>Strategic Deconfliction</td>
+<td>Pre-flight deconfliction with issued flight plans based on volume restrictions and intersections</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Conflict Advisory and Alert</td>
+<td>Get constraints, advisory, directives for conflicts to aid pilot based deconfliction</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Dynamic Airspace Density</td>
+<td>Get expected airspace density for volume of interest</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Weather</td>
+<td>Get wind, visibility, temperature, precipitation prediction for Flight</td>
+<td></td>
+</tr>
+<tr>
+<td>M3</td>
+<td>Emergency Management</td>
+<td>UVR/NOTAM/TFR preemption rules</td>
+<td>Till Feb 2025</td>
+</tr>
+<tr>
+<td></td>
+<td>Conformance Monitoring</td>
+<td>Check Remote ID Tracking for conformance with buffers</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Restriction Management V1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Swarm Management</td>
+<td>Allow UTMs to manage swarm coordination</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Corridor Management</td>
+<td>Maintain Corridor geometries and operational constraints, allow UTMs to coordinate ops in corridors</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Log Management</td>
+<td>Flight Log storage and analytics</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Interface with ATC</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.highlight", "search.suggest"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
